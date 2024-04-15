@@ -1,0 +1,67 @@
+#VINW-settings h2 {
+  margin-bottom: 10px;
+}
+#VINW-settings td {
+  padding: 5px 10px;
+}
+#VINW-settings td.titledesc {
+  max-width: 500px;
+}
+#VINW-settings td.titledesc.large {
+  padding: 15px 5px;
+}
+#VINW-settings p.submit {
+  padding-top: 0;
+  margin-top: 12px;
+  margin-bottom: 30px;
+}
+#VINW-settings li {
+  list-style-type: square;
+  margin-left: 30px;
+}
+#VINW-settings .form-table {
+  margin-top: 0;
+}
+#VINW-settings .form-table.states {
+  max-width: 1000px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0.5em;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: small;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
