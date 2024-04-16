@@ -29,6 +29,9 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util\Parcelpoint_Util;
  */
 class Controller
 {
+	public $plugin_url;
+	public $plugin_version;
+	public $map_url;
 
 	/**
 	 * Construct function.
