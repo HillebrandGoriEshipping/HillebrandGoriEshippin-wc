@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains code for the shipping method controller class.
  *
@@ -20,7 +21,8 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util\Shipping_Method_Util;
  * @category    Class
  * @author      API Vignoblexport
  */
-class Controller {
+class Controller
+{
 
 	/**
 	 * Rate type.
@@ -43,16 +45,21 @@ class Controller {
 	 */
 	public static $deactivated = 'deactivated';
 
+	public $plugin_url;
+	public $plugin_version;
+	public $ajax_nonce;
+
 	/**
 	 * Construct function.
 	 *
 	 * @param array $plugin plugin array.
 	 * @void
 	 */
-	public function __construct( $plugin ) {
+	public function __construct($plugin)
+	{
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
-		$this->ajax_nonce     = wp_create_nonce( 'Vignoblexporte_woocommerce_shipping_method' );
+		$this->ajax_nonce     = wp_create_nonce('Vignoblexporte_woocommerce_shipping_method');
 	}
 
 	/**
@@ -60,13 +67,14 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public function run() {
+	public function run()
+	{
 		//phpcs:ignore
 		if (isset($_GET['page']) && 'wc-settings' === $_GET['page'] && isset($_GET['tab']) && 'shipping' === $_GET['tab']) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'shipping_method_scripts' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'shipping_method_styles' ) );
+			add_action('admin_enqueue_scripts', array($this, 'shipping_method_scripts'));
+			add_action('admin_enqueue_scripts', array($this, 'shipping_method_styles'));
 		}
-		add_action( 'wp_ajax_VINW_add_rate_line', array( $this, 'add_rate_line_callback' ) );
+		add_action('wp_ajax_VINW_add_rate_line', array($this, 'add_rate_line_callback'));
 	}
 
 	/**
@@ -74,13 +82,14 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public function shipping_method_scripts() {
-		wp_enqueue_script( 'VINW_polyfills', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/polyfills.min.js', array(), $this->plugin_version );
-		wp_enqueue_script( 'VINW_script_validate', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/validateOrder.js', array(), $this->plugin_version );
-		wp_enqueue_script( 'VINW_tail_select', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/tail.select-full.min.js', array( 'VINW_polyfills' ), $this->plugin_version );
-		wp_enqueue_script( 'VINW_shipping_method', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/shipping-method.min.js', array( 'VINW_tail_select', 'VINW_polyfills' ), $this->plugin_version );
-		wp_localize_script( 'VINW_shipping_method', 'VINWShippingMethodAjaxNonce', array( $this->ajax_nonce ) );
-		wp_localize_script( 'VINW_shipping_method', 'VINWLocale', array( substr( get_locale(), 0, 2 ) ) );
+	public function shipping_method_scripts()
+	{
+		wp_enqueue_script('VINW_polyfills', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/polyfills.min.js', array(), $this->plugin_version);
+		wp_enqueue_script('VINW_script_validate', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/validateOrder.js', array(), $this->plugin_version);
+		wp_enqueue_script('VINW_tail_select', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/tail.select-full.min.js', array('VINW_polyfills'), $this->plugin_version);
+		wp_enqueue_script('VINW_shipping_method', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/js/shipping-method.min.js', array('VINW_tail_select', 'VINW_polyfills'), $this->plugin_version);
+		wp_localize_script('VINW_shipping_method', 'VINWShippingMethodAjaxNonce', array($this->ajax_nonce));
+		wp_localize_script('VINW_shipping_method', 'VINWLocale', array(substr(get_locale(), 0, 2)));
 	}
 
 	/**
@@ -88,9 +97,10 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public function shipping_method_styles() {
-		wp_enqueue_style( 'VINW_tail_select', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/css/tail.select-bootstrap3.css', array(), $this->plugin_version );
-		wp_enqueue_style( 'VINW_shipping_method', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/css/shipping-method.css', array(), $this->plugin_version );
+	public function shipping_method_styles()
+	{
+		wp_enqueue_style('VINW_tail_select', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/css/tail.select-bootstrap3.css', array(), $this->plugin_version);
+		wp_enqueue_style('VINW_shipping_method', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/css/shipping-method.css', array(), $this->plugin_version);
 	}
 
 	/**
@@ -98,19 +108,20 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public function add_rate_line_callback() {
-		check_ajax_referer( 'Vignoblexporte_woocommerce_shipping_method', 'security' );
-		header( 'Content-Type: application/json; charset=utf-8' );
-        // phpcs:ignore
-        if ( ! isset( $_REQUEST['pricing-items'] ) ) {
+	public function add_rate_line_callback()
+	{
+		check_ajax_referer('Vignoblexporte_woocommerce_shipping_method', 'security');
+		header('Content-Type: application/json; charset=utf-8');
+		// phpcs:ignore
+		if (!isset($_REQUEST['pricing-items'])) {
 			$i            = 0;
 			$pricing_item = $this->get_default_pricing_item_values();
 		} else {
 			$pricing_item = array();
 			// phpcs:ignore
-			foreach ( $_REQUEST['pricing-items'] as $key => $value ) {
-				$clean_values                         = Misc_Util::array_keys_strip_double_quotes( $value );
-				$i                                    = intval( $key ) + 1;
+			foreach ($_REQUEST['pricing-items'] as $key => $value) {
+				$clean_values                         = Misc_Util::array_keys_strip_double_quotes($value);
+				$i                                    = intval($key) + 1;
 				$pricing_item                         = self::get_default_pricing_item_values();
 				$pricing_item['parcel_point_network'] = $clean_values['parcel-point-network'];
 			}
@@ -119,9 +130,9 @@ class Controller {
 		$parcel_point_networks = \Vignoblexport\VignoblexportConnectWoocommerce\Shipping_Method\Parcel_Point\Controller::get_network_list();
 		$shipping_classes      = Shipping_Method_Util::get_shipping_class_list();
 		ob_start();
-		include_once dirname( __DIR__ ) . '/assets/views/html-admin-shipping-method-rate.php';
+		include_once dirname(__DIR__) . '/assets/views/html-admin-shipping-method-rate.php';
 		$html = ob_get_clean();
-		wp_send_json_success( $html );
+		wp_send_json_success($html);
 	}
 
 	/**
@@ -129,14 +140,15 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public function get_default_pricing_item_values() {
+	public function get_default_pricing_item_values()
+	{
 		$shipping_classes = Shipping_Method_Util::get_shipping_class_list();
 		return array(
 			'price_from'           => null,
 			'price_to'             => null,
 			'weight_from'          => null,
 			'weight_to'            => null,
-			'shipping_class'       => array_keys( $shipping_classes ),
+			'shipping_class'       => array_keys($shipping_classes),
 			'parcel_point_network' => array(),
 			'pricing'              => $this::$rate,
 			'flat_rate'            => 0,
@@ -150,18 +162,19 @@ class Controller {
 	 *
 	 * @return array
 	 */
-	public static function get_pricing_items( $method ) {
+	public static function get_pricing_items($method)
+	{
 		global $wpdb;
 		$query = "SELECT * FROM {$wpdb->prefix}VINW_pricing_items WHERE shipping_method_instance = '" . $method . "' order by pricing_id";
 		//phpcs:ignore
 		$result = $wpdb->get_results($query, ARRAY_A);
 		$pricing_items = array();
-		foreach ( $result as $row_number => $pricing_item ) {
-			foreach ( $pricing_item as $key => $value ) {
-				if ( 'parcel_point_network' === $key || 'shipping_class' === $key ) {
-					$pricing_items[ $row_number ][ $key ] = null === $value ? null : explode( '|', $value );
+		foreach ($result as $row_number => $pricing_item) {
+			foreach ($pricing_item as $key => $value) {
+				if ('parcel_point_network' === $key || 'shipping_class' === $key) {
+					$pricing_items[$row_number][$key] = null === $value ? null : explode('|', $value);
 				} else {
-					$pricing_items[ $row_number ][ $key ] = $value;
+					$pricing_items[$row_number][$key] = $value;
 				}
 			}
 		}
@@ -177,25 +190,26 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public static function save_pricing_items( $method, $pricing_items ) {
+	public static function save_pricing_items($method, $pricing_items)
+	{
 
-		self::delete_pricing_items( $method );
+		self::delete_pricing_items($method);
 
 		global $wpdb;
-		foreach ( $pricing_items as $id => $pricing_item ) {
+		foreach ($pricing_items as $id => $pricing_item) {
 			$wpdb->insert(
 				$wpdb->prefix . 'VINW_pricing_items',
 				array(
 					'pricing_id'               => $id,
-					'shipping_method_instance' => Shipping_Method_Util::get_unique_identifier( $method ),
-					'price_from'               => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'price-from'} ) ),
-					'price_to'                 => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'price-to'} ) ),
-					'weight_from'              => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'weight-from'} ) ),
-					'weight_to'                => Misc_Util::parse_float_or_null( Misc_Util::convert_comma( $pricing_item->{'weight-to'} ) ),
-					'shipping_class'           => ! empty( $pricing_item->{'shipping-class'} ) ? implode( '|', $pricing_item->{'shipping-class'} ) : 'none',
-					'parcel_point_network'     => ! empty( get_option('VINW_PREF_STAT')) ? get_option('VINW_PREF_STAT') : null,
+					'shipping_method_instance' => Shipping_Method_Util::get_unique_identifier($method),
+					'price_from'               => Misc_Util::parse_float_or_null(Misc_Util::convert_comma($pricing_item->{'price-from'})),
+					'price_to'                 => Misc_Util::parse_float_or_null(Misc_Util::convert_comma($pricing_item->{'price-to'})),
+					'weight_from'              => Misc_Util::parse_float_or_null(Misc_Util::convert_comma($pricing_item->{'weight-from'})),
+					'weight_to'                => Misc_Util::parse_float_or_null(Misc_Util::convert_comma($pricing_item->{'weight-to'})),
+					'shipping_class'           => !empty($pricing_item->{'shipping-class'}) ? implode('|', $pricing_item->{'shipping-class'}) : 'none',
+					'parcel_point_network'     => !empty(get_option('VINW_PREF_STAT')) ? get_option('VINW_PREF_STAT') : null,
 					'pricing'                  => $pricing_item->{'pricing'},
-					'flat_rate'                => self::$rate === $pricing_item->{'pricing'} ? floatval( Misc_Util::convert_comma( $pricing_item->{'flat-rate'} ) ) : null,
+					'flat_rate'                => self::$rate === $pricing_item->{'pricing'} ? floatval(Misc_Util::convert_comma($pricing_item->{'flat-rate'})) : null,
 				),
 				array(
 					'%d',
@@ -211,7 +225,6 @@ class Controller {
 				)
 			); // db call ok.
 		}
-
 	}
 
 	/**
@@ -221,12 +234,13 @@ class Controller {
 	 *
 	 * @return array
 	 */
-	public static function delete_pricing_items( $method ) {
+	public static function delete_pricing_items($method)
+	{
 		global $wpdb;
 		return $wpdb->delete(
 			$wpdb->prefix . 'VINW_pricing_items',
-			array( 'shipping_method_instance' => Shipping_Method_Util::get_unique_identifier( $method ) ),
-			array( '%s' )
+			array('shipping_method_instance' => Shipping_Method_Util::get_unique_identifier($method)),
+			array('%s')
 		); // db call ok.
 	}
 }
