@@ -23,6 +23,10 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util;
  */
 class Admin_Order_Page
 {
+	public $plugin_url;
+	public $plugin_version;
+	public $tracking;
+	public $parcelpoint;
 
 	/**
 	 * Construct function.
