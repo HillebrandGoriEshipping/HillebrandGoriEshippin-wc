@@ -25,6 +25,9 @@ use Vignoblexport\VignoblexportPhp\RestClient;
  */
 class Page
 {
+	public $plugin_url;
+	public $plugin_version;
+
 	/**
 	 * Construct function.
 	 *
