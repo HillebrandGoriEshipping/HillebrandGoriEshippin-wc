@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains code for the setup wizard class.
  *
@@ -21,7 +22,10 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util\Configuration_Util;
  * @category    Class
  * @author      API Vignoblexport
  */
-class Setup_Wizard {
+class Setup_Wizard
+{
+
+	public $activation;
 
 	/**
 	 * Construct function.
@@ -29,8 +33,9 @@ class Setup_Wizard {
 	 * @param bool $activation : is called on plugin activation.
 	 * @void
 	 */
-	public function __construct( $activation = false ) {
-	
+	public function __construct($activation = false)
+	{
+
 		$this->activation = $activation;
 	}
 
@@ -39,7 +44,8 @@ class Setup_Wizard {
 	 *
 	 * @void
 	 */
-	public function run() {
-		Notice_Controller::add_notice( Notice_Controller::$setup_wizard );
+	public function run()
+	{
+		Notice_Controller::add_notice(Notice_Controller::$setup_wizard);
 	}
 }

@@ -22,6 +22,8 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Shipping_Method\Parcel_Point\C
  */
 class Settings_Override
 {
+	public $plugin_url;
+	public $plugin_version;
 
 	/**
 	 * Construct function.

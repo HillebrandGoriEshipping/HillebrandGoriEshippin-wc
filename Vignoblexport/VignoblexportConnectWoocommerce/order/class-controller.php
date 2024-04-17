@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains code for the order controller class.
  *
@@ -20,7 +21,11 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util\Auth_Util;
  * @category    Class
  * @author      API Vignoblexport
  */
-class Controller {
+class Controller
+{
+
+	public $plugin_url;
+	public $plugin_version;
 
 	/**
 	 * Construct function.
@@ -28,7 +33,8 @@ class Controller {
 	 * @param array $plugin plugin array.
 	 * @void
 	 */
-	public function __construct( $plugin ) {
+	public function __construct($plugin)
+	{
 		$this->plugin_url     = $plugin['url'];
 		$this->plugin_version = $plugin['version'];
 	}
@@ -38,7 +44,8 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public function run() {
+	public function run()
+	{
 	}
 
 	/**
@@ -47,9 +54,10 @@ class Controller {
 	 * @param string $order_id \WC_Order id.
 	 * @return object tracking
 	 */
-	public function get_order_tracking( $order_id ) {
-		$lib      = new ApiClient( Auth_Util::get_access_key() );
-		$response = $lib->getOrder( $order_id );
+	public function get_order_tracking($order_id)
+	{
+		$lib      = new ApiClient(Auth_Util::get_access_key());
+		$response = $lib->getOrder($order_id);
 		return $response;
 	}
 
@@ -58,7 +66,8 @@ class Controller {
 	 *
 	 * @void
 	 */
-	public function tracking_styles() {
-		wp_enqueue_style( 'VINW_tracking', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/css/tracking.css', array(), $this->plugin_version );
+	public function tracking_styles()
+	{
+		wp_enqueue_style('VINW_tracking', $this->plugin_url . 'Vignoblexport/VignoblexportConnectWoocommerce/assets/css/tracking.css', array(), $this->plugin_version);
 	}
 }

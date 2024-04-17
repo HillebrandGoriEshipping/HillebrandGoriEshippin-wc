@@ -27,6 +27,8 @@ use Vignoblexport\VignoblexportPhp\ApiClient;
  */
 class Page2
 {
+	public $plugin_url;
+	public $plugin_version;
 
 	/**
 	 * Construct function.

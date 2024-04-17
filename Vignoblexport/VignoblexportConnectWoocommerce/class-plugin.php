@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains code for the plugin container class.
  *
@@ -6,6 +7,8 @@
  */
 
 namespace Vignoblexport\VignoblexportConnectWoocommerce;
+
+use ArrayAccess;
 
 /**
  * Plugin container class.
@@ -17,7 +20,8 @@ namespace Vignoblexport\VignoblexportConnectWoocommerce;
  * @category    Class
  * @author      API Vignoblexport
  */
-class Plugin implements \ArrayAccess {
+class Plugin implements ArrayAccess
+{
 
 	/**
 	 * Plugin instance content.
@@ -38,7 +42,8 @@ class Plugin implements \ArrayAccess {
 	 *
 	 * @void
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->contents  = array();
 		$this::$instance = $this;
 	}
@@ -48,7 +53,8 @@ class Plugin implements \ArrayAccess {
 	 *
 	 * @return Plugin
 	 */
-	public static function getInstance() {
+	public static function getInstance()
+	{
 		return self::$instance;
 	}
 
@@ -59,18 +65,24 @@ class Plugin implements \ArrayAccess {
 	 * @param mixed  $value value.
 	 * @void
 	 */
-	public function offsetSet( $offset, $value ) {
-		$this->contents[ $offset ] = $value;
+	public function offsetSet(mixed $offset, mixed $value): void
+	{
+		if (is_null($offset)) {
+			$this->contents[] = $value;
+		} else {
+			$this->contents[$offset] = $value;
+		}
 	}
 
 	/**
 	 * Key exists.
 	 *
-	 * @param string $offset key.
-	 * @boolean
+	 * @param mixed $offset key.
+	 * @return bool
 	 */
-	public function offsetExists( $offset ) {
-		return isset( $this->contents[ $offset ] );
+	public function offsetExists($offset): bool
+	{
+		return isset($this->contents[$offset]);
 	}
 
 	/**
@@ -79,8 +91,9 @@ class Plugin implements \ArrayAccess {
 	 * @param string $offset key.
 	 * @void
 	 */
-	public function offsetUnset( $offset ) {
-		unset( $this->contents[ $offset ] );
+	public function offsetUnset(mixed $offset): void
+	{
+		unset($this->contents[$offset]);
 	}
 
 	/**
@@ -89,11 +102,12 @@ class Plugin implements \ArrayAccess {
 	 * @param string $offset key.
 	 * @mixed
 	 */
-	public function offsetGet( $offset ) {
-		if ( is_callable( $this->contents[ $offset ] ) ) {
-			return call_user_func( $this->contents[ $offset ], $this );
+	public function offsetGet(mixed $offset): mixed
+	{
+		if (is_callable($this->contents[$offset])) {
+			return call_user_func($this->contents[$offset], $this);
 		}
-		return isset( $this->contents[ $offset ] ) ? $this->contents[ $offset ] : null;
+		return isset($this->contents[$offset]) ? $this->contents[$offset] : null;
 	}
 
 	/**
@@ -101,14 +115,15 @@ class Plugin implements \ArrayAccess {
 	 *
 	 * @void
 	 */
-	public function run() {
-		foreach ( $this->contents as $key => $content ) { // Loop on contents.
-			if ( is_callable( $content ) ) {
-				$content = $this[ $key ];
+	public function run()
+	{
+		foreach ($this->contents as $key => $content) { // Loop on contents.
+			if (is_callable($content)) {
+				$content = $this[$key];
 			}
-			if ( is_object( $content ) ) {
-				$reflection = new \ReflectionClass( $content );
-				if ( $reflection->hasMethod( 'run' ) ) {
+			if (is_object($content)) {
+				$reflection = new \ReflectionClass($content);
+				if ($reflection->hasMethod('run')) {
 					$content->run(); // Call run method on object.
 				}
 			}

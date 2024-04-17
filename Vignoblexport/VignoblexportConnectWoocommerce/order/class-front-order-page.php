@@ -24,6 +24,9 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util\Order_Util;
 class Front_Order_Page
 {
 
+	public $plugin_url;
+	public $plugin_version;
+
 	/**
 	 * Construct function.
 	 *

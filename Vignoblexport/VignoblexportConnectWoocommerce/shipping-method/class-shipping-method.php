@@ -26,6 +26,8 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util\Configuration_Util;
  */
 class Shipping_Method extends \WC_Shipping_Method
 {
+	public $cost;
+
 	/**
 	 * Constructor for your shipping class
 	 *
@@ -49,6 +51,7 @@ class Shipping_Method extends \WC_Shipping_Method
 		add_filter('woocommerce_update_options_shipping_' . $this->id, array($this, 'calculate_shipping'));
 		// add_filter('woocommerce_update_cart_action_cart_updated', array( $this, 'calculate_shipping' ) );
 	}
+
 
 	/**
 	 * Init your settings

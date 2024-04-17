@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains code for the translation class.
  *
@@ -17,14 +18,19 @@ namespace Vignoblexport\VignoblexportConnectWoocommerce\Init;
  * @category    Class
  * @author      API Vignoblexport
  */
-class Translation {
+class Translation
+{
+
+	public $path;
+
 	/**
 	 * Construct function.
 	 *
 	 * @param array $plugin plugin array.
 	 * @void
 	 */
-	public function __construct( $plugin ) {
+	public function __construct($plugin)
+	{
 		$this->path = $plugin['path'];
 	}
 
@@ -33,8 +39,9 @@ class Translation {
 	 *
 	 * @void
 	 */
-	public function run() {
-		add_action( 'init', array( $this, 'Vignoblexport_connect_load_textdomain' ) );
+	public function run()
+	{
+		add_action('init', array($this, 'Vignoblexport_connect_load_textdomain'));
 	}
 
 	/**
@@ -42,8 +49,9 @@ class Translation {
 	 *
 	 * @void
 	 */
-	public function Vignoblexport_connect_load_textdomain() {
-		$translation_folder_path = plugin_basename( $this->path .'/Vignoblexport/VignoblexportConnectWoocommerce/translation' );
-		load_plugin_textdomain( 'Vignoblexport', false, $translation_folder_path );
+	public function Vignoblexport_connect_load_textdomain()
+	{
+		$translation_folder_path = plugin_basename($this->path . '/Vignoblexport/VignoblexportConnectWoocommerce/translation');
+		load_plugin_textdomain('Vignoblexport', false, $translation_folder_path);
 	}
 }

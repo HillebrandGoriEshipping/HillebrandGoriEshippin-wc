@@ -11,6 +11,8 @@ namespace Vignoblexport\VignoblexportConnectWoocommerce\Order;
 use Vignoblexport\VignoblexportConnectWoocommerce\Util\Order_Util;
 use Vignoblexport\VignoblexportConnectWoocommerce\Util;
 
+// use WC_Order;
+
 /**
  * Admin_Order_Page class.
  *
@@ -23,6 +25,10 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util;
  */
 class Admin_Order_Page
 {
+	public $plugin_url;
+	public $plugin_version;
+	public $tracking;
+	public $parcelpoint;
 
 	/**
 	 * Construct function.
@@ -64,8 +70,12 @@ class Admin_Order_Page
 	function order_update_item_number()
 	{
 		global $wpdb;
-		$order_id = $_GET['post'];
-		$order = wc_get_order($order_id);
+		if (isset($_GET['post'])) {
+			$order_id = $_GET['post'];
+			$order = wc_get_order($order_id);
+		} else {
+			return;
+		}
 
 		// get the package in DB
 		$query = "SELECT `package` FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $order_id . "'";

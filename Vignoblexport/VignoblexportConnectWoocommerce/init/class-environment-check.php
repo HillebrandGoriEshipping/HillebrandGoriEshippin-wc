@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains code for the environment check class.
  *
@@ -21,7 +22,9 @@ use Vignoblexport\VignoblexportConnectWoocommerce\Util\Environment_Util;
  * @category    Class
  * @author      API Vignoblexport
  */
-class Environment_Check {
+class Environment_Check
+{
+	public $plugin;
 
 	/**
 	 * Environment warning message.
@@ -36,7 +39,8 @@ class Environment_Check {
 	 * @param Plugin $plugin plugin array.
 	 * @void
 	 */
-	public function __construct( $plugin ) {
+	public function __construct($plugin)
+	{
 		$this->plugin = $plugin;
 	}
 
@@ -45,17 +49,19 @@ class Environment_Check {
 	 *
 	 * @void
 	 */
-	public function run() {
-		$this->environment_warning = Environment_Util::check_errors( $this->plugin );
-		if ( false !== $this->environment_warning ) {
+	public function run()
+	{
+		$this->environment_warning = Environment_Util::check_errors($this->plugin);
+		if (false !== $this->environment_warning) {
 			Notice_Controller::remove_all_notices();
 			Notice_Controller::add_notice(
-				Notice_Controller::$environment_warning, array(
+				Notice_Controller::$environment_warning,
+				array(
 					'message' => $this->environment_warning,
 				)
 			);
-		} elseif ( Notice_Controller::has_notice( Notice_Controller::$environment_warning ) ) {
-			Notice_Controller::remove_notice( Notice_Controller::$environment_warning );
+		} elseif (Notice_Controller::has_notice(Notice_Controller::$environment_warning)) {
+			Notice_Controller::remove_notice(Notice_Controller::$environment_warning);
 		}
 	}
 }
