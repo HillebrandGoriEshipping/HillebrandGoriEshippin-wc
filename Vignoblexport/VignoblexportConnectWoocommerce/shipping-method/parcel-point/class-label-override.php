@@ -79,8 +79,8 @@ class Label_Override
 			global $wpdb;
 			$query = "SELECT * FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $id . "'";
 			$result = $wpdb->get_results($query, ARRAY_A);
-			$offres = json_decode(trim(stripslashes(stripslashes($result[0]["offre"])), '"'), true);
-			$bodytag = str_replace("Vignoblexport", $offres["name"], $shipping);
+			$offres = json_decode(trim(stripslashes(stripslashes($result[0]["offre"] ?? '')), '"'), true);
+			$bodytag = str_replace("Vignoblexport", $offres["name"] ?? '', $shipping);
 			$order["shipping"]['value'] = $bodytag;
 		}
 
