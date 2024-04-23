@@ -739,7 +739,7 @@ class Label_Override
 		} else {
 			$shipping_tax = 0;
 		}
-		$total_vat = $products_tax['total'] + $shipping_tax;
+		$total_vat = $products_tax + $shipping_tax;
 		$total_vat = urldecode($total_vat);
 		$total_vat = number_format($total_vat, 2, '.', ' ');
 

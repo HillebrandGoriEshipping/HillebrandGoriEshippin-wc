@@ -11,7 +11,7 @@ echo  WC()->session->get('VINW_CONF_Colis');
 if (WC()->session) {
     echo  WC()->session->get('VINW_CONF_Colis');
     $package_co = array();
-    $arrayssesion = explode(";", WC()->session->get('VINW_CONF_Colis'));
+    $arrayssesion = explode(";", WC()->session->get('VINW_CONF_Colis') ?? '');
     $package_co[0] = urldecode($arrayssesion[0]);
 
     $package_colis = json_decode(trim(stripslashes(stripslashes($package_co[0])), '"'), true);

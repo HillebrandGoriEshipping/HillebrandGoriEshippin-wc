@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Contains code for shipping rate util class.
  *
@@ -17,7 +18,8 @@ namespace Vignoblexport\VignoblexportConnectWoocommerce\Util;
  * @category    Class
  * @author      API Vignoblexport
  */
-class Shipping_Rate_Util {
+class Shipping_Rate_Util
+{
 
 	/**
 	 * Get shipping method settings from shipping rate.
@@ -25,9 +27,10 @@ class Shipping_Rate_Util {
 	 * @param \WC_Shipping_Rate $rate woocommerce shipping rate.
 	 * @return array $settings shipping rate settings
 	 */
-	public static function get_settings( $rate ) {
-		
-		return get_option( self::get_settings_key( $rate ) );
+	public static function get_settings($rate)
+	{
+
+		return get_option(self::get_settings_key($rate));
 	}
 
 	/**
@@ -36,11 +39,12 @@ class Shipping_Rate_Util {
 	 * @param \WC_Shipping_Rate $rate woocommerce shipping rate.
 	 * @return string $settings_key shipping rate settings key
 	 */
-	private static function get_settings_key( $rate ) {
-		if ( false === strpos( Shipping_Rate_Util::get_id( $rate ), ':' ) ) {
+	private static function get_settings_key($rate)
+	{
+		if (false === strpos(Shipping_Rate_Util::get_id($rate), ':')) {
 			return null;
 		}
-		list($method_name, $method_instance_id) = explode( ':', Shipping_Rate_Util::get_id( $rate ) );
+		list($method_name, $method_instance_id) = explode(':', Shipping_Rate_Util::get_id($rate));
 		return 'woocommerce_' . $method_name . '_' . $method_instance_id . '_settings';
 	}
 
@@ -51,8 +55,9 @@ class Shipping_Rate_Util {
 	 *
 	 * @return string $id shipping rate id
 	 */
-	public static function get_id( $rate ) {
-		if ( method_exists( $rate, 'get_id' ) ) {
+	public static function get_id($rate)
+	{
+		if (method_exists($rate, 'get_id')) {
 			return $rate->get_id();
 		}
 		return $rate->id;
@@ -65,8 +70,9 @@ class Shipping_Rate_Util {
 	 *
 	 * @return string $id shipping rate method id
 	 */
-	public static function get_method_id( $rate ) {
-		if ( method_exists( $rate, 'get_method_id' ) ) {
+	public static function get_method_id($rate)
+	{
+		if (method_exists($rate, 'get_method_id')) {
 			return $rate->get_method_id();
 		}
 		return $rate->method_id;
@@ -78,7 +84,8 @@ class Shipping_Rate_Util {
 	 * @param string $id woocommerce shipping rate id.
 	 * @return string $id shipping rate id without :
 	 */
-	public static function get_clean_id( $id ) {
-		return str_replace( ':', '', $id );
+	public static function get_clean_id($id)
+	{
+		return str_replace(':', '', $id);
 	}
 }
