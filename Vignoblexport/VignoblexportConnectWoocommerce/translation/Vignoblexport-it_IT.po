@@ -1,1054 +1,1380 @@
+# Copyright (C) 2024 API Vignoblexport
+# This file is distributed under the same license as the Vignoblexport Preprod plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Vignoblexport\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-04 11:42+0000\n"
-"PO-Revision-Date: 2021-03-05 18:20+0100\n"
+"Project-Id-Version: Vignoblexport Preprod 1.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Vignoblexport\n"
+"POT-Creation-Date: 2024-04-03T14:33:15+00:00\n"
+"PO-Revision-Date: 2024-04-24 10:55+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
-"X-Loco-Version: 2.5.0; wp-5.6.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Domain: Vignoblexport\n"
-"Last-Translator: \n"
-"Language: it_IT\n"
 
-#. %s: distance in km
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:105
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:225
-#, fuzzy, php-format
-msgid "%skm away"
-msgstr "%skm di distanza"
+#. Plugin Name of the plugin
+msgid "Vignoblexport Preprod"
+msgstr "Vignoblexport Preprod"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:109
-#, fuzzy
-msgid "acces-key-validate"
-msgstr "acces-key-validate"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:99
-#, fuzzy
-msgid "ACCESS KEY"
-msgstr "CHIAVE D'ACCESSO"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:256
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:256
-#, fuzzy
-msgid "Activate insurance:"
-msgstr "Attivare l'assicurazione:"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:99
-msgid "Add rule"
-msgstr "Aggiungi regola"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:90
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:93
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:90
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:93
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:95
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:136
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:138
-msgid "Address"
-msgstr "Indirizzo"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:95
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:136
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:138
-msgid "Adress"
-msgstr "Indirizzo"
+#. Description of the plugin
+msgid ""
+"Managing your shipments becomes easier with our plugin! Save time and enjoy "
+"negotiated rates with many carriers: Chronopost, UPS, Fedex, DHL, ..."
+msgstr ""
+"Gestire le tue spedizioni diventa più semplice con il nostro plugin! "
+"Risparmia tempo e beneficia delle nostre tariffe negoziate con i nostri "
+"partner: UPS, Fedex, DHL, …"
 
 #. Author of the plugin
-#, fuzzy
 msgid "API Vignoblexport"
 msgstr "API Vignoblexport"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:241
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:245
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:241
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:245
-#, fuzzy
-msgid "At the recipient's expense"
-msgstr "A spese del destinatario"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:240
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:244
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:240
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:244
-#, fuzzy
-msgid "At the sender's expense"
-msgstr "A spese del mittente"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:667
-#, fuzzy
-msgid "Available offers"
-msgstr "Offerte disponibili"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:492
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:556
-#, fuzzy
-msgid "Available offers:"
-msgstr "Offerte disponibili:"
-
-#: Vignoblexport.php:368
-#, fuzzy
-msgid "Awaiting shipment"
-msgstr "In attesa di spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:194
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:196
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:194
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:196
-#, fuzzy
-msgid "Carrier preference"
-msgstr "Preferenza del trasportatore"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:57
-#, fuzzy
-msgid "Cart price Excluding Tax"
-msgstr "Prezzo del carrello Tasse escluse"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:440
-msgid "Choice"
-msgstr "Scelta"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:100
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:821
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:832
-#, fuzzy
-msgid "Choose pickup point"
-msgstr "Scegliere il punto di raccolta"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:335
-#, fuzzy
-msgid "Chosen offer:"
-msgstr "Offerta scelta:"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:346
-#, fuzzy
-msgid "Chosen package:"
-msgstr "Pacchetto scelto:"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-parcelpoint.php:73
-#, fuzzy
-msgid "Chosen pickup point"
-msgstr "Punto di raccolta scelto"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:158
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:160
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:158
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:160
-msgid "City"
-msgstr "Città"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:102
-#, fuzzy
-msgid "Close map"
-msgstr "Chiudi mappa"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:104
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:106
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:104
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:106
-msgid "Company"
-msgstr "Azienda"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:816
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:826
-#, fuzzy
-msgid "Confirm my shipping choice"
-msgstr "Confermare la mia scelta di spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-success-notice.php:17
-#, fuzzy
-msgid "Congratulations, your shop is connected!"
-msgstr "Congratulazioni, il tuo negozio è collegato!"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:115
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:117
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:115
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:117
-msgid "Contact"
-msgstr "Contatto"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:96
-#, fuzzy
-msgid "Could not connect to map server"
-msgstr "Impossibile connettersi al server delle mappe"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:95
-#, fuzzy
-msgid "Could not find address"
-msgstr "Impossibile trovare l'indirizzo"
-
-#: Vignoblexport.php:370
-msgid "Delivered"
-msgstr "Consegnato"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:217
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:219
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:217
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:219
-#, fuzzy
-msgid "Delivery preference"
-msgstr "Preferenza di consegna"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:237
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:266
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:444
-msgid "length"
-msgstr "Profondità"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:226
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:226
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:741
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:755
-msgid "Domestic"
-msgstr "Nazionale"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:224
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:224
-#, fuzzy
-msgid "Domestic express / Pickup point"
-msgstr "Espresso nazionale / Punto di ritiro"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:232
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:232
-#, fuzzy
-msgid "Duties and taxes at destination"
-msgstr "Dazi e tasse a destinazione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:621
-#, fuzzy
-msgid "Edit expedition"
-msgstr "Modifica spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-success-notice.php:21
-#, fuzzy
-msgid "Finalize the settings"
-msgstr "Finalizzare le impostazioni"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-success-notice.php:18
-#, fuzzy
-msgid "Finalize your settings to start shipping"
-msgstr "Finalizzare le impostazioni per iniziare la spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:75
-#, fuzzy
-msgid "Flat rate Vignoblexport"
-msgstr "Forfait Vignoblexport"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:17
-msgid "FRIDAY"
-msgstr "Venerdì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:112
-msgid "friday"
-msgstr "venerdì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:77
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:79
-msgid "From"
-msgstr "Dal"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:82
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:343
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:82
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:343
-#, fuzzy
-msgid "Go to the tutorial"
-msgstr "Vai al tutorial"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:236
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:265
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:443
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:283
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:283
-msgid "Height"
-msgstr "Altezza"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-custom-notice.php:17
-msgid "Hide this notice"
-msgstr "Nascondi questo avviso"
-
 #. Author URI of the plugin
-#, fuzzy
 msgid "https://www.vignoblexport.com"
 msgstr "https://www.vignoblexport.com"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:64
-#, fuzzy
-msgid "If you wish to offer the shipping for free, put 0."
-msgstr "Se volete offrire la spedizione gratuita, mettete 0."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:65
-#, fuzzy
+#: Vignoblexport.php:139
 msgid ""
-"If you've set up a shipping tax, it will be applied to this price for your "
-"client."
+"Vignoblexport - from version 1.1.0, use of parcel point map additional field "
+"on shipping methods is deprecated. Use the Vignoblexport method instead."
 msgstr ""
-"Se hai impostato una tassa di spedizione, sarà applicata a questo prezzo per "
-"il tuo cliente."
+"Vignoblexport - dalla versione 1.1.0, l’uso del campo aggiuntivo della mappa "
+"dei punti dei pacchi sui metodi di spedizione è obsoleto. Utilizzare invece "
+"il metodo Vignoblexport."
 
-#. %1$1s: link start %2$2s: link end
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:32
-#, fuzzy, php-format
-msgid "In need of some advice about shipping costs? Follow %1$sthis link%2$s."
-msgstr ""
-"Hai bisogno di un consiglio sulle spese di spedizione? Segui %1$squesto link"
-"%2$s."
+#: Vignoblexport.php:401
+msgid "Awaiting shipment"
+msgstr "In attesa di spedizione"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:52
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:52
-#, fuzzy
-msgid "Insert your MapBox API token"
-msgstr "Inserisci il tuo token API di MapBox"
+#: Vignoblexport.php:402
+msgid "Shipped"
+msgstr "Spedito"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:42
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:42
-#, fuzzy
-msgid "Insert your VignoblExport API token"
-msgstr "Inserisci il tuo token API di VignoblExport"
+#: Vignoblexport.php:403
+msgid "Delivered"
+msgstr "Consegnato"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:252
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:252
-msgid "Insurance"
-msgstr "Assicurazione"
+#: Vignoblexport.php:632
+msgid "Number of packages"
+msgstr "Numero di pacchi"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:77
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:338
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:77
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:338
-#, fuzzy
-msgid "Just one last step, it will only take a few minutes, let us guide you: "
-msgstr ""
-"Solo un ultimo passo, ci vorranno solo pochi minuti, lasciatevi guidare da "
-"noi"
+#: Vignoblexport.php:634
+msgid "Weight of each package"
+msgstr "Peso di ciascun pacco"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:36
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:36
-#, fuzzy
-msgid "Key settings"
-msgstr "Impostazioni chiave"
+#: Vignoblexport.php:636
+msgid "Conditionnement"
+msgstr "Tipo di imballo"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:39
-#, fuzzy
+#: Vignoblexport.php:644
 msgid ""
-"Lets you define weight/price ranges of your shipping costs for each of your "
-"delivery methods and add a pickup point map."
+"No appellation available for this country. Please contact Vignoblexport "
+"support"
 msgstr ""
-"Permette di definire gli intervalli di peso/prezzo delle vostre spese di "
-"spedizione per ciascuno dei vostri metodi di consegna e di aggiungere una "
-"mappa dei punti di ritiro."
+"Nessuna denominazione disponibile per questo paese. Contatta il supporto "
+"Vignoblexport"
 
-#. Description of the plugin
-#, fuzzy
+#: Vignoblexport.php:645
+msgid "Select an appellation"
+msgstr "Seleziona una denominazione"
+
+#: Vignoblexport.php:646
+msgid "The product settings are correct."
+msgstr "Le impostazioni del prodotto sono corrette."
+
+#: Vignoblexport.php:647
 msgid ""
-"Managing your shipments becomes easier with our plugin! Save time and enjoy "
-"negotiated rates with many carriers: Colissimo, Mondial Relay…"
+"The product settings are not correct. Please verify them and if this error "
+"persists contact us."
 msgstr ""
-"Gestire le vostre spedizioni diventa più facile con il nostro plugin! "
-"Risparmia tempo e approfitta delle tariffe negoziate con molti "
-"trasportatori: Colissimo, Mondial Relay.."
+"Le impostazioni del prodotto non sono corrette. Verificale e se l’errore "
+"persiste contattaci."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:129
-#, fuzzy
-msgid "mapbox-api-key-validate"
-msgstr "mapbox-api-key-validate"
+#: Vignoblexport.php:671
+msgid "Quantity"
+msgstr "Quantità"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:72
-msgid "Method title"
-msgstr "Titolo del metodo"
+#: Vignoblexport.php:721
+msgid "Number of bottle"
+msgstr "Numero di bottiglia"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:266
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:266
-#, fuzzy
-msgid "Minimum amount to be insured:"
-msgstr "Importo minimo da assicurare:"
+#: Vignoblexport.php:734
+msgid "Size of bottle"
+msgstr "Dimensione della bottiglia"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:176
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:179
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:176
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:179
-#, fuzzy
-msgid "Minimum number of bottles"
-msgstr "Numero minimo di bottiglie"
+#: Vignoblexport.php:736
+msgid "Standard bottle"
+msgstr "Bottiglia standard"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:13
-msgid "MONDAY"
-msgstr "Lunedì"
+#: Vignoblexport.php:737
+msgid "Magnum"
+msgstr "Magnum"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:108
-msgid "monday"
-msgstr "lunedì"
+#: Vignoblexport.php:744
+msgid "Type"
+msgstr "Tipo"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:234
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:263
-#, fuzzy
-msgid "Nb.Bottles"
-msgstr "Bottiglie"
+#: Vignoblexport.php:745
+msgid "Type of product"
+msgstr "Tipo di prodotto"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:233
-#, fuzzy
-msgid "Nb.Package"
-msgstr "Nb.pacchetto"
+#: Vignoblexport.php:748
+msgid "Select product type"
+msgstr "Seleziona tipo di prodotto"
 
-#. %1$1s: link start %2$2s: link end
+#: Vignoblexport.php:749
+msgid "Still Wine"
+msgstr "Vino fermo"
+
+#: Vignoblexport.php:750
+msgid "Sparkling Wine"
+msgstr "Vino Spumante"
+
+#: Vignoblexport.php:751
+msgid "Spirit"
+msgstr "Spirits"
+
+#: Vignoblexport.php:752
+msgid "Non Alcoholic"
+msgstr "Non alcolico"
+
+#: Vignoblexport.php:762
+msgid "Color"
+msgstr "Colore"
+
+#: Vignoblexport.php:763
+msgid "Color of the product"
+msgstr "Colore del prodotto"
+
+#: Vignoblexport.php:766
+msgid "Select product color"
+msgstr "Seleziona il colore del prodotto"
+
+#: Vignoblexport.php:767
+msgid "Red"
+msgstr "Rosso"
+
+#: Vignoblexport.php:768
+msgid "White"
+msgstr "Bianco"
+
+#: Vignoblexport.php:769
+msgid "Rose"
+msgstr "Rosé"
+
+#: Vignoblexport.php:770
+msgid "No color"
+msgstr "Nessun colore"
+
+#: Vignoblexport.php:782
+msgid "Capacity of a single product (in mL)"
+msgstr "Capacità di un singolo prodotto (in mL)"
+
+#: Vignoblexport.php:798
+msgid "Alcohol Degree"
+msgstr "Gradazione Alcolico"
+
+#: Vignoblexport.php:811
+msgid "Producing Country"
+msgstr "Paese di produzione"
+
+#: Vignoblexport.php:812
+msgid "If you can't find the producing country in the list, please contact us"
+msgstr "Se non riesci a trovare il paese di produzione nell’elenco, contattaci"
+
+#: Vignoblexport.php:815
+msgid "Select producing country"
+msgstr "Seleziona paese di produzione"
+
+#: Vignoblexport.php:816
+msgid "Algeria"
+msgstr "Algeria"
+
+#: Vignoblexport.php:817
+msgid "Argentina"
+msgstr "Argentina"
+
+#: Vignoblexport.php:818
+msgid "Australia"
+msgstr "Australia"
+
+#: Vignoblexport.php:819
+msgid "Austria"
+msgstr "Austria"
+
+#: Vignoblexport.php:820
+msgid "Barbados"
+msgstr "Barbados"
+
+#: Vignoblexport.php:821
+msgid "Belgium"
+msgstr "Belgio"
+
+#: Vignoblexport.php:822
+msgid "Belize"
+msgstr "Belize"
+
+#: Vignoblexport.php:823
+msgid "Bulgaria"
+msgstr "Bulgaria"
+
+#: Vignoblexport.php:824
+msgid "Canada"
+msgstr "Canada"
+
+#: Vignoblexport.php:825
+msgid "Chile"
+msgstr "Cile"
+
+#: Vignoblexport.php:826
+msgid "China"
+msgstr "Cina"
+
+#: Vignoblexport.php:827
+msgid "Cuba"
+msgstr "Cuba"
+
+#: Vignoblexport.php:828
+msgid "Dominican Republic"
+msgstr "Repubblica Dominicana"
+
+#: Vignoblexport.php:829
+msgid "France"
+msgstr "Francia"
+
+#: Vignoblexport.php:830
+msgid "Great Britain"
+msgstr "Gran Bretagna"
+
+#: Vignoblexport.php:831
+msgid "French Guiana"
+msgstr "Guiana francese"
+
+#: Vignoblexport.php:832
+msgid "Germany"
+msgstr "Germania"
+
+#: Vignoblexport.php:833
+msgid "Greece"
+msgstr "Grecia"
+
+#: Vignoblexport.php:834
+msgid "Guadeloupe"
+msgstr "Guadalupa"
+
+#: Vignoblexport.php:835
+msgid "Hungary"
+msgstr "Ungheria"
+
+#: Vignoblexport.php:836
+msgid "India"
+msgstr "India"
+
+#: Vignoblexport.php:837
+msgid "Israel"
+msgstr "Israele"
+
+#: Vignoblexport.php:838
+msgid "Italy"
+msgstr "Italia"
+
+#: Vignoblexport.php:839
+msgid "Jamaica"
+msgstr "Giamaica"
+
+#: Vignoblexport.php:840
+msgid "Japan"
+msgstr "Giappone"
+
+#: Vignoblexport.php:841
+msgid "Lebanon"
+msgstr "Libano"
+
+#: Vignoblexport.php:842
+msgid "Mexico"
+msgstr "Messico"
+
+#: Vignoblexport.php:843
+msgid "Moldova"
+msgstr "Moldavia"
+
+#: Vignoblexport.php:844
+msgid "New Zealand"
+msgstr "Nuova Zelanda"
+
+#: Vignoblexport.php:845
+msgid "Portugal"
+msgstr "Portogallo"
+
+#: Vignoblexport.php:846
+msgid "South Africa"
+msgstr "Sudafrica"
+
+#: Vignoblexport.php:847
+msgid "Spain"
+msgstr "Spagna"
+
+#: Vignoblexport.php:848
+msgid "Switzerland"
+msgstr "Svizzera"
+
+#: Vignoblexport.php:849
+msgid "Thailand"
+msgstr "Thailandia"
+
+#: Vignoblexport.php:850
+msgid "Trinidad and Tobago"
+msgstr "Trinidad e Tobago"
+
+#: Vignoblexport.php:851
+msgid "Uruguay"
+msgstr "Uruguay"
+
+#: Vignoblexport.php:852
+msgid "USA"
+msgstr "USA"
+
+#: Vignoblexport.php:898 Vignoblexport.php:909 Vignoblexport.php:922
+msgid "Appellation"
+msgstr "Denominazione"
+
+#: Vignoblexport.php:899 Vignoblexport.php:910 Vignoblexport.php:923
+msgid "If you can't find the appellation in the list, please contact us"
+msgstr "Se non riesci a trovare la denominazione nell’elenco, contattaci"
+
+#: Vignoblexport.php:913 Vignoblexport.php:926
+msgid "Select appellation"
+msgstr "Seleziona denominazione"
+
+#. translators: %1$s : parcelpoint code, %2$s : parcelpoint network name
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-edit-page-parcelpoint.php:21
+msgid "Your client chose the pickup point %1$s from %2$s."
+msgstr "Il tuo cliente ha scelto il punto di ritiro %1$s da %2$s."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-exp-details.php:84
+msgid "Status :"
+msgstr "Status :"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-exp-details.php:86
+msgid "Track your order :"
+msgstr "Traccia il tuo ordine:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-exp-details.php:86
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-exp-details.php:94
+msgid "Click here"
+msgstr "Clicca qui"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-exp-details.php:89
+msgid "Tracking code(s) :"
+msgstr "Codice(i) di monitoraggio:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-exp-details.php:94
+msgid "Download labels :"
+msgstr "Scarica etichette:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-view-modal-tracking.php:14
+msgid "Tracking details"
+msgstr "Dettagli di monitoraggio"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:19
+msgid "Pricing rules"
+msgstr "Regole sui prezzi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:21
+msgid ""
+"your clients in the checkout page. The rules are prioritized from top to "
+"bottom. If no rules is applicable, the shipping method won't be diplayed."
+msgstr ""
+"i tuoi clienti nella pagina di pagamento. Le regole sono elencate in ordine "
+"di priorità. Se non è applicabile alcuna regola, il metodo di spedizione non "
+"verrà visualizzato."
+
+#. translators: %1$1s: link start %2$2s: link end
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:26
-#, fuzzy, php-format
 msgid "Need some help? Just follow the instructions on %1$sthis article%2$s."
 msgstr ""
-"Avete bisogno di aiuto? Basta seguire le istruzioni su %1$squesto articolo"
-"%2$s."
+"Hai bisogno di aiuto? Segui semplicemente le istruzioni su %1$squesto "
+"articolo%2$s."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:139
-#, fuzzy
-msgid "NETWORKS"
-msgstr "RETI"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-update-notice.php:17
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:259
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:259
-msgid "no"
-msgstr "no"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-settings-override.php:105
-#, fuzzy
-msgid ""
-"No need to use it if you’re using VignoblExport shipping method, as it’s "
-"available directly when you set it up."
+#. translators: %1$1s: link start %2$2s: link end
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:32
+msgid "In need of some advice about shipping costs? Follow %1$sthis link%2$s."
 msgstr ""
-"Non c'è bisogno di usarlo se stai usando il metodo di spedizione "
-"VignoblExport, perché è disponibile direttamente quando lo imposti."
+"Hai bisogno di aiuto sui costi di spedizione? Segui %1$squesto link%2$s."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/util/class-shipping-method-util.php:48
-msgid "No shipping class"
-msgstr "Nessuna classe di spedizione"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:36
+msgid "VignoblExport Tips"
+msgstr "Suggerimenti di VignoblExport"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:64
-#, fuzzy
-msgid "No tracking event for this package yet."
-msgstr "Nessun evento di tracciamento per questo pacchetto ancora."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:218
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:661
-#, fuzzy
-msgid "Not offers exist"
-msgstr "Non esistono offerte"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:59
-#, fuzzy
-msgid "Number of bottles"
-msgstr "Numero di bottiglie"
-
-#. %1$1s: link start %2$2s: link end
+#. translators: %1$1s: link start %2$2s: link end
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:39
-#, fuzzy, php-format
 msgid ""
 "Once your rules are set up here, use our %1$sshipping rule%2$s to automatize "
 "the selection of a carrier offer, the subscription to our AXA insurance and "
 "stop importing the orders that are not to be processed through VignoblExport "
 "(e.g. If the shipping method is « Store pickup »)"
 msgstr ""
-"Una volta che le tue regole sono impostate qui, usa la nostra regola "
-"%1$sspedizione%2$s per automatizzare la selezione di un'offerta di "
-"trasporto, la sottoscrizione della nostra assicurazione AXA e fermare "
-"l'importazione degli ordini che non devono essere processati attraverso "
-"VignoblExport (ad esempio se il metodo di spedizione è \" Store pickup \")"
+"Una volta che avrai determinato le tue regole qui, utilizza la nostra "
+"%1$sregola di spedizione%2$s per automatizzare la selezione dell’offerta di "
+"un corriere, l’iscrizione alla nostra assicurazione e interrompere "
+"l’importazione degli ordini che non devono essere elaborati tramite "
+"VignoblExport ( ad es. se il metodo di spedizione è « Ritiro in punto di "
+"ritiro »)"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:73
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:99
-msgid "Opening hours"
-msgstr "Orari di apertura"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:57
+msgid "Cart price Excluding Tax"
+msgstr "Prezzo carrello IVA Esclusa"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:159
-#, fuzzy
-msgid "Package delivered"
-msgstr "Pacchetto consegnato"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:59
+msgid "Number of bottles"
+msgstr "Numero di bottiglie"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:46
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:49
-#, fuzzy, php-format
-msgid "Package reference %s"
-msgstr "Riferimento al pacchetto %s"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:62
+msgid "Price displayed ex-Tax"
+msgstr "Prezzo visualizzato IVA esclusa"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:149
-#, fuzzy
-msgid "Package shipped"
-msgstr "Pacchetto spedito"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:63
+msgid "If you wish to offer the shipping for free, put 0."
+msgstr "Se desideri offrire la spedizione gratuitamente, inserisci 0."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:64
+msgid ""
+"If you've set up a shipping tax, it will be applied to this price for your "
+"client."
+msgstr ""
+"Se hai impostato una tassa di spedizione, questa verrà applicata a questo "
+"prezzo per il tuo cliente."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:70
+msgid "Status"
+msgstr "Status"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:76
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:78
+msgid "From"
+msgstr "Da"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:77
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:79
+msgid "To"
+msgstr "A"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:97
+msgid "Add rule"
+msgstr "Aggiungi regola"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-configuration-failure-notice.php:15
+msgid ""
+"There was a problem initializing the Vignoblexport plugin. Please contact "
+"our support team."
+msgstr ""
+"Si è verificato un problema durante l’inizializzazione del plugin "
+"Vignoblexport. Contatta il nostro team di supporto."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-custom-notice.php:16
+msgid "Hide this notice"
+msgstr "Nascondi questo avviso"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-parcelpoint.php:62
+msgid "Status: "
+msgstr "Status: "
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-parcelpoint.php:66
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-parcelpoint.php:70
+msgid "Track your order:"
+msgstr "Monitora il tuo ordine:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-parcelpoint.php:67
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-parcelpoint.php:71
+msgid "Click here to track the status of your order"
+msgstr "Clicca qui per tracciare lo stato del tuo ordine"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-parcelpoint.php:74
+msgid "Chosen pickup point"
+msgstr "Scegli punto di ritiro"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-front-order-tracking.php:14
 msgid "Package tracking"
-msgstr "Tracciamento Pacchetto"
+msgstr "Monitoraggio Pacco"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:363
-#, fuzzy
-msgid "Packing:"
-msgstr "Imballaggio:"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:13
+msgid "MONDAY"
+msgstr "LUNEDI"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:14
+msgid "TUESDAY"
+msgstr "MARTEDI"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:15
+msgid "WEDNESDAY"
+msgstr "MERCOLEDI"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:16
+msgid "THURSDAY"
+msgstr "GIOVEDI"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:17
+msgid "FRIDAY"
+msgstr "VENERDI"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:18
+msgid "SATURDAY"
+msgstr "SABATO"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:19
+msgid "SUNDAY"
+msgstr "DOMENICA"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:55
+msgid "Pickup point adress"
+msgstr "Indirizzo di ritiro"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:66
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:106
+msgid "Opening hours"
+msgstr "Orari di apertura"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:20
+msgid "Your order has been sent in 1 shipment."
+msgstr "Il tuo ordine è stato inviato in 1 spedizione"
+
+#. translators: 1) int number of shipments
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:24
+msgid "Your order has been sent in %s shipments."
+msgstr "Il tuo ordine è stato inviato in %s spedizioni."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:30
+msgid "Shipment reference %s"
+msgstr "Riferimento spedizione %s"
+
+#. translators: 1) int number of shipments
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:35
+msgid "Your shipment has %s package."
+msgstr "La tua spedizione contiene %s pacchi."
+
+#. translators: 1) int number of shipments
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:38
+msgid "Your shipment has %s packages."
+msgstr "La tua spedizione contiene %s pacchi."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:45
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:48
+msgid "Package reference %s"
+msgstr "Riferimento pacchi %s"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:56
+msgid "Y-m-d H:i:s"
+msgstr "Y-m-d H:i:s"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:61
+msgid "No tracking event for this package yet."
+msgstr "Nessun dato di monitoraggio ancora generato per questo collo."
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-failure-notice.php:15
-#, fuzzy
 msgid ""
 "Pairing with VignoblExport API is not complete. Please check your "
 "WooCommerce connector in your VignoblExport account for a more complete "
 "diagnostic."
 msgstr ""
-"L'accoppiamento con VignoblExport API non è completo. Controlla il tuo "
+"L’associazione con l’API VignoblExport non è completa. Controlla il "
 "connettore WooCommerce nel tuo account VignoblExport per una diagnostica più "
 "completa."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:370
-#, fuzzy
-msgid "Pallet"
-msgstr "Pallet"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-success-notice.php:17
+msgid "Congratulations, your shop is connected!"
+msgstr "Congratulazioni, il tuo e-commerce è connesso!"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:274
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:274
-#, fuzzy
-msgid "Pallet size"
-msgstr "Dimensione del pallet"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-success-notice.php:18
+msgid "Finalize your settings to start shipping"
+msgstr "Finalizza le tue impostazioni per iniziare a spedire"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:369
-#, fuzzy
-msgid "Parcels"
-msgstr "Pacchi"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:125
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:127
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:125
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:127
-msgid "Phone"
-msgstr "Telefono"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:227
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:227
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:761
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:777
-#, fuzzy
-msgid "Pickup point"
-msgstr "Punto di raccolta"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:63
-#, fuzzy
-msgid "Pickup point adress"
-msgstr "Indirizzo del punto di raccolta"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-settings-override.php:117
-#, fuzzy
-msgid "Pickup point map"
-msgstr "Mappa dei punti di prelievo"
-
-#. %s: carriers list end
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:166
-#, fuzzy, php-format
-msgid "Pickup point map including %s"
-msgstr "Mappa dei punti di prelievo che include %s"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:289
-#, fuzzy
-msgid "Pickup point:"
-msgstr "Punto di raccolta:"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:846
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:867
-#, fuzzy
-msgid ""
-"Please choose another delivery method, your area is not covered by our "
-"carrier."
-msgstr ""
-"Si prega di scegliere un altro metodo di consegna, la tua zona non è coperta "
-"dal nostro vettore."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:890
-#, fuzzy
-msgid "Please enter your adress"
-msgstr "Inserisci il tuo indirizzo"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:32
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:32
-#, fuzzy
-msgid "Please fill the information below in order to be able to use the plugin"
-msgstr ""
-"Si prega di compilare le informazioni qui sotto per essere in grado di "
-"utilizzare il plugin"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:66
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:66
-#, fuzzy
-msgid "Please validate the API access before saving the modifications"
-msgstr "Convalida l'accesso API prima di salvare le modifiche"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:147
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:149
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:147
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:149
-msgid "Postal code"
-msgstr "CAP"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:234
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:234
-#, fuzzy
-msgid "Preference de la livraison"
-msgstr "Preferenza per la spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:186
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:186
-#, fuzzy
-msgid "Preparation time of the package before shipment (days)"
-msgstr "Tempo di preparazione del pacco prima della spedizione (giorni)"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:311
-#, fuzzy
-msgid "Price difference:"
-msgstr "Differenza di prezzo:"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:63
-#, fuzzy
-msgid "Price displayed ex-Tax"
-msgstr "Prezzo visualizzato ex-Tax"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:19
-msgid "Pricing rules"
-msgstr "Regole sui prezzi"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:389
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:312
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:312
-msgid "quantity"
-msgstr "quantità"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:18
-msgid "SATURDAY"
-msgstr "Sabato"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:113
-msgid "saturday"
-msgstr "sabato"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-success-notice.php:21
+msgid "Finalize the settings"
+msgstr "Finalizza le impostazioni"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-update-notice.php:15
-#, fuzzy
 msgid ""
 "Security alert: someone is trying to pair your site with VignoblExport. Was "
 "it you?"
 msgstr ""
-"Allarme sicurezza: qualcuno sta cercando di accoppiare il tuo sito con "
+"Avviso di sicurezza: qualcuno sta tentando di associare il tuo sito a "
 "VignoblExport. Sei stato tu?"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:368
-#, fuzzy
-msgid "select the type"
-msgstr "selezionare il tipo"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-update-notice.php:16
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:254
+msgid "yes"
+msgstr "si"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:239
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:243
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:239
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:243
-#, fuzzy
-msgid "Select your option"
-msgstr "Seleziona la tua opzione"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-update-notice.php:17
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:253
+msgid "no"
+msgstr "no"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:31
-#, fuzzy, php-format
-msgid "Shipment reference %s"
-msgstr "Riferimento della spedizione %s"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:49
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:50
+msgid "Please fill the information below in order to be able to use the plugin"
+msgstr ""
+"Si prega di compilare le informazioni qui sotto per poter utilizzare il "
+"plugin"
 
-#: Vignoblexport.php:369
-msgid "Shipped"
-msgstr "Spedito"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:53
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:54
+msgid "Key settings"
+msgstr "Impostazioni"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:72
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:72
-#, fuzzy
-msgid "Shipping method settings"
-msgstr "Impostazioni del metodo di spedizione"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:59
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:59
+msgid "Insert your VignoblExport API token"
+msgstr "Inserisci il tuo API token VignoblExport"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:71
-msgid "Status"
-msgstr "Stato"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:401
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:444
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:401
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:444
-#, fuzzy
-msgid "Success! The access token is valid!"
-msgstr "Successo! Il token di accesso è valido!"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:19
-msgid "SUNDAY"
-msgstr "Domenica"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:114
-msgid "sunday"
-msgstr "domenica"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:323
-msgid "Tax rate:"
-msgstr "Aliquota fiscale:"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:47
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:47
-#, fuzzy
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:74
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:74
 msgid "Test my acces token"
-msgstr "Prova il mio token di accesso"
+msgstr "Testa il mio token di accesso"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:60
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:60
-#, fuzzy
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:79
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:79
+msgid "Insert your MapBox API token"
+msgstr "Inserisci il tuo token API MapBox"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:95
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:94
 msgid "Test my Mapbox acces token"
-msgstr "Prova il mio token di accesso a Mapbox"
+msgstr "Testa il mio token di accesso Mapbox"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:414
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:439
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:414
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:439
-#, fuzzy
-msgid "The provided access token is invalid! Please retry"
-msgstr "Il token di accesso fornito non è valido! Si prega di riprovare"
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:99
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:98
+msgid "Please validate the API access before saving the modifications"
+msgstr "Convalida l’accesso API prima di salvare le modifiche"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:89
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:89
-#, fuzzy
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:104
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:103
+msgid "Shipping method settings"
+msgstr "Impostazioni metodo di spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:108
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:295
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:107
+msgid "Just one last step, it will only take a few minutes, let us guide you: "
+msgstr ""
+"Solo un ultimo passaggio, ci vorranno solo pochi minuti, ti preghiamo di "
+"continuare: "
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:113
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:300
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:112
+msgid "Go to the tutorial"
+msgstr "Vai al tutorial"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:119
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:119
+msgid "VignoblExport shipping settings"
+msgstr "Impostazioni di spedizione VignoblExport"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:120
 msgid ""
 "The weight and size of a standard bottle are used by default to calculate "
 "shipping charges if you leave the width, height and weight fields blank for "
 "your products. You need to fill in this information for magnums."
 msgstr ""
-"Il peso e le dimensioni di una bottiglia standard sono usati di default per "
-"calcolare le spese di spedizione se lasciate vuoti i campi larghezza, "
-"altezza e peso per i vostri prodotti. È necessario compilare queste "
-"informazioni per i magnum."
+"Se lasci vuoti i campi larghezza, altezza e peso per i tuoi prodotti, il "
+"sistema utilizzera peso e dimensioni di una bottiglia standard per calcolare "
+"le spese di spedizione. Devi inserire queste informazioni per i formati "
+"Magnum."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-configuration-failure-notice.php:15
-#, fuzzy
-msgid ""
-"There was a problem initializing the Vignoblexport plugin. Please "
-"contact our support team."
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:121
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:124
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:124
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:148
+msgid "Address"
+msgstr "Indirizzi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:131
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:130
+msgid "Company"
+msgstr "Azienda"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:138
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:136
+msgid "Contact"
+msgstr "Contatto"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:144
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:142
+msgid "Phone"
+msgstr "Telefono"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:151
+msgid "Adress"
+msgstr "Indirizzo"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:158
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:154
+msgid "Postal code"
+msgstr "Codice Postale"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:165
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:160
+msgid "City"
+msgstr "Città"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:178
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:174
+msgid "Minimum number of bottles"
+msgstr "Numero minimo di bottiglie"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:186
+msgid "Preparation time of the package before shipment"
+msgstr "Tempo di preparazione del pacco prima della spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:196
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:203
+msgid "Carrier preference"
+msgstr "Spedizioniere preferito"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:217
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:232
+msgid "Delivery preference"
+msgstr "Preferenze di consegna"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:221
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:236
+msgid "Domestic express / Pickup point"
+msgstr "Espresso domestico / Punto di Ritiro"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:223
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:238
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:340
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1250
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1272
+msgid "Domestic"
+msgstr "Domestico"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:224
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:239
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1264
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1282
+msgid "Pickup point"
+msgstr "Punto di ritiro"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:229
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:246
+msgid "Duties and taxes at destination"
+msgstr "Tasse e import a destino"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:233
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:237
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:250
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:254
+msgid "Select your option"
+msgstr "Selezione la tua opzione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:234
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:238
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:251
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:255
+msgid "At the sender's expense"
+msgstr "A carico del mittente"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:235
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:239
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:252
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:256
+msgid "At the recipient's expense"
+msgstr "A carico del destinatario"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:246
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:287
+msgid "Insurance"
+msgstr "Assicurazione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:250
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:290
+msgid "Activate insurance:"
+msgstr "Attiva assicurazione:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:260
+msgid "Minimum amount to be insured:"
+msgstr "Valore minimo da assicurare:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:347
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:389
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:376
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:413
+msgid "Success! The access token is valid!"
+msgstr "Operazione riuscita! Il token di accesso è valido!"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:360
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:384
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:387
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:409
+msgid "The provided access token is invalid! Please retry"
+msgstr "Il token di accesso fornito non è valido! Riprova"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:99
+msgid "Save"
+msgstr "Salva"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:120
+msgid "Address used to calculate shipping charges"
+msgstr "Indirizzo utilizzato per calcolare le spese di spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:121
+msgid "Contact our support if you need to edit those informations"
 msgstr ""
-"Si è verificato un problema nell'inizializzazione del plugin VignoblExport "
-"Connect. Per favore contatta il nostro team di supporto."
+"Contatta il nostro supporto se hai bisogno di modificare queste informazioni"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:181
+msgid ""
+"Set the minimum number of bottles needed to activate the VignoblExport "
+"shipping option on the checkout page"
+msgstr ""
+"Imposta il numero minimo di bottiglie necessarie per attivare l’opzione di "
+"spedizione VignoblExport nella pagina di pagamento"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:189
+msgid "Preparation time"
+msgstr "Tempo di preparazione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:196
+msgid ""
+"Set the minimum number of days needed to prepare the parcels and make them "
+"ready for pickup"
+msgstr ""
+"Imposta il numero minimo di giorni necessari per preparare i pacchi e "
+"renderli pronti per il ritiro"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:260
+msgid ""
+"Displays the duties and taxes estimation on the checkout page if you choose "
+"the \"At the recipient's expense\" option (domestic international shipments)"
+msgstr ""
+"Visualizza la stima dei dazi e delle tasse nella pagina di pagamento se "
+"scegli l’opzione \\ »A spese del destinatario\\ » (spedizioni nazionali "
+"internazionali)"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:267
+msgid "Apply VAT"
+msgstr "Applica IVA"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:271
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:274
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:294
+msgid "Yes"
+msgstr "Si"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:272
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:275
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:293
+msgid "No"
+msgstr "No"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:279
+msgid ""
+"Choose if you want to apply VAT to carrier prices (does not affect product "
+"prices)"
+msgstr ""
+"Scegli se desideri applicare l’IVA ai prezzi del corriere (non influisce sui "
+"prezzi dei prodotti)"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:297
+msgid ""
+"If you choose \"Yes\", all shipments will be insured with a minimum amount "
+"of 5 € (may vary depending on the total price of the products)"
+msgstr ""
+"Se scegli «Sì», tutte le spedizioni saranno assicurate con un importo minimo "
+"di 5 € (può variare in base al prezzo totale dei prodotti)"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-setup-wizard-notice.php:16
+msgid "VignoblExport Settings interface"
+msgstr "Interfaccia Impostazioni VignoblExport"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:262
+msgid "No offer available"
+msgstr "Nessuna offerta disponibile"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:275
+msgid "Nb.Package"
+msgstr "Numero Pacchi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:276
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:304
+msgid "Nb.Bottles"
+msgstr "Numero Bottiglie"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:277
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:305
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:482
+msgid "Width"
+msgstr "Larghezza"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:278
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:306
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:483
+msgid "Height"
+msgstr "Altezza"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:279
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:307
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:484
+msgid "length"
+msgstr "Lunghezza"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:280
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:308
+msgid "weight"
+msgstr "Peso"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:287
+msgid "Bottles"
+msgstr "Bottiglie"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:333
+msgid "Your expedition method:"
+msgstr "Il tuo metodo di spedizione:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:342
+msgid "Relay point"
+msgstr "Punto di raccolta"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:352
+msgid "Price difference:"
+msgstr "Differenza di prezzo:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:363
+msgid "Chosen offer:"
+msgstr "Offerta scelta:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:371
+msgid " (all tax included)"
+msgstr " (incluso tutte le tasse)"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:374
+msgid " (tax excluded)"
+msgstr " (tasse escluse)"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:389
+msgid "Chosen package:"
+msgstr "Pacco scelto:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:393
+msgid "pallet"
+msgstr "pallet"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:396
+msgid "colis"
+msgstr "Packing:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:412
+msgid "Packing:"
+msgstr "Packing:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:417
+msgid "select the type"
+msgstr "selezione il tipo"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:418
+msgid "Parcels"
+msgstr "Pacchi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:434
+msgid "quantity"
+msgstr "quantità"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:480
+msgid "Choice"
+msgstr "Scelta"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:485
+msgid "weightStill"
+msgstr "weightStill"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:509
+msgid "Valider Pallet"
+msgstr "Approvare Pallet"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:521
+msgid "Available offers :"
+msgstr "Offerte disponibili :"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:568
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:718
+msgid "Validate configuration"
+msgstr "Convalida configurazione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:584
+msgid "Available offers:"
+msgstr "Offerte disponibili:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:705
+msgid ""
+"No offer available for this parcel point. Please contact Vignoblexport to "
+"solve the problem."
+msgstr ""
+"Nessuna offerta disponibile per questo punto di ritiro. Contatta "
+"Vignoblexport per risolvere il problema."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:738
+msgid "Carrier offer have been deleted. Please select a new one."
+msgstr "L’offerta del corriere è stata eliminata. Selezionane una nuova."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:744
+msgid "Select carrier offer"
+msgstr "Seleziona l’offerta del corriere"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:746
+msgid "Edit expedition"
+msgstr "Edita spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:760
+msgid "Validate expedition"
+msgstr "Approva la spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:762
+msgid "Validate pallet expedition"
+msgstr "Approva la spedizione pallet"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1413
+msgid "Vignoblexport - Shipment details"
+msgstr "Vignoblexport - Dettagli Spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1422
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1425
+msgid "Vignoblexport - Shipment pickup point"
+msgstr "Vignoblexport - Punto di ritiro spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1452
+#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1455
+msgid "Vignoblexport - Shipment tracking"
+msgstr "Vignoblexport - Tracking spedizione"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/rest-controller/class-order.php:209
+msgid "Your order has been shipped."
+msgstr "Il tuo ordine è stato spedito."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/rest-controller/class-order.php:227
+msgid "Your order has been delivered."
+msgstr "Il tuo ordine è stato consegnato."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:84
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:40
+msgid "VignoblExport"
+msgstr "VignoblExport"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:102
+msgid "ACCESS KEY"
+msgstr "ACCESS KEY"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:112
+msgid "acces-key-validate"
+msgstr "acces-key-validate"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:124
+msgid "VINW_MAPBOX_ACCESS_KEY"
+msgstr "VINW_MAPBOX_ACCESS_KEY"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:134
+msgid "mapbox-api-key-validate"
+msgstr "mapbox-api-key-validate"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:144
+msgid "NETWORKS"
+msgstr "NETWORKS"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:154
+msgid "Package shipped"
+msgstr "Pacco spedito"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:164
+msgid "Package delivered"
+msgstr "Pacco consegnato"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:179
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:112
+msgid "VINW_NBR_MIN"
+msgstr "VINW_NBR_MIN"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:191
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:124
+msgid "VINW_EXP_DAYS_MIN"
+msgstr "VINW_EXP_DAYS_MIN"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:203
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:136
+msgid "VINW_PREF_TRANSP"
+msgstr "VINW_PREF_TRANSP"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:215
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:148
+msgid "VINW_PREF_STAT"
+msgstr "VINW_PREF_STAT"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:227
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:160
+msgid "VINW_TAX_RIGHTS"
+msgstr "VINW_TAX_RIGHTS"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:239
+msgid "VINW_VAT_CHOICE"
+msgstr "VINW_VAT_CHOICE"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:251
+#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:172
+msgid "VINW_ASSURANCE"
+msgstr "VINW_ASSURANCE"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-settings-override.php:97
+msgid "To use only if you want to offer free shipping through coupons."
+msgstr ""
+"Da utilizzare solo se vuoi offrire la spedizione gratuitamente tramite "
+"coupon."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-settings-override.php:108
+msgid ""
+"No need to use it if you’re using VignoblExport shipping method, as it’s "
+"available directly when you set it up."
+msgstr ""
+"Non è necessario utilizzarlo se utilizzi il metodo di spedizione "
+"VignoblExport, poiché è disponibile direttamente quando lo imposti."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-settings-override.php:121
+msgid "Pickup point map"
+msgstr "Mappa dei punti di ritiro"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:41
+msgid ""
+"Lets you define weight/price ranges of your shipping costs for each of your "
+"delivery methods and add a pickup point map."
+msgstr ""
+"Ti consente di definire le fascie di peso/prezzo dei costi di spedizione per "
+"ciascuno dei metodi di consegna e di aggiungere una mappa dei punti di "
+"ritiro."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:75
+msgid "Method title"
+msgstr "Titolo del metodo"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:77
+msgid "This controls the title which the user sees during checkout."
+msgstr "Questo controlla il titolo che l’utente vede durante il checkout."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:78
+msgid "Flat rate Vignoblexport"
+msgstr "Tariffa forfettaria Vignoblexport"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:101
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:189
+msgid "Unable to find carrier"
+msgstr "Impossible trovare corriere"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:102
+msgid "Could not find address"
+msgstr "Indirizzo non trovato"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:103
+msgid "Could not connect to map server"
+msgstr "Connessione al map server non riuscita"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:107
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:779
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1321
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1331
+msgid "Choose pickup point"
+msgstr "Scegli punto di ritiro"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:109
+msgid "Close map"
+msgstr "Chiudi mappa"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:110
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:780
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1322
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1332
+msgid "Your pickup point:"
+msgstr "Il tuo punto di ritiro:"
+
+#. translators: %s: distance in km
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:112
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:250
+msgid "%skm away"
+msgstr "%skm di distanza"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:115
+msgid "monday"
+msgstr "lunedi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:116
+msgid "tuesday"
+msgstr "Martedì"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:117
+msgid "wednesday"
+msgstr "mercoledi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:118
+msgid "thursday"
+msgstr "giovedi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:119
+msgid "friday"
+msgstr "venerdi"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:120
+msgid "saturday"
+msgstr "sabato"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:121
+msgid "sunday"
+msgstr "domenica"
+
+#. translators: %s: carriers list end
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:173
+msgid "Pickup point map including %s"
+msgstr "Mappa dei punti di ritiro inclusi %s"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:320
+msgid "Pickup point:"
+msgstr "Punto di ritiro:"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1084
+msgid "No offers exist"
+msgstr "Offerta non esistente"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1092
+msgid "Available offers"
+msgstr "Offerte disponibili"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1160
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1228
+msgid "Price: "
+msgstr "Prezzo: "
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1160
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1228
+msgid "Estimated delivery"
+msgstr "Data di consegna stimata"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1244
+msgid ""
+"Max number of bottles exceeded to deliver to a private individual in this "
+"destination country."
+msgstr ""
+"È stato superato il numero massimo di bottiglie da consegnare a un privato "
+"in questo paese di destinazione."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1346
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1366
+msgid ""
+"No shipping offer found for this address, please check your shipping "
+"informations or choose another shipping method."
+msgstr ""
+"Nessuna offerta di spedizione trovata per questo indirizzo, controlla le "
+"informazioni di spedizione o scegli un altro metodo di spedizione."
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1389
+msgid "Please enter your adress"
+msgstr "Per favore inserisci il tuo indirizzo"
+
+#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1395
+msgid "You can choose your shipment on the next page"
+msgstr "Puoi scegliere la tua spedizione nella prossima pagina"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/util/class-configuration-util.php:228
-#, fuzzy
 msgid ""
 "There's been a change in the pickup point network list, we've adapted your "
 "shipping method configuration. Please check that everything is in order."
 msgstr ""
-"C'è stato un cambiamento nella lista della rete dei punti di ritiro, abbiamo "
-"adattato la configurazione del tuo metodo di spedizione. Si prega di "
-"controllare che tutto sia in ordine."
+"C’è stata una modifica nell’elenco dei punti di ritiro, abbiamo adattato la "
+"configurazione del metodo di spedizione. Per favore controlla che tutto sia "
+"in ordine."
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/util/class-configuration-util.php:247
-#, fuzzy
 msgid ""
 "There's been a change in the pickup point network list, you can add the "
 "extra pickup point network(s) to your shipping method configuration."
 msgstr ""
-"C'è stato un cambiamento nella lista della rete dei punti di prelievo, puoi "
-"aggiungere la rete o le reti di punti di prelievo extra alla configurazione "
-"del tuo metodo di spedizione."
+"C’è stata una modifica nell’elenco dei punti di ritiro, puoi aggiungere i "
+"punti di ritiro aggiuntivi alla configurazione del tuo metodo di spedizione."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:74
-msgid "This controls the title which the user sees during checkout."
-msgstr "Questo controlla il messaggio che vede l’utente durante il checkout."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:16
-msgid "THURSDAY"
-msgstr "Giovedì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:111
-msgid "thursday"
-msgstr "giovedì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:78
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:80
-msgid "To"
-msgstr "A"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-settings-override.php:95
-#, fuzzy
-msgid "To use only if you want to offer free shipping through coupons."
-msgstr ""
-"Da usare solo se si vuole offrire la spedizione gratuita tramite coupon."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-view-modal-tracking.php:14
-msgid "Tracking details"
-msgstr "Dettagli di tracciamento"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:14
-msgid "TUESDAY"
-msgstr "Martedì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:109
-msgid "tuesday"
-msgstr "martedì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:94
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:181
-#, fuzzy
-msgid "Unable to find carrier"
-msgstr "Impossibile trovare il vettore"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:540
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:606
-#, fuzzy
-msgid "Validate configuration"
-msgstr "Convalidare la configurazione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:634
-#, fuzzy
-msgid "Validate expedition"
-msgstr "Convalidare la spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:636
-#, fuzzy
-msgid "Validate pallet expedition"
-msgstr "Convalidare la spedizione dei pallet"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:472
-#, fuzzy
-msgid "Valider Pallet"
-msgstr "Pallet Valider"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:81
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/class-shipping-method.php:38
-#, fuzzy
-msgid "VignoblExport"
-msgstr "VignoblExport"
-
-#: Vignoblexport.php:134
-#, fuzzy
+#: Vignoblexport/VignoblexportConnectWoocommerce/util/class-environment-util.php:33
 msgid ""
-"Vignoblexport - from version 1.1.0, use of parcel point map additional field "
-"on shipping methods is deprecated. Use the Vignoblexport method "
-"instead."
+"VignoblExport - You need either the curl extension or allow_url_fopen "
+"activated on your server for the Vignoblexport plugin to work."
 msgstr ""
-"Vignoblexport - dalla versione 1.1.0, l'uso del campo aggiuntivo della mappa "
-"del punto di parcella sui metodi di spedizione è deprecato. Usa invece il "
-"metodo Vignoblexport."
+"VignoblExport - Per far funzionare il plugin Vignoblexport è necessario che "
+"sul tuo server sia attivata l’estensione curl allow_url_fopen."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1046
-#, fuzzy
-msgid "Vignoblexport - Shipment details"
-msgstr "Vignoblexport - Dettagli della spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1054
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1057
-#, fuzzy
-msgid "Vignoblexport - Shipment pickup point"
-msgstr "Vignoblexport - Punto di ritiro della spedizione"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1080
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:1083
-#, fuzzy
-msgid "Vignoblexport - Shipment tracking"
-msgstr "Vignoblexport - Monitoraggio delle spedizioni"
-
-#. 1) int version 2) int version
+#. translators: 1) int version 2) int version
 #: Vignoblexport/VignoblexportConnectWoocommerce/util/class-environment-util.php:38
-#, fuzzy, php-format
 msgid ""
 "VignoblExport - The minimum PHP version required for this plugin is %1$s. "
 "You are running %2$s."
 msgstr ""
-"VignoblExport - La versione minima di PHP richiesta per questo plugin è "
-"%1$s. Stai eseguendo %2$s."
+"VignoblExport - La versione PHP minima richiesta per questo plugin è %1$s. "
+"Stai utilizzando %2$s."
 
-#. 1) int version 2) int version
+#: Vignoblexport/VignoblexportConnectWoocommerce/util/class-environment-util.php:44
+msgid "VignoblExport plugin requires WooCommerce to be activated to work."
+msgstr ""
+"Il plug-in VignoblExport richiede che WooCommerce sia attivato per "
+"funzionare."
+
+#. translators: 1) int version 2) int version
 #: Vignoblexport/VignoblexportConnectWoocommerce/util/class-environment-util.php:49
-#, fuzzy, php-format
 msgid ""
 "VignoblExport - The minimum WooCommerce version required for this plugin is "
 "%1$s. You are running %2$s."
 msgstr ""
 "VignoblExport - La versione minima di WooCommerce richiesta per questo "
-"plugin è %1$s. Stai eseguendo %2$s."
+"plugin è %1$s. Stai utilizzando %2$s."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/util/class-environment-util.php:33
-#, fuzzy
-msgid ""
-"VignoblExport - You need either the curl extension or allow_url_fopen "
-"activated on your server for the Vignoblexport plugin to work."
-msgstr ""
-"VignoblExport - Hai bisogno dell'estensione curl o di allow_url_fopen "
-"attivato sul tuo server per far funzionare il plugin Vignoblexport."
+#: Vignoblexport/VignoblexportConnectWoocommerce/util/class-shipping-method-util.php:48
+msgid "No shipping class"
+msgstr "Nessuno categoria di spedizione"
 
-#. Name of the plugin
-#, fuzzy
-msgid "Vignoblexport"
-msgstr "Vignoblexport Collegare"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:262
+msgid "Your order is ready for shipment."
+msgstr "Il tuo ordine è pronto per essere spedito"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/util/class-environment-util.php:44
-#, fuzzy
-msgid "VignoblExport plugin requires WooCommerce to be activated to work."
-msgstr ""
-"Il plugin VignoblExport richiede che WooCommerce sia attivato per funzionare."
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:263
+msgid "Hello, "
+msgstr "Ciao, "
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-setup-wizard-notice.php:16
-#, fuzzy
-msgid "VignoblExport Settings interface"
-msgstr "Interfaccia delle impostazioni di VignoblExport"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:264
+msgid "Thanks for your order."
+msgstr "Grazie per il tuo ordine."
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:88
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:88
-#, fuzzy
-msgid "VignoblExport shipping settings"
-msgstr "Impostazioni di spedizione di VignoblExport"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:265
+msgid "Your order is now awaiting for shipment :"
+msgstr "Il tuo ordine è ora in attesa di essere spedito :"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:36
-#, fuzzy
-msgid "VignoblExport Tips"
-msgstr "Suggerimenti su VignoblExport"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:266
+msgid "Chosen carrier :"
+msgstr "Corriere scelto :"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:223
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:160
-#, fuzzy
-msgid "VINW_ASSURANCE"
-msgstr "VINW_ASSURANCE"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:267
+msgid "Order tracking number(s) :"
+msgstr "Numero(i) di monitoraggio dell’ordine:"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:233
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:170
-#, fuzzy
-msgid "VINW_ASSURANCE_VALMIN"
-msgstr "VINW_ASSURANCE_VALMIN"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:269
+msgid "You can follow your order by clicking on "
+msgstr "Puoi seguire l’ordine cliccando su "
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:182
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:119
-#, fuzzy
-msgid "VINW_EXP_DAYS_MIN"
-msgstr "VINW_EXP_DAYS_MIN"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:269
+msgid "this link"
+msgstr "questo link"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:119
-#, fuzzy
-msgid "VINW_MAPBOX_ACCESS_KEY"
-msgstr "VINW_MAPBOX_ACCESS_KEY"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:271
+msgid "Billing address"
+msgstr "Indirizzo di fatturazione"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:171
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:108
-#, fuzzy
-msgid "VINW_NBR_MIN"
-msgstr "VINW_NBR_MIN"
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:272
+msgid "Shipping address"
+msgstr "Indirizzo di spedizione"
 
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:203
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:140
-#, fuzzy
-msgid "VINW_PREF_STAT"
-msgstr "VINW_PREF_STAT"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:193
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:130
-#, fuzzy
-msgid "VINW_PREF_TRANSP"
-msgstr "VINW_PREF_TRANSP"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page.php:213
-#: Vignoblexport/VignoblexportConnectWoocommerce/settings/class-page2.php:150
-#, fuzzy
-msgid "VINW_TAX_RIGHTS"
-msgstr "VINW_TAX_RIGHTS"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-parcelpoint.php:15
-msgid "WEDNESDAY"
-msgstr "Mercoledì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:110
-msgid "wednesday"
-msgstr "mercoledì"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:238
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:267
-msgid "weight"
-msgstr "peso"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:445
-#, fuzzy
-msgid "weightStill"
-msgstr "pesoVT"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:235
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:264
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:442
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:277
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:277
-msgid "Width"
-msgstr "Larghezza"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:58
-#, fuzzy
-msgid "Y-m-d H:i:s"
-msgstr "Y-m-d H:i:s"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-pairing-update-notice.php:16
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:260
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:260
-msgid "yes"
-msgstr "sì"
-
-#. %1$s : parcelpoint code, %2$s : parcelpoint network name
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-order-edit-page-parcelpoint.php:22
-#, fuzzy, php-format
-msgid "Your client chose the pickup point %1$s from %2$s."
-msgstr "Il tuo cliente ha scelto il punto di prelievo %1$s da %2$s."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-admin-shipping-method-rates-table.php:21
-#, fuzzy
-msgid ""
-"your clients in the checkout page. The rules are prioritized from top to "
-"bottom. If no rules is applicable, the shipping method won't be diplayed."
-msgstr ""
-"i vostri clienti nella pagina di checkout. Le regole sono prioritarie "
-"dall'alto verso il basso. Se nessuna regola è applicabile, il metodo di "
-"spedizione non sarà visualizzato."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:293
-#, fuzzy
-msgid "Your expedition method:"
-msgstr "Il tuo metodo di spedizione:"
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/rest-controller/class-order.php:227
-#, fuzzy
-msgid "Your order has been delivered."
-msgstr "Il suo ordine è stato consegnato."
-
-#. 1) int number of shipments
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:24
-#, fuzzy, php-format
-msgid "Your order has been sent in %s shipments."
-msgstr "Il tuo ordine è stato inviato in %s spedizioni."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:20
-#, fuzzy
-msgid "Your order has been sent in 1 shipment."
-msgstr "Il suo ordine è stato inviato in 1 spedizione."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/rest-controller/class-order.php:209
-msgid "Your order has been shipped."
-msgstr "Abbiamo spedito il tuo ordine."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-controller.php:103
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:822
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:833
-#, fuzzy
-msgid "Your pickup point:"
-msgstr "Il tuo punto di raccolta:"
-
-#. 1) int number of shipments
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:36
-#, fuzzy, php-format
-msgid "Your shipment has %s package."
-msgstr "La tua spedizione ha %s pacchetto."
-
-#. 1) int number of shipments
-#: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-order-tracking.php:39
-#, fuzzy, php-format
-msgid "Your shipment has %s packages."
-msgstr "La tua spedizione ha %s pacchetti."
-
-#: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:894
-#, fuzzy
-msgid ""
-"“You can choose your shipment on the page\n"
-"\tnext”"
-msgstr ""
-"\"Potete scegliere la vostra spedizione nella pagina\n"
-"\tsuccessivo\""
+#: Vignoblexport/VignoblexportPhp/updatestatusexpidition.php:279
+msgid "Regards,"
+msgstr "Saluti,"
