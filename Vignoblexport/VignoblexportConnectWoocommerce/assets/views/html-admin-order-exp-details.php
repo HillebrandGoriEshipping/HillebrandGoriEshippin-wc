@@ -35,6 +35,7 @@ curl_setopt_array($curl1, array(
 
 $response = curl_exec($curl1);
 $status = json_decode($response, true)['status'];
+$status_id = json_decode($response, true)['statusId'];
 curl_close($curl1);
 
 $curl2 = curl_init();
@@ -81,7 +82,79 @@ if (array_key_exists("directLink", json_decode($response, true))) {
 }
 
 ?>
-<p><strong><?php esc_html_e('Status :', 'Vignoblexport'); ?></strong> <span class="CalendarDay__hovered_span"><?php echo  $status ?></span></p>
+<p><strong><?php esc_html_e('Status :', 'Vignoblexport'); ?></strong>
+  <span class="CalendarDay__hovered_span">
+    <?php
+    if (get_locale() == 'en_GB' || get_locale() == 'en_US') {
+      if ($status_id == 1) {
+        echo 'Draft';
+      } elseif ($status_id == 2) {
+        echo 'Pending pick up';
+      } elseif ($status_id == 3) {
+        echo 'Picked up';
+      } elseif ($status_id == 4) {
+        echo 'Delivered';
+      } elseif ($status_id == 5) {
+        echo 'Cancelled';
+      } elseif ($status_id == 6) {
+        echo 'Anomaly';
+      } elseif ($status_id == 7) {
+        echo 'To cancel';
+      } elseif ($status_id == 8) {
+        echo 'Partial delivery';
+      } else {
+        echo $status;
+      }
+    } elseif (get_locale() == 'es_ES') {
+      if ($status_id == 1) {
+        echo 'Borrador';
+      } elseif ($status_id == 2) {
+        echo 'Para recoger';
+      } elseif ($status_id == 3) {
+        echo 'Recopilado';
+      } elseif ($status_id == 4) {
+        echo 'Entregado';
+      } elseif ($status_id == 5) {
+        echo 'Cancelado';
+      } elseif ($status_id == 6) {
+        echo 'Anomalía';
+      } elseif ($status_id == 7) {
+        echo 'Para cancelar';
+      } elseif ($status_id == 8) {
+        echo 'Entrega parcial';
+      } elseif ($status_id == 9) {
+        echo 'Excepción';
+      } else {
+        echo $status;
+      }
+    } elseif (get_locale() == 'it_IT') {
+      if ($status_id == 1) {
+        echo 'Bozza';
+      } elseif ($status_id == 2) {
+        echo 'Per raccogliere';
+      } elseif ($status_id == 3) {
+        echo 'Raccolta';
+      } elseif ($status_id == 4) {
+        echo 'Consegnato';
+      } elseif ($status_id == 5) {
+        echo 'Annullato';
+      } elseif ($status_id == 6) {
+        echo 'Anomalia';
+      } elseif ($status_id == 7) {
+        echo 'Annullamento';
+      } elseif ($status_id == 8) {
+        echo 'Consegna parziale';
+      } elseif ($status_id == 9) {
+        echo 'Eccezione';
+      } else {
+        echo $status;
+      }
+    } else {
+      echo $status;
+    }
+    ?>
+  </span>
+</p>
 <?php if (isset($trackingLink)) { ?>
   <p><strong><?php esc_html_e('Track your order :', 'Vignoblexport'); ?></strong> <a href="<?php echo  $trackingLink ?>" target="_blank"><?php esc_html_e('Click here', 'Vignoblexport'); ?></a> </p>
 <?php } ?>
