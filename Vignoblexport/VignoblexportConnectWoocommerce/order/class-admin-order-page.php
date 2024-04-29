@@ -899,7 +899,13 @@ class Admin_Order_Page
 		$Exp_phone = isset($response[0]['telephone']) ? $response[0]['telephone'] : "";
 
 		$order = wc_get_order($order_id);
-		$destAddressType = $order->get_shipping_company() ? "company" : "individual";
+
+		if ($order->get_shipping_company() == null && $order->get_billing_company() == null) {
+			$destAddressType = "individual";
+		} else {
+			$destAddressType = "company";
+		}
+
 		$postalCode = $order->get_shipping_postcode();
 		$city = $order->get_shipping_city();
 		$country = $order->get_shipping_country();

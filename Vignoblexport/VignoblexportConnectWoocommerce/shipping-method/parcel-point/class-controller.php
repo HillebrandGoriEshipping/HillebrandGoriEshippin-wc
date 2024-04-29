@@ -327,7 +327,7 @@ class Controller
 		if (WC()->session) {
 			$parcel_points = WC()->session->get('VINW_parcel_points_' . Shipping_Rate_Util::get_clean_id($id), null);
 			//phpcs:ignore
-			if (property_exists($parcel_points, 'nearbyParcelPoints') && is_array($parcel_points->nearbyParcelPoints) && count($parcel_points->nearbyParcelPoints) > 0) {
+			if (is_object($parcel_points) && property_exists($parcel_points, 'nearbyParcelPoints') && is_array($parcel_points->nearbyParcelPoints) && count($parcel_points->nearbyParcelPoints) > 0) {
 				//phpcs:ignore
 				return Parcelpoint_Util::normalize_parcelpoint($parcel_points->nearbyParcelPoints[0]);
 			}

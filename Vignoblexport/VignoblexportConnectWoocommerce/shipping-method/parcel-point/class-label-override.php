@@ -105,6 +105,7 @@ class Label_Override
 	{
 		$sessionDetails = WC()->session->get('VINW_CONF_EXP');
 		$sessionDetails = explode(';', $sessionDetails);
+		d($sessionDetails);
 		if (WC()->session->get('VINW_CONF_Colis') !== null) {
 			$package_co = array();
 			$arrayssesion = explode(";", WC()->session->get('VINW_CONF_Colis'));
@@ -138,7 +139,7 @@ class Label_Override
 				'tax_amount' => urldecode($session_tax_amount),
 				'insurance' => urldecode($session_insurance),
 			),
-			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f')
+			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f')
 		);
 		if (WC()->session->get('VINW_CONF_EXP') !== null) {
 			WC()->session->set('VINW_CONF_EXP', null);
