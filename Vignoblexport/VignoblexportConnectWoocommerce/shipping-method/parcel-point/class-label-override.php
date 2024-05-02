@@ -878,6 +878,9 @@ class Label_Override
 
 		$feasability = json_decode(curl_exec($curlsize), true);
 		curl_close($curlsize);
+		if (is_array($feasability)) {
+			$feasability = false;
+		}
 
 		return $feasability;
 	}
@@ -887,6 +890,8 @@ class Label_Override
 		global $wpdb;
 
 		$nbr_Bottles_magnums = $this->get_nbr_Bottles_magnums();
+		$totalBttles = $nbr_Bottles_magnums["nbr_bot"] + $nbr_Bottles_magnums["nbr_mg"];
+		$totalBttles = (string)$totalBttles;
 		$currentCountry = WC()->customer->get_shipping_country();
 		$total_products_ex_tax = WC()->cart->get_subtotal();
 
@@ -928,8 +933,6 @@ class Label_Override
 			if (isset($chaine)) {
 				$tab = explode(";", $chaine);
 			}
-
-			$nbr_Bottles_magnums = $this->get_nbr_Bottles_magnums();
 			$chosen_parcel_point = Controller::get_chosen_point(Shipping_Rate_Util::get_id($method));
 
 			//checks if the variable $chosen_parcel_point is not null
@@ -942,7 +945,7 @@ class Label_Override
 				}
 			}
 
-			if (WC()->session->customer['country'] && WC()->session->customer['shipping_postcode'] && WC()->session->customer['shipping_city']) {
+			if (WC()->session->customer['country'] && (WC()->session->customer['shipping_postcode'] || WC()->session->customer['country'] == 'AE') && WC()->session->customer['shipping_city']) {
 				if (WC()->session->get('VINW_CONF_Colis') !== null) {
 
 					$curlExp = curl_init();
@@ -976,6 +979,12 @@ class Label_Override
 					$data = WC()->session->get('checkout_data');
 					$current_destiType = $data['billing_company'];
 					$destiType = ($current_destiType == "") ? "individual" : "company";
+					$isFeasable = $this->get_feasability($currentCountry, $destiType, $totalBttles);
+
+					if (!$isFeasable) {
+						$full_label .= '<br><span class="notif">' . __("Max number of bottles exceeded to deliver to a private individual in this destination country.", "Vignoblexport") . ' </span>';
+						return $full_label;
+					}
 
 					$curl = curl_init();
 					$url = "https://test.extranet.vignoblexport.fr/api/shipment/get-rates";
@@ -1239,67 +1248,62 @@ class Label_Override
 				$full_label .= '<input type="hidden" id="form_nb_magnums" name="form[nb_magnums]" value="' . (string) $nbr_Bottles_magnums["nbr_mg"] . '">';
 
 				if (WC()->session->get('VINW_CONF_Colis') !== null) {
-					//Feasability test
-					$isFeasable = $this->get_feasability($currentCountry, $destiType, $totalBttles);
-					if (!$isFeasable) {
-						$full_label .= '<br><span class="notif">' . __("Max number of bottles exceeded to deliver to a private individual in this destination country.", "Vignoblexport") . ' </span>';
-					} else {
-						//render offers
-						if (get_option("VINW_PREF_STAT") == "domicile") {
-							if (!empty($reponse)) {
-								$full_label .= '<input type="radio" name="shipping_mettype[]" id="shipping_method_0_Vignoblexport_connect_dom" value="domicile" class="shipping_method">';
-								$full_label .= '<label for="shipping_method_0_Vignoblexport_connect_dom">' . __('Domestic', 'Vignoblexport') . '</label>';
+					//render offers
+					if (get_option("VINW_PREF_STAT") == "domicile") {
+						if (!empty($reponse)) {
+							$full_label .= '<input type="radio" name="shipping_mettype[]" id="shipping_method_0_Vignoblexport_connect_dom" value="domicile" class="shipping_method">';
+							$full_label .= '<label for="shipping_method_0_Vignoblexport_connect_dom">' . __('Domestic', 'Vignoblexport') . '</label>';
 
-								if (is_countable($responses) && count($responses) > 0) {
-									$full_label .= $offre1;
-								} else {
-									$full_label .= $offre3;
-								}
+							if (is_countable($responses) && count($responses) > 0) {
+								$full_label .= $offre1;
+							} else {
+								$full_label .= $offre3;
 							}
 						}
+					}
 
-						if (get_option("VINW_PREF_STAT") == "les deux") {
-							if (!empty($reponse)) {
-								if (($compOffreUps > 0 || $compOffreChrono > 0) && get_option("VINW_MAPBOX_ACCESS_KEY") && get_option("mapbox-api-key-validate") == "1") {
-									$full_label .= '<input type="radio" name="shipping_mettype[]"  id="shipping_method_0_Vignoblexport_connect_pr" value="pointRelais" class="shipping_method">';
-									$full_label .= '<label for="shipping_method_0_Vignoblexport_connect_pr">' . __('Pickup point', 'Vignoblexport') . '</label>';
-
-									if (is_countable($responses) && count($responses) > 0) {
-										$full_label .= $offre2;
-									}
-								}
-
-								$full_label .= '<br><input type="radio" name="shipping_mettype[]"  id="shipping_method_0_Vignoblexport_connect_dom" value="domicile"   class="shipping_method" >';
-								$full_label .= '<label for="shipping_method_0_Vignoblexport_connect_dom">' . __('Domestic', 'Vignoblexport') . '</label>';
-
-								if (is_countable($responses) && count($responses) > 0) {
-									$full_label .= $offre1;
-								}
-							}
-						}
-						if (get_option("VINW_PREF_STAT") == "pointRelais" && (in_array('ups', get_option('VINW_PREF_TRANSP')) || in_array('chronopost', get_option('VINW_PREF_TRANSP'))) && get_option("VINW_MAPBOX_ACCESS_KEY") && get_option("mapbox-api-key-validate") == "1") {
-							if ($compOffreUps > 0 || $compOffreChrono > 0) {
-								$full_label .= '<br><input type="radio" name="shipping_mettype[]"  id="shipping_method_0_Vignoblexport_connect_pr" value="pointRelais" class="shipping_method">';
+					if (get_option("VINW_PREF_STAT") == "les deux") {
+						if (!empty($reponse)) {
+							if (($compOffreUps > 0 || $compOffreChrono > 0) && get_option("VINW_MAPBOX_ACCESS_KEY") && get_option("mapbox-api-key-validate") == "1") {
+								$full_label .= '<input type="radio" name="shipping_mettype[]"  id="shipping_method_0_Vignoblexport_connect_pr" value="pointRelais" class="shipping_method">';
 								$full_label .= '<label for="shipping_method_0_Vignoblexport_connect_pr">' . __('Pickup point', 'Vignoblexport') . '</label>';
 
 								if (is_countable($responses) && count($responses) > 0) {
 									$full_label .= $offre2;
-								} else {
-									$full_label .= $offre3;
 								}
 							}
 
-							if (is_checkout() && (get_option("VINW_PREF_STAT") == "domicile"	|| get_option("VINW_PREF_STAT") == "les deux")) {
-								if ($tab[4] == "domicile") {
-									foreach (WC()->session->get_session_data() as $key => $value) {
-										if (strstr($key, 'vinw_chosen_parcel_point_')) {
-											WC()->session->set($key, null);
-										}
+							$full_label .= '<br><input type="radio" name="shipping_mettype[]"  id="shipping_method_0_Vignoblexport_connect_dom" value="domicile"   class="shipping_method" >';
+							$full_label .= '<label for="shipping_method_0_Vignoblexport_connect_dom">' . __('Domestic', 'Vignoblexport') . '</label>';
+
+							if (is_countable($responses) && count($responses) > 0) {
+								$full_label .= $offre1;
+							}
+						}
+					}
+					if (get_option("VINW_PREF_STAT") == "pointRelais" && (in_array('ups', get_option('VINW_PREF_TRANSP')) || in_array('chronopost', get_option('VINW_PREF_TRANSP'))) && get_option("VINW_MAPBOX_ACCESS_KEY") && get_option("mapbox-api-key-validate") == "1") {
+						if ($compOffreUps > 0 || $compOffreChrono > 0) {
+							$full_label .= '<br><input type="radio" name="shipping_mettype[]"  id="shipping_method_0_Vignoblexport_connect_pr" value="pointRelais" class="shipping_method">';
+							$full_label .= '<label for="shipping_method_0_Vignoblexport_connect_pr">' . __('Pickup point', 'Vignoblexport') . '</label>';
+
+							if (is_countable($responses) && count($responses) > 0) {
+								$full_label .= $offre2;
+							} else {
+								$full_label .= $offre3;
+							}
+						}
+
+						if (is_checkout() && (get_option("VINW_PREF_STAT") == "domicile"	|| get_option("VINW_PREF_STAT") == "les deux")) {
+							if ($tab[4] == "domicile") {
+								foreach (WC()->session->get_session_data() as $key => $value) {
+									if (strstr($key, 'vinw_chosen_parcel_point_')) {
+										WC()->session->set($key, null);
 									}
 								}
 							}
 						}
 					}
+					// }
 				}
 				if (WC()->session->get('VINW_CONF_Colis')) {
 					if (!empty($reponse)) {
@@ -1368,7 +1372,6 @@ class Label_Override
 					}
 				}
 				$full_label .= '</div>';
-				// }
 			} else {
 				WC()->session->set('VINW_CONF_EXP', null);
 				WC()->cart->calculate_totals();
