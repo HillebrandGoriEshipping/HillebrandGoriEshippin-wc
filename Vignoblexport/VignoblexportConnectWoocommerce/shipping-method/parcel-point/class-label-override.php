@@ -1128,6 +1128,7 @@ class Label_Override
 						$tax_category = $this->get_tax_category($Exp_country, $currentCountry);
 						$current_dest_country = WC()->customer->get_shipping_country();
 						$vat_choice = get_option('VINW_VAT_CHOICE');
+						$tax_duties_choice = get_option('VINW_TAX_RIGHTS');
 
 						if ($tax_category == "standard") {
 							if ($vat_choice == 'yes') {
@@ -1155,8 +1156,13 @@ class Label_Override
 							}
 						} else { // $tax_category == "inter"
 							$tax_and_duties = $this->get_tax_and_duties($offer['name']);
-							$finalPrice = $price_excl_vat + $tax_and_duties['price'];
-							$tax_amount = round($tax_and_duties['price'], 2);
+							if ($tax_duties_choice == 'exp') {
+								$finalPrice = $price_excl_vat + $tax_and_duties['price'];
+								$tax_amount = round($tax_and_duties['price'], 2);
+							} else {
+								$finalPrice = $price_excl_vat;
+								$tax_amount = 0;
+							}
 						}
 
 						if (get_option('VINW_ASSURANCE') == 'yes') {
@@ -1224,8 +1230,13 @@ class Label_Override
 								}
 							} else { // $tax_category == "inter"
 								$tax_and_duties = $this->get_tax_and_duties($offer['name']);
-								$finalPrice = $price_excl_vat + $tax_and_duties['price'];
-								$tax_amount = round($tax_and_duties['price'], 2);
+								if ($tax_duties_choice == 'exp') {
+									$finalPrice = $price_excl_vat + $tax_and_duties['price'];
+									$tax_amount = round($tax_and_duties['price'], 2);
+								} else {
+									$finalPrice = $price_excl_vat;
+									$tax_amount = 0;
+								}
 							}
 
 							if (get_option('VINW_ASSURANCE') == 'yes') {
