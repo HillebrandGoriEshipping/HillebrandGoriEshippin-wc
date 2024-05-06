@@ -387,6 +387,9 @@ var i = false;
         $("#shipping_method").find(".amount").first().text(data.shippingTotal);
         $(".order-total").find(".amount").first().text(data.total);
         $(".includes_tax").find(".amount").first().text(data.totalVat);
+        if ($("#tax-and-duties-amount")) {
+          $("#tax-and-duties-amount").text(data.totalVat);
+        }
         if (methode == "domicile" && selectedOffer.length) {
           $("#place_order").prop("disabled", false);
         }

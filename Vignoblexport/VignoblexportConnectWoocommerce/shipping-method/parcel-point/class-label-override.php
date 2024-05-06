@@ -56,6 +56,22 @@ class Label_Override
 		add_action('wp_ajax_calculate_tax_duties', array($this, 'calculate_tax_duties'));
 		add_action('wp_ajax_nopriv_calculate_tax_duties', array($this, 'calculate_tax_duties'));
 		add_action('woocommerce_checkout_process', array($this, 'is_offer_set_checkout_field_process'));
+		add_action('woocommerce_cart_totals_before_shipping', array($this, 'add_row'), 99);
+		add_action('woocommerce_review_order_before_shipping', array($this, 'add_row'), 99);
+	}
+
+	function add_row($tax_and_duties_amount)
+	{
+		if (get_option("VINW_TAX_RIGHTS") == "dest") {
+
+?>
+			<tr>
+				<th><?php _e("Estimated tax & duties amount", "Vignoblexport"); ?></th>
+				<td id="tax-and-duties-amount""><?php _e("Select an offer", "Vignoblexport"); ?></td>
+			</tr>
+
+		<?php
+		}
 	}
 
 	/**
@@ -792,7 +808,7 @@ class Label_Override
 	function reinit_offer_at_leave_checkout()
 	{
 		//we used the jquery beforeunload function to detect if the user leaves that page
-?>
+		?>
 
 		<script>
 			jQuery(document).ready(function($) {
@@ -1161,7 +1177,7 @@ class Label_Override
 								$tax_amount = round($tax_and_duties['price'], 2);
 							} else {
 								$finalPrice = $price_excl_vat;
-								$tax_amount = 0;
+								$tax_amount = round($tax_and_duties['price'], 2);
 							}
 						}
 
@@ -1235,7 +1251,7 @@ class Label_Override
 									$tax_amount = round($tax_and_duties['price'], 2);
 								} else {
 									$finalPrice = $price_excl_vat;
-									$tax_amount = 0;
+									$tax_amount = round($tax_and_duties['price'], 2);
 								}
 							}
 
