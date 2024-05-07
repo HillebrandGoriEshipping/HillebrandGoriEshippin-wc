@@ -56,22 +56,22 @@ class Label_Override
 		add_action('wp_ajax_calculate_tax_duties', array($this, 'calculate_tax_duties'));
 		add_action('wp_ajax_nopriv_calculate_tax_duties', array($this, 'calculate_tax_duties'));
 		add_action('woocommerce_checkout_process', array($this, 'is_offer_set_checkout_field_process'));
-		add_action('woocommerce_cart_totals_before_shipping', array($this, 'add_row'), 99);
-		add_action('woocommerce_review_order_before_shipping', array($this, 'add_row'), 99);
+		if (get_option("VINW_TAX_RIGHTS") == "dest") {
+			add_action('woocommerce_cart_totals_before_shipping', array($this, 'add_estimated_tax_and_duties_row'), 99);
+			add_action('woocommerce_review_order_before_shipping', array($this, 'add_estimated_tax_and_duties_row'), 99);
+		}
 	}
 
-	function add_row($tax_and_duties_amount)
+	function add_estimated_tax_and_duties_row()
 	{
-		if (get_option("VINW_TAX_RIGHTS") == "dest") {
 
 ?>
-			<tr>
-				<th><?php _e("Estimated tax & duties amount", "Vignoblexport"); ?></th>
-				<td id="tax-and-duties-amount""><?php _e("Select an offer", "Vignoblexport"); ?></td>
+		<tr>
+			<th><?php _e("Estimated tax & duties amount", "Vignoblexport"); ?></th>
+			<td id="tax-and-duties-amount""><?php _e("Select an offer", "Vignoblexport"); ?></td>
 			</tr>
 
 		<?php
-		}
 	}
 
 	/**
