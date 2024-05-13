@@ -318,7 +318,6 @@ var i = false;
     const nbr_bottles = $("#form_nb_bouteilles").val();
 
     updatCarrier();
-    sendTaxAndDuties();
     $.get(
       baseurl +
         "/wp-content/plugins/Vignoblexport/Vignoblexport/VignoblexportPhp/updateexpidition.php?methode=" +
@@ -369,6 +368,7 @@ var i = false;
     const methode = methodInput.filter(":checked").val();
     const taxAmount = offerInput.filter(":checked").data("taxamount");
     const insurance = offerInput.filter(":checked").data("insurance");
+    const currency = offerInput.filter(":checked").data("currency");
 
     var ajaxscript = { ajax_url: baseurl + "/wp-admin/admin-ajax.php" };
     $.ajax({
@@ -379,6 +379,7 @@ var i = false;
         offer: fullOffer,
         tax: taxAmount,
         insurance: insurance,
+        currency: currency,
       },
       dataType: "json",
       method: "GET",
@@ -387,6 +388,9 @@ var i = false;
         $("#shipping_method").find(".amount").first().text(data.shippingTotal);
         $(".order-total").find(".amount").first().text(data.total);
         $(".includes_tax").find(".amount").first().text(data.totalVat);
+        if ($("#tax-and-duties-amount")) {
+          $("#tax-and-duties-amount").text(data.totalVat + " " + data.currency);
+        }
         if (methode == "domicile" && selectedOffer.length) {
           $("#place_order").prop("disabled", false);
         }
@@ -396,38 +400,6 @@ var i = false;
         console.log("error :", error);
       },
     });
-  }
-
-  function sendTaxAndDuties() {
-    console.log("sendTaxAndDuties");
-    const selectedOffer = $("input[name*=offer]:checked");
-    const selectedOfferValue = selectedOffer.attr("data-name");
-    console.log(typeof selectedOfferValue);
-
-    var ajaxscript = { ajax_url: baseurl + "/wp-admin/admin-ajax.php" };
-    $.ajax({
-      url: ajaxscript.ajax_url,
-      method: "GET",
-      data: {
-        action: "calculate_tax_duties",
-        selected_offer_value: selectedOfferValue,
-      },
-      success: function (data) {
-        let TaxAndDuties = $(".tax-duties");
-        if (TaxAndDuties) {
-          processTaxAndDuties(data);
-        }
-      },
-      error: function (error) {
-        console.log("error :", error);
-      },
-    });
-  }
-
-  function processTaxAndDuties(data) {
-    console.log("processTaxAndDuties");
-    let TaxAndDutiesElement = $(".tax-amount");
-    TaxAndDutiesElement.text(data.price + " " + data.currency);
   }
 
   function updatePickupRelay() {

@@ -51,11 +51,45 @@ class Label_Override
 		add_action('wp_ajax_update_cart_prices', array($this, 'update_cart_prices'));
 		add_action('wp_ajax_nopriv_update_pickup_relay', array($this, 'update_pickup_relay'));
 		add_action('wp_ajax_update_pickup_relay', array($this, 'update_pickup_relay'));
-		add_action('wp_ajax_get_tax_and_duties', array($this, 'get_tax_and_duties'));
-		add_action('wp_ajax_nopriv_get_tax_and_duties', array($this, 'get_tax_and_duties'));
-		add_action('wp_ajax_calculate_tax_duties', array($this, 'calculate_tax_duties'));
-		add_action('wp_ajax_nopriv_calculate_tax_duties', array($this, 'calculate_tax_duties'));
 		add_action('woocommerce_checkout_process', array($this, 'is_offer_set_checkout_field_process'));
+		add_action('woocommerce_review_order_before_shipping', array($this, 'add_estimated_tax_and_duties_row'), 99);
+	}
+
+	function add_estimated_tax_and_duties_row()
+	{
+		$curlExp = curl_init();
+		curl_setopt_array($curlExp, array(
+			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_HTTPHEADER => array(
+				"X-AUTH-TOKEN: " . get_option('VINW_ACCESS_KEY'),
+			),
+		));
+
+		$response = json_decode(curl_exec($curlExp), true);
+		curl_close($curlExp);
+
+		$exp_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
+		$dest_country = WC()->customer->get_billing_country();
+
+		if (get_option("VINW_TAX_RIGHTS") == "dest" && $this->get_tax_category($exp_country, $dest_country) == "inter") {
+?>
+			<tr>
+				<th><?php _e("Estimated tax & duties", "Vignoblexport"); ?></th>
+				<td>
+					<span id="tax-and-duties-amount""><?php _e("Select an offer", "Vignoblexport"); ?></span>
+				<span id=" tax-and-duties-currency"></span>
+				</td>
+			</tr>
+
+		<?php
+		}
 	}
 
 	/**
@@ -105,7 +139,6 @@ class Label_Override
 	{
 		$sessionDetails = WC()->session->get('VINW_CONF_EXP');
 		$sessionDetails = explode(';', $sessionDetails);
-		d($sessionDetails);
 		if (WC()->session->get('VINW_CONF_Colis') !== null) {
 			$package_co = array();
 			$arrayssesion = explode(";", WC()->session->get('VINW_CONF_Colis'));
@@ -468,13 +501,6 @@ class Label_Override
 		return $getTaxDuties;
 	}
 
-	function calculate_tax_duties()
-	{
-		$carrier = $_GET['selected_offer_value'];
-		$result = $this->get_tax_and_duties($carrier);
-		wp_send_json($result);
-	}
-
 	/**
 	 * Calculates the tax category based on the origin and destination countries.
 	 *
@@ -581,11 +607,15 @@ class Label_Override
 			}
 		}
 
-		if (in_array($currentCountry, $countries)) {
-			return true;
-		} else {
-			return false;
+		foreach ($countries as $country) {
+			if (in_array($currentCountry, $country, true)) {
+				$return = true;
+				break;
+			} else {
+				$return = false;
+			}
 		}
+		return $return;
 	}
 
 	/**
@@ -750,10 +780,17 @@ class Label_Override
 			$insurance = 0;
 		}
 
+		if (get_option('VINW_TAX_RIGHTS') == 'dest') {
+			$currency = $_GET['currency'];
+		} else {
+			$currency = get_woocommerce_currency();
+		}
+
 		$jsonData = [
 			'shippingTotal' => number_format(WC()->cart->get_shipping_total(), 2, ',', ' ') . ' €',
 			'total' => number_format(WC()->cart->total, 2, ',', ' ') . ' €',
 			'totalVat' => number_format($total_vat, 2, ',', ' '),
+			'currency' => $currency,
 		];
 		$response = json_encode($jsonData);
 		echo $response;
@@ -792,7 +829,7 @@ class Label_Override
 	function reinit_offer_at_leave_checkout()
 	{
 		//we used the jquery beforeunload function to detect if the user leaves that page
-?>
+		?>
 
 		<script>
 			jQuery(document).ready(function($) {
@@ -1124,10 +1161,12 @@ class Label_Override
 						$encoded_value = urlencode(json_encode($offerValue));
 						$offerLogo = $this->getOfferLogo($offer['name'], $offer['service']);
 						$price_excl_vat = (float)$offer['price'];
+						$currency = $offer['currency'];
 
 						$tax_category = $this->get_tax_category($Exp_country, $currentCountry);
 						$current_dest_country = WC()->customer->get_shipping_country();
 						$vat_choice = get_option('VINW_VAT_CHOICE');
+						$tax_duties_choice = get_option('VINW_TAX_RIGHTS');
 
 						if ($tax_category == "standard") {
 							if ($vat_choice == 'yes') {
@@ -1155,8 +1194,13 @@ class Label_Override
 							}
 						} else { // $tax_category == "inter"
 							$tax_and_duties = $this->get_tax_and_duties($offer['name']);
-							$finalPrice = $price_excl_vat + $tax_and_duties['price'];
-							$tax_amount = round($tax_and_duties['price'], 2);
+							if ($tax_duties_choice == 'exp') {
+								$finalPrice = $price_excl_vat + $tax_and_duties['price'];
+								$tax_amount = round($tax_and_duties['price'], 2);
+							} else {
+								$finalPrice = $price_excl_vat;
+								$tax_amount = round($tax_and_duties['price'], 2);
+							}
 						}
 
 						if (get_option('VINW_ASSURANCE') == 'yes') {
@@ -1164,7 +1208,7 @@ class Label_Override
 						}
 
 						if (preg_match('/UPS Access Point Economy/', $offer['service']) == 0 && preg_match('/Chrono Relais 13H/', $offer['service']) == 0) {
-							$offre1 .= '<br><div class="offer-cont" ><input type="radio" name="offer[]" data-index="0" data-name="' . $offer['name'] . '" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" data-taxamount="' . $tax_amount . '" data-insurance="' . $offer['insurancePrice'] . '" class="shipping_method">';
+							$offre1 .= '<br><div class="offer-cont" ><input type="radio" name="offer[]" data-index="0" data-name="' . $offer['name'] . '" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" data-taxamount="' . $tax_amount . '" data-insurance="' . $offer['insurancePrice'] . '"data-currency="' . $currency . '" class="shipping_method">';
 							$offre1 .= '<input type="hidden" name="priceOffre" id="priceOffre_' . $key . '"  value="' . sprintf("%01.2f", $finalPrice) . '" >';
 							$offre1 .= '<img style="display:unset; max-width: 55px; margin-right: 8px;" src="' . $offerLogo . '" />';
 							$offre1 .= '<p  id="offer-cont_' . $key . '" for="shipping_method_offer_' . $key . '"><strong>' . $offer['service'] . '</strong><br>  ' . __('Price: ', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $finalPrice) . '€</strong> <br> | ' . __('Estimated delivery', 'Vignoblexport') . ' ' . $date1 . '<br> </p></div>';
@@ -1224,8 +1268,13 @@ class Label_Override
 								}
 							} else { // $tax_category == "inter"
 								$tax_and_duties = $this->get_tax_and_duties($offer['name']);
-								$finalPrice = $price_excl_vat + $tax_and_duties['price'];
-								$tax_amount = round($tax_and_duties['price'], 2);
+								if ($tax_duties_choice == 'exp') {
+									$finalPrice = $price_excl_vat + $tax_and_duties['price'];
+									$tax_amount = round($tax_and_duties['price'], 2);
+								} else {
+									$finalPrice = $price_excl_vat;
+									$tax_amount = round($tax_and_duties['price'], 2);
+								}
 							}
 
 							if (get_option('VINW_ASSURANCE') == 'yes') {
