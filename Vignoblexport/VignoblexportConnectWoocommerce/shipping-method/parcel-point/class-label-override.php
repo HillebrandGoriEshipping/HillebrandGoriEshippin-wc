@@ -52,25 +52,44 @@ class Label_Override
 		add_action('wp_ajax_nopriv_update_pickup_relay', array($this, 'update_pickup_relay'));
 		add_action('wp_ajax_update_pickup_relay', array($this, 'update_pickup_relay'));
 		add_action('woocommerce_checkout_process', array($this, 'is_offer_set_checkout_field_process'));
-		if (get_option("VINW_TAX_RIGHTS") == "dest") {
-			add_action('woocommerce_cart_totals_before_shipping', array($this, 'add_estimated_tax_and_duties_row'), 99);
-			add_action('woocommerce_review_order_before_shipping', array($this, 'add_estimated_tax_and_duties_row'), 99);
-		}
+		add_action('woocommerce_review_order_before_shipping', array($this, 'add_estimated_tax_and_duties_row'), 99);
 	}
 
 	function add_estimated_tax_and_duties_row()
 	{
+		$curlExp = curl_init();
+		curl_setopt_array($curlExp, array(
+			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "GET",
+			CURLOPT_HTTPHEADER => array(
+				"X-AUTH-TOKEN: " . get_option('VINW_ACCESS_KEY'),
+			),
+		));
 
+		$response = json_decode(curl_exec($curlExp), true);
+		curl_close($curlExp);
+
+		$exp_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
+		$dest_country = WC()->customer->get_billing_country();
+
+		if (get_option("VINW_TAX_RIGHTS") == "dest" && $this->get_tax_category($exp_country, $dest_country) == "inter") {
 ?>
-		<tr>
-			<th><?php _e("Estimated tax & duties amount", "Vignoblexport"); ?></th>
-			<td>
-				<span id="tax-and-duties-amount""><?php _e("Select an offer", "Vignoblexport"); ?></span>
+			<tr>
+				<th><?php _e("Estimated tax & duties", "Vignoblexport"); ?></th>
+				<td>
+					<span id="tax-and-duties-amount""><?php _e("Select an offer", "Vignoblexport"); ?></span>
 				<span id=" tax-and-duties-currency"></span>
-			</td>
-		</tr>
+				</td>
+			</tr>
 
-	<?php
+		<?php
+		}
 	}
 
 	/**
@@ -482,13 +501,6 @@ class Label_Override
 		return $getTaxDuties;
 	}
 
-	// function calculate_tax_duties()
-	// {
-	// 	$carrier = $_GET['selected_offer_value'];
-	// 	$result = $this->get_tax_and_duties($carrier);
-	// 	wp_send_json($result);
-	// }
-
 	/**
 	 * Calculates the tax category based on the origin and destination countries.
 	 *
@@ -595,11 +607,15 @@ class Label_Override
 			}
 		}
 
-		if (in_array($currentCountry, $countries)) {
-			return true;
-		} else {
-			return false;
+		foreach ($countries as $country) {
+			if (in_array($currentCountry, $country, true)) {
+				$return = true;
+				break;
+			} else {
+				$return = false;
+			}
 		}
+		return $return;
 	}
 
 	/**
@@ -813,7 +829,7 @@ class Label_Override
 	function reinit_offer_at_leave_checkout()
 	{
 		//we used the jquery beforeunload function to detect if the user leaves that page
-	?>
+		?>
 
 		<script>
 			jQuery(document).ready(function($) {
