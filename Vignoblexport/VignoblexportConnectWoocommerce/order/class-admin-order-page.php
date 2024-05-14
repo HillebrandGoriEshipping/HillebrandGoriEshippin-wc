@@ -210,6 +210,11 @@ class Admin_Order_Page
 		$nbr_Magnums = 0;
 		$whopaystaxesduties = get_option('VINW_TAX_RIGHTS');
 
+		// Get tax category
+		$currentCountry = $order->get_shipping_country();
+		$wc_shop_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
+		$tax_category = $this->get_tax_category($wc_shop_country, $currentCountry);
+
 		foreach ($order->get_items('shipping') as $item_id => $shipping_item_obj) {
 			$shipping_method_id = $shipping_item_obj->get_method_id();
 			if ($shipping_method_id == 'Vignoblexport_connect') {
@@ -398,6 +403,23 @@ class Admin_Order_Page
 							</td>
 							<td colspan="2">
 
+							</td>
+						</tr>
+					<?php } ?>
+					<?php if ($tax_category == "inter") { ?>
+						<tr class="tax-duties">
+							<td colspan="3">
+								<strong><?php esc_html_e('Tax and duties:', 'Vignoblexport'); ?></strong>
+								<?php echo $tax_amount . " €"; ?>
+								<?php
+								if (get_option('VINW_TAX_RIGHTS') == 'exp') {
+									esc_html_e(' at your expense (included in shipping price)', 'Vignoblexport');
+								} else {
+									esc_html_e(' at the recipient expense', 'Vignoblexport');
+								}
+								?>
+							</td>
+							<td colspan="2">
 							</td>
 						</tr>
 					<?php } ?>
