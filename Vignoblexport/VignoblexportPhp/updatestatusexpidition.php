@@ -166,6 +166,7 @@ if ($postBody['insurance'] == "1" && isset($result[0]['insurance'])) {
   $postBody['insurancePrice'] = (float)$insurance;
 }
 
+$postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == 'exp' ? "exp" : "dest";
 
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
