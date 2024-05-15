@@ -931,6 +931,7 @@ class Admin_Order_Page
 		$postalCode = $order->get_shipping_postcode();
 		$city = $order->get_shipping_city();
 		$country = $order->get_shipping_country();
+		$state = $order->get_shipping_state();
 
 		$curl = curl_init();
 		$url = "https://test.extranet.vignoblexport.fr/api/shipment/get-rates";
@@ -942,6 +943,11 @@ class Admin_Order_Page
 		$url .= "&destAddress%5BzipCode%5D=" . $postalCode;
 		$url .= "&destAddress%5Bcity%5D=" . urlencode($city);
 		$url .= "&destAddress%5Bcountry%5D=" . $country;
+
+		if ($country == "US" || $country == "CA") {
+			$url .= "&destAddress%5Bstate%5D=" . urlencode($state);
+		}
+
 		$packageNumber = 0;
 		foreach ($package as $key => $parcel_type) {
 			$url .= "&packages%5B" . (string)$packageNumber . "%5D%5Bnb%5D=" . (string)$parcel_type['nbPackages'];
@@ -998,7 +1004,7 @@ class Admin_Order_Page
 		curl_close($curl);
 		// Filter on offers in response  with carriers preferences
 		$filtered_responses = array();
-		if (is_countable($response2) && count($response2) > 0) {
+		if (is_countable($response2) && count($response2) > 0 && !isset($response2['status'])) {
 			foreach ($response2 as $response) {
 				if (in_array($response['name'], get_option('VINW_PREF_TRANSP')) || $response['name'] == 'seur' || $response['name'] == 'groupage vignoblexport') {
 					array_push($filtered_responses, $response);
