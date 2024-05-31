@@ -1185,7 +1185,7 @@ class Label_Override
 								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
 								$finalPrice = (float)$fiscal_rep + (($price_excl_vat * $vat_rate) / 100);
 								$finalPrice = round($finalPrice, 2);
-								$tax_amount = (($price_excl_vat * $vat_rate) / 100) - $price_excl_vat;
+								$tax_amount = $finalPrice - $price_excl_vat;
 								$tax_amount = round($tax_amount, 2);
 							} else {
 								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
@@ -1259,7 +1259,7 @@ class Label_Override
 									$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
 									$finalPrice = (float)$fiscal_rep + (($price_excl_vat * $vat_rate) / 100);
 									$finalPrice = round($finalPrice, 2);
-									$tax_amount = (($price_excl_vat * $vat_rate) / 100) - $price_excl_vat;
+									$tax_amount = $finalPrice - $price_excl_vat;
 									$tax_amount = round($tax_amount, 2);
 								} else {
 									$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);

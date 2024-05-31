@@ -49,7 +49,6 @@ if ($expId !== NULL) {
     ),
   ));
   $response = curl_exec($curl2);
-  d($response);
   $trackingLink = json_decode($response, true)['trackingLink'] ? json_decode($response, true)['trackingLink'] : null;
   curl_close($curl2);
 
