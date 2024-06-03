@@ -91,7 +91,8 @@ class Database_Util
 				tracking_link TEXT DEFAULT NULL,
 				tracking_code varchar(100) DEFAULT NULL,
 				tax_amount FLOAT DEFAULT NULL,
-				insurance FLOAT DEFAULT NULL
+				insurance FLOAT DEFAULT NULL,
+				expedition_type varchar(20) DEFAULT NULL
 			) $collate;
 		";
 

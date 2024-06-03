@@ -1169,6 +1169,7 @@ class Label_Override
 						$tax_duties_choice = get_option('VINW_TAX_RIGHTS');
 
 						if ($tax_category == "standard") {
+							$expedition_type = "standard";
 							if ($vat_choice == 'yes') {
 								$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
 								$finalPrice = $price_excl_vat + (($price_excl_vat * $vat_rate) / 100);
@@ -1180,6 +1181,7 @@ class Label_Override
 								$tax_amount = 0;
 							}
 						} elseif ($tax_category == "intra_eu") {
+							$expedition_type = "fiscal_rep";
 							if ($vat_choice == 'yes') {
 								$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
 								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
@@ -1193,6 +1195,7 @@ class Label_Override
 								$tax_amount = 0;
 							}
 						} else { // $tax_category == "inter"
+							$expedition_type = "export";
 							$tax_and_duties = $this->get_tax_and_duties($offer['name']);
 							if ($tax_duties_choice == 'exp') {
 								$finalPrice = $price_excl_vat + $tax_and_duties['price'];
@@ -1202,6 +1205,8 @@ class Label_Override
 								$tax_amount = round($tax_and_duties['price'], 2);
 							}
 						}
+
+						WC()->session->set('expedition_type', $expedition_type);
 
 						if (get_option('VINW_ASSURANCE') == 'yes') {
 							$finalPrice = $finalPrice + $offer['insurancePrice'];
@@ -1243,6 +1248,7 @@ class Label_Override
 							$offerLogo = $this->getOfferLogo($offer['name'], $offer['service']);
 
 							if ($tax_category == "standard") {
+								$expedition_type = "standard";
 								if ($vat_choice == 'yes') {
 									$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
 									$finalPrice = $price_excl_vat + (($price_excl_vat * $vat_rate) / 100);
@@ -1254,6 +1260,7 @@ class Label_Override
 									$tax_amount = 0;
 								}
 							} elseif ($tax_category == "intra_eu") {
+								$expedition_type = "fiscal_rep";
 								if ($vat_choice == 'yes') {
 									$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
 									$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
@@ -1267,6 +1274,7 @@ class Label_Override
 									$tax_amount = 0;
 								}
 							} else { // $tax_category == "inter"
+								$expedition_type = "export";
 								$tax_and_duties = $this->get_tax_and_duties($offer['name']);
 								if ($tax_duties_choice == 'exp') {
 									$finalPrice = $price_excl_vat + $tax_and_duties['price'];
@@ -1276,6 +1284,7 @@ class Label_Override
 									$tax_amount = round($tax_and_duties['price'], 2);
 								}
 							}
+							WC()->session->set('expedition_type', $expedition_type);
 
 							if (get_option('VINW_ASSURANCE') == 'yes') {
 								$finalPrice = $finalPrice + $offer['insurancePrice'];

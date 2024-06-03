@@ -13,6 +13,7 @@ if ($_GET['insurance']) {
 } else {
   $insurance = 0;
 }
+$expedition_type = $_GET['expedition_type'];
 
 $order = wc_get_order($order_id);
 
@@ -29,7 +30,8 @@ try {
   $wpdb->update($tablename, array(
     'offre' => urldecode($sessionDetails[0]),
     'tax_amount' => (float)$tax_amount,
-    'insurance' => (float)$insurance
+    'insurance' => (float)$insurance,
+    'expedition_type' => $expedition_type
   ), array('order_id' => (int) $order_id));
   header("HTTP/1.1 200 OK");
   echo json_encode([["message" => "OK"]]);
