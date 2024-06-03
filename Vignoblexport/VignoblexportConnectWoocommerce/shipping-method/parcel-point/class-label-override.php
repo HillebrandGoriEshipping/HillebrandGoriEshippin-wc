@@ -155,6 +155,8 @@ class Label_Override
 
 		$session_insurance = WC()->session->get('insurance');
 
+		$session_exp_type = WC()->session->get('expedition_type');
+
 		global $wpdb;
 		$tablename = $wpdb->prefix . 'VINW_order_expidition';
 
@@ -171,8 +173,9 @@ class Label_Override
 				'nbr_Magnums' => urldecode($sessionDetails[9]),
 				'tax_amount' => urldecode($session_tax_amount),
 				'insurance' => urldecode($session_insurance),
+				'expedition_type' => urldecode($session_exp_type),
 			),
-			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f')
+			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f', '%s')
 		);
 		if (WC()->session->get('VINW_CONF_EXP') !== null) {
 			WC()->session->set('VINW_CONF_EXP', null);
