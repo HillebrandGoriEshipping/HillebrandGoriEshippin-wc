@@ -334,7 +334,7 @@ function updatstatus() {
         // alert("Success update : Parcel");
         // console.log(xhr.responseText);
 
-        location.reload();
+        // location.reload();
         jQuery.blockUI({ message: null });
         return false;
       }

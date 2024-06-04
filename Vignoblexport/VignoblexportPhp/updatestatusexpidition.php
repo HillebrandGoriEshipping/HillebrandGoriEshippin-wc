@@ -41,6 +41,7 @@ $packageArr = json_decode($package, true);
 $offre = trim(stripslashes(stripslashes($result[0]['offre'])), '"');
 $offreArr = json_decode($offre, true);
 $type_liv = $result[0]['type_liv'];
+$expedition_type = $result[0]['expedition_type'];
 
 $packageNumber = 0;
 $packages = [];
@@ -124,9 +125,64 @@ $postBody['expAddress'] = $Exp_destAddress;
 $postBody['destAddress'] = $destAddress;
 $postBody['packages'] = $packages;
 
-if ($type_liv == "pointRelais") {
-  $postBody['accessPoint'] = $accessPoint;
+if ($country != $Exp_country) {
+  $details = [];
+  $i = 0;
+  foreach ($order->get_items() as $item_id => $item) {
+    $appellation = get_post_meta($item['product_id'], '_custom_appelation', true);
+    $capacity = get_post_meta($item['product_id'], '_custom_capacity', true);
+    $alcohol_degree = get_post_meta($item['product_id'], '_custom_alcohol_degree', true);
+    $color = get_post_meta($item['product_id'], '_custom_color', true);
+    d($appellation);
+    d($capacity);
+    d($alcohol_degree);
+    d($color);
+    $curlHscode = curl_init();
+    $hscodeURL = "https://test.extranet.vignoblexport.fr/api/get-hscode";
+    $hscodeURL .= "?appellationName=" . $appellation;
+    $hscodeURL .= "&capacity=" . $capacity;
+    $hscodeURL .= "&alcoholDegree=" . $alcohol_degree;
+    $hscodeURL .= "&color=" . $color;
+
+    $hscodeURL = str_replace(" ", "%20", $hscodeURL);
+
+    curl_setopt_array($curlHscode, array(
+      CURLOPT_URL => $hscodeURL,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET",
+      CURLOPT_HTTPHEADER => array(
+        "X-AUTH-TOKEN: " . get_option('VINW_ACCESS_KEY'),
+      ),
+    ));
+    $hs_code = json_decode(curl_exec($curlHscode), true);
+    curl_close($curlHscode);
+    d($hs_code);
+    //"vintage":"2018",
+    $product  = $item->get_product();
+    $unit_value = $product->get_price();
+    d($unit_value);
+    $quantity = $item->get_quantity();
+    d($quantity);
+    $details[] = [
+      "appellation" => $appellation,
+      "capacity" => $capacity,
+      "alcoholDegree" => $alcohol_degree,
+      "color" => $color,
+      "hsCode" => $hs_code,
+      "vintage" => "2018",
+      "unitValue" => $unit_value,
+      "quantity" => $quantity
+    ];
+  }
+  $postBody['details'] = $details;
 }
+var_dump($postBody['details']);
+
 $postBody['carrier'] = $offreArr;
 
 if (isset($nbBottles)) {
@@ -170,6 +226,7 @@ $postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == 'exp' ? "exp" : "des
 
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
+var_dump($postBody);
 
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",
