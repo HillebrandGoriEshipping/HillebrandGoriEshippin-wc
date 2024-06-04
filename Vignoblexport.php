@@ -806,6 +806,19 @@ function vignoblexport_product_custom_fields()
 		)
 	);
 
+	woocommerce_wp_text_input(
+		array(
+			'id' => '_custom_vintage',
+			'label' => __('Vintage', 'Vignoblexport'),
+			'type' => 'number',
+			'custom_attributes' => array(
+				'step' => '1',
+				'min' => '0',
+				'required' => 'required'
+			)
+		)
+	);
+
 	woocommerce_wp_select(array( // Text Field type
 		'id'          => '_custom_circulation',
 		'label'       => __('Circulation', 'Vignoblexport'),
@@ -1031,7 +1044,6 @@ function vignoblexport_product_custom_fields_save($post_id)
 			esc_attr($woocommerce_custom_product_producing_country)
 		);
 
-
 	$woocommerce_custom_product_circulation = $_POST['_custom_circulation'];
 	// Custom product circulation
 	if (!empty($woocommerce_custom_product_circulation))
@@ -1039,6 +1051,15 @@ function vignoblexport_product_custom_fields_save($post_id)
 			$post_id,
 			'_custom_circulation',
 			esc_attr($woocommerce_custom_product_circulation)
+		);
+
+	$woocommerce_custom_product_vintage = $_POST['_custom_vintage'];
+	// Custom product vintage
+	if (!empty($woocommerce_custom_product_vintage))
+		update_post_meta(
+			$post_id,
+			'_custom_vintage',
+			esc_attr($woocommerce_custom_product_vintage)
 		);
 }
 

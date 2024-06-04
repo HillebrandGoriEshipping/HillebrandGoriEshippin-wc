@@ -133,6 +133,14 @@ if ($country != $Exp_country) {
     $capacity = get_post_meta($item['product_id'], '_custom_capacity', true);
     $alcohol_degree = get_post_meta($item['product_id'], '_custom_alcohol_degree', true);
     $color = get_post_meta($item['product_id'], '_custom_color', true);
+    if ($color === 'Red') {
+      $color_hscode = 'red';
+    } elseif ($color === 'Rose') {
+      $color_hscode = 'rose';
+    } else {
+      $color_hscode = 'no-color';
+    }
+    $vintage = get_post_meta($item['product_id'], '_custom_vintage', true);
     d($appellation);
     d($capacity);
     d($alcohol_degree);
@@ -142,7 +150,7 @@ if ($country != $Exp_country) {
     $hscodeURL .= "?appellationName=" . $appellation;
     $hscodeURL .= "&capacity=" . $capacity;
     $hscodeURL .= "&alcoholDegree=" . $alcohol_degree;
-    $hscodeURL .= "&color=" . $color;
+    $hscodeURL .= "&color=" . $color_hscode;
 
     $hscodeURL = str_replace(" ", "%20", $hscodeURL);
 
@@ -161,7 +169,7 @@ if ($country != $Exp_country) {
     ));
     $hs_code = json_decode(curl_exec($curlHscode), true);
     curl_close($curlHscode);
-    d($hs_code);
+    var_dump($hs_code);
     //"vintage":"2018",
     $product  = $item->get_product();
     $unit_value = $product->get_price();
@@ -174,7 +182,7 @@ if ($country != $Exp_country) {
       "alcoholDegree" => $alcohol_degree,
       "color" => $color,
       "hsCode" => $hs_code,
-      "vintage" => "2018",
+      "vintage" => (string)$vintage,
       "unitValue" => $unit_value,
       "quantity" => $quantity
     ];
@@ -226,6 +234,9 @@ $postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == 'exp' ? "exp" : "des
 
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
+if ($expedition_type == "fiscal_rep") {
+  $postBody['fiscalRepresentation'] = 1;
+}
 var_dump($postBody);
 
 curl_setopt_array($curl, array(
