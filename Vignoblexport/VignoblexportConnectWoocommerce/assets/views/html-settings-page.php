@@ -281,6 +281,33 @@ $adress = $getadress;
 					</td>
 				</tr>
 
+				<!-- VAT NUMBER -->
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e('VAT number', 'Vignoblexport'); ?> :</th>
+					<td>
+						<input type="text" name="VINW_VAT_NUMBER" id="vat-number" value="<?php if (get_option('VINW_VAT_NUMBER')) {
+																								echo get_option('VINW_VAT_NUMBER');
+																							} ?>">
+						<div class="tooltip">?
+							<span class="tooltiptext"><?php esc_html_e('Enter your VAT number (required)', 'Vignoblexport'); ?></span>
+						</div>
+					</td>
+				</tr>
+
+				<!-- EORI NUMBER -->
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e('EORI number', 'Vignoblexport'); ?> :</th>
+					<td>
+						<input type="text" name="VINW_EORI_NUMBER" id="vat-number" value="<?php if (get_option('VINW_EORI_NUMBER')) {
+																								echo get_option('VINW_EORI_NUMBER');
+																							} ?>">
+						<div class="tooltip">?
+							<span class="tooltiptext"><?php esc_html_e('Enter your EORI number (required)', 'Vignoblexport'); ?></span>
+						</div>
+					</td>
+				</tr>
+
+
 			</table>
 
 			<!-- INSURANCE -->

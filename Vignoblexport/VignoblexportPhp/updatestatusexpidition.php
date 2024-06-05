@@ -3,18 +3,23 @@ require_once("../../../../../wp-load.php");
 
 use Vignoblexport\VignoblexportConnectWoocommerce\Util\Order_Util;
 
+//order datas
 $order_id = $_GET["order_id"];
 $order = wc_get_order($order_id);
 $order_data = $order->get_data();
+
+//destination address datas
 $shippingDetails = $order_data['shipping'];
+
 $societe = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? "company" : "individual";
-$company = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? $shippingDetails['company'] : "none";
+$company = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? $shippingDetails['company'] : "none"; //required if addressType = company
 $contact = isset($shippingDetails['first_name']) ? $shippingDetails['first_name'] : "";
 $contact .= isset($shippingDetails['last_name']) ? " " . $shippingDetails['last_name'] : "";
 $address = isset($shippingDetails['address_1']) ? $shippingDetails['address_1'] : "";
 $postCode = isset($shippingDetails['postcode']) ? $shippingDetails['postcode'] : "";
 $city = isset($shippingDetails['city']) ? $shippingDetails['city'] : "";
 $country = isset($shippingDetails['country']) ? $shippingDetails['country'] : "";
+$state = isset($shippingDetails['state']) ? $shippingDetails['state'] : "";
 $email = isset($order_data['billing']['email']) && strlen($order_data['billing']['email']) > 0  ? $order_data['billing']['email'] : "example@email.com";
 $phone = isset($order_data['billing']['phone']) ? $order_data['billing']['phone'] : "";
 $destAddress = array(
@@ -29,6 +34,11 @@ $destAddress = array(
   'email' => $email,
 );
 
+if ($country == 'US' || $country == 'CA' && $state != "") {
+  $destAddress['state'] = $state; // required if country = US or CA
+}
+
+// Package(s) datas
 $itemsCount = $order->get_item_count();
 
 $query = "SELECT * FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $order_id . "'";
@@ -65,6 +75,7 @@ foreach ($packageArr as $key => $valueBottles) {
   $nbBottles += $valueBottles['nbBottles'];
 }
 
+// Parcel point datas
 if ($type_liv == "pointRelais") {
   $parcelpoint = Order_Util::get_parcelpoint($order);
 
@@ -78,8 +89,8 @@ if ($type_liv == "pointRelais") {
   );
 }
 
+// Expedition address datas
 $curlExp = curl_init();
-
 curl_setopt_array($curlExp, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
   CURLOPT_RETURNTRANSFER => true,
@@ -106,6 +117,9 @@ $Exp_city = isset($response[0]['city']) ? $response[0]['city'] : "";
 $Exp_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
 $Exp_email = isset($response[0]['email']) ? $response[0]['email'] : "";
 $Exp_phone = isset($response[0]['telephone']) ? $response[0]['telephone'] : "";
+$Exp_vat_number = get_option('VINW_VAT_NUMBER') ?? "";
+$Exp_eori_number = get_option('VINW_EORI_NUMBER') ?? "";
+
 $Exp_destAddress = array(
   'addressType' => $Exp_societe,
   'company' => $Exp_company,
@@ -115,8 +129,12 @@ $Exp_destAddress = array(
   'zipCode' => $Exp_postCode,
   'city' => $Exp_city,
   'country' => $Exp_country,
-  'vatNumber' => "200",
+  'vatNumber' => $Exp_vat_number,
 );
+
+if ($Exp_eori_number != "") {
+  $Exp_destAddress['eori'] = $Exp_eori_number;
+}
 
 $curl = curl_init();
 $encodeBody = '';
@@ -125,6 +143,7 @@ $postBody['expAddress'] = $Exp_destAddress;
 $postBody['destAddress'] = $destAddress;
 $postBody['packages'] = $packages;
 
+// Details datas required if expAddress[country] != destAddress[country]
 if ($country != $Exp_country) {
   $details = [];
   $i = 0;
@@ -141,10 +160,10 @@ if ($country != $Exp_country) {
       $color_hscode = 'no-color';
     }
     $vintage = get_post_meta($item['product_id'], '_custom_vintage', true);
-    d($appellation);
-    d($capacity);
-    d($alcohol_degree);
-    d($color);
+    // d($appellation);
+    // d($capacity);
+    // d($alcohol_degree);
+    // d($color);
     $curlHscode = curl_init();
     $hscodeURL = "https://test.extranet.vignoblexport.fr/api/get-hscode";
     $hscodeURL .= "?appellationName=" . $appellation;
@@ -169,13 +188,9 @@ if ($country != $Exp_country) {
     ));
     $hs_code = json_decode(curl_exec($curlHscode), true);
     curl_close($curlHscode);
-    var_dump($hs_code);
-    //"vintage":"2018",
     $product  = $item->get_product();
     $unit_value = $product->get_price();
-    d($unit_value);
     $quantity = $item->get_quantity();
-    d($quantity);
     $details[] = [
       "appellation" => $appellation,
       "capacity" => $capacity,
@@ -189,7 +204,6 @@ if ($country != $Exp_country) {
   }
   $postBody['details'] = $details;
 }
-var_dump($postBody['details']);
 
 $postBody['carrier'] = $offreArr;
 
@@ -224,6 +238,7 @@ foreach ($priorityType as $prio) {
   }
 }
 
+// insurance datas required if insurance = 1
 $insurance = $result[0]['insurance'];
 $postBody['insurance'] = get_option('VINW_ASSURANCE') == 'yes' ? "1" : "0";
 if ($postBody['insurance'] == "1" && isset($result[0]['insurance'])) {
@@ -234,10 +249,11 @@ $postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == 'exp' ? "exp" : "des
 
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
+
+// Fiscal representation applies to certain destinations in the EU (stored in the db)
 if ($expedition_type == "fiscal_rep") {
   $postBody['fiscalRepresentation'] = 1;
 }
-var_dump($postBody);
 
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",

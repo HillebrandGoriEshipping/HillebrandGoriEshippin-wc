@@ -822,7 +822,7 @@ function vignoblexport_product_custom_fields()
 	woocommerce_wp_select(array( // Text Field type
 		'id'          => '_custom_circulation',
 		'label'       => __('Circulation', 'Vignoblexport'),
-		'description' => __('Payment of excise duty on alcohol', 'Vignoblexport'),
+		'description' => __('Circulation of the commodity (excise duty paid or suspended)', 'Vignoblexport'),
 		'desc_tip'    => true,
 		'options'  	  => array(
 			'CRD'     => __('CRD', 'Vignoblexport'),
