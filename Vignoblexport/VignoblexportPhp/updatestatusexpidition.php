@@ -160,10 +160,7 @@ if ($country != $Exp_country) {
       $color_hscode = 'no-color';
     }
     $vintage = get_post_meta($item['product_id'], '_custom_vintage', true);
-    // d($appellation);
-    // d($capacity);
-    // d($alcohol_degree);
-    // d($color);
+
     $curlHscode = curl_init();
     $hscodeURL = "https://test.extranet.vignoblexport.fr/api/get-hscode";
     $hscodeURL .= "?appellationName=" . $appellation;
@@ -252,8 +249,10 @@ $postBody['totalValue'] = (string)$price_excl_vat;
 
 // Fiscal representation applies to certain destinations in the EU (stored in the db)
 if ($expedition_type == "fiscal_rep") {
-  $postBody['fiscalRepresentation'] = 1;
+  $postBody['fiscalRepresentation'] = "1";
 }
+
+var_dump($postBody);
 
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",

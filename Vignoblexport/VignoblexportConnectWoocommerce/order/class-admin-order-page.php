@@ -225,16 +225,9 @@ class Admin_Order_Page
 				$tax_amount = $result[0]['tax_amount'];
 				$nbr_bottles = (float)$result[0]['nbr_bottles'];
 				$nbr_Magnums = (float)$result[0]['nbr_Magnums'];
-				$eligibleCountries = ['DE', 'AT', 'BE', 'DK', 'ES', 'IT', 'LU', 'NL', 'GB', 'SE'];
 				$fraischarge = null;
 				$type_package = $result[0]['package_type'];
-				$vat_rate = $this->get_vat_from_dest_country($country);
-				// if (in_array($country, $eligibleCountries)) {
-				// 	$charge = $this->get_charges($order_id);
-				// 	if ($charge) {
-				// 		$fraischarge = floatval($charge["totalAllInShippingPriceExp"]) + floatval($charge["totalAllInExcisesExp"]) + floatval($charge["totalAllInExcisesExp"]) + floatval($charge["totalAllInPackagingTaxExp"]);
-				// 	}
-				// }
+				$vat_rate = $this->get_vat_from_country($country);
 				$count  = $order->get_item_count();
 				$package = json_decode(trim(stripslashes(stripslashes($result[0]["package"])), '"'), true);
 
@@ -643,7 +636,7 @@ class Admin_Order_Page
 							));
 							$response = json_decode(curl_exec($curlExp), true);
 							curl_close($curlExp);
-							$wc_shop_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
+							$shop_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
 
 							if ((is_countable($get_rates) && count($get_rates) > 0) /*|| (is_countable($get_rateJplus) && count($get_rateJplus) > 0)*/) {
 								if ($type_livraison == "domicile") {
@@ -658,11 +651,11 @@ class Admin_Order_Page
 											$vat_choice = get_option('VINW_VAT_CHOICE');
 											$currentCountry = $order->get_shipping_country();
 
-											$tax_category = $this->get_tax_category($wc_shop_country, $currentCountry);
+											$tax_category = $this->get_tax_category($shop_country, $currentCountry);
 
 											if ($tax_category == "standard") {
 												if ($vat_choice == 'yes') {
-													$vat_rate = $this->get_vat_from_dest_country($currentCountry);
+													$vat_rate = $this->get_vat_from_country($shop_country);
 													$tax_amount = round(($offer['price'] * $vat_rate) / 100, 2);
 													$finalPrice = $offer['price'] + $tax_amount;
 													$finalPrice = round($finalPrice, 2);
@@ -671,11 +664,19 @@ class Admin_Order_Page
 												}
 											} elseif ($tax_category == "intra_eu") {
 												if ($vat_choice == 'yes') {
-													$vat_rate = $this->get_vat_from_dest_country($currentCountry);
+													if (get_option('VINW_VAT_OSS') == 'yes') {
+														$vat_rate = $this->get_vat_from_country($currentCountry);
+													} else {
+														$vat_rate = $this->get_vat_from_country($shop_country);
+													}
 													$fiscal_rep = $this->get_charges($offer['price'], $order_id);
-													$tax_amount = round(($offer['price'] * $vat_rate) / 100, 2);
-													$finalPrice = $fiscal_rep + $tax_amount;
+													$fiscal_forfeit = $fiscal_rep - $offer['price'];
+													$rep_fiscal_TTC = $fiscal_rep + ($fiscal_forfeit * $vat_rate) / 100; // frais rep fiscal avec TVA
+													$rep_fiscal_TTC = round($rep_fiscal_TTC, 2);
+													$finalPrice = $rep_fiscal_TTC + (($offer['price'] * $vat_rate) / 100);
 													$finalPrice = round($finalPrice, 2);
+													$tax_amount = $finalPrice - $offer['price'];
+													$tax_amount = round($tax_amount, 2);
 												} else {
 													$fiscal_rep = $this->get_charges($offer['price'], $order_id);
 													$finalPrice = round($fiscal_rep, 2);
@@ -718,7 +719,7 @@ class Admin_Order_Page
 											$currentCountry = $order->get_shipping_country();
 
 											if ($vat_choice == 'yes') {
-												$vat_rate = $this->get_vat_from_dest_country($currentCountry);
+												$vat_rate = $this->get_vat_from_country($currentCountry);
 												$tax_amount = round(($offer['price'] * $vat_rate) / 100, 2);
 												$finalPrice = $offer['price'] + $tax_amount;
 												$finalPrice = round($finalPrice, 2);
@@ -1416,7 +1417,7 @@ class Admin_Order_Page
 	 *
 	 * @void
 	 */
-	function get_vat_from_dest_country($dest_country)
+	function get_vat_from_country($country)
 	{
 		// api request
 		$curl = curl_init();
@@ -1440,7 +1441,7 @@ class Admin_Order_Page
 		$arrayCountries = json_decode($allCountries, true);
 
 		foreach ($arrayCountries as $value) {
-			if ($value['iso2'] && $value['iso2'] === $dest_country && $value['vat_rate'] !== "") {
+			if ($value['iso2'] && $value['iso2'] === $country && $value['vat_rate'] !== "") {
 				return $value['vat_rate'];
 			}
 		}

@@ -281,6 +281,20 @@ $adress = $getadress;
 					</td>
 				</tr>
 
+				<!-- OSS -->
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e('OSS:', 'Vignoblexport') ?></th>
+					<td>
+						<select name="VINW_VAT_OSS">
+							<option value="no" <?php if (get_option('VINW_VAT_OSS') == 'no') echo 'selected' ?>><?php esc_html_e('No', 'Vignoblexport') ?></option>
+							<option value="yes" <?php if (get_option('VINW_VAT_OSS') == 'yes') echo 'selected' ?>><?php esc_html_e('Yes', 'Vignoblexport') ?></option>
+						</select>
+						<div class="tooltip">?
+							<span class="tooltiptext"><?php esc_html_e('wip : Add description', 'Vignoblexport'); ?></span>
+						</div>
+					</td>
+				</tr>
+
 				<!-- VAT NUMBER -->
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e('VAT number', 'Vignoblexport'); ?> :</th>

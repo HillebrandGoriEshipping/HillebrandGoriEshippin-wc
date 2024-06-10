@@ -535,6 +535,7 @@ class Label_Override
 	{
 		$cart = WC()->session->cart;
 		$allHsCodes = $this->get_hscode();
+		// var_dump($allHsCodes);
 
 		$curlCharges = curl_init();
 		$chargesURL = "https://test.extranet.vignoblexport.fr/api/shipment/get-charges?";
@@ -626,7 +627,7 @@ class Label_Override
 	 *
 	 * @void
 	 */
-	function get_vat_from_dest_country($dest_country)
+	function get_vat_from_country($country)
 	{
 		// api request
 		$curl = curl_init();
@@ -650,7 +651,7 @@ class Label_Override
 		$arrayCountries = json_decode($allCountries, true);
 
 		foreach ($arrayCountries as $value) {
-			if ($value['iso2'] && $value['iso2'] === $dest_country && $value['vat_rate'] !== "") {
+			if ($value['iso2'] && $value['iso2'] === $country && $value['vat_rate'] !== "") {
 				return $value['vat_rate'];
 			}
 		}
@@ -861,12 +862,22 @@ class Label_Override
 		$cart = WC()->session->cart;
 
 		foreach ($cart as $cart_item) {
+			$hs_code_color = get_post_meta($cart_item['product_id'], '_custom_color', true);
+			if ($hs_code_color == 'Red') {
+				$hs_code_color = 'red';
+			} elseif ($hs_code_color == 'White') {
+				$hs_code_color = 'white';
+			} elseif ($hs_code_color == 'Rose') {
+				$hs_code_color = 'rose';
+			} else {
+				$hs_code_color = 'no-color';
+			}
 			$curlHscode = curl_init();
 			$hscodeURL = "https://test.extranet.vignoblexport.fr/api/get-hscode";
 			$hscodeURL .= "?appellationName=" . htmlspecialchars_decode(get_post_meta($cart_item['product_id'], '_custom_appelation', true));
 			$hscodeURL .= "&capacity=" . get_post_meta($cart_item['product_id'], '_custom_capacity', true);
 			$hscodeURL .= "&alcoholDegree=" . get_post_meta($cart_item['product_id'], '_custom_alcohol_degree', true);
-			$hscodeURL .= "&color=" . get_post_meta($cart_item['product_id'], '_custom_color', true);
+			$hscodeURL .= "&color=" . $hs_code_color;
 
 			$hscodeURL = str_replace(" ", "%20", $hscodeURL);
 
@@ -884,7 +895,7 @@ class Label_Override
 				),
 			));
 			$responseHscode = json_decode(curl_exec($curlHscode), true);
-			array_push($allHsCodes, $responseHscode);
+			$allHsCodes[] = $responseHscode;
 			curl_close($curlHscode);
 		}
 
@@ -1165,7 +1176,6 @@ class Label_Override
 						$offerLogo = $this->getOfferLogo($offer['name'], $offer['service']);
 						$price_excl_vat = (float)$offer['price'];
 						$currency = $offer['currency'];
-
 						$tax_category = $this->get_tax_category($Exp_country, $currentCountry);
 						$current_dest_country = WC()->customer->get_shipping_country();
 						$vat_choice = get_option('VINW_VAT_CHOICE');
@@ -1174,7 +1184,7 @@ class Label_Override
 						if ($tax_category == "standard") {
 							$expedition_type = "standard";
 							if ($vat_choice == 'yes') {
-								$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
+								$vat_rate = $this->get_vat_from_country($Exp_country);
 								$finalPrice = $price_excl_vat + (($price_excl_vat * $vat_rate) / 100);
 								$finalPrice = round($finalPrice, 2);
 								$tax_amount = ($price_excl_vat * $vat_rate) / 100;
@@ -1186,12 +1196,22 @@ class Label_Override
 						} elseif ($tax_category == "intra_eu") {
 							$expedition_type = "fiscal_rep";
 							if ($vat_choice == 'yes') {
-								$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
+								if (get_option('VINW_VAT_OSS') == 'yes') {
+									$vat_rate = $this->get_vat_from_country($current_dest_country);
+								} else {
+									$vat_rate = $this->get_vat_from_country($Exp_country);
+								}
+								d($vat_rate);
 								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
-								$finalPrice = (float)$fiscal_rep + (($price_excl_vat * $vat_rate) / 100);
+								$fiscal_forfeit = $fiscal_rep - $price_excl_vat;
+								$rep_fiscal_TTC = $fiscal_rep + ($fiscal_forfeit * $vat_rate) / 100; // frais rep fiscal avec TVA
+								$rep_fiscal_TTC = round($rep_fiscal_TTC, 2);
+								$finalPrice = $rep_fiscal_TTC + (($price_excl_vat * $vat_rate) / 100);
 								$finalPrice = round($finalPrice, 2);
 								$tax_amount = $finalPrice - $price_excl_vat;
 								$tax_amount = round($tax_amount, 2);
+								// var_dump($finalPrice);
+								// var_dump($tax_amount);
 							} else {
 								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
 								$finalPrice = round((float)$fiscal_rep, 2);
@@ -1253,7 +1273,7 @@ class Label_Override
 							if ($tax_category == "standard") {
 								$expedition_type = "standard";
 								if ($vat_choice == 'yes') {
-									$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
+									$vat_rate = $this->get_vat_from_country($current_dest_country);
 									$finalPrice = $price_excl_vat + (($price_excl_vat * $vat_rate) / 100);
 									$finalPrice = round($finalPrice, 2);
 									$tax_amount = ($price_excl_vat * $vat_rate) / 100;
@@ -1265,7 +1285,11 @@ class Label_Override
 							} elseif ($tax_category == "intra_eu") {
 								$expedition_type = "fiscal_rep";
 								if ($vat_choice == 'yes') {
-									$vat_rate = $this->get_vat_from_dest_country($current_dest_country);
+									if (get_option('VINW_VAT_OSS') == 'yes') {
+										$vat_rate = $this->get_vat_from_country($current_dest_country);
+									} else {
+										$vat_rate = $this->get_vat_from_country($Exp_country);
+									}
 									$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
 									$finalPrice = (float)$fiscal_rep + (($price_excl_vat * $vat_rate) / 100);
 									$finalPrice = round($finalPrice, 2);
