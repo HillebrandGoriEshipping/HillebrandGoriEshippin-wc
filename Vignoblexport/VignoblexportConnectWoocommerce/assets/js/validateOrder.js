@@ -340,13 +340,13 @@ function updatstatus() {
       }
     },
     error: function (xhr, ajaxOptions, thrownError) {
-      // let { fullerrors } = " ";
-      // let obj = JSON.parse(xhr.responseText);
-      // let { errors } = obj[0].error;
-      // for (let key in Object.values(errors)[0]) {
-      //   fullerrors += `${key}:${Object.values(errors)[0][key]}`;
-      // }
-      // alert(fullerrors);
+      //   let { fullerrors } = " ";
+      //   let obj = JSON.parse(xhr.responseText);
+      //   let { errors } = obj[0].error;
+      //   for (let key in Object.values(errors)[0]) {
+      //     fullerrors += `${key}:${Object.values(errors)[0][key]}`;
+      //   }
+      //   alert(fullerrors);
       console.log(xhr.responseText);
       console.log(ajaxOptions);
       console.log(thrownError);

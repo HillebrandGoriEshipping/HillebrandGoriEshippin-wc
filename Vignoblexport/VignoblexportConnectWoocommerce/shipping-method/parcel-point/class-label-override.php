@@ -157,6 +157,10 @@ class Label_Override
 
 		$session_exp_type = WC()->session->get('expedition_type');
 
+		if (WC()->session->get('currency') != null && $session_exp_type == "export") {
+			$session_currency = WC()->session->get('currency');
+		}
+
 		global $wpdb;
 		$tablename = $wpdb->prefix . 'VINW_order_expidition';
 
@@ -174,8 +178,9 @@ class Label_Override
 				'tax_amount' => urldecode($session_tax_amount),
 				'insurance' => urldecode($session_insurance),
 				'expedition_type' => urldecode($session_exp_type),
+				'currency' => urldecode($session_currency),
 			),
-			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f', '%s')
+			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f', '%s', '%s')
 		);
 		if (WC()->session->get('VINW_CONF_EXP') !== null) {
 			WC()->session->set('VINW_CONF_EXP', null);
@@ -806,6 +811,7 @@ class Label_Override
 		WC()->session->__set('offer', $data);
 		WC()->session->set('tax_amount', $shipping_tax);
 		WC()->session->set('insurance', $insurance);
+		WC()->session->set('currency', $currency);
 		die();
 	}
 
@@ -1201,7 +1207,6 @@ class Label_Override
 								} else {
 									$vat_rate = $this->get_vat_from_country($Exp_country);
 								}
-								d($vat_rate);
 								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
 								$fiscal_forfeit = $fiscal_rep - $price_excl_vat;
 								$rep_fiscal_TTC = $fiscal_rep + ($fiscal_forfeit * $vat_rate) / 100; // frais rep fiscal avec TVA
@@ -1229,6 +1234,12 @@ class Label_Override
 							}
 						}
 
+						if ($destiType == "company" && ($expedition_type == "export" || $expedition_type == "fiscal_rep")) {
+							$full_label = '<br><span class="notif">' . __("If you are a company, please contact the sender.", "Vignoblexport") . ' </span>';
+							break;
+						}
+
+
 						WC()->session->set('expedition_type', $expedition_type);
 
 						if (get_option('VINW_ASSURANCE') == 'yes') {
@@ -1240,6 +1251,15 @@ class Label_Override
 							$offre1 .= '<input type="hidden" name="priceOffre" id="priceOffre_' . $key . '"  value="' . sprintf("%01.2f", $finalPrice) . '" >';
 							$offre1 .= '<img style="display:unset; max-width: 55px; margin-right: 8px;" src="' . $offerLogo . '" />';
 							$offre1 .= '<p  id="offer-cont_' . $key . '" for="shipping_method_offer_' . $key . '"><strong>' . $offer['service'] . '</strong><br>  ' . __('Price: ', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $finalPrice) . '€</strong> <br> | ' . __('Estimated delivery', 'Vignoblexport') . ' ' . $date1 . '<br> </p></div>';
+							if ($expedition_type == "export" && get_option('VINW_TAX_RIGHTS') == 'dest') {
+								if ($currency == "EUR") {
+									$currency = "€";
+								} else {
+									$currency = "$";
+								}
+								$offre1 .= '<p>' . __('Estimated tax and duties that will be invoiced by carrier:', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $tax_amount) . ' ' . $currency . '</strong></p>';
+							}
+							$offre1 .= '</div>';
 						}
 						$i++;
 					}

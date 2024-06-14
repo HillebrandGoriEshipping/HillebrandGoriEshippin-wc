@@ -52,6 +52,8 @@ $offre = trim(stripslashes(stripslashes($result[0]['offre'])), '"');
 $offreArr = json_decode($offre, true);
 $type_liv = $result[0]['type_liv'];
 $expedition_type = $result[0]['expedition_type'];
+$currency = $result[0]['currency'];
+var_dump($expedition_type);
 
 $packageNumber = 0;
 $packages = [];
@@ -148,6 +150,7 @@ if ($country != $Exp_country) {
   $details = [];
   $i = 0;
   foreach ($order->get_items() as $item_id => $item) {
+    $description = $item->get_name();
     $appellation = get_post_meta($item['product_id'], '_custom_appelation', true);
     $capacity = get_post_meta($item['product_id'], '_custom_capacity', true);
     $alcohol_degree = get_post_meta($item['product_id'], '_custom_alcohol_degree', true);
@@ -189,6 +192,7 @@ if ($country != $Exp_country) {
     $unit_value = $product->get_price();
     $quantity = $item->get_quantity();
     $details[] = [
+      "description" => $description,
       "appellation" => $appellation,
       "capacity" => $capacity,
       "alcoholDegree" => $alcohol_degree,
@@ -203,6 +207,9 @@ if ($country != $Exp_country) {
 }
 
 $postBody['carrier'] = $offreArr;
+if ($offreArr['name'] == "dhl" && $offreArr['local'] != null) {
+  $postBody['carrier']['local'] == $offreArr['local'];
+}
 
 if (isset($nbBottles)) {
   $postBody['nbBottles'] = (string)$nbBottles;
@@ -247,12 +254,25 @@ $postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == 'exp' ? "exp" : "des
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
 
+$postBody['currency'] = $currency;
+
+foreach ($order->get_items() as $item_id => $item) {
+  $circulation = get_post_meta($item['product_id'], '_custom_circulation', true);
+  if ($circulation == "CRD") {
+    $postBody['circulation'] = $circulation;
+    break;
+  }
+}
+
+$postBody['detailsType'] = "sale";
+
 // Fiscal representation applies to certain destinations in the EU (stored in the db)
 if ($expedition_type == "fiscal_rep") {
   $postBody['fiscalRepresentation'] = "1";
 }
 
 var_dump($postBody);
+// die();
 
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",

@@ -221,6 +221,7 @@ class Admin_Order_Page
 				$query = "SELECT * FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $order_id . "'";
 				//phpcs:ignore
 				$result = $wpdb->get_results($query, ARRAY_A);
+
 				$exptax = $result[0]['charge_type'];
 				$tax_amount = $result[0]['tax_amount'];
 				$nbr_bottles = (float)$result[0]['nbr_bottles'];
@@ -230,6 +231,8 @@ class Admin_Order_Page
 				$vat_rate = $this->get_vat_from_country($country);
 				$count  = $order->get_item_count();
 				$package = json_decode(trim(stripslashes(stripslashes($result[0]["package"])), '"'), true);
+				$expedition_type = $result[0]['expedition_type'];
+				$currency = $result[0]['currency'];
 
 				$get_size = json_decode($this->get_size($nbr_bottles, $nbr_Magnums), true);
 
@@ -399,11 +402,11 @@ class Admin_Order_Page
 							</td>
 						</tr>
 					<?php } ?>
-					<?php if ($tax_category == "inter") { ?>
+					<?php if ($expedition_type == "export" && !is_null($tax_amount) && !is_null($currency)) { ?>
 						<tr class="tax-duties">
 							<td colspan="3">
-								<strong><?php esc_html_e('Tax and duties:', 'Vignoblexport'); ?></strong>
-								<?php echo $tax_amount . " €"; ?>
+								<strong><?php esc_html_e('Estimated tax and duties:', 'Vignoblexport'); ?></strong>
+								<?php echo $tax_amount . " " . $currency; ?>
 								<?php
 								if (get_option('VINW_TAX_RIGHTS') == 'exp') {
 									esc_html_e(' at your expense (included in shipping price)', 'Vignoblexport');
