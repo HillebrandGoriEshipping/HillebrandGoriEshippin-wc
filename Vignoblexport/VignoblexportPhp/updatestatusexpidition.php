@@ -11,7 +11,8 @@ $order_data = $order->get_data();
 //destination address datas
 $shippingDetails = $order_data['shipping'];
 
-$societe = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? "company" : "individual";
+//$societe = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? "company" : "individual";
+$societe = "individual";
 $company = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? $shippingDetails['company'] : "none"; //required if addressType = company
 $contact = isset($shippingDetails['first_name']) ? $shippingDetails['first_name'] : "";
 $contact .= isset($shippingDetails['last_name']) ? " " . $shippingDetails['last_name'] : "";
@@ -155,6 +156,8 @@ if ($country != $Exp_country) {
     $capacity = get_post_meta($item['product_id'], '_custom_capacity', true);
     $alcohol_degree = get_post_meta($item['product_id'], '_custom_alcohol_degree', true);
     $color = get_post_meta($item['product_id'], '_custom_color', true);
+    $type = get_post_meta($product_id, '_custom_type', true);
+    $producing_country = get_post_meta($item['product_id'], '_custom_producing_country', true);
     if ($color === 'Red') {
       $color_hscode = 'red';
     } elseif ($color === 'Rose') {
@@ -191,6 +194,9 @@ if ($country != $Exp_country) {
     $product  = $item->get_product();
     $unit_value = $product->get_price();
     $quantity = $item->get_quantity();
+    if ($type == 'spirits') {
+      $color = 'spirits';
+    }
     $details[] = [
       "description" => $description,
       "appellation" => $appellation,
@@ -200,7 +206,8 @@ if ($country != $Exp_country) {
       "hsCode" => $hs_code,
       "vintage" => (string)$vintage,
       "unitValue" => $unit_value,
-      "quantity" => $quantity
+      "quantity" => $quantity,
+      "origin" => $producing_country
     ];
   }
   $postBody['details'] = $details;

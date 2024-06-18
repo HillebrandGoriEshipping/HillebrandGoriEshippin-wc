@@ -52,44 +52,6 @@ class Label_Override
 		add_action('wp_ajax_nopriv_update_pickup_relay', array($this, 'update_pickup_relay'));
 		add_action('wp_ajax_update_pickup_relay', array($this, 'update_pickup_relay'));
 		add_action('woocommerce_checkout_process', array($this, 'is_offer_set_checkout_field_process'));
-		add_action('woocommerce_review_order_before_shipping', array($this, 'add_estimated_tax_and_duties_row'), 99);
-	}
-
-	function add_estimated_tax_and_duties_row()
-	{
-		$curlExp = curl_init();
-		curl_setopt_array($curlExp, array(
-			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => "GET",
-			CURLOPT_HTTPHEADER => array(
-				"X-AUTH-TOKEN: " . get_option('VINW_ACCESS_KEY'),
-			),
-		));
-
-		$response = json_decode(curl_exec($curlExp), true);
-		curl_close($curlExp);
-
-		$exp_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
-		$dest_country = WC()->customer->get_billing_country();
-
-		if (get_option("VINW_TAX_RIGHTS") == "dest" && $this->get_tax_category($exp_country, $dest_country) == "inter") {
-?>
-			<tr>
-				<th><?php _e("Estimated tax & duties", "Vignoblexport"); ?></th>
-				<td>
-					<span id="tax-and-duties-amount""><?php _e("Select an offer", "Vignoblexport"); ?></span>
-				<span id=" tax-and-duties-currency"></span>
-				</td>
-			</tr>
-
-		<?php
-		}
 	}
 
 	/**
@@ -435,7 +397,7 @@ class Label_Override
 	 * @param string $carrier The carrier for which the tax and duties are being calculated.
 	 * @return array The tax and duties informations in an associative array format.
 	 */
-	function get_tax_and_duties($carrier)
+	function get_tax_and_duties($carrier, bool $is_zero = false)
 	{
 		$nbm = $this->get_nbr_Bottles_magnums();
 		$country = WC()->customer->get_shipping_country();
@@ -472,6 +434,10 @@ class Label_Override
 				$type = $prio;
 				break;
 			}
+		}
+
+		if ($is_zero == true) {
+			$type = 'wine';
 		}
 
 		// api request
@@ -789,11 +755,7 @@ class Label_Override
 			$insurance = 0;
 		}
 
-		if (get_option('VINW_TAX_RIGHTS') == 'dest') {
-			$currency = $_GET['currency'];
-		} else {
-			$currency = get_woocommerce_currency();
-		}
+		$currency = $_GET['currency'];
 
 		$jsonData = [
 			'shippingTotal' => number_format(WC()->cart->get_shipping_total(), 2, ',', ' ') . ' €',
@@ -839,7 +801,7 @@ class Label_Override
 	function reinit_offer_at_leave_checkout()
 	{
 		//we used the jquery beforeunload function to detect if the user leaves that page
-		?>
+?>
 
 		<script>
 			jQuery(document).ready(function($) {
@@ -1099,6 +1061,22 @@ class Label_Override
 					$url .= "&minHour=09:10:00";
 					$url .= "&cutoff=19:00:00";
 
+					if (in_array('fedex', get_option('VINW_PREF_TRANSP'))) {
+						$url .= "&fedex=1";
+					}
+					if (in_array('ups', get_option('VINW_PREF_TRANSP'))) {
+						$url .= "&ups=1";
+					}
+					if (in_array('dhl', get_option('VINW_PREF_TRANSP'))) {
+						$url .= "&dhl=1";
+					}
+					if (in_array('tnt', get_option('VINW_PREF_TRANSP'))) {
+						$url .= "&dhl=1";
+					}
+					if (in_array('chronopost', get_option('VINW_PREF_TRANSP'))) {
+						$url .= "&dhl=1";
+					}
+
 					$totalBttles =  $nbr_Bottles_magnums['nbr_bot'] + $nbr_Bottles_magnums['nbr_mg'];
 
 					$url .= "&nbBottles=" . (string)$totalBttles;
@@ -1224,7 +1202,10 @@ class Label_Override
 							}
 						} else { // $tax_category == "inter"
 							$expedition_type = "export";
-							$tax_and_duties = $this->get_tax_and_duties($offer['name']);
+							$tax_and_duties = $this->get_tax_and_duties($offer['name'], false);
+							if ($tax_and_duties['price'] == 0) {
+								$tax_and_duties = $this->get_tax_and_duties($offer['name'], true);
+							}
 							if ($tax_duties_choice == 'exp') {
 								$finalPrice = $price_excl_vat + $tax_and_duties['price'];
 								$tax_amount = round($tax_and_duties['price'], 2);
@@ -1259,7 +1240,6 @@ class Label_Override
 								}
 								$offre1 .= '<p>' . __('Estimated tax and duties that will be invoiced by carrier:', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $tax_amount) . ' ' . $currency . '</strong></p>';
 							}
-							$offre1 .= '</div>';
 						}
 						$i++;
 					}
@@ -1322,7 +1302,10 @@ class Label_Override
 								}
 							} else { // $tax_category == "inter"
 								$expedition_type = "export";
-								$tax_and_duties = $this->get_tax_and_duties($offer['name']);
+								$tax_and_duties = $this->get_tax_and_duties($offer['name'], false);
+								if ($tax_and_duties['price'] == 0) {
+									$tax_and_duties = $this->get_tax_and_duties($offer['name'], true);
+								}
 								if ($tax_duties_choice == 'exp') {
 									$finalPrice = $price_excl_vat + $tax_and_duties['price'];
 									$tax_amount = round($tax_and_duties['price'], 2);
