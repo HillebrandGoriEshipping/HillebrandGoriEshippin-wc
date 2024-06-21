@@ -340,25 +340,8 @@ class Admin_Order_Page
 				// 	$this->sendDifferenceMail(get_option('admin_email'), "Admin", $diffrence);
 				// }
 ?>
-				<tbody id="typeoffre">
-					<tr class="shipping" data-order_item_id="16">
-						<td colspan="6"><strong><?php esc_html_e('Your expedition method:', 'Vignoblexport') ?> <strong>
-									<input type="hidden" name="shipping_mettype" id="shipping_method_type" value="<?php echo $type_livraison ?>" class="shipping_method">
-									<input type="hidden" id="form_nb_bouteilles" name="form_nb_bouteilles" value="<?php echo $nbr_bottles ?>">
-									<input type="hidden" id="form_nb_magnums" name="form_nb_magnums" value="<?php echo $nbr_Magnums ?>">
-
-									<?php
-									if ($type_livraison == "domicile") {
-										esc_html_e('Domestic', 'Vignoblexport');
-									} else {
-										esc_html_e('Relay point', 'Vignoblexport');
-									}	 ?>
-						</td>
-					</tr>
-
-				</tbody>
-
 				<tbody id="offre">
+					<!----------------------------------------------------------------
 					<tr class="shipping" data-order_item_id="19">
 						<td colspan="3">
 							<strong><?php esc_html_e('Price difference:', 'Vignoblexport') ?></strong>
@@ -377,49 +360,126 @@ class Admin_Order_Page
 
 						</td>
 					</tr>
+					----------------------------------------------------------------->
 					<?php if ($offres != null) { ?>
 						<tr class="shipping" data-order_item_id="19">
 							<td colspan="3">
-								<strong> <?php esc_html_e('Chosen offer:', 'Vignoblexport') ?> </strong><?php echo $offres['service'] ?>: <strong>
-									<?php if (get_option('VINW_VAT_CHOICE') == 'yes') {
-
-										$total_shipping =  $offres['price'] + $tax_amount;
-										if (get_option('VINW_ASSURANCE') == 'yes') {
-											$total_shipping = $total_shipping + $offres['insurancePrice'];
-										}
-										echo number_format($total_shipping, 2, ',', ' ') . ' €';
-										esc_html_e(' (all tax included)', 'Vignoblexport');
-									} else {
-										echo number_format($offres['price'], 2, ',', ' ') . "€";
-										esc_html_e(' (tax excluded)', 'Vignoblexport');
-									}
-									?>
-								</strong> | le <?php echo $offres['deliveryDate'] ?> at <?php echo $offres['pickupTime'] ?>
-
-							</td>
-							<td colspan="2">
-
-							</td>
-						</tr>
-					<?php } ?>
-					<?php if ($expedition_type == "export" && !is_null($tax_amount) && !is_null($currency)) { ?>
-						<tr class="tax-duties">
-							<td colspan="3">
-								<strong><?php esc_html_e('Estimated tax and duties:', 'Vignoblexport'); ?></strong>
-								<?php echo $tax_amount . " " . $currency; ?>
+								<strong><?php esc_html_e('Your expedition method:', 'Vignoblexport') ?> </strong>
+								<input type="hidden" name="shipping_mettype" id="shipping_method_type" value="<?php echo $type_livraison ?>" class="shipping_method">
+								<input type="hidden" id="form_nb_bouteilles" name="form_nb_bouteilles" value="<?php echo $nbr_bottles ?>">
+								<input type="hidden" id="form_nb_magnums" name="form_nb_magnums" value="<?php echo $nbr_Magnums ?>">
 								<?php
-								if (get_option('VINW_TAX_RIGHTS') == 'exp') {
-									esc_html_e(' at your expense (included in shipping price)', 'Vignoblexport');
+								if ($type_livraison == "domicile") {
+									esc_html_e('Domestic', 'Vignoblexport');
 								} else {
+									esc_html_e('Relay point', 'Vignoblexport');
+								}	 ?>
+								<br /><br />
+								<strong> <?php esc_html_e('Chosen offer:', 'Vignoblexport') ?> </strong><?php echo $offres['service'] ?>
+								<br /><br />
+								<strong><?php esc_html_e('Delivery date:', 'Vignoblexport') ?> </strong><?php echo $offres['deliveryDate'] ?> at <?php echo $offres['pickupTime'] ?>
+								<?php if (get_option('VINW_TAX_RIGHTS') == "dest") { ?>
+									<br /><br />
+									<strong><?php esc_html_e('Estimated tax and duties:', 'Vignoblexport'); ?></strong>
+								<?php echo $tax_amount . " " . $currency;
 									esc_html_e(' at the recipient expense', 'Vignoblexport');
 								}
 								?>
 							</td>
-							<td colspan="2">
+							<td colspan="3">
+								<table id="shipping-details-table" style="width: 100%; border: none;">
+									<?php if (get_option('VINW_OSS') == "yes") {
+										$vat_rate = $this->get_vat_from_country($country);
+									} else {
+										$curlExp = curl_init();
+										curl_setopt_array($curlExp, array(
+											CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+											CURLOPT_RETURNTRANSFER => true,
+											CURLOPT_ENCODING => "",
+											CURLOPT_MAXREDIRS => 10,
+											CURLOPT_TIMEOUT => 0,
+											CURLOPT_FOLLOWLOCATION => true,
+											CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+											CURLOPT_CUSTOMREQUEST => "GET",
+											CURLOPT_HTTPHEADER => array(
+												"X-AUTH-TOKEN: " . get_option('VINW_ACCESS_KEY'),
+											),
+										));
+										$response = json_decode(curl_exec($curlExp), true);
+										curl_close($curlExp);
+										$shop_country = isset($response[0]['country']['countryAlpha2']) ? $response[0]['country']['countryAlpha2'] : "";
+										$vat_rate = $this->get_vat_from_country($shop_country);
+									} ?>
+									<thead>
+										<tr>
+											<td style="border-top: none;"><strong><?php esc_html_e('Shipping costs details:', 'Vignoblexport') ?></strong></td>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- EXPORT -->
+										<?php if ($expedition_type == "export") { ?>
+											<tr>
+												<th><strong> <?php esc_html_e('Transport:', 'Vignoblexport') ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($offres['price'], 2, ',', ' ') . " €"; ?></td>
+											</tr>
+											<?php if (get_option('VINW_TAX_RIGHTS') == "exp") { ?>
+												<tr>
+													<td><strong> <?php esc_html_e('Estimated tax and duties:', 'Vignoblexport') ?> </strong></td>
+													<td style="border: none;"><?php echo $tax_amount . " " . $currency; ?>
+														<?php
+														if (get_option('VINW_TAX_RIGHTS') == "exp") {
+															esc_html_e(' at your expense (included in shipping price)', 'Vignoblexport');
+														} else {
+															esc_html_e(' at the recipient expense', 'Vignoblexport');
+														}
+														?>
+													</td>
+													<?php $total = $offres['price'] + $tax_amount; ?>
+												</tr>
+											<?php } else {
+
+												$total = $offres['price'];
+											} ?>
+
+											<!-- FISCAL REP.-->
+										<?php } elseif ($expedition_type == "fiscal_rep") { ?>
+											<tr>
+												<th><strong> <?php esc_html_e('Transport:', 'Vignoblexport'); ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($offres['price'], 2, ',', ' ') . " €"; ?></td>
+											</tr>
+											<tr>
+												<th><strong> <?php esc_html_e('Fiscal representation & VAT:', 'Vignoblexport'); ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($tax_amount, 2, ',', ' ') . " €"; ?></td>
+											</tr>
+											<?php $total = $offres['price'] + $tax_amount; ?>
+										<?php } else { ?>
+											<!-- DOMESTIC -->
+											<tr>
+												<th><strong> <?php esc_html_e('Transport:', 'Vignoblexport'); ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($offres['price'], 2, ',', ' ') . " €"; ?></td>
+											</tr>
+											<tr>
+												<th><strong> <?php esc_html_e('VAT', 'Vignoblexport'); ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($tax_amount, 2, ',', ' ') . " €"; ?></td>
+											</tr>
+											<?php $total = $offres['price'] + $tax_amount; ?>
+										<?php } ?>
+										<?php if (get_option('VINW_ASSURANCE') == "yes" && $result[0]['insurance'] > 0) { ?>
+											<tr>
+												<th><strong> <?php esc_html_e('Insurance:', 'Vignoblexport') ?> </strong></th>
+												<?php $total += $result[0]['insurance']; ?>
+												<td style="border: none;"><?php echo number_format($result[0]['insurance'], 2, ',', ' ') . " €"; ?></td>
+											</tr>
+										<?php } ?>
+									</tbody>
+									<tfoot>
+										<th style="border-bottom: none;"><?php esc_html_e('Total:', 'Vignoblexport') ?></th>
+										<td style="border: none;"><?php echo number_format($total, 2, ',', ' ') . " €"; ?></td>
+									</tfoot>
+								</table>
 							</td>
 						</tr>
 					<?php } ?>
-
 				</tbody>
 				<tbody id="packagin">
 					<tr class="shipping" data-order_item_id="16">
@@ -438,8 +498,6 @@ class Admin_Order_Page
 						</td>
 					</tr>
 				</tbody>
-
-
 
 				<?php echo $fields1;
 				?>
@@ -666,8 +724,8 @@ class Admin_Order_Page
 													$finalPrice = round($offer['price'], 2);
 												}
 											} elseif ($tax_category == "intra_eu") {
-												if ($vat_choice == 'yes') {
-													if (get_option('VINW_VAT_OSS') == 'yes') {
+												if ($vat_choice == "yes") {
+													if (get_option('VINW_VAT_OSS') == "yes") {
 														$vat_rate = $this->get_vat_from_country($currentCountry);
 													} else {
 														$vat_rate = $this->get_vat_from_country($shop_country);
@@ -690,7 +748,7 @@ class Admin_Order_Page
 												$finalPrice = $offer['price'] + $tax_and_duties['price'];
 											}
 
-											if (get_option('VINW_ASSURANCE') == 'yes') {
+											if (get_option('VINW_ASSURANCE') == "yes") {
 												$finalPrice = $finalPrice + $offer['insurancePrice'];
 											}
 
@@ -700,7 +758,7 @@ class Admin_Order_Page
 											if ($tax_amount) {
 												$offre1 .= 'data-tax_amount="' . $tax_amount . '"';
 											}
-											if (get_option('VINW_ASSURANCE') == 'yes') {
+											if (get_option('VINW_ASSURANCE') == "yes") {
 												$offre1 .= 'data-insurance="' . $offer['insurancePrice'] . '"';
 											}
 											$offre1 .= '>';
@@ -730,7 +788,7 @@ class Admin_Order_Page
 												$finalPrice = round($offer['price'], 2);
 											}
 
-											if (get_option('VINW_ASSURANCE') == 'yes') {
+											if (get_option('VINW_ASSURANCE') == "yes") {
 												$finalPrice = $finalPrice + $offer['insurancePrice'];
 											}
 
@@ -740,7 +798,7 @@ class Admin_Order_Page
 											if ($tax_amount) {
 												$offre2 .= 'data-tax_amount="' . $tax_amount . '"';
 											}
-											if (get_option('VINW_ASSURANCE') == 'yes') {
+											if (get_option('VINW_ASSURANCE') == "yes") {
 												$offre1 .= 'data-insurance="' . $offer['insurancePrice'] . '"';
 											}
 											$offre2 .= '>';

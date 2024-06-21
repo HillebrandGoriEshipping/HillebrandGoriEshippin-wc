@@ -251,12 +251,12 @@ foreach ($priorityType as $prio) {
 
 // insurance datas required if insurance = 1
 $insurance = $result[0]['insurance'];
-$postBody['insurance'] = get_option('VINW_ASSURANCE') == 'yes' ? "1" : "0";
+$postBody['insurance'] = get_option('VINW_ASSURANCE') == "yes" ? "1" : "0";
 if ($postBody['insurance'] == "1" && isset($result[0]['insurance'])) {
-  $postBody['insurancePrice'] = (float)$insurance;
+  $postBody['insurancePrice'] = (int)$insurance;
 }
 
-$postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == 'exp' ? "exp" : "dest";
+$postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == "exp" ? "exp" : "dest";
 
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
