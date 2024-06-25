@@ -138,7 +138,7 @@ class Label_Override
 				'package' => urldecode($package),
 				'type_liv' => urldecode($sessionDetails[4]),
 				'offre' => urldecode($sessionDetails[0]),
-				'charge_type' => get_option('VINW_TAX_RIGHTS') == 'dest'  ? get_option('VINW_TAX_RIGHTS') : 'exp',
+				'charge_type' => get_option('VINW_TAX_RIGHTS') == "dest"  ? get_option('VINW_TAX_RIGHTS') : "exp",
 				'package_type' => 'colis',
 				'nbr_bottles' => urldecode($sessionDetails[8]),
 				'nbr_Magnums' => urldecode($sessionDetails[9]),
@@ -149,7 +149,7 @@ class Label_Override
 				'vat_transport' => urldecode($session_vat_transport),
 				'vat_accises' => urldecode($session_vat_accises),
 			),
-			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f', '%s', '%s', '%f', '%f')
+			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%d', '%s', '%s', '%f', '%f')
 		);
 		if (WC()->session->get('VINW_CONF_EXP') !== null) {
 			WC()->session->set('VINW_CONF_EXP', null);
@@ -1236,7 +1236,7 @@ class Label_Override
 							$full_label = '<br><span class="notif">' . __("If you are a company, please contact the sender.", "Vignoblexport") . ' </span>';
 							break;
 						}
-
+						// d($expedition_type);
 						WC()->session->set('expedition_type', $expedition_type);
 
 						if (get_option('VINW_ASSURANCE') == "yes") {

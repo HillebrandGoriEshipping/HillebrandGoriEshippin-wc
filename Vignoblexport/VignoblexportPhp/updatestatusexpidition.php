@@ -157,7 +157,7 @@ if ($country != $Exp_country) {
     $capacity = get_post_meta($item['product_id'], '_custom_capacity', true);
     $alcohol_degree = get_post_meta($item['product_id'], '_custom_alcohol_degree', true);
     $color = get_post_meta($item['product_id'], '_custom_color', true);
-    $type = get_post_meta($product_id, '_custom_type', true);
+    $type = get_post_meta($item['product_id'], '_custom_type', true);
     $producing_country = get_post_meta($item['product_id'], '_custom_producing_country', true);
     if ($color === 'Red') {
       $color_hscode = 'red';
@@ -266,7 +266,9 @@ $postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == "exp" ? "exp" : "des
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
 
-$postBody['currency'] = $currency; // TODO vérifier d'ou vient le soucis (NULL)
+if ($expedition_type == "export") {
+  $postBody['currency'] = $currency;
+}
 
 foreach ($order->get_items() as $item_id => $item) {
   $circulation = get_post_meta($item['product_id'], '_custom_circulation', true);
