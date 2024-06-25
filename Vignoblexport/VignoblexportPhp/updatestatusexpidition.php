@@ -54,6 +54,7 @@ $offreArr = json_decode($offre, true);
 $type_liv = $result[0]['type_liv'];
 $expedition_type = $result[0]['expedition_type'];
 $currency = $result[0]['currency'];
+var_dump($currency);
 var_dump($expedition_type);
 
 $packageNumber = 0;
@@ -250,10 +251,14 @@ foreach ($priorityType as $prio) {
 }
 
 // insurance datas required if insurance = 1
-$insurance = $result[0]['insurance'];
-$postBody['insurance'] = get_option('VINW_ASSURANCE') == "yes" ? "1" : "0";
-if ($postBody['insurance'] == "1" && isset($result[0]['insurance'])) {
-  $postBody['insurancePrice'] = (int)$insurance;
+$insurance = $offreArr['insurancePrice'];
+if (get_option('VINW_ASSURANCE') == "yes") {
+  $postBody['insurance'] = true;
+} else {
+  $postBody['insurance'] = false;
+}
+if ($postBody['insurance'] == true && isset($result[0]['insurance'])) {
+  $postBody['insurancePrice'] = $insurance;
 }
 
 $postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == "exp" ? "exp" : "dest";
@@ -261,7 +266,7 @@ $postBody['dutiesTaxes'] = get_option('VINW_TAX_RIGHTS') == "exp" ? "exp" : "des
 $price_excl_vat = (float)$order->get_subtotal();
 $postBody['totalValue'] = (string)$price_excl_vat;
 
-$postBody['currency'] = $currency;
+$postBody['currency'] = $currency; // TODO vérifier d'ou vient le soucis (NULL)
 
 foreach ($order->get_items() as $item_id => $item) {
   $circulation = get_post_meta($item['product_id'], '_custom_circulation', true);
@@ -279,7 +284,7 @@ if ($expedition_type == "fiscal_rep") {
 }
 
 var_dump($postBody);
-// die();
+die();
 
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",

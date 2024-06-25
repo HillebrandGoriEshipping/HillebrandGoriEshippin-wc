@@ -119,6 +119,11 @@ class Label_Override
 
 		$session_exp_type = WC()->session->get('expedition_type');
 
+		if (WC()->session->get('vat_transport') != null && WC()->session->get('vat_accises') != null) {
+			$session_vat_transport = WC()->session->get('vat_transport');
+			$session_vat_accises = WC()->session->get('vat_accises');
+		}
+
 		if (WC()->session->get('currency') != null && $session_exp_type == "export") {
 			$session_currency = WC()->session->get('currency');
 		}
@@ -141,8 +146,10 @@ class Label_Override
 				'insurance' => urldecode($session_insurance),
 				'expedition_type' => urldecode($session_exp_type),
 				'currency' => urldecode($session_currency),
+				'vat_transport' => urldecode($session_vat_transport),
+				'vat_accises' => urldecode($session_vat_accises),
 			),
-			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f', '%s', '%s')
+			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%f', '%s', '%s', '%f', '%f')
 		);
 		if (WC()->session->get('VINW_CONF_EXP') !== null) {
 			WC()->session->set('VINW_CONF_EXP', null);
@@ -757,11 +764,17 @@ class Label_Override
 
 		$currency = $_GET['currency'];
 
+		$vat_transport = $_GET['vatTransport'];
+
+		$vat_accises = $_GET['vatAccises'];
+
 		$jsonData = [
 			'shippingTotal' => number_format(WC()->cart->get_shipping_total(), 2, ',', ' ') . ' €',
 			'total' => number_format(WC()->cart->total, 2, ',', ' ') . ' €',
 			'totalVat' => number_format($total_vat, 2, ',', ' '),
 			'currency' => $currency,
+			'vatTransport' => $vat_transport,
+			'vatAccises' => $vat_accises
 		];
 		$response = json_encode($jsonData);
 		echo $response;
@@ -774,6 +787,8 @@ class Label_Override
 		WC()->session->set('tax_amount', $shipping_tax);
 		WC()->session->set('insurance', $insurance);
 		WC()->session->set('currency', $currency);
+		WC()->session->set('vat_transport', $vat_transport);
+		WC()->session->set('vat_accises', $vat_accises);
 		die();
 	}
 
@@ -1158,7 +1173,7 @@ class Label_Override
 						unset($offerValue['surcharges']);
 						$encoded_value = urlencode(json_encode($offerValue));
 						$offerLogo = $this->getOfferLogo($offer['name'], $offer['service']);
-						$price_excl_vat = (float)$offer['price'];
+						$transport_price_excl_vat = (float)$offer['price'];
 						$currency = $offer['currency'];
 						$tax_category = $this->get_tax_category($Exp_country, $currentCountry);
 						$current_dest_country = WC()->customer->get_shipping_country();
@@ -1169,12 +1184,12 @@ class Label_Override
 							$expedition_type = "standard";
 							if ($vat_choice == "yes") {
 								$vat_rate = $this->get_vat_from_country($Exp_country);
-								$finalPrice = $price_excl_vat + (($price_excl_vat * $vat_rate) / 100);
+								$finalPrice = $transport_price_excl_vat + (($transport_price_excl_vat * $vat_rate) / 100);
 								$finalPrice = round($finalPrice, 2);
-								$tax_amount = ($price_excl_vat * $vat_rate) / 100;
+								$tax_amount = ($transport_price_excl_vat * $vat_rate) / 100;
 								$tax_amount = round($tax_amount, 2);
 							} else {
-								$finalPrice = round($price_excl_vat, 2);
+								$finalPrice = round($transport_price_excl_vat, 2);
 								$tax_amount = 0;
 							}
 						} elseif ($tax_category == "intra_eu") {
@@ -1185,17 +1200,21 @@ class Label_Override
 								} else {
 									$vat_rate = $this->get_vat_from_country($Exp_country);
 								}
-								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
-								$fiscal_forfeit = $fiscal_rep - $price_excl_vat;
-								$rep_fiscal_TTC = $fiscal_rep + ($fiscal_forfeit * $vat_rate) / 100; // frais rep fiscal avec TVA
-								$rep_fiscal_TTC = round($rep_fiscal_TTC, 2);
-								$finalPrice = $rep_fiscal_TTC + (($price_excl_vat * $vat_rate) / 100);
+								$charges = $this->get_charges_ue($transport_price_excl_vat, $Exp_country);
+								$fiscal_forfeit = $charges - $transport_price_excl_vat;
+								$charges_vat = ($fiscal_forfeit * $vat_rate) / 100;
+								$charges_TTC = $charges + $charges_vat; // frais rep fiscal avec TVA
+								$charges_TTC = round($charges_TTC, 2);
+								$transport_vat = ($transport_price_excl_vat * $vat_rate) / 100;
+								$finalPrice = $charges_TTC + $transport_vat;
 								$finalPrice = round($finalPrice, 2);
-								$tax_amount = $finalPrice - $price_excl_vat;
+								$tax_amount = $finalPrice - $transport_price_excl_vat;
 								$tax_amount = round($tax_amount, 2);
+								$vat_transport = round($transport_vat, 2);
+								$vat_accises = round($charges_vat, 2);
 							} else {
-								$fiscal_rep = $this->get_charges_ue($price_excl_vat, $Exp_country);
-								$finalPrice = round((float)$fiscal_rep, 2);
+								$charges = $this->get_charges_ue($transport_price_excl_vat, $Exp_country);
+								$finalPrice = round((float)$charges, 2);
 								$tax_amount = 0;
 							}
 						} else { // $tax_category == "inter"
@@ -1205,10 +1224,10 @@ class Label_Override
 								$tax_and_duties = $this->get_tax_and_duties($offer['name'], true);
 							}
 							if ($tax_duties_choice == "exp") {
-								$finalPrice = $price_excl_vat + $tax_and_duties['price'];
+								$finalPrice = $transport_price_excl_vat + $tax_and_duties['price'];
 								$tax_amount = round($tax_and_duties['price'], 2);
 							} else {
-								$finalPrice = $price_excl_vat;
+								$finalPrice = $transport_price_excl_vat;
 								$tax_amount = round($tax_and_duties['price'], 2);
 							}
 						}
@@ -1218,7 +1237,6 @@ class Label_Override
 							break;
 						}
 
-
 						WC()->session->set('expedition_type', $expedition_type);
 
 						if (get_option('VINW_ASSURANCE') == "yes") {
@@ -1226,17 +1244,22 @@ class Label_Override
 						}
 
 						if (preg_match('/UPS Access Point Economy/', $offer['service']) == 0 && preg_match('/Chrono Relais 13H/', $offer['service']) == 0) {
-							$offre1 .= '<br><div class="offer-cont" ><input type="radio" name="offer[]" data-index="0" data-name="' . $offer['name'] . '" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" data-taxamount="' . $tax_amount . '" data-insurance="' . $offer['insurancePrice'] . '"data-currency="' . $currency . '" class="shipping_method">';
+							$offre1 .= '<br><div class="offer-cont" ><input type="radio" name="offer[]" data-index="0" data-name="' . $offer['name'] . '" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" data-taxamount="' . $tax_amount . '" data-insurance="' . $offer['insurancePrice'] . '"data-currency="' . $currency;
+							if ($expedition_type == "fiscal_rep") {
+								$offre1 .= ' "data-vataccises="' . $vat_accises . '" " data-vattransport="' . $vat_transport . '" class="shipping_method">';
+							} else {
+								$offre1 .= '" class="shipping_method">';
+							}
 							$offre1 .= '<input type="hidden" name="priceOffre" id="priceOffre_' . $key . '"  value="' . sprintf("%01.2f", $finalPrice) . '" >';
 							$offre1 .= '<img style="display:unset; max-width: 55px; margin-right: 8px;" src="' . $offerLogo . '" />';
 							$offre1 .= '<p  id="offer-cont_' . $key . '" for="shipping_method_offer_' . $key . '"><strong>' . $offer['service'] . '</strong><br>  ' . __('Price: ', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $finalPrice) . '€</strong> <br> | ' . __('Estimated delivery', 'Vignoblexport') . ' ' . $date1 . '<br> </p></div>';
 							if ($expedition_type == "export" && get_option('VINW_TAX_RIGHTS') == "dest") {
 								if ($currency == "EUR") {
-									$currency = "€";
+									$currency_symbol = "€";
 								} else {
-									$currency = "$";
+									$currency_symbol = "$";
 								}
-								$offre1 .= '<p>' . __('Estimated tax and duties that will be invoiced by carrier:', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $tax_amount) . ' ' . $currency . '</strong></p>';
+								$offre1 .= '<p>' . __('Estimated tax and duties that will be invoiced by carrier:', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $tax_amount) . ' ' . $currency_symbol . '</strong></p>';
 							}
 						}
 						$i++;
@@ -1318,7 +1341,12 @@ class Label_Override
 								$finalPrice = $finalPrice + $offer['insurancePrice'];
 							}
 
-							$offre2 .= '<br><div class="offer-cont" ><input type="radio" name="offer[]" data-index="0" data-name="' . $offer['name'] . '" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" data-taxamount="' . $tax_amount . '"  data-insurance="' . $offer['insurancePrice'] . 'class="shipping_method" >';
+							$offre2 .= '<br><div class="offer-cont" ><input type="radio" name="offer[]" data-index="0" data-name="' . $offer['name'] . '" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" data-taxamount="' . $tax_amount . '"  data-insurance="' . $offer['insurancePrice'] . 'class="shipping_method"';
+							if ($expedition_type == "fiscal_rep") {
+								$offre1 .= ' "data-vataccises="' . $vat_accises . '" "data-vattransport="' . $vat_transport . '">';
+							} else {
+								$offre1 .= '>';
+							}
 							$offre2 .= '<input type="hidden" name="priceOffre" id="priceOffre_' . $key . '"  value="' . sprintf("%01.2f", $finalPrice) . '">';
 							$offre2 .= '<img style="display:unset; max-width: 55px;    margin-right: 8px;" src="' . $offerLogo . '" />';
 							$offre2 .= '<p  id="offer-cont_' . $key . '" for="shipping_method_offer_' . $key . '"><strong>' . $offer['service'] . '</strong><br>  ' . __('Price: ', 'Vignoblexport') . '  <strong>' . sprintf("%01.2f", $finalPrice) . '€</strong> <br>| ' . __('Estimated delivery', 'Vignoblexport') . ' ' . $date2 . '<br> </p></div>';

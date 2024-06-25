@@ -61,11 +61,11 @@ class Plugin implements ArrayAccess
 	/**
 	 * Set value.
 	 *
-	 * @param string $offset key.
-	 * @param mixed  $value value.
-	 * @void
+	 * @param mixed $offset key.
+	 * @param mixed $value value.
+	 * @return void
 	 */
-	public function offsetSet(mixed $offset, mixed $value): void
+	public function offsetSet($offset, $value): void
 	{
 		if (is_null($offset)) {
 			$this->contents[] = $value;
@@ -88,10 +88,10 @@ class Plugin implements ArrayAccess
 	/**
 	 * Unset key.
 	 *
-	 * @param string $offset key.
+	 * @param mixed $offset key.
 	 * @void
 	 */
-	public function offsetUnset(mixed $offset): void
+	public function offsetUnset($offset): void
 	{
 		unset($this->contents[$offset]);
 	}
@@ -99,15 +99,16 @@ class Plugin implements ArrayAccess
 	/**
 	 * Get value.
 	 *
-	 * @param string $offset key.
-	 * @mixed
+	 * @param mixed $offset key.
+	 * @return mixed
 	 */
-	public function offsetGet(mixed $offset): mixed
+	#[\ReturnTypeWillChange]
+	public function offsetGet($offset)
 	{
 		if (is_callable($this->contents[$offset])) {
 			return call_user_func($this->contents[$offset], $this);
 		}
-		return isset($this->contents[$offset]) ? $this->contents[$offset] : null;
+		return $this->contents[$offset] ?? null;
 	}
 
 	/**

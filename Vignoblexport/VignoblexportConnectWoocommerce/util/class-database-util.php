@@ -94,6 +94,8 @@ class Database_Util
 				insurance FLOAT DEFAULT NULL,
 				expedition_type varchar(20) DEFAULT NULL,
 				currency varchar(20) DEFAULT NULL
+				vat_transport FLOAT DEFAULT NULL,
+				vat_accises FLOAT DEFAULT NULL
 			) $collate;
 		";
 

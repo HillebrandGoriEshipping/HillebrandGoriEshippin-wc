@@ -233,6 +233,8 @@ class Admin_Order_Page
 				$package = json_decode(trim(stripslashes(stripslashes($result[0]["package"])), '"'), true);
 				$expedition_type = $result[0]['expedition_type'];
 				$currency = $result[0]['currency'];
+				$vat_transport = $result[0]['vat_transport'];
+				$vat_accises = $result[0]['vat_accises'];
 
 				$get_size = json_decode($this->get_size($nbr_bottles, $nbr_Magnums), true);
 
@@ -378,7 +380,7 @@ class Admin_Order_Page
 								<strong> <?php esc_html_e('Chosen offer:', 'Vignoblexport') ?> </strong><?php echo $offres['service'] ?>
 								<br /><br />
 								<strong><?php esc_html_e('Delivery date:', 'Vignoblexport') ?> </strong><?php echo $offres['deliveryDate'] ?> at <?php echo $offres['pickupTime'] ?>
-								<?php if (get_option('VINW_TAX_RIGHTS') == "dest") { ?>
+								<?php if (get_option('VINW_TAX_RIGHTS') == "dest"  && $expedition_type == "export") { ?>
 									<br /><br />
 									<strong><?php esc_html_e('Estimated tax and duties:', 'Vignoblexport'); ?></strong>
 								<?php echo $tax_amount . " " . $currency;
@@ -448,10 +450,19 @@ class Admin_Order_Page
 												<td style="border: none;"><?php echo number_format($offres['price'], 2, ',', ' ') . " €"; ?></td>
 											</tr>
 											<tr>
-												<th><strong> <?php esc_html_e('Fiscal representation & VAT:', 'Vignoblexport'); ?> </strong></th>
-												<td style="border: none;"><?php echo number_format($tax_amount, 2, ',', ' ') . " €"; ?></td>
+												<th><strong> <?php esc_html_e('VAT on transport:', 'Vignoblexport'); ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($vat_transport, 2, ',', ' ') . " €"; ?></td>
 											</tr>
-											<?php $total = $offres['price'] + $tax_amount; ?>
+											<tr>
+												<?php $accises_excl_tax = $tax_amount - $vat_transport - $vat_accises; ?>
+												<th><strong> <?php esc_html_e('Excise duty:', 'Vignoblexport'); ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($accises_excl_tax, 2, ',', ' ') . " €"; ?></td>
+											</tr>
+											<tr>
+												<th><strong> <?php esc_html_e('VAT on excise duty:', 'Vignoblexport'); ?> </strong></th>
+												<td style="border: none;"><?php echo number_format($vat_accises, 2, ',', ' ') . " €"; ?></td>
+											</tr>
+											<?php $total = $offres['price'] + $vat_transport + $accises_excl_tax + $vat_accises; ?>
 										<?php } else { ?>
 											<!-- DOMESTIC -->
 											<tr>
