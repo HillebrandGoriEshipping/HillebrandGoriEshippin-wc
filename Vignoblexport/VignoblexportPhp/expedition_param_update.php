@@ -5,7 +5,6 @@ require_once("../../../../../wp-load.php");
 header('Content-Type: application/json');
 
 $var = "";
-
 $order_id = $_GET['order_id'];
 $tax_amount = $_GET['taxAmount'];
 if ($_GET['insurance']) {
@@ -13,7 +12,10 @@ if ($_GET['insurance']) {
 } else {
   $insurance = 0;
 }
-$expedition_type = $_GET['expedition_type'];
+$expedition_type = $_GET['typeExpedition'];
+
+$vat_transport = $_GET['vatTransport'];
+$vat_accises = $_GET['vatAccises'];
 
 $order = wc_get_order($order_id);
 
@@ -31,7 +33,9 @@ try {
     'offre' => urldecode($sessionDetails[0]),
     'tax_amount' => (float)$tax_amount,
     'insurance' => (float)$insurance,
-    'expedition_type' => $expedition_type
+    'expedition_type' => $expedition_type,
+    'vat_transport' => (float)$vat_transport,
+    'vat_accises' => (float)$vat_accises
   ), array('order_id' => (int) $order_id));
   header("HTTP/1.1 200 OK");
   echo json_encode([["message" => "OK"]]);
