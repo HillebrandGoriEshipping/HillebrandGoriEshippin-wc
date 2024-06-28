@@ -293,9 +293,6 @@ if ($expedition_type == "fiscal_rep") {
   $postBody['fiscalRepresentation'] = "1";
 }
 
-var_dump($postBody);
-die();
-
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",
   CURLOPT_RETURNTRANSFER => true,
