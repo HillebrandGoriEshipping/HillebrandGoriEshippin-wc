@@ -369,6 +369,8 @@ var i = false;
     const taxAmount = offerInput.filter(":checked").data("taxamount");
     const insurance = offerInput.filter(":checked").data("insurance");
     const currency = offerInput.filter(":checked").data("currency");
+    const vatTransport = offerInput.filter(":checked").data("vattransport");
+    const vatAccises = offerInput.filter(":checked").data("vataccises");
 
     var ajaxscript = { ajax_url: baseurl + "/wp-admin/admin-ajax.php" };
     $.ajax({
@@ -380,6 +382,8 @@ var i = false;
         tax: taxAmount,
         insurance: insurance,
         currency: currency,
+        vatAccises: vatAccises,
+        vatTransport: vatTransport,
       },
       dataType: "json",
       method: "GET",

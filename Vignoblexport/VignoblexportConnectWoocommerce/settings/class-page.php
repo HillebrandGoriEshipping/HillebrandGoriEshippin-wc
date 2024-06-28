@@ -245,6 +245,41 @@ class Page
 			)
 		);
 
+		// OSS CHOICE
+		register_setting(
+			'Vignoblexport-settings-group2',
+			'VINW_VAT_OSS',
+			array(
+				'type'              => 'string',
+				'description'       => __('OSS', 'Vignoblexport'),
+				'default'           => null,
+				'sanitize_callback' => array($this, 'sanitize_status'),
+			)
+		);
+
+		// VAT NUMBER
+		register_setting(
+			'Vignoblexport-settings-group2',
+			'VINW_VAT_NUMBER',
+			array(
+				'type'              => 'string',
+				'description'       => __('Vat number', 'Vignoblexport'),
+				'default'           => null,
+				'sanitize_callback' => array($this, 'sanitize_status'),
+			)
+		);
+		// EORI NUMBER
+		register_setting(
+			'Vignoblexport-settings-group2',
+			'VINW_EORI_NUMBER',
+			array(
+				'type'              => 'string',
+				'description'       => __('EORI number', 'Vignoblexport'),
+				'default'           => null,
+				'sanitize_callback' => array($this, 'sanitize_status'),
+			)
+		);
+
 		// INSURANCE
 		register_setting(
 			'Vignoblexport-settings-group2',

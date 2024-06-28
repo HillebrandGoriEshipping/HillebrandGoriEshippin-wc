@@ -334,19 +334,19 @@ function updatstatus() {
         // alert("Success update : Parcel");
         // console.log(xhr.responseText);
 
-        location.reload();
+        // location.reload();
         jQuery.blockUI({ message: null });
         return false;
       }
     },
     error: function (xhr, ajaxOptions, thrownError) {
-      // let { fullerrors } = " ";
-      // let obj = JSON.parse(xhr.responseText);
-      // let { errors } = obj[0].error;
-      // for (let key in Object.values(errors)[0]) {
-      //   fullerrors += `${key}:${Object.values(errors)[0][key]}`;
-      // }
-      // alert(fullerrors);
+      //   let { fullerrors } = " ";
+      //   let obj = JSON.parse(xhr.responseText);
+      //   let { errors } = obj[0].error;
+      //   for (let key in Object.values(errors)[0]) {
+      //     fullerrors += `${key}:${Object.values(errors)[0][key]}`;
+      //   }
+      //   alert(fullerrors);
       console.log(xhr.responseText);
       console.log(ajaxOptions);
       console.log(thrownError);
@@ -369,6 +369,15 @@ function updatparm() {
   const insuranceAmount = jQuery("input[name*=offer]:checked")
     .next()
     .data("insurance");
+  const typeExpedition = jQuery("input[name*=offer]:checked")
+    .next()
+    .data("typeexp");
+  const vatTransport = jQuery("input[name*=offer]:checked")
+    .next()
+    .data("vat_transport");
+  const vatAccises = jQuery("input[name*=offer]:checked")
+    .next()
+    .data("vat_accises");
   const order_id = jQuery("#order_id").val();
   const package_type = jQuery("#type_colissage").val();
   const nb_magnums = jQuery("#form_nb_magnums").val();
@@ -388,7 +397,23 @@ function updatparm() {
       "&priceOffre=" +
       priceOffre +
       "&insurance=" +
-      insuranceAmount,
+      insuranceAmount +
+      "&typeExpedition=" +
+      typeExpedition +
+      "&vatTransport=" +
+      vatTransport +
+      "&vatAccises=" +
+      vatAccises +
+      "&methode=" +
+      methode +
+      "&methodeIndex=" +
+      methodeIndex +
+      "&package_type=" +
+      package_type +
+      "&nb_magnums=" +
+      nb_magnums +
+      "&nbr_bottles=" +
+      nbr_bottles,
     function (data) {
       if ((data.message = "OK")) {
         // alert("Success update parameters");

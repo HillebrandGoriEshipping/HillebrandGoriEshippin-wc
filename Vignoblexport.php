@@ -764,10 +764,11 @@ function vignoblexport_product_custom_fields()
 		'desc_tip'    => true,
 		'options'  	  => array(
 			NULL          => __('Select product color', 'Vignoblexport'),
-			'red'     => __('Red', 'Vignoblexport'),
-			'white' => __('White', 'Vignoblexport'),
-			'rose'    => __('Rose', 'Vignoblexport'),
-			'no-color'       => __('No color', 'Vignoblexport'),
+			'Red'     => __('Red', 'Vignoblexport'),
+			'White' => __('White', 'Vignoblexport'),
+			'Rose'    => __('Rose', 'Vignoblexport'),
+			'Spirits'       => __('Spirits', 'Vignoblexport'),
+			'Beer' => __('Beer', 'Vignoblexport'),
 		),
 		'custom_attributes' => array(
 			'required' => 'required'
@@ -804,6 +805,33 @@ function vignoblexport_product_custom_fields()
 			)
 		)
 	);
+
+	woocommerce_wp_text_input(
+		array(
+			'id' => '_custom_vintage',
+			'label' => __('Vintage', 'Vignoblexport'),
+			'type' => 'number',
+			'custom_attributes' => array(
+				'step' => '1',
+				'min' => '0',
+				'required' => 'required'
+			)
+		)
+	);
+
+	woocommerce_wp_select(array( // Text Field type
+		'id'          => '_custom_circulation',
+		'label'       => __('Circulation', 'Vignoblexport'),
+		'description' => __('Circulation of the commodity (excise duty paid or suspended)', 'Vignoblexport'),
+		'desc_tip'    => true,
+		'options'  	  => array(
+			'CRD'     => __('CRD', 'Vignoblexport'),
+			'DAE' 	  => __('DAE', 'Vignoblexport'),
+		),
+		'custom_attributes' => array(
+			'required' => 'required'
+		)
+	));
 
 	// Custom Product select field
 	woocommerce_wp_select(array( // Text Field type
@@ -999,22 +1027,39 @@ function vignoblexport_product_custom_fields_save($post_id)
 			esc_attr($woocommerce_custom_product_alcohol_degree)
 		);
 
-	$woocommerce_custom_product_appelation = $_POST['_custom_appelation'];
 	// Custom Product select Field
+	$woocommerce_custom_product_appelation = $_POST['_custom_appelation'];
 	update_post_meta(
 		$post_id,
 		'_custom_appelation',
 		esc_attr($woocommerce_custom_product_appelation)
 	);
 
-	// Custom product select	
 	$woocommerce_custom_product_producing_country = $_POST['_custom_producing_country'];
-
+	// Custom product select	
 	if (!empty($woocommerce_custom_product_producing_country))
 		update_post_meta(
 			$post_id,
 			'_custom_producing_country',
 			esc_attr($woocommerce_custom_product_producing_country)
+		);
+
+	$woocommerce_custom_product_circulation = $_POST['_custom_circulation'];
+	// Custom product circulation
+	if (!empty($woocommerce_custom_product_circulation))
+		update_post_meta(
+			$post_id,
+			'_custom_circulation',
+			esc_attr($woocommerce_custom_product_circulation)
+		);
+
+	$woocommerce_custom_product_vintage = $_POST['_custom_vintage'];
+	// Custom product vintage
+	if (!empty($woocommerce_custom_product_vintage))
+		update_post_meta(
+			$post_id,
+			'_custom_vintage',
+			esc_attr($woocommerce_custom_product_vintage)
 		);
 }
 
@@ -1073,6 +1118,13 @@ function is_product_info_correct()
 	$capacity = $_GET['capacity'];
 	$alcohol_degree = $_GET['alcohol_degree'];
 	$color = $_GET['color'];
+	if ($color === 'Red') {
+		$color = 'red';
+	} elseif ($color === 'Rose') {
+		$color = 'rose';
+	} else {
+		$color = 'no-color';
+	}
 
 	$curlHscode = curl_init();
 	$hscodeURL = "https://test.extranet.vignoblexport.fr/api/get-hscode";
