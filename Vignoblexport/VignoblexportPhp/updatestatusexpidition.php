@@ -140,6 +140,10 @@ if ($Exp_eori_number != "") {
   $Exp_destAddress['eori'] = $Exp_eori_number;
 }
 
+if ($Exp_fda_number != "") {
+  $Exp_destAddress['fda'] = $Exp_fda_number;
+}
+
 $curl = curl_init();
 $encodeBody = '';
 $postBody = json_decode($encodeBody, true);
@@ -196,7 +200,7 @@ if ($country != $Exp_country) {
     $unit_value = $product->get_price();
     $quantity = $item->get_quantity();
     if ($type == 'spirits') {
-      $color = 'spirits';
+      $color = 'Spirits';
     }
     $details[] = [
       "description" => $description,
@@ -286,7 +290,6 @@ if ($expedition_type == "fiscal_rep") {
 }
 
 var_dump($postBody);
-die();
 
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",
