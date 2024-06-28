@@ -279,6 +279,17 @@ class Page
 				'sanitize_callback' => array($this, 'sanitize_status'),
 			)
 		);
+		// FDA NUMBER
+		register_setting(
+			'Vignoblexport-settings-group2',
+			'VINW_FDA_NUMBER',
+			array(
+				'type'              => 'string',
+				'description'       => __('FDA number', 'Vignoblexport'),
+				'default'           => null,
+				'sanitize_callback' => array($this, 'sanitize_status'),
+			)
+		);
 
 		// INSURANCE
 		register_setting(
