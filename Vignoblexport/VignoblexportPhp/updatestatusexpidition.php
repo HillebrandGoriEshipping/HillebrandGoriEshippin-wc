@@ -11,41 +11,12 @@ $order_data = $order->get_data();
 //destination address datas
 $shippingDetails = $order_data['shipping'];
 
-//$societe = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? "company" : "individual";
-$societe = "individual";
-$company = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? $shippingDetails['company'] : "none"; //required if addressType = company
-$contact = isset($shippingDetails['first_name']) ? $shippingDetails['first_name'] : "";
-$contact .= isset($shippingDetails['last_name']) ? " " . $shippingDetails['last_name'] : "";
-$address = isset($shippingDetails['address_1']) ? $shippingDetails['address_1'] : "";
-$postCode = isset($shippingDetails['postcode']) ? $shippingDetails['postcode'] : "";
-$city = isset($shippingDetails['city']) ? $shippingDetails['city'] : "";
-$country = isset($shippingDetails['country']) ? $shippingDetails['country'] : "";
-$state = isset($shippingDetails['state']) ? $shippingDetails['state'] : "";
-$email = isset($order_data['billing']['email']) && strlen($order_data['billing']['email']) > 0  ? $order_data['billing']['email'] : "example@email.com";
-$phone = isset($order_data['billing']['phone']) ? $order_data['billing']['phone'] : "";
-$destAddress = array(
-  'addressType' => $societe,
-  'company' => $company,
-  'contact' => $contact,
-  'telephone' => $phone,
-  'address' => $address,
-  'zipCode' => $postCode,
-  'city' => $city,
-  'country' => $country,
-  'email' => $email,
-);
-
-if ($country == 'US' || $country == 'CA' && $state != "") {
-  $destAddress['state'] = $state; // required if country = US or CA
-}
-
 // Package(s) datas
 $itemsCount = $order->get_item_count();
 
 $query = "SELECT * FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $order_id . "'";
 //phpcs:ignore
 $result = $wpdb->get_results($query, ARRAY_A);
-
 $count  = $order->get_item_count();
 $package = trim(stripslashes(stripslashes($result[0]['package'])), '"');
 $packageArr = json_decode($package, true);
@@ -54,8 +25,6 @@ $offreArr = json_decode($offre, true);
 $type_liv = $result[0]['type_liv'];
 $expedition_type = $result[0]['expedition_type'];
 $currency = $result[0]['currency'];
-var_dump($currency);
-var_dump($expedition_type);
 
 $packageNumber = 0;
 $packages = [];
@@ -93,6 +62,36 @@ if ($type_liv == "pointRelais") {
   );
 }
 
+//$societe = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? "company" : "individual";
+$societe = "individual";
+$company = isset($shippingDetails['company']) && strlen($shippingDetails['company']) > 0  ? $shippingDetails['company'] : "none"; //required if addressType = company
+$contact = isset($shippingDetails['first_name']) ? $shippingDetails['first_name'] : "";
+$contact .= isset($shippingDetails['last_name']) ? " " . $shippingDetails['last_name'] : "";
+$address = isset($shippingDetails['address_1']) ? $shippingDetails['address_1'] : "";
+$postCode = isset($shippingDetails['postcode']) ? $shippingDetails['postcode'] : "";
+$city = isset($shippingDetails['city']) ? $shippingDetails['city'] : "";
+$country = isset($shippingDetails['country']) ? $shippingDetails['country'] : "";
+$state = isset($shippingDetails['state']) ? $shippingDetails['state'] : "";
+$email = isset($order_data['billing']['email']) && strlen($order_data['billing']['email']) > 0  ? $order_data['billing']['email'] : "example@email.com";
+$phone = isset($order_data['billing']['phone']) ? $order_data['billing']['phone'] : "";
+$destAddress = array(
+  'addressType' => $societe,
+  'company' => $company,
+  'contact' => $contact,
+  'telephone' => $phone,
+  'address' => $address,
+  'zipCode' => $postCode,
+  'city' => $city,
+  'country' => $country,
+  'email' => $email,
+);
+
+if ($country == 'US' || $country == 'CA' && $state != "") {
+  $destAddress['firstname'] = isset($shippingDetails['first_name']) ? $shippingDetails['first_name'] : "";
+  $destAddress['lastname'] = isset($shippingDetails['last_name']) ? $shippingDetails['last_name'] : "";
+  $destAddress['state'] = $state; // required if country = US or CA
+}
+
 // Expedition address datas
 $curlExp = curl_init();
 curl_setopt_array($curlExp, array(
@@ -123,6 +122,7 @@ $Exp_email = isset($response[0]['email']) ? $response[0]['email'] : "";
 $Exp_phone = isset($response[0]['telephone']) ? $response[0]['telephone'] : "";
 $Exp_vat_number = get_option('VINW_VAT_NUMBER') ?? "";
 $Exp_eori_number = get_option('VINW_EORI_NUMBER') ?? "";
+$Exp_fda_number = get_option('VINW_FDA_NUMBER') ?? "";
 
 $Exp_destAddress = array(
   'addressType' => $Exp_societe,
@@ -223,6 +223,10 @@ if ($offreArr['name'] == "dhl" && $offreArr['local'] != null) {
   $postBody['carrier']['local'] == $offreArr['local'];
 }
 
+if ($offreArr['local'] == "ouest" || $offreArr['local'] == "est") {
+  $postBody['carrier']['coast'] = $offreArr['local'];
+}
+
 if (isset($nbBottles)) {
   $postBody['nbBottles'] = (string)$nbBottles;
 }
@@ -290,6 +294,7 @@ if ($expedition_type == "fiscal_rep") {
 }
 
 var_dump($postBody);
+die();
 
 curl_setopt_array($curl, array(
   CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create",

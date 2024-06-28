@@ -320,6 +320,18 @@ $adress = $getadress;
 						</div>
 					</td>
 				</tr>
+				<!-- FDA NUMBER -->
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e('FDA number', 'Vignoblexport'); ?> :</th>
+					<td>
+						<input type="text" name="VINW_FDA_NUMBER" id="vat-number" value="<?php if (get_option('VINW_FDA_NUMBER')) {
+																								echo get_option('VINW_FDA_NUMBER');
+																							} ?>">
+						<div class="tooltip">?
+							<span class="tooltiptext"><?php esc_html_e('Enter your FDA number (required for expeditions to the USA). If you are not registered yet, contact our customer support.', 'Vignoblexport'); ?></span>
+						</div>
+					</td>
+				</tr>
 
 
 			</table>
