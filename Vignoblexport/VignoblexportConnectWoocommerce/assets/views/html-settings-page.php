@@ -280,6 +280,22 @@ $adress = $getadress;
 						</div>
 					</td>
 				</tr>
+			</table>
+
+			<h2><?php esc_html_e('Numbers', 'Vignoblexport') ?></h2>
+			<table class="form-table states">
+				<!-- VAT NUMBER -->
+				<tr valign="top">
+					<th scope="row"><?php esc_html_e('VAT number', 'Vignoblexport'); ?> :</th>
+					<td>
+						<input type="text" name="VINW_VAT_NUMBER" id="vat-number" value="<?php if (get_option('VINW_VAT_NUMBER')) {
+																								echo get_option('VINW_VAT_NUMBER');
+																							} ?>">
+						<div class="tooltip">?
+							<span class="tooltiptext"><?php esc_html_e('Enter your VAT number (required)', 'Vignoblexport'); ?></span>
+						</div>
+					</td>
+				</tr>
 
 				<!-- OSS -->
 				<tr valign="top">
@@ -291,19 +307,6 @@ $adress = $getadress;
 						</select>
 						<div class="tooltip">?
 							<span class="tooltiptext"><?php esc_html_e('This is the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'Vignoblexport'); ?></span>
-						</div>
-					</td>
-				</tr>
-
-				<!-- VAT NUMBER -->
-				<tr valign="top">
-					<th scope="row"><?php esc_html_e('VAT number', 'Vignoblexport'); ?> :</th>
-					<td>
-						<input type="text" name="VINW_VAT_NUMBER" id="vat-number" value="<?php if (get_option('VINW_VAT_NUMBER')) {
-																								echo get_option('VINW_VAT_NUMBER');
-																							} ?>">
-						<div class="tooltip">?
-							<span class="tooltiptext"><?php esc_html_e('Enter your VAT number (required)', 'Vignoblexport'); ?></span>
 						</div>
 					</td>
 				</tr>
