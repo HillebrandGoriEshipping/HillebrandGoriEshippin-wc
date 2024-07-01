@@ -290,7 +290,7 @@ $adress = $getadress;
 							<option value="yes" <?php if (get_option('VINW_VAT_OSS') == 'yes') echo 'selected' ?>><?php esc_html_e('Yes', 'Vignoblexport') ?></option>
 						</select>
 						<div class="tooltip">?
-							<span class="tooltiptext"><?php esc_html_e('wip : Add description', 'Vignoblexport'); ?></span>
+							<span class="tooltiptext"><?php esc_html_e('This is the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'Vignoblexport'); ?></span>
 						</div>
 					</td>
 				</tr>
@@ -316,7 +316,7 @@ $adress = $getadress;
 																								echo get_option('VINW_EORI_NUMBER');
 																							} ?>">
 						<div class="tooltip">?
-							<span class="tooltiptext"><?php esc_html_e('Enter your EORI number (required)', 'Vignoblexport'); ?></span>
+							<span class="tooltiptext"><?php esc_html_e('Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'Vignoblexport'); ?></span>
 						</div>
 					</td>
 				</tr>
@@ -328,7 +328,7 @@ $adress = $getadress;
 																								echo get_option('VINW_FDA_NUMBER');
 																							} ?>">
 						<div class="tooltip">?
-							<span class="tooltiptext"><?php esc_html_e('Enter your FDA number (required for expeditions to the USA). If you are not registered yet, contact our customer support.', 'Vignoblexport'); ?></span>
+							<span class="tooltiptext"><?php esc_html_e('Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'Vignoblexport'); ?></span>
 						</div>
 					</td>
 				</tr>
