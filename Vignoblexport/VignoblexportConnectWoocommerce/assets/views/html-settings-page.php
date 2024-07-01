@@ -282,7 +282,7 @@ $adress = $getadress;
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e('Numbers', 'Vignoblexport') ?></h2>
+			<h2><?php esc_html_e('Numbers & Registrations', 'Vignoblexport') ?></h2>
 			<table class="form-table states">
 				<!-- VAT NUMBER -->
 				<tr valign="top">
@@ -306,7 +306,7 @@ $adress = $getadress;
 							<option value="yes" <?php if (get_option('VINW_VAT_OSS') == 'yes') echo 'selected' ?>><?php esc_html_e('Yes', 'Vignoblexport') ?></option>
 						</select>
 						<div class="tooltip">?
-							<span class="tooltiptext"><?php esc_html_e('This is the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'Vignoblexport'); ?></span>
+							<span class="tooltiptext"><?php esc_html_e('Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'Vignoblexport'); ?></span>
 						</div>
 					</td>
 				</tr>
@@ -315,7 +315,7 @@ $adress = $getadress;
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e('EORI number', 'Vignoblexport'); ?> :</th>
 					<td>
-						<input type="text" name="VINW_EORI_NUMBER" id="vat-number" value="<?php if (get_option('VINW_EORI_NUMBER')) {
+						<input type="text" name="VINW_EORI_NUMBER" id="eori-number" value="<?php if (get_option('VINW_EORI_NUMBER')) {
 																								echo get_option('VINW_EORI_NUMBER');
 																							} ?>">
 						<div class="tooltip">?
@@ -327,7 +327,7 @@ $adress = $getadress;
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e('FDA number', 'Vignoblexport'); ?> :</th>
 					<td>
-						<input type="text" name="VINW_FDA_NUMBER" id="vat-number" value="<?php if (get_option('VINW_FDA_NUMBER')) {
+						<input type="text" name="VINW_FDA_NUMBER" id="fda-number" value="<?php if (get_option('VINW_FDA_NUMBER')) {
 																								echo get_option('VINW_FDA_NUMBER');
 																							} ?>">
 						<div class="tooltip">?
@@ -335,8 +335,6 @@ $adress = $getadress;
 						</div>
 					</td>
 				</tr>
-
-
 			</table>
 
 			<!-- INSURANCE -->
