@@ -179,11 +179,11 @@ msgstr "Capacità di un singolo prodotto (in mL)"
 
 #: Vignoblexport.php:799
 msgid "Alcohol Degree"
-msgstr "Gradazione Alcolico"
+msgstr "Gradazione Alcolica"
 
 #: Vignoblexport.php:812
 msgid "Vintage"
-msgstr "Millesimo"
+msgstr "Annata"
 
 #: Vignoblexport.php:824
 msgid "Circulation"
@@ -191,11 +191,11 @@ msgstr "Circolazione"
 
 #: Vignoblexport.php:825
 msgid "Circulation of the commodity (excise duty paid or suspended)"
-msgstr "Circolazione della merce (accisa pagata o sospesa)"
+msgstr "Circolazione della merce (accisa pagata o sospesa).Per inviare a dei privati, dovete far circolare le vostre bottiglie in accisa assolta dall'Italia, quindi se spirits/intermedi devono essere fascettati."
 
 #: Vignoblexport.php:828
 msgid "CRD"
-msgstr "Assolta (Bittiglia Fascettate)"
+msgstr "Assolta (Bottiglia Fascettate)"
 
 #: Vignoblexport.php:829
 msgid "DAE"
@@ -714,7 +714,7 @@ msgstr ""
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:124
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:148
 msgid "Address"
-msgstr "Indirizzi"
+msgstr "Indirizzo"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:131
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:130
@@ -767,7 +767,7 @@ msgstr "Preferenze di consegna"
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:221
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:236
 msgid "Domestic express / Pickup point"
-msgstr "A casa / Punto di Ritiro"
+msgstr "Domicilio/ Punto di Ritiro"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:223
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:238
@@ -775,7 +775,7 @@ msgstr "A casa / Punto di Ritiro"
 #: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1369
 #: Vignoblexport/VignoblexportConnectWoocommerce/shipping-method/parcel-point/class-label-override.php:1391
 msgid "Domestic"
-msgstr "A casa"
+msgstr "Domicilio"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-expedition-page.php:224
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:239
@@ -912,7 +912,7 @@ msgstr "Numeri e iscrizioni"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:289
 msgid "VAT number"
-msgstr "Numero IVA"
+msgstr "Numero di Partita IVA"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/assets/views/html-settings-page.php:295
 msgid "Enter your VAT number (required)"
@@ -1069,7 +1069,7 @@ msgstr " a vostre spese (incluso nel prezzo di spedizione)"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:452
 msgid "VAT on transport:"
-msgstr "IVA sui trasporti :"
+msgstr "Partita IVA sui trasporti :"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:457
 msgid "Excise duty:"
@@ -1077,11 +1077,11 @@ msgstr "Accise :"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:461
 msgid "VAT on excise duty:"
-msgstr "IVA sulle accise :"
+msgstr "Partita IVA sulle accise :"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:472
 msgid "VAT"
-msgstr "IVA"
+msgstr "Partita IVA"
 
 #: Vignoblexport/VignoblexportConnectWoocommerce/order/class-admin-order-page.php:479
 msgid "Insurance:"
