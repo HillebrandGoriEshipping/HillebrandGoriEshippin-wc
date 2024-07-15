@@ -1086,6 +1086,22 @@ class Admin_Order_Page
 			$url .= "&commodityValue=" . (string)$total_products_ex_tax;
 		}
 
+		if (in_array('fedex', get_option('VINW_PREF_TRANSP'))) {
+			$url .= "&fedex=1";
+		}
+		if (in_array('ups', get_option('VINW_PREF_TRANSP'))) {
+			$url .= "&ups=1";
+		}
+		if (in_array('dhl', get_option('VINW_PREF_TRANSP'))) {
+			$url .= "&dhl=1";
+		}
+		if (in_array('tnt', get_option('VINW_PREF_TRANSP'))) {
+			$url .= "&tnt=1";
+		}
+		if (in_array('chronopost', get_option('VINW_PREF_TRANSP'))) {
+			$url .= "&chronopost=1";
+		}
+
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
 			CURLOPT_RETURNTRANSFER => true,
@@ -1103,15 +1119,16 @@ class Admin_Order_Page
 		$response2 = json_decode($response2, true);
 		curl_close($curl);
 		// Filter on offers in response  with carriers preferences
-		$filtered_responses = array();
-		if (is_countable($response2) && count($response2) > 0 && !isset($response2['status'])) {
-			foreach ($response2 as $response) {
-				if (in_array($response['name'], get_option('VINW_PREF_TRANSP')) || $response['name'] == 'seur' || $response['name'] == 'groupage vignoblexport') {
-					array_push($filtered_responses, $response);
-				}
-			}
-		}
-		return $filtered_responses;
+		// $filtered_responses = array();
+		// if (is_countable($response2) && count($response2) > 0 && !isset($response2['status'])) {
+		// 	foreach ($response2 as $response) {
+		// 		if (in_array($response['name'], get_option('VINW_PREF_TRANSP')) || $response['name'] == 'seur' || $response['name'] == 'groupage vignoblexport') {
+		// 			array_push($filtered_responses, $response);
+		// 		}
+		// 	}
+		// }
+		// return $filtered_responses;
+		return $response2;
 	}
 
 	/**

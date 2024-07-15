@@ -1086,10 +1086,10 @@ class Label_Override
 						$url .= "&dhl=1";
 					}
 					if (in_array('tnt', get_option('VINW_PREF_TRANSP'))) {
-						$url .= "&dhl=1";
+						$url .= "&tnt=1";
 					}
 					if (in_array('chronopost', get_option('VINW_PREF_TRANSP'))) {
-						$url .= "&dhl=1";
+						$url .= "&chronopost=1";
 					}
 
 					$totalBttles =  $nbr_Bottles_magnums['nbr_bot'] + $nbr_Bottles_magnums['nbr_mg'];
