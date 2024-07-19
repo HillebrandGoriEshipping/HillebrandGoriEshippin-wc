@@ -21,9 +21,26 @@ $order = wc_get_order($order_id);
 
 $var .= urlencode(json_encode($_GET['offer']));
 $var .= ";" . $_GET['offerIndex'];
-
+var_dump($_GET['offer']);
 $sessionDetails = $var;
-$sessionDetails = explode(';', $sessionDetails);
+
+// Séparer les parties si nécessaire
+$sessionDetails = explode(';', $var);
+// Décoder les caractères URL
+$encodedJson = urldecode($sessionDetails[0]);
+// Supprimer les guillemets doubles en début et fin de la chaîne JSON
+$cleanJson = trim($encodedJson, '"');
+// Nettoyer la chaîne JSON en supprimant les barres obliques inverses échappées
+$cleanJson = stripslashes($cleanJson);
+// Remplacer les séquences de guillemets échappés par des guillemets normaux
+$cleanJson = str_replace('\\"', '"', $cleanJson);
+// Convertir la chaîne JSON en tableau associatif
+$data_array = json_decode($cleanJson, true);
+
+$price_excl_tax = $data_array['price'];
+
+
+$total = $price_excl_tax + $tax_amount + $insurance + $vat_transport + $vat_accises;
 
 global $wpdb;
 
@@ -35,7 +52,8 @@ try {
     'insurance' => (float)$insurance,
     'expedition_type' => $expedition_type,
     'vat_transport' => (float)$vat_transport,
-    'vat_accises' => (float)$vat_accises
+    'vat_accises' => (float)$vat_accises,
+    'current_price' => (float)$total,
   ), array('order_id' => (int) $order_id));
   header("HTTP/1.1 200 OK");
   echo json_encode([["message" => "OK"]]);
