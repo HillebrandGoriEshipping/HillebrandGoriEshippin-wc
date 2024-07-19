@@ -49,7 +49,7 @@ jQuery(document).ready(function () {
 
   jQuery("#validEditPallet").on("click", function () {
     if (jQuery("input[name='offer[]']:checked").val()) updatparm();
-    else alert("you need to select an type of packing");
+    else alert("you need to select a type of packing");
   });
 
   jQuery("#validColi").on("click", function () {
