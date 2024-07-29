@@ -220,7 +220,6 @@ class Admin_Order_Page
 				$query = "SELECT * FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $order_id . "'";
 				//phpcs:ignore
 				$result = $wpdb->get_results($query, ARRAY_A);
-
 				$exptax = $result[0]['charge_type'];
 				$tax_amount = $result[0]['tax_amount'];
 				$nbr_bottles = (float)$result[0]['nbr_bottles'];
@@ -779,7 +778,6 @@ class Admin_Order_Page
 											if (get_option('VINW_ASSURANCE') == "yes") {
 												$finalPrice = $finalPrice + $offer['insurancePrice'];
 											}
-
 											$offre1 .= '<tr><td colspan="5">';
 											$offre1 .= '<br><input type="radio" name="offer[]" data-index="0" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" class="shipping_method" >';
 											$offre1 .= '<input type="hidden" name="priceOffre" id="priceOffre_' . $key . '"  value="' . $finalPrice . '"';
@@ -801,6 +799,9 @@ class Admin_Order_Page
 													$currency_symbol = "$";
 												}
 												$offre1 .= '<p>' . __('Estimated tax and duties that will be invoiced by carrier:', 'Vignoblexport') . ' <strong>' . sprintf("%01.2f", $tax_amount) . ' ' . $currency_symbol . '</strong></p>';
+											}
+											if ($result[0]['created_at'] != $result[0]['updated_at']) {
+												$offre1 .= '<p>' . __('Price difference:', 'Vignoblexport') . ' ' . $finalPrice - $result[0]['initial_price'] . ' €' . '</p>';
 											}
 											$offre1 .= '</td></tr>';
 										}
@@ -841,6 +842,9 @@ class Admin_Order_Page
 											}
 											$offre2 .= '>';
 											$offre2 .= '<label for="shipping_method_offer_' . $key . '">' . $finalPrice . ': <strong>' . $finalPrice . '€</strong> | le ' . $offer['deliveryDate'] . ' at' . $offer['pickupTime'] . '</label>';
+											if ($result[0]['created_at'] != $result[0]['updated_at']) {
+												$offre2 .= '<p>' . __('Price difference:', 'Vignoblexport') . ' ' . $finalPrice - $result[0]['initial_price'] . ' €' . '</p>';
+											}
 											$offre2 .= '</td></tr>';
 										} else {
 											$offre2 = '<tr><td colspan="5">' .  __('No offer available for this parcel point. Please contact Vignoblexport to solve the problem.', 'Vignoblexport') . '</td></tr>';

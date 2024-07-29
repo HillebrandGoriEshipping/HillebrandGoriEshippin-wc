@@ -95,7 +95,11 @@ class Database_Util
 				expedition_type varchar(20) DEFAULT NULL,
 				currency varchar(20) DEFAULT NULL,
 				vat_transport FLOAT DEFAULT NULL,
-				vat_accises FLOAT DEFAULT NULL
+				vat_accises FLOAT DEFAULT NULL,
+				initial_price FLOAT DEFAULT NULL,
+				current_price FLOAT DEFAULT NULL,
+				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 			) $collate;
 		";
 

@@ -119,6 +119,8 @@ class Label_Override
 
 		$session_exp_type = WC()->session->get('expedition_type');
 
+		$session_initial_price = WC()->session->get('initial_price');
+
 		if (WC()->session->get('vat_transport') != null && WC()->session->get('vat_accises') != null) {
 			$session_vat_transport = WC()->session->get('vat_transport');
 			$session_vat_accises = WC()->session->get('vat_accises');
@@ -148,8 +150,9 @@ class Label_Override
 				'currency' => urldecode($session_currency),
 				'vat_transport' => urldecode($session_vat_transport),
 				'vat_accises' => urldecode($session_vat_accises),
+				'initial_price' => urldecode($session_initial_price)
 			),
-			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%d', '%s', '%s', '%f', '%f')
+			array('%d', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%f', '%d', '%s', '%s', '%f', '%f', '%f')
 		);
 		if (WC()->session->get('VINW_CONF_EXP') !== null) {
 			WC()->session->set('VINW_CONF_EXP', null);
@@ -782,13 +785,14 @@ class Label_Override
 		if (isset($_POST['offer'])) {
 			$data = urldecode($_POST['offer']);
 		}
-		echo $data;
+
 		WC()->session->__set('offer', $data);
 		WC()->session->set('tax_amount', $shipping_tax);
 		WC()->session->set('insurance', $insurance);
 		WC()->session->set('currency', $currency);
 		WC()->session->set('vat_transport', $vat_transport);
 		WC()->session->set('vat_accises', $vat_accises);
+		WC()->session->set('initial_price', WC()->cart->get_shipping_total());
 		die();
 	}
 
@@ -1030,8 +1034,6 @@ class Label_Override
 					$url .= "&destAddress%5BzipCode%5D=" . urlencode(WC()->session->customer['shipping_postcode']);
 					$url .= "&destAddress%5Bcity%5D=" . urlencode(WC()->session->customer['shipping_city']);
 					$url .= "&destAddress%5Bcountry%5D=" . urlencode(WC()->session->customer['country']);
-
-
 
 					if (is_array($package_colis)) {
 						$packageNumber = 0;
