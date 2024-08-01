@@ -21,7 +21,6 @@ $order = wc_get_order($order_id);
 
 $var .= urlencode(json_encode($_GET['offer']));
 $var .= ";" . $_GET['offerIndex'];
-var_dump($_GET['offer']);
 $sessionDetails = $var;
 
 // Séparer les parties si nécessaire

@@ -1345,9 +1345,9 @@ class Label_Override
 
 							$offre2 .= '<br><div class="offer-cont" ><input type="radio" name="offer[]" data-index="0" data-name="' . $offer['name'] . '" id="shipping_method_offer_' . $key . '" value="' . $encoded_value . '" data-taxamount="' . $tax_amount . '"  data-insurance="' . $offer['insurancePrice'] . 'class="shipping_method"';
 							if ($expedition_type == "fiscal_rep") {
-								$offre1 .= ' "data-vataccises="' . $vat_accises . '" "data-vattransport="' . $vat_transport . '">';
+								$offre2 .= ' "data-vataccises="' . $vat_accises . '" "data-vattransport="' . $vat_transport . '">';
 							} else {
-								$offre1 .= '>';
+								$offre2 .= '>';
 							}
 							$offre2 .= '<input type="hidden" name="priceOffre" id="priceOffre_' . $key . '"  value="' . sprintf("%01.2f", $finalPrice) . '">';
 							$offre2 .= '<img style="display:unset; max-width: 55px;    margin-right: 8px;" src="' . $offerLogo . '" />';
