@@ -765,11 +765,21 @@ class Label_Override
 			$insurance = 0;
 		}
 
-		$currency = $_GET['currency'];
+		if (!empty($_GET['currency'])) {
+			$currency = $_GET['currency'];
+		}
 
-		$vat_transport = $_GET['vatTransport'];
+		if (!empty($_GET['vatTransport'])) {
+			$vat_transport = $_GET['vatTransport'];
+		} else {
+			$vat_transport = 0;
+		}
 
-		$vat_accises = $_GET['vatAccises'];
+		if (!empty($_GET['vatAccises'])) {
+			$vat_accises = $_GET['vatAccises'];
+		} else {
+			$vat_accises = 0;
+		}
 
 		$jsonData = [
 			'shippingTotal' => number_format(WC()->cart->get_shipping_total(), 2, ',', ' ') . ' €',
