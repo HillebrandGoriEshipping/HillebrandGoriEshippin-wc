@@ -889,7 +889,7 @@ function vignoblexport_product_custom_fields()
 		$producingCountry = get_post_meta($post->ID, '_custom_producing_country', true);
 
 		$curl = curl_init();
-		$url = " https://test.eshipping.hillebrandgori.app//api/get-appellations?";
+		$url = " https://test.eshipping.hillebrandgori.app/api/get-appellations?";
 		$url .= "producingCountry=" . $producingCountry;
 
 		curl_setopt_array($curl, array(
@@ -1076,7 +1076,7 @@ function check_country_has_appellations()
 	$producingCountry = $_GET['country'];
 
 	$curl = curl_init();
-	$url = " https://test.eshipping.hillebrandgori.app//api/get-appellations?";
+	$url = " https://test.eshipping.hillebrandgori.app/api/get-appellations?";
 	$url .= "producingCountry=" . $producingCountry;
 
 	curl_setopt_array($curl, array(
@@ -1127,7 +1127,7 @@ function is_product_info_correct()
 	}
 
 	$curlHscode = curl_init();
-	$hscodeURL = " https://test.eshipping.hillebrandgori.app//api/get-hscode";
+	$hscodeURL = " https://test.eshipping.hillebrandgori.app/api/get-hscode";
 	$hscodeURL .= "?appellationName=" . $appellation_name;
 	$hscodeURL .= "&capacity=" . $capacity;
 	$hscodeURL .= "&alcoholDegree=" . $alcohol_degree;

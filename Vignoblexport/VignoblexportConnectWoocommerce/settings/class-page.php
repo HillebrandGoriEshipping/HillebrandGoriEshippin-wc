@@ -314,7 +314,7 @@ class Page
 		$curl = curl_init();
 		$key = get_option('VINW_ACCESS_KEY');
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => ' https://test.eshipping.hillebrandgori.app//api/package/get-pallet-size',
+			CURLOPT_URL => ' https://test.eshipping.hillebrandgori.app/api/package/get-pallet-size',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
@@ -334,7 +334,7 @@ class Page
 	{
 		$curlExp = curl_init();
 		curl_setopt_array($curlExp, array(
-			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
+			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/address/get-addresses?typeAddress=exp",
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,

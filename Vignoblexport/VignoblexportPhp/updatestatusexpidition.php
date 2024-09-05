@@ -95,7 +95,7 @@ if ($country == 'US' || $country == 'CA' && $state != "") {
 // Expedition address datas
 $curlExp = curl_init();
 curl_setopt_array($curlExp, array(
-  CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
+  CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/address/get-addresses?typeAddress=exp",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -173,7 +173,7 @@ if ($country != $Exp_country) {
     $vintage = get_post_meta($item['product_id'], '_custom_vintage', true);
 
     $curlHscode = curl_init();
-    $hscodeURL = " https://test.eshipping.hillebrandgori.app//api/get-hscode";
+    $hscodeURL = " https://test.eshipping.hillebrandgori.app/api/get-hscode";
     $hscodeURL .= "?appellationName=" . $appellation;
     $hscodeURL .= "&capacity=" . $capacity;
     $hscodeURL .= "&alcoholDegree=" . $alcohol_degree;
@@ -438,7 +438,7 @@ function UpdateOrderTrackingLink($order, $idExp)
   // get tracking link with idExp
   $curl = curl_init();
   curl_setopt_array($curl, array(
-    CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/shipment/get-tracking-link?shipmentId=" . $idExp,
+    CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/shipment/get-tracking-link?shipmentId=" . $idExp,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
@@ -473,7 +473,7 @@ function UpdateOrderTrackingCode($order, $idExp)
   // get tracking code with idExp
   $curl = curl_init();
   curl_setopt_array($curl, array(
-    CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/shipment/get-shipment/" . $idExp,
+    CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/shipment/get-shipment/" . $idExp,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
