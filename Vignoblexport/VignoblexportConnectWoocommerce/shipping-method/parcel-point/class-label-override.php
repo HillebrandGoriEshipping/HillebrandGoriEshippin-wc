@@ -519,7 +519,7 @@ class Label_Override
 		// var_dump($allHsCodes);
 
 		$curlCharges = curl_init();
-		$chargesURL = "https://test.extranet.vignoblexport.fr/api/shipment/get-charges?";
+		$chargesURL = " https://test.eshipping.hillebrandgori.app//api/shipment/get-charges?";
 		$counter = 0;
 		// loop through all cart items
 		foreach ($cart as $cart_item) {
@@ -566,7 +566,7 @@ class Label_Override
 	function is_fiscal_rep($currentCountry)
 	{
 		$curl = curl_init();
-		$url = "https://test.extranet.vignoblexport.fr/api/address/get-countries";
+		$url = " https://test.eshipping.hillebrandgori.app//api/address/get-countries";
 
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -612,7 +612,7 @@ class Label_Override
 	{
 		// api request
 		$curl = curl_init();
-		$url = "https://test.extranet.vignoblexport.fr/api/address/get-countries";
+		$url = " https://test.eshipping.hillebrandgori.app//api/address/get-countries";
 
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -651,7 +651,7 @@ class Label_Override
 		$curlsize = curl_init();
 
 		curl_setopt_array($curlsize, array(
-			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/package/get-sizes?nbBottles=" . (string)$nbr_bottle . "&nbMagnums=" . (string)$nbr_magnum,
+			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/package/get-sizes?nbBottles=" . (string)$nbr_bottle . "&nbMagnums=" . (string)$nbr_magnum,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -767,6 +767,8 @@ class Label_Override
 
 		if (!empty($_GET['currency'])) {
 			$currency = $_GET['currency'];
+		} else {
+			$currency = "";
 		}
 
 		if (!empty($_GET['vatTransport'])) {
@@ -870,7 +872,7 @@ class Label_Override
 				$hs_code_color = 'no-color';
 			}
 			$curlHscode = curl_init();
-			$hscodeURL = "https://test.extranet.vignoblexport.fr/api/get-hscode";
+			$hscodeURL = " https://test.eshipping.hillebrandgori.app//api/get-hscode";
 			$hscodeURL .= "?appellationName=" . htmlspecialchars_decode(get_post_meta($cart_item['product_id'], '_custom_appelation', true));
 			$hscodeURL .= "&capacity=" . get_post_meta($cart_item['product_id'], '_custom_capacity', true);
 			$hscodeURL .= "&alcoholDegree=" . get_post_meta($cart_item['product_id'], '_custom_alcohol_degree', true);
@@ -911,7 +913,7 @@ class Label_Override
 		$curlsize = curl_init();
 
 		curl_setopt_array($curlsize, array(
-			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/get-feasability?country=" . $country . "&clientType=" . $clientType . "&quantity=" . $quantity,
+			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/shipment/get-feasability?country=" . $country . "&clientType=" . $clientType . "&quantity=" . $quantity,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -998,7 +1000,7 @@ class Label_Override
 
 					$curlExp = curl_init();
 					curl_setopt_array($curlExp, array(
-						CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+						CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
 						CURLOPT_RETURNTRANSFER => true,
 						CURLOPT_ENCODING => "",
 						CURLOPT_MAXREDIRS => 10,
@@ -1035,7 +1037,7 @@ class Label_Override
 					}
 
 					$curl = curl_init();
-					$url = "https://test.extranet.vignoblexport.fr/api/shipment/get-rates";
+					$url = " https://test.eshipping.hillebrandgori.app//api/shipment/get-rates";
 					$url .= "?expAddress%5BaddressType%5D=" . urlencode($Exp_societe);
 					$url .= "&expAddress%5BzipCode%5D=" . urlencode($Exp_postCode);
 					$url .= "&expAddress%5Bcity%5D=" . urlencode($Exp_city);

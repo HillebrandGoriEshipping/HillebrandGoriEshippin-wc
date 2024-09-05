@@ -20,7 +20,7 @@ $trackingCode = $result[0]['tracking_code'];
 $curl1 = curl_init();
 
 curl_setopt_array($curl1, array(
-  CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/get-status?shipmentId=" . $expId,
+  CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/shipment/get-status?shipmentId=" . $expId,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -41,7 +41,7 @@ curl_close($curl1);
 $curl2 = curl_init();
 
 curl_setopt_array($curl2, array(
-  CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/get-tracking-link?shipmentId=" . $expId,
+  CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/shipment/get-tracking-link?shipmentId=" . $expId,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -62,7 +62,7 @@ curl_close($curl2);
 $curl3 = curl_init();
 
 curl_setopt_array($curl3, array(
-  CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/get-label?shipmentId=" . $expId,
+  CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/shipment/get-label?shipmentId=" . $expId,
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,

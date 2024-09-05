@@ -393,7 +393,7 @@ class Admin_Order_Page
 									} else {
 										$curlExp = curl_init();
 										curl_setopt_array($curlExp, array(
-											CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+											CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
 											CURLOPT_RETURNTRANSFER => true,
 											CURLOPT_ENCODING => "",
 											CURLOPT_MAXREDIRS => 10,
@@ -692,7 +692,7 @@ class Admin_Order_Page
 
 							$curlExp = curl_init();
 							curl_setopt_array($curlExp, array(
-								CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+								CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
 								CURLOPT_RETURNTRANSFER => true,
 								CURLOPT_ENCODING => "",
 								CURLOPT_MAXREDIRS => 10,
@@ -943,7 +943,7 @@ class Admin_Order_Page
 		$curl = curl_init();
 		$key = get_option('VINW_ACCESS_KEY');
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/package/get-sizes?nbBottles=" . (string)$nbBottles . "&nbMagnums=" . (string)$nbrMagnums,
+			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/package/get-sizes?nbBottles=" . (string)$nbBottles . "&nbMagnums=" . (string)$nbrMagnums,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -965,7 +965,7 @@ class Admin_Order_Page
 		$curl = curl_init();
 		$key = get_option('VINW_ACCESS_KEY');
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://test.extranet.vignoblexport.fr/api/package/get-pallet-size',
+			CURLOPT_URL => ' https://test.eshipping.hillebrandgori.app//api/package/get-pallet-size',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
@@ -1000,7 +1000,7 @@ class Admin_Order_Page
 
 		$curlExp = curl_init();
 		curl_setopt_array($curlExp, array(
-			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -1038,7 +1038,7 @@ class Admin_Order_Page
 		$state = $order->get_shipping_state();
 
 		$curl = curl_init();
-		$url = "https://test.extranet.vignoblexport.fr/api/shipment/get-rates";
+		$url = " https://test.eshipping.hillebrandgori.app//api/shipment/get-rates";
 		$url .= "?expAddress%5BaddressType%5D=" . $Exp_societe;
 		$url .= "&expAddress%5BzipCode%5D=" . $Exp_postCode;
 		$url .= "&expAddress%5Bcity%5D=" . urlencode($Exp_city);
@@ -1197,7 +1197,7 @@ class Admin_Order_Page
 	{
 		$curlExp = curl_init();
 		curl_setopt_array($curlExp, array(
-			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -1221,7 +1221,7 @@ class Admin_Order_Page
 		$Exp_email = isset($response[0]['email']) ? $response[0]['email'] : "";
 		$Exp_phone = isset($response[0]['telephone']) ? $response[0]['telephone'] : "";
 		$curl = curl_init();
-		$url = "https://test.extranet.vignoblexport.fr/api/shipment/get-rates";
+		$url = " https://test.eshipping.hillebrandgori.app//api/shipment/get-rates";
 		$url .= "?expAddress%5BaddressType%5D=" . $Exp_societe;
 		$url .= "&expAddress%5BzipCode%5D=" . $Exp_postCode;
 		$url .= "&expAddress%5Bcity%5D=" . urlencode($Exp_city);
@@ -1293,7 +1293,7 @@ class Admin_Order_Page
 				$hs_code_color = 'no-color';
 			}
 			$curlHscode = curl_init();
-			$hscodeURL = "https://test.extranet.vignoblexport.fr/api/get-hscode";
+			$hscodeURL = " https://test.eshipping.hillebrandgori.app//api/get-hscode";
 			$hscodeURL .= "?appellationName=" . htmlspecialchars_decode(get_post_meta($item['product_id'], '_custom_appelation', true));
 			$hscodeURL .= "&capacity=" . get_post_meta($item['product_id'], '_custom_capacity', true);
 			$hscodeURL .= "&alcoholDegree=" . get_post_meta($item['product_id'], '_custom_alcohol_degree', true);
@@ -1350,7 +1350,7 @@ class Admin_Order_Page
 	function is_fiscal_rep($currentCountry)
 	{
 		$curl = curl_init();
-		$url = "https://test.extranet.vignoblexport.fr/api/address/get-countries";
+		$url = " https://test.eshipping.hillebrandgori.app//api/address/get-countries";
 
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -1392,7 +1392,7 @@ class Admin_Order_Page
 		$allHsCodes = $this->get_hscode($order_id);
 
 		$curlCharges = curl_init();
-		$chargesURL = "https://test.extranet.vignoblexport.fr/api/shipment/get-charges?";
+		$chargesURL = " https://test.eshipping.hillebrandgori.app//api/shipment/get-charges?";
 		$counter = 0;
 		$order = wc_get_order($order_id);
 		$order_items = $order->get_items();
@@ -1409,7 +1409,7 @@ class Admin_Order_Page
 
 		$curlExp = curl_init();
 		curl_setopt_array($curlExp, array(
-			CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app//api/address/get-addresses?typeAddress=exp",
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -1557,7 +1557,7 @@ class Admin_Order_Page
 	{
 		// api request
 		$curl = curl_init();
-		$url = "https://test.extranet.vignoblexport.fr/api/address/get-countries";
+		$url = " https://test.eshipping.hillebrandgori.app//api/address/get-countries";
 
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
