@@ -59,7 +59,7 @@ array_push($packages, [
 $curlExp = curl_init();
 
 curl_setopt_array($curlExp, array(
-  CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/address/get-addresses?typeAddress=exp",
+  CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/address/get-addresses?typeAddress=exp",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
@@ -137,7 +137,7 @@ if ($postBody['carrier']['name'] == "tnt") {
 
 $curl = curl_init();
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/shipment/create-pallet",
+  CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/shipment/create-pallet",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,

@@ -7,7 +7,7 @@ $curl = curl_init();
 $key = get_option('VINW_ACCESS_KEY');
 
 curl_setopt_array($curl, array(
-  CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/package/get-sizes?nbBottles=" . $_GET['nbBottles'] . "&nbMagnums=" . $_GET['nbMagnums'],
+  CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/package/get-sizes?nbBottles=" . $_GET['nbBottles'] . "&nbMagnums=" . $_GET['nbMagnums'],
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,

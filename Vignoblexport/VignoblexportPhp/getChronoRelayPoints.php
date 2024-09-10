@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         $curl = curl_init();
         $key = get_option('VINW_ACCESS_KEY');
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://test.extranet.vignoblexport.fr/api/relay/get-chronopost-relay-points?street=" . rawurlencode($_POST['street']) . "&zipCode=" . rawurlencode($_POST['zipCode']) . "&city=" . rawurlencode($_POST['city']) . "&productCode=" . rawurlencode($_POST['productCode']) . "&shipmentDate=" . rawurlencode($_POST['shipmentDate']) . "&country=" . rawurlencode($_POST['country']),
+            CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/relay/get-chronopost-relay-points?street=" . rawurlencode($_POST['street']) . "&zipCode=" . rawurlencode($_POST['zipCode']) . "&city=" . rawurlencode($_POST['city']) . "&productCode=" . rawurlencode($_POST['productCode']) . "&shipmentDate=" . rawurlencode($_POST['shipmentDate']) . "&country=" . rawurlencode($_POST['country']),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
