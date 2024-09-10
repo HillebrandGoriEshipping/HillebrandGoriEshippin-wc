@@ -494,7 +494,6 @@ class Label_Override
 	 */
 	function get_tax_category($exp_country, $dest_country)
 	{
-
 		if ($exp_country == $dest_country) {
 			$tax_category = "standard";
 		} elseif ($this->is_fiscal_rep($exp_country) && $this->is_fiscal_rep($dest_country)) {
@@ -519,7 +518,7 @@ class Label_Override
 		// var_dump($allHsCodes);
 
 		$curlCharges = curl_init();
-		$chargesURL = " https://test.eshipping.hillebrandgori.app/api/shipment/get-charges?";
+		$chargesURL = "https://test.eshipping.hillebrandgori.app/api/shipment/get-charges?";
 		$counter = 0;
 		// loop through all cart items
 		foreach ($cart as $cart_item) {
@@ -566,7 +565,7 @@ class Label_Override
 	function is_fiscal_rep($currentCountry)
 	{
 		$curl = curl_init();
-		$url = " https://test.eshipping.hillebrandgori.app/api/address/get-countries";
+		$url = "https://test.eshipping.hillebrandgori.app/api/address/get-countries";
 
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -612,7 +611,7 @@ class Label_Override
 	{
 		// api request
 		$curl = curl_init();
-		$url = " https://test.eshipping.hillebrandgori.app/api/address/get-countries";
+		$url = "https://test.eshipping.hillebrandgori.app/api/address/get-countries";
 
 		curl_setopt_array($curl, array(
 			CURLOPT_URL => $url,
@@ -650,8 +649,15 @@ class Label_Override
 	{
 		$curlsize = curl_init();
 
+		$params = array(
+			'nbBottles' => $nbr_bottle,
+			'nbMagnums' => $nbr_magnum
+		);
+
+		$url = "https://test.eshipping.hillebrandgori.app/api/package/get-sizes?" . http_build_query($params);
+
 		curl_setopt_array($curlsize, array(
-			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/package/get-sizes?nbBottles=" . (string)$nbr_bottle . "&nbMagnums=" . (string)$nbr_magnum,
+			CURLOPT_URL => $url,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -663,8 +669,8 @@ class Label_Override
 				"X-AUTH-TOKEN: " . get_option('VINW_ACCESS_KEY'),
 			),
 		));
-
 		$response = json_decode(curl_exec($curlsize), true);
+
 		curl_close($curlsize);
 
 		return $response;
@@ -872,7 +878,7 @@ class Label_Override
 				$hs_code_color = 'no-color';
 			}
 			$curlHscode = curl_init();
-			$hscodeURL = " https://test.eshipping.hillebrandgori.app/api/get-hscode";
+			$hscodeURL = "https://test.eshipping.hillebrandgori.app/api/get-hscode";
 			$hscodeURL .= "?appellationName=" . htmlspecialchars_decode(get_post_meta($cart_item['product_id'], '_custom_appelation', true));
 			$hscodeURL .= "&capacity=" . get_post_meta($cart_item['product_id'], '_custom_capacity', true);
 			$hscodeURL .= "&alcoholDegree=" . get_post_meta($cart_item['product_id'], '_custom_alcohol_degree', true);
@@ -912,8 +918,16 @@ class Label_Override
 	{
 		$curlsize = curl_init();
 
+		$params = array(
+			"country" => $country,
+			"clientType" => $clientType,
+			"quantity" => $quantity
+		);
+
+		$url = "http://test.eshipping.hillebrandgori.app/api/shipment/get-feasability?" . http_build_query($params);
+
 		curl_setopt_array($curlsize, array(
-			CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/shipment/get-feasability?country=" . $country . "&clientType=" . $clientType . "&quantity=" . $quantity,
+			CURLOPT_URL => $url,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => "",
 			CURLOPT_MAXREDIRS => 10,
@@ -1000,7 +1014,7 @@ class Label_Override
 
 					$curlExp = curl_init();
 					curl_setopt_array($curlExp, array(
-						CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/address/get-addresses?typeAddress=exp",
+						CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/address/get-addresses?typeAddress=exp",
 						CURLOPT_RETURNTRANSFER => true,
 						CURLOPT_ENCODING => "",
 						CURLOPT_MAXREDIRS => 10,
@@ -1036,36 +1050,37 @@ class Label_Override
 						return $full_label;
 					}
 
-					$curl = curl_init();
-					$url = " https://test.eshipping.hillebrandgori.app/api/shipment/get-rates";
-					$url .= "?expAddress%5BaddressType%5D=" . urlencode($Exp_societe);
-					$url .= "&expAddress%5BzipCode%5D=" . urlencode($Exp_postCode);
-					$url .= "&expAddress%5Bcity%5D=" . urlencode($Exp_city);
-					$url .= "&expAddress%5Bcountry%5D=" . urlencode($Exp_country);
-					$url .= "&destAddress%5BaddressType%5D=" . urlencode($destiType);
-					$url .= "&destAddress%5BzipCode%5D=" . urlencode(WC()->session->customer['shipping_postcode']);
-					$url .= "&destAddress%5Bcity%5D=" . urlencode(WC()->session->customer['shipping_city']);
-					$url .= "&destAddress%5Bcountry%5D=" . urlencode(WC()->session->customer['country']);
+					// GET RATES
+					$params = array(
+						"expAddress[addressType]" => urlencode($Exp_societe),
+						"expAddress[zipCode]" => urlencode($Exp_postCode),
+						"expAddress[city]" => urlencode($Exp_city),
+						"expAddress[country]" => urlencode($Exp_country),
+						"destAddress[addressType]" => urlencode($destiType),
+						"destAddress[zipCode]" => urlencode(WC()->session->customer['shipping_postcode']),
+						"destAddress[city]" => urlencode(WC()->session->customer['shipping_city']),
+						"destAddress[country]" => urlencode(WC()->session->customer['country']),
+					);
 
 					if (is_array($package_colis)) {
 						$packageNumber = 0;
 						foreach ($package_colis as $key => $parcel_type) {
-							$url .= "&packages%5B" . (string)$packageNumber . "%5D%5Bnb%5D=" . (string)$parcel_type['nbPackages'];
+							$params["packages[" . (string)$packageNumber . "][nb]"] = (string)$parcel_type['nbPackages'];
 							if ($this->has_sparkling()) {
-								$url .= "&packages%5B" . (string)$packageNumber . "%5D%5Bweight%5D=" . (string)$parcel_type['sizes']['weightSparkling'];
+								$params["packages[" . (string)$packageNumber . "][weight]"] = (string)$parcel_type['sizes']['weightSparkling'];
 							} else {
-								$url .= "&packages%5B" . (string)$packageNumber . "%5D%5Bweight%5D=" . (string)$parcel_type['sizes']['weightStill'];
+								$params["packages[" . (string)$packageNumber . "][weight]"] = (string)$parcel_type['sizes']['weightStill'];
 							}
-							$url .= "&packages%5B" . (string)$packageNumber . "%5D%5Bwidth%5D=" . $parcel_type['sizes']['width'];
-							$url .= "&packages%5B" . (string)$packageNumber . "%5D%5Bheight%5D=" . $parcel_type['sizes']['height'];
-							$url .= "&packages%5B" . (string)$packageNumber . "%5D%5Blength%5D=" . $parcel_type['sizes']['length'];
+							$params["packages[" . (string)$packageNumber . "][width]"] = $parcel_type['sizes']['width'];
+							$params["packages[" . (string)$packageNumber . "][height]"] = $parcel_type['sizes']['height'];
+							$params["packages[" . (string)$packageNumber . "][length]"] = $parcel_type['sizes']['length'];
 							$packageNumber++;
 						}
 					}
 
 					$customer_country = WC()->customer->get_shipping_country();
 					if ($customer_country == "US" || $customer_country == "CA") {
-						$url .= "&destAddress%5Bstate%5D=" . urlencode(WC()->customer->get_shipping_state());
+						$params["destAddress[state]"] = urlencode(WC()->customer->get_shipping_state());
 					}
 
 					// If today's date is a weekend or a non workable day
@@ -1083,36 +1098,40 @@ class Label_Override
 
 					if (get_option('VINW_EXP_DAYS_MIN') != "") {
 						$date2 = date(strtotime($date . ' +' . get_option('VINW_EXP_DAYS_MIN') . ' Weekday'));
-						$url .= "&pickupDate=" . date("Y-m-d", $date2);
+						$params["pickupDate"] = date("Y-m-d", $date2);
 					} else {
-						$url .= "&pickupDate=" . date(strtotime($date . ' +1 Weekday'));
+						$params["pickupDate"] = date("Y-m-d", strtotime($date . ' +1 Weekday'));
 					}
-					$url .= "&minHour=09:10:00";
-					$url .= "&cutoff=19:00:00";
+					$params["minHour"] = "09:10:00";
+					$params["cutoff"] = "19:00:00";
 
 					if (in_array('fedex', get_option('VINW_PREF_TRANSP'))) {
-						$url .= "&fedex=1";
+						$params["fedex"] = "1";
 					}
 					if (in_array('ups', get_option('VINW_PREF_TRANSP'))) {
-						$url .= "&ups=1";
+						$params["ups"] = "1";
 					}
 					if (in_array('dhl', get_option('VINW_PREF_TRANSP'))) {
-						$url .= "&dhl=1";
+						$params["dhl"] = "1";
 					}
 					if (in_array('tnt', get_option('VINW_PREF_TRANSP'))) {
-						$url .= "&tnt=1";
+						$params["tnt"] = "1";
 					}
 					if (in_array('chronopost', get_option('VINW_PREF_TRANSP'))) {
-						$url .= "&chronopost=1";
+						$params["chronopost"] = "1";
 					}
 
 					$totalBttles =  $nbr_Bottles_magnums['nbr_bot'] + $nbr_Bottles_magnums['nbr_mg'];
 
-					$url .= "&nbBottles=" . (string)$totalBttles;
+					$params["nbBottles"] = (string)$totalBttles;
 
 					if (get_option('VINW_ASSURANCE') == "yes") {
-						$url .= "&commodityValue=" . (string)$total_products_ex_tax;
+						$params["commodityValue"] = (string)$total_products_ex_tax;
 					}
+					$url = "https://test.eshipping.hillebrandgori.app/api/shipment/get-rates";
+					$query_string = http_build_query($params);
+					$url .= '?' . $query_string;
+					$curl = curl_init();
 
 					curl_setopt_array($curl, array(
 						CURLOPT_URL => $url,
@@ -1250,7 +1269,7 @@ class Label_Override
 							$full_label = '<br><span class="notif">' . __("If you are a company, please contact the sender.", "Vignoblexport") . ' </span>';
 							break;
 						}
-						// d($expedition_type);
+
 						WC()->session->set('expedition_type', $expedition_type);
 
 						if (get_option('VINW_ASSURANCE') == "yes") {

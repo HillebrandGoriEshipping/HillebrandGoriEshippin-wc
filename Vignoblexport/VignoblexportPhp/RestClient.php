@@ -127,7 +127,7 @@ class RestClient
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/address/get-addresses?typeAddress=exp",
+            CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/address/get-addresses?typeAddress=exp",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -149,7 +149,7 @@ class RestClient
     {
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/package/get-pallet-size",
+            CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/package/get-pallet-size",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,

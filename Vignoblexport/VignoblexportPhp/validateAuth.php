@@ -4,7 +4,7 @@ $curl = curl_init();
 
 $key = str_replace(' ', '+', urldecode($_GET['apikey']));
 curl_setopt_array($curl, array(
-  CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/package/get-sizes",
+  CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/package/get-sizes",
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,

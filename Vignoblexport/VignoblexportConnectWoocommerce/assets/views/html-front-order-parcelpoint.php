@@ -18,7 +18,7 @@ $expId = isset($result[0]['id_exp']) ? $result[0]['id_exp'] : NULL;
 if ($expId !== NULL) {
   $curl1 = curl_init();
   curl_setopt_array($curl1, array(
-    CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/shipment/get-status?shipmentId=" . $expId,
+    CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/shipment/get-status?shipmentId=" . $expId,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
@@ -36,7 +36,7 @@ if ($expId !== NULL) {
 
   $curl2 = curl_init();
   curl_setopt_array($curl2, array(
-    CURLOPT_URL => " https://test.eshipping.hillebrandgori.app/api/shipment/get-tracking-link?shipmentId=" . $expId,
+    CURLOPT_URL => "https://test.eshipping.hillebrandgori.app/api/shipment/get-tracking-link?shipmentId=" . $expId,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
