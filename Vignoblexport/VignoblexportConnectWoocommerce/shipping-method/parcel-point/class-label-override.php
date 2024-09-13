@@ -924,7 +924,7 @@ class Label_Override
 			"quantity" => $quantity
 		);
 
-		$url = "http://test.eshipping.hillebrandgori.app/api/shipment/get-feasability?" . http_build_query($params);
+		$url = "https://test.eshipping.hillebrandgori.app/api/shipment/get-feasability?" . http_build_query($params);
 
 		curl_setopt_array($curlsize, array(
 			CURLOPT_URL => $url,
