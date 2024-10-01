@@ -372,6 +372,18 @@ var i = false;
     const vatTransport = offerInput.filter(":checked").data("vattransport");
     const vatAccises = offerInput.filter(":checked").data("vataccises");
 
+    $.blockUI({
+      message: null,
+      css: {
+        border: "none",
+        padding: "15px",
+        backgroundColor: "#000",
+        "-webkit-border-radius": "10px",
+        "-moz-border-radius": "10px",
+        color: "#fff",
+      },
+    });
+
     var ajaxscript = { ajax_url: baseurl + "/wp-admin/admin-ajax.php" };
     $.ajax({
       url: ajaxscript.ajax_url,
@@ -403,6 +415,8 @@ var i = false;
       error: function (error) {
         console.log("error :", error);
       },
+    }).always(function () {
+      $.unblockUI();
     });
   }
 
