@@ -124,7 +124,17 @@ var i = false;
     });
 
     $("input[name='offer[]']").on("click", function () {
-      $("#order_review").block({ message: null });
+      $(".shop_table").block({
+        message: null,
+        overlayCSS: {
+          backgroundColor: "#fff",
+          opacity: 0.5,
+          cursor: "wait",
+        },
+        css: {
+          className: "blockOverlay",
+        },
+      });
       updatcart();
       $("#place_order").prop("disabled", false);
     });
@@ -373,7 +383,6 @@ var i = false;
     const vatTransport = offerInput.filter(":checked").data("vattransport");
     const vatAccises = offerInput.filter(":checked").data("vataccises");
 
-    // $("#order_review").block({ message: null });
     var ajaxscript = { ajax_url: baseurl + "/wp-admin/admin-ajax.php" };
     $.ajax({
       url: ajaxscript.ajax_url,
@@ -406,7 +415,7 @@ var i = false;
         console.log("error :", error);
       },
     }).always(function () {
-      $("#order_review").unblock();
+      $(".shop_table").unblock();
     });
   }
 
