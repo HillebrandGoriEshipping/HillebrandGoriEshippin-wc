@@ -335,7 +335,12 @@ function updatstatus() {
         // console.log(xhr.responseText);
 
         // location.reload();
-        jQuery.blockUI({ message: null });
+        jQuery.blockUI({
+          message: null,
+          css: {
+            className: "blockOverlay",
+          },
+        });
         return false;
       }
     },
@@ -419,7 +424,12 @@ function updatparm() {
         // alert("Success update parameters");
         console.log(data);
         location.reload();
-        jQuery.blockUI({ message: null });
+        jQuery.blockUI({
+          message: null,
+          css: {
+            className: "blockOverlay",
+          },
+        });
       } else {
         alert("Failed update");
       }
@@ -462,7 +472,12 @@ function updatpackage() {
         if ((data.message = "OK")) {
           // alert("Success update");
           location.reload();
-          jQuery.blockUI({ message: null });
+          jQuery.blockUI({
+            message: null,
+            css: {
+              className: "blockOverlay",
+            },
+          });
         } else {
           alert("Failed update");
         }
@@ -513,7 +528,12 @@ function updatpackage() {
           if ((data.message = "OK")) {
             // alert("Success update package");
             location.reload();
-            jQuery.blockUI({ message: null });
+            jQuery.blockUI({
+              message: null,
+              css: {
+                className: "blockOverlay",
+              },
+            });
           } else {
             alert("Failed update");
           }
