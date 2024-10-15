@@ -371,9 +371,11 @@ class Label_Override
 			if ($cart_item['quantity'] > 1) {
 				$bottle_size = get_post_meta($cart_item['product_id'], '_custom_bottle_size', true);
 				if ($cart_item['variation_id'] != 0) {
-					$quantity = get_post_meta($cart_item['variation_id'], '_variation_quantity', true) * (int)$cart_item['quantity'];
+					$variation_quantity = get_post_meta($cart_item['variation_id'], '_variation_quantity', true);
+					$quantity = (int)$variation_quantity * (int)$cart_item['quantity'];
 				} else {
-					$quantity = get_post_meta($cart_item['product_id'], '_custom_number_bottle', true) * (int)$cart_item['quantity'];
+					$custom_nbr_btles = get_post_meta($cart_item['product_id'], '_custom_number_bottle', true);
+					$quantity = (int)$custom_nbr_btles * (int)$cart_item['quantity'];
 				}
 				$quantity = (int)$quantity;
 			}

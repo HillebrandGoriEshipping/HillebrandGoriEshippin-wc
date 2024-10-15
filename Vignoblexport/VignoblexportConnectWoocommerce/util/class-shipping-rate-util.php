@@ -57,7 +57,7 @@ class Shipping_Rate_Util
 	 */
 	public static function get_id($rate)
 	{
-		if (method_exists($rate, 'get_id')) {
+		if (is_object($rate) && method_exists($rate, 'get_id')) {
 			return $rate->get_id();
 		}
 		return $rate->id;
