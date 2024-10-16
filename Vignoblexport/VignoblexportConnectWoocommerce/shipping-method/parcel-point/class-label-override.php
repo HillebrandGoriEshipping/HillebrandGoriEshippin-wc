@@ -1043,7 +1043,9 @@ class Label_Override
 					$Exp_phone = isset($response[0]['telephone']) ? $response[0]['telephone'] : "";
 
 					$data = WC()->session->get('checkout_data');
-					$current_destiType = $data['billing_company'];
+					if (isset($data['billing_company'])) { // if billing_company is not set, then it's a private individual
+						$current_destiType = $data['billing_company'];
+					}
 					$destiType = ($current_destiType == "") ? "individual" : "company";
 					$isFeasable = $this->get_feasability($currentCountry, $destiType, $totalBttles);
 
@@ -1130,7 +1132,7 @@ class Label_Override
 					if (get_option('VINW_ASSURANCE') == "yes") {
 						$params["commodityValue"] = (string)$total_products_ex_tax;
 					}
-					$url = "https://test.eshipping.hillebrandgori.app/api/shipment/get-rates";
+					$url = "https://eshipping.hillebrandgori.app/api/shipment/get-rates";
 					$query_string = http_build_query($params);
 					$url .= '?' . $query_string;
 					$curl = curl_init();
