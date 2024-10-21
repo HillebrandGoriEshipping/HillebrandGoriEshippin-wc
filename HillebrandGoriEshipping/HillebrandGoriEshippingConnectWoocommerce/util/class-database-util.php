@@ -1,0 +1,108 @@
+<?php
+
+/**
+ * Contains code for database util class.
+ *
+ * @package     HillebrandGoriEshipping\HillebrandGoriEshippingConnectWoocommerce\Util
+ */
+
+namespace HillebrandGoriEshipping\HillebrandGoriEshippingConnectWoocommerce\Util;
+
+/**
+ * Database util class.
+ *
+ * Helper to manage Hillebrand Gori eShipping plugin tables.
+ *
+ * @class       Database_Util
+ * @package     HillebrandGoriEshipping\HillebrandGoriEshippingConnectWoocommerce\Util
+ * @category    Class
+ * @author      Hillebrand Gori eShipping
+ */
+class Database_Util
+{
+
+	/**
+	 * Create the plugin tables.
+	 *
+	 * @void
+	 */
+	public static function create_tables()
+	{
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		$tables = self::get_schema();
+		// var_dump($tables);
+		// exit;
+		dbDelta($tables);
+	}
+
+	/**
+	 * Get tables schema.
+	 *
+	 * @return string
+	 */
+	public static function get_schema()
+	{
+		global $wpdb;
+
+		$collate = '';
+
+		if ($wpdb->has_cap('collation')) {
+			$collate = $wpdb->get_charset_collate();
+		}
+
+		/*
+		 * Indexes have a maximum size of 767 bytes. Historically, we haven't need to be concerned about that.
+		 * As of WordPress 4.2, however, we moved to utf8mb4, which uses 4 bytes per character. This means that an index which
+		 * used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+		 *
+		 * This may cause duplicate index notices in logs due to https://core.trac.wordpress.org/ticket/34870 but dropping
+		 * indexes first causes too much load on some servers/larger DB.
+		 */
+		$max_index_length = 191;
+
+		$tables = "
+			CREATE TABLE {$wpdb->prefix}VINW_pricing_items (
+				pricing_id int(6) NOT NULL,
+				shipping_method_instance varchar(256) NOT NULL,
+				price_from float DEFAULT NULL,
+				price_to float DEFAULT NULL,
+				weight_from float DEFAULT NULL,
+				weight_to float DEFAULT NULL,
+				shipping_class text NOT NULL,
+				parcel_point_network text NULL,
+				pricing enum('rate','free','deactivated') NOT NULL,
+				flat_rate float DEFAULT NULL,
+				UNIQUE KEY pkey (pricing_id,shipping_method_instance($max_index_length))
+			) $collate;
+				";
+
+		$tables .= "
+			CREATE TABLE {$wpdb->prefix}VINW_order_expidition (
+				order_id int(6) NOT NULL PRIMARY KEY,
+				package TEXT  NOT NULL,
+				type_liv varchar(256)  NOT NULL,
+				offre TEXT  NOT NULL,
+				id_exp varchar(20) DEFAULT NULL,
+				charge_type varchar(20) DEFAULT NULL,
+				package_type varchar(20) DEFAULT NULL,
+				nbr_bottles INT(11) DEFAULT NULL,
+				nbr_Magnums INT(11) DEFAULT NULL,
+				tracking_link TEXT DEFAULT NULL,
+				tracking_code varchar(100) DEFAULT NULL,
+				tax_amount FLOAT DEFAULT NULL,
+				insurance FLOAT DEFAULT NULL,
+				expedition_type varchar(20) DEFAULT NULL,
+				currency varchar(20) DEFAULT NULL,
+				vat_transport FLOAT DEFAULT NULL,
+				vat_accises FLOAT DEFAULT NULL,
+				initial_price FLOAT DEFAULT NULL,
+				current_price FLOAT DEFAULT NULL,
+				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+				updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+			) $collate;
+		";
+
+		return $tables;
+	}
+}

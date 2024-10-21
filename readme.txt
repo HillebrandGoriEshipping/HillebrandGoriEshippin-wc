@@ -1,6 +1,6 @@
-=== Vignoblexport - The shipping solution for WooCommerce ===
-Contributors: Vignoblexport
-Tags: expédition, shipping, Vignoblexport, colissimo, envoimoinscher , envoi, colis, relais, connect
+=== Hillebrand Gori eShipping - The shipping solution for WooCommerce ===
+Contributors: Hillebrand Gori eShipping
+Tags: expédition, shipping, eShipping, Hillebrand Gori, colissimo, envoimoinscher , envoi, colis, relais, connect
 Requires at least: 4.6
 Tested up to: 5.5.0
 Requires PHP: 5.6
@@ -10,7 +10,7 @@ Managing your shipments becomes easier with our plugin! Save time and enjoy nego
 
 == Description ==
 
-Vignoblexport is the multi-shop and multi-carrier shipping solution for ecommerce. It allows you to optimize the management of your orders and improve the experience of your customers to stay loyal to your brand.
+Hillebrand Gori eShipping is the multi-shop and multi-carrier shipping solution for ecommerce. It allows you to optimize the management of your orders and improve the experience of your customers to stay loyal to your brand.
 
 = Multiply your conversion rate by 2 and boost your net sales =
 
@@ -18,23 +18,23 @@ With our negotiated rates for 15 carriers, with no contract and no minimum volum
 
 Maximize your chances to convert by offering the 2 types of shipping expected by your customers: the economic collection point or the express for the most hurried ones (Chronopost, UPS, Fedex, TNT, DHL, ...).
 
-The Vignoblexport plugin can display the pick-up location map for carriers of your choice. And it's as simple as a checkbox in your backoffice.
+The Hillebrand Gori eShipping plugin can display the pick-up location map for carriers of your choice. And it's as simple as a checkbox in your backoffice.
 
 = Save 1 hour each day in the management of your shippings =
 
-Our free Vignoblexport WooCommerce plugin allows you to import your orders on Vignoblexport.com in 1 click and manage your shipments in record time. No need to re-enter information, your customer’s choice of delivery is retrieved and the corresponding offers are listed. All you have to do is print all your transport labels and prepare your parcels.
+Our free Hillebrand Gori eShipping WooCommerce plugin allows you to import your orders on eshipping.hillebrandgori.com in 1 click and manage your shipments in record time. No need to re-enter information, your customer’s choice of delivery is retrieved and the corresponding offers are listed. All you have to do is print all your transport labels and prepare your parcels.
 
-Vignoblexport helps you in the customs formalities for your international shipments: when filling an order, we display the right form and the necessary documents are generated at the same time as the labels.
+Hillebrand Gori eShipping helps you in the customs formalities for your international shipments: when filling an order, we display the right form and the necessary documents are generated at the same time as the labels.
 
 = Improve your customers' experience to build loyalty =
 
-With Vignoblexport's efficient parcel tracking, you know where your parcels are located and you are informed of delays or delivery incidents! Your customers can view tracking statuses directly on your site and receive shipping notifications if you turn on this option.
+With Hillebrand Gori eShipping's efficient parcel tracking, you know where your parcels are located and you are informed of delays or delivery incidents! Your customers can view tracking statuses directly on your site and receive shipping notifications if you turn on this option.
 
 Finally, you can generate return labels in just a few clicks in case your customers want to do so.
 
 = Security and reliability for you and your customers =
 
-The privacy and security of your data are important to you ? No worries: all the exchanges between your WooCommerce shop and Vignoblexport are encrypted! Nobody will be able to intercept your information or those of your customers.
+The privacy and security of your data are important to you ? No worries: all the exchanges between your WooCommerce shop and Hillebrand Gori eShipping are encrypted! Nobody will be able to intercept your information or those of your customers.
 
 Ensuring the availability of our solution 24 hours a day is our priority: we constantly monitor our technical infrastructure to ensure that your business will not be disrupted.
 
@@ -48,16 +48,16 @@ Ensuring the availability of our solution 24 hours a day is our priority: we con
 = Step by step guide =
 1. Download and activate our plugin from your WooCommerce backoffice
 2. Start the configuration wizard from WooCommerce
-3. Sign-in with your Vignoblexport user or create an account
+3. Sign-in with your Hillebrand Gori eShipping user or create an account
 4. Confirm the url of your shop
 
 == FAQ ==
 
 = Is a SSL certificate required? =
-Vignoblexport can function without one just fine. However, for your peace of mind and that of your customers, we strongly recommend that you have an SSL certificate that secures the access to your site.
+Hillebrand Gori eShipping can function without one just fine. However, for your peace of mind and that of your customers, we strongly recommend that you have an SSL certificate that secures the access to your site.
 
-= Is Vignoblexport free? =
-Vignoblexport by Vignoblexport is a free non-binding solution.
+= Is Hillebrand Gori eShipping free? =
+Hillebrand Gori eShipping by Hillebrand Gori eShipping is a free non-binding solution.
 
 == Screenshots ==
 
@@ -67,6 +67,9 @@ Vignoblexport by Vignoblexport is a free non-binding solution.
 4. Track all your shipments online
 
 == Changelog ==
+
+= 1.5.1 =
+* Rebranded from VignoblExport to Hillebrand Gori eShipping
 
 = 1.5.0 =
 * Revamped tax calculation and weight system
