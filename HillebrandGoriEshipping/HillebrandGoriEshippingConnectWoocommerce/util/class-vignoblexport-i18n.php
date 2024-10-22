@@ -25,7 +25,8 @@
  * @subpackage HillebrandGoriEshipping/includes
  * @author     vinum 
  */
-class HillebrandGoriEshipping-i18n {
+class HillebrandGoriEshipping_i18n
+{
 
 
 	/**
@@ -33,16 +34,13 @@ class HillebrandGoriEshipping-i18n {
 	 *
 	 * @since    1.0.0
 	 */
-	public function load_plugin_textdomain() {
+	public function load_plugin_textdomain()
+	{
 
 		load_plugin_textdomain(
 			'HillebrandGoriEshipping',
 			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
+			dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
 		);
-
 	}
-
-
-
 }

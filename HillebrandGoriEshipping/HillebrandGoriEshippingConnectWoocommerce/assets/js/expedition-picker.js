@@ -21,8 +21,9 @@ var i = false;
     });
 
     if (
-      $("input[id*=vignoblexport_connect]").eq(0).is(":checked") ||
-      $("input[id*=vignoblexport_connect]").eq(0).attr("type") === "hidden"
+      $("input[id*=HillebrandGoriEshipping_connect]").eq(0).is(":checked") ||
+      $("input[id*=HillebrandGoriEshipping_connect]").eq(0).attr("type") ===
+        "hidden"
     ) {
       doneTyping();
     }
@@ -92,8 +93,9 @@ var i = false;
     i = false;
 
     if (
-      $("input[id*=vignoblexport_connect]").eq(0).is(":checked") ||
-      $("input[id*=vignoblexport_connect]").eq(0).attr("type") === "hidden"
+      $("input[id*=HillebrandGoriEshipping_connect]").eq(0).is(":checked") ||
+      $("input[id*=HillebrandGoriEshipping_connect]").eq(0).attr("type") ===
+        "hidden"
     ) {
       doneTyping();
     }
@@ -153,12 +155,14 @@ var i = false;
   function loadscript() {
     console.log("loadscript");
     updatCarrier();
-    if ($("#shipping_method_0_Vignoblexport_connect_pr").length == 0) {
+    if (
+      $("#shipping_method_0_HillebrandGoriEshipping_connect_pr").length == 0
+    ) {
       $("#relayaction").hide();
       $(".VINW-0-client").hide();
     }
     $(
-      "#shipping_method_0_Vignoblexport_connect_dom, #shipping_method_0_Vignoblexport_connect_pr"
+      "#shipping_method_0_HillebrandGoriEshipping_connect_dom, #shipping_method_0_HillebrandGoriEshipping_connect_pr"
     ).on("click", function () {
       if (wc_add_to_cart_params.is_cart !== "1") {
         if (finshedLoad) {
@@ -168,7 +172,7 @@ var i = false;
     });
 
     $(
-      "#shipping_method_0_Vignoblexport_connect_dom, #shipping_method_0_Vignoblexport_connect_pr"
+      "#shipping_method_0_HillebrandGoriEshipping_connect_dom, #shipping_method_0_HillebrandGoriEshipping_connect_pr"
     ).on("change", function () {
       if ($(this).val() == "domicile") {
         $("#offer1").show();
