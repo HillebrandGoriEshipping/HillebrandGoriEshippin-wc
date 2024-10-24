@@ -502,9 +502,6 @@ class Admin_Order_Page
 									echo __('colis',  'HillebrandGoriEshipping');
 									break;
 							} ?></td>
-						<td colspan="2">
-
-						</td>
 					</tr>
 				</tbody>
 
@@ -527,12 +524,26 @@ class Admin_Order_Page
 					<td class="name"></td>
 					<td class="name"></td>
 					<td class="name"></td>
-					<td class="name"></td>
+					
 					</tr></tbody>';
 				echo $field2;
 				if ($offres != null || $type_package == "pallet") {
 				?>
+					<tbody id="select-new-date" style="display:none">
+						<tr>
+							<td>
+								<label><strong><?php esc_html_e('New pickup date:', 'HillebrandGoriEshipping') ?>
+									</strong></label>
+							</td>
+							<td>
+								<select id="date-select" name="date-select">
+									<option value="" selected="selected">-- <?php esc_html_e('Select the pickup date', 'HillebrandGoriEshipping') ?> --</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
 					<tbody id="packaging-body" style="display:none">
+
 						<tr valign="top">
 							<td style="border-right: none !important;">
 								<label><?php esc_html_e('quantity', 'HillebrandGoriEshipping'); ?></label>
@@ -544,6 +555,7 @@ class Admin_Order_Page
 								</div>
 								</div>
 							</td>
+
 							<td style="border-left: none !important;">
 								<div>
 									<label for="pack-select">Choose Number of packages:</label>
@@ -565,11 +577,11 @@ class Admin_Order_Page
 							</td>
 
 						</tr>
-
 					</tbody>
 					<tbody id="form_colis">
 
 					</tbody>
+
 				<?php
 				}
 
@@ -986,9 +998,10 @@ class Admin_Order_Page
 	{
 		global $wpdb;
 		$query = "SELECT `package` FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $order_id . "'";
+		$new_date_query = "SELECT `new_date` FROM {$wpdb->prefix}VINW_order_expidition WHERE order_id = '" . $order_id . "'";
 		$result = $wpdb->get_results($query, ARRAY_A);
+		$new_date = $wpdb->get_var($new_date_query);
 		$package = json_decode($result[0]['package'], true);
-
 		$order = wc_get_order($order_id);
 		$total_products_ex_tax = $order->get_subtotal();
 
@@ -1066,20 +1079,26 @@ class Admin_Order_Page
 			$packageNumber++;
 		}
 
-		// If today's date is a weekend or a non workable day
-		$date = date('l');
-		$checkTime = '1900';
-		$date2 = date(strtotime($date));
 
-		if (date('Hi') >= $checkTime || $date == 'Saturday' || $date == 'Sunday' || $this->isNotWorkable($date)) {
-			$date2 = strtotime($date . ' +2 Weekday');
-		} elseif ($this->isNotWorkable($date) && $date == 'Friday') {
-			$date2 = strtotime($date . ' +3 Weekday');
+		if (strcmp($new_date, '0000-00-00') === 0 || $new_date === null || $new_date === "") {
+			// Get new date
+			// If today's date is a weekend or a non workable day
+			$date = date('l');
+			$checkTime = '1900';
+			$date2 = date(strtotime($date));
+
+			if (date('Hi') >= $checkTime || $date == 'Saturday' || $date == 'Sunday' || $this->isNotWorkable($date)) {
+				$date2 = strtotime($date . ' +2 Weekday');
+			} elseif ($this->isNotWorkable($date) && $date == 'Friday') {
+				$date2 = strtotime($date . ' +3 Weekday');
+			} else {
+				$date2 = strtotime($date . ' +1 Weekday');
+			}
+
+			$url .= "&pickupDate=" . date("Y-m-d", $date2);
 		} else {
-			$date2 = strtotime($date . ' +1 Weekday');
+			$url .= "&pickupDate=" . $new_date;
 		}
-
-		$url .= "&pickupDate=" . date("Y-m-d", $date2);
 
 		$url .= "&minHour=09:10:00";
 		$url .= "&cutoff=19:00:00";
@@ -1122,16 +1141,7 @@ class Admin_Order_Page
 		$response2 = curl_exec($curl);
 		$response2 = json_decode($response2, true);
 		curl_close($curl);
-		// Filter on offers in response  with carriers preferences
-		// $filtered_responses = array();
-		// if (is_countable($response2) && count($response2) > 0 && !isset($response2['status'])) {
-		// 	foreach ($response2 as $response) {
-		// 		if (in_array($response['name'], get_option('VINW_PREF_TRANSP')) || $response['name'] == 'seur' || $response['name'] == 'groupage vignoblexport') {
-		// 			array_push($filtered_responses, $response);
-		// 		}
-		// 	}
-		// }
-		// return $filtered_responses;
+
 		return $response2;
 	}
 

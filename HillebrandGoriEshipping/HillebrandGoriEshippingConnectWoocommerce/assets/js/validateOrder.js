@@ -15,6 +15,7 @@ jQuery(document).ready(function () {
       jQuery("#editColis").css("display", "none");
       jQuery("#editPallet").css("display", "none");
       jQuery("#offredispoPallet").css("display", "none");
+      jQuery("#select-new-date").css("display", "none");
       jQuery("#packaging-body").css("display", "none");
     }
 
@@ -23,6 +24,7 @@ jQuery(document).ready(function () {
       jQuery("#editColis").css("display", "none");
       jQuery("#editPallet").css("display", "contents");
       jQuery("#offredispoPallet").css("display", "contents");
+      jQuery("#select-new-date").css("display", "none");
       jQuery("#packaging-body").css("display", "none");
     }
 
@@ -31,6 +33,7 @@ jQuery(document).ready(function () {
       jQuery("#editColis").css("display", "contents");
       jQuery("#editPallet").css("display", "none");
       jQuery("#offredispoPallet").css("display", "none");
+      jQuery("#select-new-date").css("display", "contents");
       jQuery("#packaging-body").css("display", "contents");
     }
   });
@@ -79,6 +82,24 @@ jQuery(document).ready(function () {
   let typingTimer; //timer identifier
   let doneTypingInterval = 800; //time in ms, 10 second for example
   let nb_pack = jQuery("#form_nb_pack");
+
+  // PICKUP DATE PICKER FROM TOMORROW TO J+7
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const endDate = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const select = jQuery("#date-select");
+
+  for (let date = tomorrow; date <= endDate; date.setDate(date.getDate() + 1)) {
+    const option = jQuery(
+      '<option value="' +
+        date.toISOString().split("T")[0] +
+        '">' +
+        date.toLocaleDateString() +
+        "</option>"
+    );
+    select.append(option);
+  }
 
   //on keyup, start the countdown
   nb_pack.on("change", function () {
@@ -418,7 +439,9 @@ function updatparm() {
       "&nb_magnums=" +
       nb_magnums +
       "&nbr_bottles=" +
-      nbr_bottles,
+      nbr_bottles +
+      "&selectedDate=" +
+      selectedDate,
     function (data) {
       if ((data.message = "OK")) {
         // alert("Success update parameters");
@@ -511,10 +534,12 @@ function updatpackage() {
     });
     if (k == false) {
       let arrayToString = JSON.stringify(val);
+      const select = jQuery("#date-select");
+      const selectedDate = select.val();
       jQuery.get(
         location.origin +
           baseurl +
-          "wp-content/plugins/Vignoblexport/Vignoblexport/VignoblexportPhp/package_param_update.php?order_id=" +
+          "wp-content/plugins/HillebrandGoriEshipping/HillebrandGoriEshipping/HillebrandGoriEshippingPhp/package_param_update.php?order_id=" +
           order_id +
           "&choix=" +
           choix +
@@ -523,7 +548,9 @@ function updatpackage() {
           "&package_type=" +
           package_type +
           "&val=" +
-          arrayToString,
+          arrayToString +
+          "&selectedDate=" +
+          selectedDate,
         function (data) {
           if ((data.message = "OK")) {
             // alert("Success update package");
