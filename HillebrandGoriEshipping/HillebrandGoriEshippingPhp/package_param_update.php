@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 $var = "";
 $order_id = $_GET['order_id'];
 
+$new_date = $_GET['selectedDate'];
+
 $var .= urlencode(json_encode($_GET['choix']));
 
 
@@ -42,6 +44,7 @@ try {
   $wpdb->update($tablename, array(
     'package' => urldecode($package),
     'package_type' => urldecode($sessionDetails[2]),
+    'new_date' => urldecode($new_date),
     'offre' => " "
   ), array('order_id' => (int) $order_id));
   header("HTTP/1.1 200 OK");
