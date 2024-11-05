@@ -148,7 +148,7 @@ $adress = $getadress;
 				<th scope="row"><?php esc_html_e('Address', 'HillebrandGoriEshipping'); ?> :</th>
 				<td>
 					<label for="Adresse"><?php echo $adress[0]['address'] ?></label>
-					<?php if ($adress[2]['addressComplement'] != "") { ?>
+					<?php if ($adress[0]['addressComplement'] != "") { ?>
 						<label for="Adresse"><?php echo $adress[0]['addressComplement'] ?></label>
 					<?php } ?>
 					<?php if ($adress[0]['addressComplement2'] != "") { ?>
