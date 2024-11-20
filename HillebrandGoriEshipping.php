@@ -7,7 +7,7 @@
  * Author URI: https://eshipping.hillebrandgori.com/
  * Text Domain: Hillebrand Gori eShipping
  * Domain Path: /hillebrandGoriEshipping/hillebrandGoriEshippingConnectWoocommerce/translation
- * Version: 1.5.0
+ * Version: 1.5.2
  * WC requires at least: 2.6.14
  * WC tested up to: 8.4.0
  *

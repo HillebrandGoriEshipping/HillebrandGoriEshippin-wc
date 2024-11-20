@@ -3,7 +3,7 @@ Contributors: Hillebrand Gori eShipping
 Tags: expédition, shipping, eShipping, Hillebrand Gori, colissimo, envoimoinscher , envoi, colis, relais, connect
 Requires at least: 4.6
 Tested up to: 5.5.0
-Requires PHP: 5.6
+Requires PHP: 7.3
 Stable tag: 1.3.3
 
 Managing your shipments becomes easier with our plugin! Save time and enjoy negotiated rates with many carriers: Chronopost, UPS, Fedex, TNT, ...
@@ -67,6 +67,9 @@ Hillebrand Gori eShipping by Hillebrand Gori eShipping is a free non-binding sol
 4. Track all your shipments online
 
 == Changelog ==
+
+= 1.5.2 =
+* Fixed a bug when "ship to a different address" is checked
 
 = 1.5.1 =
 * Rebranded from VignoblExport to Hillebrand Gori eShipping
