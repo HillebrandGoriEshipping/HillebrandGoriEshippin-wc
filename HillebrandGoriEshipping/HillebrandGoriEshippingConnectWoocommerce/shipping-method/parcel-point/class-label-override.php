@@ -1063,7 +1063,7 @@ class Label_Override
 						"destAddress[addressType]" => urlencode($destiType),
 						"destAddress[zipCode]" => urlencode(WC()->session->customer['shipping_postcode']),
 						"destAddress[city]" => urlencode(WC()->session->customer['shipping_city']),
-						"destAddress[country]" => urlencode(WC()->session->customer['country']),
+						"destAddress[country]" => urlencode(WC()->session->customer['shipping_country']),
 					);
 
 					if (is_array($package_colis)) {
