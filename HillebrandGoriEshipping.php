@@ -705,7 +705,13 @@ add_action('woocommerce_process_product_meta', 'HillebrandGoriEshipping_product_
  */
 function HillebrandGoriEshipping_product_custom_fields()
 {
-	global $woocommerce, $post;
+	global $post;
+	$product = wc_get_product($post->ID);
+
+	if ($product->is_virtual() || $product->is_downloadable()) {
+		return; // Exit if product is virtual
+	}
+
 	$min_nbr = get_post_meta($post->ID, '_custom_number_bottle', true);
 
 	if (!$min_nbr) {
