@@ -55,14 +55,35 @@ class Label_Override
 	}
 
 	/**
-	 * Process the checkout
+	 * Checks if a shipping offer is set when processing the checkout.
+	 *
+	 * If the cart is not virtual-only, this function checks if the 'offer' field
+	 * is set when the checkout is processed. If it's not set, a notice is added
+	 * to the checkout page.
+	 *
+	 * @void
 	 */
-
 	function is_offer_set_checkout_field_process()
 	{
-		// Check if set, if its not set add an error.
-		if (!isset($_POST['offer']))
-			wc_add_notice(__('Please select a shipping offer'), 'error');
+		/* Check if all products in the cart are virtual.
+		 * If the cart only contains virtual products, the user is not required
+		 * to select a shipping offer. */
+		$all_virtual = true;
+		foreach (WC()->cart->get_cart() as $cart_item) {
+			$product = $cart_item['data'];
+			if (!$product->is_virtual()) {
+				$all_virtual = false;
+				break;
+			}
+		}
+
+		/* If the cart is not virtual-only, check if the 'offer' field is set.
+		 * If it's not set, add an error notice to the checkout page. */
+		if (!$all_virtual) {
+			if (!isset($_POST['offer'])) {
+				wc_add_notice(__('Please select a shipping offer'), 'error');
+			}
+		}
 	}
 
 	function rename_shipping_order_item_totals($order, $order_glob)
