@@ -32,5 +32,5 @@ This project is a WooCommerce plugin to calculate the shipping costs using the e
 
 # Build and Test
 
-TODO: Describe and show how to build your code and run the tests.
+TODO.
 
