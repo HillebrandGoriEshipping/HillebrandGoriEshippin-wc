@@ -2,12 +2,15 @@
 
 namespace HGeS\Admin\Settings;
 
+use HGeS\Utils\Twig;
+
 class Menu
 {
     public static function addSettingsMenu()
     {
 
-        add_menu_page(
+        add_submenu_page(
+            'woocommerce',
             'Hillebrand Gori eShipping',
             'Hillebrand Gori eShipping',
             'manage_options',
@@ -19,8 +22,11 @@ class Menu
 
     public static function renderSettingsPage()
     {
-        // Render the settings page content here
-        echo '<h1>Hillebrand Gori eShipping Settings</h1>';
-        echo '<p>Settings content goes here.</p>';
+        // Utiliser Twig pour rendre la page
+        $twig = Twig::getTwig();
+        echo $twig->render('settings-page.twig', [
+            'title' => 'Hillebrand Gori eShipping Settings',
+            'description' => 'Settings content goes here.',
+        ]);
     }
 }

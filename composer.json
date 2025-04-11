@@ -8,5 +8,8 @@
     "test": [
       "phpunit tests/"
     ]
+  },
+  "require": {
+    "twig/twig": "^3.20"
   }
 }
