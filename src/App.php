@@ -2,6 +2,8 @@
 
 namespace HGeS;
 
+use HGeS\Admin\Settings\Menu;
+
 /**
  * Plugin entry class
  *
@@ -9,9 +11,15 @@ namespace HGeS;
 class App
 {
 
-    public static function init()
+    public static function run()
     {
-        // Initialize the plugin
-        // TODO HOOKS
+        if (is_admin()) {
+            self::runAdmin();
+        }
+    }
+
+    public static function runAdmin()
+    {
+        add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
     }
 }

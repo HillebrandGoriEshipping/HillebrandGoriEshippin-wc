@@ -17,4 +17,4 @@ require __DIR__ . '/vendor/autoload.php';
 
 use HGeS\App;
 
-App::init();
+App::run();
