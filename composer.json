@@ -1,0 +1,12 @@
+{
+  "autoload": {
+    "psr-4": {
+      "HGeS\\": "src/"
+    }
+  },
+  "scripts": {
+    "test": [
+      "phpunit tests/"
+    ]
+  }
+}
