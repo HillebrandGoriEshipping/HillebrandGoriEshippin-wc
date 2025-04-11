@@ -3,5 +3,13 @@
     "psr-4": {
       "HGeS\\": "src/"
     }
+  },
+  "require": {
+    "phpunit/phpunit": "^12.1"
+  },
+  "scripts": {
+    "test": [
+      "phpunit tests/"
+    ]
   }
 }

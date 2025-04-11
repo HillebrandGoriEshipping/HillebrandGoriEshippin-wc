@@ -2,10 +2,16 @@
 
 namespace HGeS;
 
+/**
+ * Plugin entry class
+ *
+ */
 class App
 {
-    public function __construct()
+
+    public static function init()
     {
-        exit('coucou');
+        // Initialize the plugin
+        // TODO HOOKS
     }
 }
