@@ -34,4 +34,4 @@ This project is a WooCommerce plugin to calculate the shipping costs using the e
 
 TODO.
 
-MON JOKEEEEEER
+COUP DE POKEEEEEEER
