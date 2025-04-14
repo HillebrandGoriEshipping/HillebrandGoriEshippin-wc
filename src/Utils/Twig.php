@@ -12,7 +12,7 @@ class Twig
     public static function getTwig()
     {
         if (!self::$twig) {
-            $loader = new FilesystemLoader(dirname(__DIR__) . '/templates');
+            $loader = new FilesystemLoader(HGeS_PLUGIN_DIR . '/templates');
             self::$twig = new Environment($loader, [
                 'cache' => false,
             ]);
