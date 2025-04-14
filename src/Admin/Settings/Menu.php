@@ -22,11 +22,29 @@ class Menu
 
     public static function renderSettingsPage()
     {
+        $options = [
+            'VINW_ACCESS_KEY' => get_option('VINW_ACCESS_KEY'),
+            'acces_key_validate' => get_option('acces-key-validate', '0'),
+            'VINW_MAPBOX_ACCESS_KEY' => get_option('VINW_MAPBOX_ACCESS_KEY'),
+            'mapbox_api_key_validate' => get_option('mapbox-api-key-validate', '0'),
+            'VINW_PREF_TRANSP' => get_option('VINW_PREF_TRANSP', []),
+            'VINW_PREF_STAT' => get_option('VINW_PREF_STAT'),
+            'VINW_TAX_RIGHTS' => get_option('VINW_TAX_RIGHTS'),
+            'VINW_VAT_CHOICE' => get_option('VINW_VAT_CHOICE'),
+            'VINW_VAT_NUMBER' => get_option('VINW_VAT_NUMBER'),
+            'VINW_VAT_OSS' => get_option('VINW_VAT_OSS'),
+            'VINW_EORI_NUMBER' => get_option('VINW_EORI_NUMBER'),
+            'VINW_FDA_NUMBER' => get_option('VINW_FDA_NUMBER'),
+            'VINW_ASSURANCE' => get_option('VINW_ASSURANCE'),
+            'VINW_NBR_MIN' => get_option('VINW_NBR_MIN'),
+            'VINW_EXP_DAYS_MIN' => get_option('VINW_EXP_DAYS_MIN'),
+        ];
+
         // Utiliser Twig pour rendre la page
         $twig = Twig::getTwig();
         echo $twig->render('settings-page.twig', [
             'title' => 'Hillebrand Gori eShipping Settings',
-            'description' => 'Settings content goes here.',
+            'options' => $options,
         ]);
     }
 }

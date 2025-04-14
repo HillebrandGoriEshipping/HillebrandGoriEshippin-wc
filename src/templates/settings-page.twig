@@ -1,3 +1,240 @@
-{# filepath: /Users/nico/Sites/eShipping.PluginDemoWordPress/content/plugins/HillebrandGoriEshipping/src/templates/settings-page.twig #}
 <h1>{{ title }}</h1>
-<p>Mon JOKER</p>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<div class="wrap" id="VINW-connect">
+    <h3>{{ function('__', 'Please fill the information below in order to be able to use the plugin', 'HillebrandGoriEshipping')|escape }}</h3>
+    <form method="post" action="options.php">
+        {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group')|raw }}
+        {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group')|raw }}
+        <h2>1. {{ function('__', 'Key settings', 'HillebrandGoriEshipping') }}</h2>
+        <input type="hidden" name="VINW_PP_NETWORKS[VING_NETWORK][]" value="Vingoblexport">
+        <table class="form-table states">
+            <tr valign="top">
+                <td scope="row" class="titledesc">
+                    <label for="order_shipped">{{ function('__', 'Insert your Hillebrand Gori eShipping API token',  'HillebrandGoriEshipping')|escape }}</label>
+                </td>
+                <td>
+                    <input type="text" name="VINW_ACCESS_KEY" id="api-input" value="{{ options.VINW_ACCESS_KEY|default('') }}" 
+                           style="border: 3px solid {{ options.acces_key_validate == '1' ? 'green' : 'red' }};">
+                    <input type="hidden" id="acces-key-validate" name="acces-key-validate" value="{{ options.acces_key_validate|default('0') }}">
+                    <button type="button" class="button" id="validate-api" disabled>{{ function('__', 'Test my access token', 'HillebrandGoriEshipping')|escape }}</button>
+                </td>
+            </tr>
+            <tr valign="top">
+                <td scope="row" class="titledesc">
+                    <label for="order_shipped">{{ function('__', 'Insert your MapBox API token', 'HillebrandGoriEshipping')|escape }}</label>
+                </td>
+                <td>
+                    <input type="text" name="VINW_MAPBOX_ACCESS_KEY" id="api-input-mapbox" value="{{ options.VINW_MAPBOX_ACCESS_KEY|default('') }}" 
+                           style="border: 3px solid {{ options.mapbox_api_key_validate == '1' ? 'green' : 'red' }};">
+                    <input type="hidden" id="mapbox-api-key-validate" name="mapbox-api-key-validate" value="{{ options.mapbox_api_key_validate|default('0') }}">
+                    <button type="button" class="button" id="validate-mapbox-api">{{ function('__', 'Test my Mapbox access token', 'HillebrandGoriEshipping')|escape }}</button>
+                </td>
+            </tr>
+        </table>
+        <p id="alert-api-text" style="font-weight:900;background-color:#ffb900;width:fit-content;">
+            {{ function('__', 'Please validate the API access before saving the modifications', 'HillebrandGoriEshipping')|escape }}
+        </p>
+        {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
+    </form>
+</div>
+
+{% if options.VINW_ACCESS_KEY and options.acces_key_validate == '1' %}
+<div class="wrap" id="VINW-settings">
+    <h1>{{ function('__', 'Hillebrand Gori eShipping shipping settings', 'HillebrandGoriEshipping')|escape }}</h1>
+    <h2>{{ function('__', 'Address used to calculate shipping charges', 'HillebrandGoriEshipping')|escape }}</h2>
+    <p>{{ function('__', 'Contact our support if you need to edit those informations', 'HillebrandGoriEshipping')|escape }}</p>
+    <table class="form-table states">
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Address', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <label for="Adresse">{{ options.adress[0].addressName }}</label>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Company', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <label for="Adresse">{{ options.adress[0].company }}</label>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Contact', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <label for="Adresse">{{ options.adress[0].contact }}</label>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Phone', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <label for="Adresse">{{ options.adress[0].telephone }}</label>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Address', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <label for="Adresse">{{ options.adress[0].address }}</label>
+                {% if options.adress[0].addressComplement != '' %}
+                    <label for="Adresse">{{ options.adress[0].addressComplement }}</label>
+                {% endif %}
+                {% if options.adress[0].addressComplement2 != '' %}
+                    <label for="Adresse">{{ options.adress[0].addressComplement2 }}</label>
+                {% endif %}
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'City', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <label for="Adresse">{{ options.adress[0].city }}</label>
+            </td>
+        </tr>
+    </table>
+</div>
+{% endif %}
+
+<h2>{{ function('__', 'Configuration', 'HillebrandGoriEshipping')|escape }}</h2>
+<form method="post" action="options.php" id="configuration_form">
+    {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group2')|raw }}
+    {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group2')|raw }}
+    <table class="form-table states">
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Minimum number of bottles', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <input type="number" min="1" name="VINW_NBR_MIN" value="{{ options.VINW_NBR_MIN|default('') }}">
+                <div class="tooltip">?
+                    <span class="tooltiptext">{{ function('__', 'Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page', 'HillebrandGoriEshipping')|escape }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Preparation time', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <input type="number" min="1" name="VINW_NBR_MIN" value="{{ options.VINW_NBR_MIN|default('') }}">
+                <div class="tooltip">?
+                    <span class="tooltiptext">{{ function('__', 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup', 'HillebrandGoriEshipping')|escape }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Preparation time', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <input type="number" min="1" name="VINW_NBR_MIN" value="{{ options.VINW_NBR_MIN|default('') }}">
+                <div class="tooltip">?
+                    <span class="tooltiptext">{{ function('__', 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup', 'HillebrandGoriEshipping')|escape }}</span>
+                </div>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Carrier preference', 'HillebrandGoriEshipping')|escape }}</th>
+            <td>
+                <fieldset id="transport_pref" name="VINW_PREF_TRANSP">
+                    <div>
+                        <input type="checkbox" id="fedex" name="VINW_PREF_TRANSP[]" value="fedex" {{ carrierChecked('fedex') }}>
+                        <label for="fedex">FEDEX</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="ups" name="VINW_PREF_TRANSP[]" value="ups" {{ carrierChecked('ups') }}>
+                        <label for="ups">UPS</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="dhl" name="VINW_PREF_TRANSP[]" value="dhl" {{ carrierChecked('dhl') }}>
+                        <label for="dhl">DHL</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="dhl" name="VINW_PREF_TRANSP[]" value="tnt" {{ carrierChecked('tnt') }}>
+                        <label for="tnt">TNT</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="chronopost" name="VINW_PREF_TRANSP[]" value="chronopost" {{ carrierChecked('chronopost') }}>
+                        <label for="chronopost">CHRONOPOST</label>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Delivery preference', 'HillebrandGoriEshipping') }} :</th>
+            <td>
+                <select id="form_trans" name="VINW_PREF_DEL" class="form-control" style="min-width: 250px;">
+                    <option value="both" {{ optionSelected('VINW_PREF_DEL','both', 'both') }}>
+                        {{ function('__', 'At home / Pickup point', 'HillebrandGoriEshipping')|escape }}
+                    </option>
+                    <option value="home" {{ optionSelected('VINW_PREF_DEL','home', 'both') }}>{{ function('__', 'At home', 'HillebrandGoriEshipping')|escape }}</option>
+                    <option value="pickup_point" {{ optionSelected('VINW_PREF_DEL', 'pickup_point', 'both') }}>{{ function('__', 'Pickup point', 'HillebrandGoriEshipping')|escape }}</option>
+                </select>
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Duties and taxes at destination', 'HillebrandGoriEshipping') }} :</th>
+            <td>
+                <select id="form_trans" name="VINW_TAX_RIGHTS" class="form-control" style="min-width: 250px;">
+                    {% if function('get_option','VINW_TAX_RIGHTS') %}  
+                        <option value="" disabled {{ optionSelected('VINW_TAX_RIGHTS', '', '' ) }}>{{ function('__','Select your option', 'HillebrandGoriEshipping')|escape }}</option>
+                        <option value="exp" {{ optionSelected('VINW_TAX_RIGHTS', 'exp', '' ) }}> {{ function('__',"At the sender's expense", 'HillebrandGoriEshipping')|escape }}</option>
+                        <option value="dest" {{ optionSelected('VINW_TAX_RIGHTS', 'dest', '' ) }}>{{ function('__',"At the recipient's expense", 'HillebrandGoriEshipping')|escape }}</option>
+                    {% else %}
+                        <option value="" disabled>{{ function('__','Select your option', 'HillebrandGoriEshipping')|escape }}</option>
+                        <option value="exp">{{ function('__',"At the sender's expense", 'HillebrandGoriEshipping')|escape }}</option>
+                        <option value="dest">{{ function('__',"At the recipient's expense", 'HillebrandGoriEshipping')|escape }}</option>
+                    {% endif %}
+                </select>
+                <div class="tooltip">?
+                    <span class="tooltiptext">{{ function('__', 'Displays the duties and taxes estimation on the checkout page if you choose the "At the recipient\'s expense" option (domestic international shipments)', 'HillebrandGoriEshipping')|escape }}</span>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <h2>{{ function('__', 'Numbers & Registrations', 'HillebrandGoriEshipping')|escape }}</h2>
+        <table class="form-table states">
+            <!-- VAT NUMBER -->
+            <tr valign="top">
+                <th scope="row">{{ function('__', 'VAT number', 'HillebrandGoriEshipping')|escape }} :</th>
+                <td>
+                    <input type="text" name="VINW_VAT_NUMBER" id="vat-number" value="{% if function('get_option', 'VINW_VAT_NUMBER') %}
+                                                                                           {{ function('get_option', 'VINW_VAT_NUMBER') }}
+                                                                                        {% endif %}">
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ function('__','Enter your VAT number (required)', 'HillebrandGoriEshipping')|escape }}</span>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- OSS -->
+            <tr valign="top">
+                <th scope="row"><?php esc_html_e('OSS:', 'HillebrandGoriEshipping') ?></th>
+                <td>
+                    <select name="VINW_VAT_OSS">
+                        <option value="no" <?php if (get_option('VINW_VAT_OSS') == 'no') echo 'selected' ?>><?php esc_html_e('No', 'HillebrandGoriEshipping') ?></option>
+                        <option value="yes" <?php if (get_option('VINW_VAT_OSS') == 'yes') echo 'selected' ?>><?php esc_html_e('Yes', 'HillebrandGoriEshipping') ?></option>
+                    </select>
+                    <div class="tooltip">?
+                        <span class="tooltiptext"><?php esc_html_e('Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'HillebrandGoriEshipping'); ?></span>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- EORI NUMBER -->
+            <tr valign="top">
+                <th scope="row"><?php esc_html_e('EORI number', 'HillebrandGoriEshipping'); ?> :</th>
+                <td>
+                    <input type="text" name="VINW_EORI_NUMBER" id="eori-number" value="<?php if (get_option('VINW_EORI_NUMBER')) {
+                                                                                            echo get_option('VINW_EORI_NUMBER');
+                                                                                        } ?>">
+                    <div class="tooltip">?
+                        <span class="tooltiptext"><?php esc_html_e('Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'HillebrandGoriEshipping'); ?></span>
+                    </div>
+                </td>
+            </tr>
+            <!-- FDA NUMBER -->
+            <tr valign="top">
+                <th scope="row"><?php esc_html_e('FDA number', 'HillebrandGoriEshipping'); ?> :</th>
+                <td>
+                    <input type="text" name="VINW_FDA_NUMBER" id="fda-number" value="<?php if (get_option('VINW_FDA_NUMBER')) {
+                                                                                            echo get_option('VINW_FDA_NUMBER');
+                                                                                        } ?>">
+                    <div class="tooltip">?
+                        <span class="tooltiptext"><?php esc_html_e('Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'HillebrandGoriEshipping'); ?></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    {{ function('submit_button')|raw }}
+</form>
