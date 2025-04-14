@@ -5,7 +5,7 @@
     <form method="post" action="options.php">
         {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group')|raw }}
         {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group')|raw }}
-        <h2>1. {{ function('__', 'Key settings', 'HillebrandGoriEshipping') }}</h2>
+        <h2>{{ function('__', 'Key settings', 'HillebrandGoriEshipping') }}</h2>
         <input type="hidden" name="VINW_PP_NETWORKS[VING_NETWORK][]" value="Vingoblexport">
         <table class="form-table states">
             <tr valign="top">
@@ -39,6 +39,7 @@
 </div>
 
 {% if options.VINW_ACCESS_KEY and options.acces_key_validate == '1' %}
+<form method="post" action="options.php" id="configuration_form">
 <div class="wrap" id="VINW-settings">
     <h1>{{ function('__', 'Hillebrand Gori eShipping shipping settings', 'HillebrandGoriEshipping')|escape }}</h1>
     <h2>{{ function('__', 'Address used to calculate shipping charges', 'HillebrandGoriEshipping')|escape }}</h2>
@@ -192,49 +193,66 @@
                                                                                            {{ function('get_option', 'VINW_VAT_NUMBER') }}
                                                                                         {% endif %}">
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__','Enter your VAT number (required)', 'HillebrandGoriEshipping')|escape }}</span>
+                        <span class="tooltiptext">{{ function('__', 'Enter your VAT number (required)', 'HillebrandGoriEshipping')|escape }}</span>
                     </div>
                 </td>
             </tr>
 
             <!-- OSS -->
             <tr valign="top">
-                <th scope="row"><?php esc_html_e('OSS:', 'HillebrandGoriEshipping') ?></th>
+                <th scope="row">{{ function('__', 'OSS:', 'HillebrandGoriEshipping') }}</th>
                 <td>
                     <select name="VINW_VAT_OSS">
-                        <option value="no" <?php if (get_option('VINW_VAT_OSS') == 'no') echo 'selected' ?>><?php esc_html_e('No', 'HillebrandGoriEshipping') ?></option>
-                        <option value="yes" <?php if (get_option('VINW_VAT_OSS') == 'yes') echo 'selected' ?>><?php esc_html_e('Yes', 'HillebrandGoriEshipping') ?></option>
+                        <option value="no" {{ optionSelected('VINW_TAX_RIGHTS', 'no', 'no' ) }}>{{ function('__', 'No', 'HillebrandGoriEshipping') }}</option>
+                        <option value="yes" {{ optionSelected('VINW_TAX_RIGHTS', 'yes', 'no' ) }}>{{ function('__', 'Yes', 'HillebrandGoriEshipping') }}</option>
                     </select>
                     <div class="tooltip">?
-                        <span class="tooltiptext"><?php esc_html_e('Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'HillebrandGoriEshipping'); ?></span>
+                        <span class="tooltiptext">{{ function('__', 'Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'HillebrandGoriEshipping') }}</span>
                     </div>
                 </td>
             </tr>
 
             <!-- EORI NUMBER -->
             <tr valign="top">
-                <th scope="row"><?php esc_html_e('EORI number', 'HillebrandGoriEshipping'); ?> :</th>
+                <th scope="row">{{ function('__', 'EORI number', 'HillebrandGoriEshipping') }} :</th>
                 <td>
-                    <input type="text" name="VINW_EORI_NUMBER" id="eori-number" value="<?php if (get_option('VINW_EORI_NUMBER')) {
-                                                                                            echo get_option('VINW_EORI_NUMBER');
-                                                                                        } ?>">
+                    <input type="text" name="VINW_EORI_NUMBER" id="eori-number" value="{% if function('get_option', 'VINW_EORI_NUMBER') %}
+                                                                                           {{ function('get_option', 'VINW_EORI_NUMBER') }}
+                                                                                        {% endif %}">
                     <div class="tooltip">?
-                        <span class="tooltiptext"><?php esc_html_e('Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'HillebrandGoriEshipping'); ?></span>
+                        <span class="tooltiptext">{{ function('__', 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'HillebrandGoriEshipping') }}</span>
                     </div>
                 </td>
             </tr>
             <!-- FDA NUMBER -->
             <tr valign="top">
-                <th scope="row"><?php esc_html_e('FDA number', 'HillebrandGoriEshipping'); ?> :</th>
+                <th scope="row">{{ function('__', 'FDA number', 'HillebrandGoriEshipping') }} :</th>
                 <td>
-                    <input type="text" name="VINW_FDA_NUMBER" id="fda-number" value="<?php if (get_option('VINW_FDA_NUMBER')) {
-                                                                                            echo get_option('VINW_FDA_NUMBER');
-                                                                                        } ?>">
+                    <input type="text" name="VINW_FDA_NUMBER" id="fda-number" value="{% if function('get_option', 'VINW_FDA_NUMBER') %}
+                                                                                           {{ function('get_option', 'VINW_FDA_NUMBER') }}
+                                                                                        {% endif %}">
                     <div class="tooltip">?
-                        <span class="tooltiptext"><?php esc_html_e('Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'HillebrandGoriEshipping'); ?></span>
+                        <span class="tooltiptext">{{ function('__', 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'HillebrandGoriEshipping') }}</span>
                     </div>
                 </td>
             </tr>
         </table>
-    {{ function('submit_button')|raw }}
+        <!-- INSURANCE -->
+        <h2>{{ function('__', 'Insurance', 'HillebrandGoriEshipping') }}</h2>
+        <table class="form-table states" role="presentation">
+            <tr valign="top">
+                <th scope="row">{{ function('__', 'Activate insurance:', 'HillebrandGoriEshipping') }}</th>
+                <td>
+                    <select name="VINW_ASSURANCE">
+                        <option value="no" {{ optionSelected('VINW_TAX_RIGHTS', 'no', 'no' ) }}>{{ function('__', 'No', 'HillebrandGoriEshipping') }}</option>
+                        <option value="yes" {{ optionSelected('VINW_TAX_RIGHTS', 'yes', 'no' ) }}>{{ function('__', 'Yes', 'HillebrandGoriEshipping') }}</option>
+                    </select>
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ function('__', 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)', 'HillebrandGoriEshipping') }}</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    {{ function('submit_button') }}
 </form>
