@@ -40,11 +40,25 @@ class Menu
             'VINW_EXP_DAYS_MIN' => get_option('VINW_EXP_DAYS_MIN'),
         ];
 
+        //TODO : GET ADDRESS FROM API
+        $address = [
+            'addressName' => 'Main Office',
+            'company' => 'Hillebrand Gori',
+            'contact' => 'Mr Smith',
+            'phone' => '+33 1 23 45 67 89',
+            'address' => 'Rue de la Gare',
+            'addressComplement' => 'Bâtiment A',
+            'addressComplement2' => '',
+            'city' => 'Paris',
+
+        ];
+
         // Utiliser Twig pour rendre la page
         $twig = Twig::getTwig();
         echo $twig->render('settings-page.twig', [
             'title' => 'Hillebrand Gori eShipping Settings',
             'options' => $options,
+            'address' => $address,
         ]);
     }
 }

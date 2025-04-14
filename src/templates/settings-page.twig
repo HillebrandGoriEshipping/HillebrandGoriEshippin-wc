@@ -6,7 +6,7 @@
         {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group')|raw }}
         {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group')|raw }}
         <h2>{{ function('__', 'Key settings', 'HillebrandGoriEshipping') }}</h2>
-        <input type="hidden" name="VINW_PP_NETWORKS[VING_NETWORK][]" value="Vingoblexport">
+        <input type="hidden" name="VINW_PP_NETWORKS[VING_NETWORK][]" value="HillebrandGoriEshipping">
         <table class="form-table states">
             <tr valign="top">
                 <td scope="row" class="titledesc">
@@ -38,7 +38,7 @@
     </form>
 </div>
 
-{% if options.VINW_ACCESS_KEY and options.acces_key_validate == '1' %}
+{# {% if options.VINW_ACCESS_KEY and options.acces_key_validate == '1' %} #}
 <form method="post" action="options.php" id="configuration_form">
 <div class="wrap" id="VINW-settings">
     <h1>{{ function('__', 'Hillebrand Gori eShipping shipping settings', 'HillebrandGoriEshipping')|escape }}</h1>
@@ -48,54 +48,55 @@
         <tr valign="top">
             <th scope="row">{{ function('__', 'Address', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
-                <label for="Adresse">{{ options.adress[0].addressName }}</label>
+                <label for="Adresse">{{ address.addressName }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ function('__', 'Company', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
-                <label for="Adresse">{{ options.adress[0].company }}</label>
+                <label for="Adresse">{{ address.company }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ function('__', 'Contact', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
-                <label for="Adresse">{{ options.adress[0].contact }}</label>
+                <label for="Adresse">{{ address.contact }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ function('__', 'Phone', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
-                <label for="Adresse">{{ options.adress[0].telephone }}</label>
+                <label for="Adresse">{{ address.phone }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ function('__', 'Address', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
-                <label for="Adresse">{{ options.adress[0].address }}</label>
-                {% if options.adress[0].addressComplement != '' %}
-                    <label for="Adresse">{{ options.adress[0].addressComplement }}</label>
+                <label for="Adresse">{{ address.address }}</label>
+                {% if address.addressComplement != '' %}
+                    <label for="Adresse">{{ address.addressComplement }}</label>
                 {% endif %}
-                {% if options.adress[0].addressComplement2 != '' %}
-                    <label for="Adresse">{{ options.adress[0].addressComplement2 }}</label>
+                {% if address.addressComplement2 != '' %}
+                    <label for="Adresse">{{ address.addressComplement2 }}</label>
                 {% endif %}
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ function('__', 'City', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
-                <label for="Adresse">{{ options.adress[0].city }}</label>
+                <label for="Adresse">{{ address.city }}</label>
             </td>
         </tr>
     </table>
 </div>
-{% endif %}
+{# {% endif %} #}
 
 <h2>{{ function('__', 'Configuration', 'HillebrandGoriEshipping')|escape }}</h2>
 <form method="post" action="options.php" id="configuration_form">
     {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group2')|raw }}
     {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group2')|raw }}
     <table class="form-table states">
+        <!-- MINIMUM NUMBER OF BOTTLES -->
         <tr valign="top">
             <th scope="row">{{ function('__', 'Minimum number of bottles', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
@@ -105,6 +106,7 @@
                 </div>
             </td>
         </tr>
+        <!-- PREPARATION TIME -->
         <tr valign="top">
             <th scope="row">{{ function('__', 'Preparation time', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
@@ -114,15 +116,7 @@
                 </div>
             </td>
         </tr>
-        <tr valign="top">
-            <th scope="row">{{ function('__', 'Preparation time', 'HillebrandGoriEshipping')|escape }}:</th>
-            <td>
-                <input type="number" min="1" name="VINW_NBR_MIN" value="{{ options.VINW_NBR_MIN|default('') }}">
-                <div class="tooltip">?
-                    <span class="tooltiptext">{{ function('__', 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup', 'HillebrandGoriEshipping')|escape }}</span>
-                </div>
-            </td>
-        </tr>
+        <!-- CARRIER PREFERENCE -->
         <tr valign="top">
             <th scope="row">{{ function('__', 'Carrier preference', 'HillebrandGoriEshipping')|escape }}</th>
             <td>
@@ -150,6 +144,7 @@
                 </fieldset>
             </td>
         </tr>
+        <!-- DELIVERY PREFERENCE -->
         <tr valign="top">
             <th scope="row">{{ function('__', 'Delivery preference', 'HillebrandGoriEshipping') }} :</th>
             <td>
@@ -162,11 +157,12 @@
                 </select>
             </td>
         </tr>
+        <!-- DUTIES & TAX -->
         <tr valign="top">
             <th scope="row">{{ function('__', 'Duties and taxes at destination', 'HillebrandGoriEshipping') }} :</th>
             <td>
                 <select id="form_trans" name="VINW_TAX_RIGHTS" class="form-control" style="min-width: 250px;">
-                    {% if function('get_option','VINW_TAX_RIGHTS') %}  
+                    {% if options.VINW_TAX_RIGHTS %}  
                         <option value="" disabled {{ optionSelected('VINW_TAX_RIGHTS', '', '' ) }}>{{ function('__','Select your option', 'HillebrandGoriEshipping')|escape }}</option>
                         <option value="exp" {{ optionSelected('VINW_TAX_RIGHTS', 'exp', '' ) }}> {{ function('__',"At the sender's expense", 'HillebrandGoriEshipping')|escape }}</option>
                         <option value="dest" {{ optionSelected('VINW_TAX_RIGHTS', 'dest', '' ) }}>{{ function('__',"At the recipient's expense", 'HillebrandGoriEshipping')|escape }}</option>
@@ -189,8 +185,8 @@
             <tr valign="top">
                 <th scope="row">{{ function('__', 'VAT number', 'HillebrandGoriEshipping')|escape }} :</th>
                 <td>
-                    <input type="text" name="VINW_VAT_NUMBER" id="vat-number" value="{% if function('get_option', 'VINW_VAT_NUMBER') %}
-                                                                                           {{ function('get_option', 'VINW_VAT_NUMBER') }}
+                    <input type="text" name="VINW_VAT_NUMBER" id="vat-number" value="{% if options.VINW_VAT_NUMBER %}
+                                                                                           {{ options.VINW_VAT_NUMBER }}
                                                                                         {% endif %}">
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Enter your VAT number (required)', 'HillebrandGoriEshipping')|escape }}</span>
@@ -216,8 +212,8 @@
             <tr valign="top">
                 <th scope="row">{{ function('__', 'EORI number', 'HillebrandGoriEshipping') }} :</th>
                 <td>
-                    <input type="text" name="VINW_EORI_NUMBER" id="eori-number" value="{% if function('get_option', 'VINW_EORI_NUMBER') %}
-                                                                                           {{ function('get_option', 'VINW_EORI_NUMBER') }}
+                    <input type="text" name="VINW_EORI_NUMBER" id="eori-number" value="{% if options.VINW_EORI_NUMBER %}
+                                                                                           {{ options.VINW_EORI_NUMBER }}
                                                                                         {% endif %}">
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'HillebrandGoriEshipping') }}</span>
@@ -228,8 +224,8 @@
             <tr valign="top">
                 <th scope="row">{{ function('__', 'FDA number', 'HillebrandGoriEshipping') }} :</th>
                 <td>
-                    <input type="text" name="VINW_FDA_NUMBER" id="fda-number" value="{% if function('get_option', 'VINW_FDA_NUMBER') %}
-                                                                                           {{ function('get_option', 'VINW_FDA_NUMBER') }}
+                    <input type="text" name="VINW_FDA_NUMBER" id="fda-number" value="{% if options.VINW_FDA_NUMBER %}
+                                                                                           {{ options.VINW_FDA_NUMBER }}
                                                                                         {% endif %}">
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'HillebrandGoriEshipping') }}</span>
