@@ -16,7 +16,7 @@
                     <input type="text" name="VINW_ACCESS_KEY" id="api-input" value="{{ options.VINW_ACCESS_KEY|default('') }}" 
                            style="border: 3px solid {{ options.acces_key_validate == '1' ? 'green' : 'red' }};">
                     <input type="hidden" id="acces-key-validate" name="acces-key-validate" value="{{ options.acces_key_validate|default('0') }}">
-                    <button type="button" class="button" id="validate-api" disabled>{{ function('__', 'Test my access token', 'HillebrandGoriEshipping')|escape }}</button>
+                    <button type="button" class="button" id="validate-api">{{ function('__', 'Test my access token', 'HillebrandGoriEshipping')|escape }}</button>
                 </td>
             </tr>
             <tr valign="top">
