@@ -28,6 +28,16 @@ class App
     public static function enqueueAdminAssets()
     {
         // Enqueue your admin scripts and styles here
-        wp_enqueue_script_module('hges-admin-script', HGeS_PLUGIN_URL . 'assets/js/settingsPage.js');
+        wp_enqueue_style(
+            'hges-admin-style',
+            HGeS_PLUGIN_URL . 'assets/css/admin.css',
+            [],
+            null
+        );
+
+        wp_enqueue_script_module(
+            'hges-settings-page-script',
+            HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
+        );
     }
 }

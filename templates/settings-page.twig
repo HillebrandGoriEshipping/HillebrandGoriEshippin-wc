@@ -13,8 +13,7 @@
                     <label for="order_shipped">{{ function('__', 'Insert your Hillebrand Gori eShipping API token',  'HillebrandGoriEshipping')|escape }}</label>
                 </td>
                 <td>
-                    <input type="text" name="VINW_ACCESS_KEY" id="api-input" value="{{ options.VINW_ACCESS_KEY|default('') }}" 
-                           style="border: 3px solid {{ options.acces_key_validate == '1' ? 'green' : 'red' }};">
+                    <input type="text" name="VINW_ACCESS_KEY" id="api-input" class="validable-field {{ options.acces_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.VINW_ACCESS_KEY|default('') }}">
                     <input type="hidden" id="acces-key-validate" name="acces-key-validate" value="{{ options.acces_key_validate|default('0') }}">
                     <button type="button" class="button" id="validate-api">{{ function('__', 'Test my access token', 'HillebrandGoriEshipping')|escape }}</button>
                 </td>
@@ -24,8 +23,7 @@
                     <label for="order_shipped">{{ function('__', 'Insert your MapBox API token', 'HillebrandGoriEshipping')|escape }}</label>
                 </td>
                 <td>
-                    <input type="text" name="VINW_MAPBOX_ACCESS_KEY" id="api-input-mapbox" value="{{ options.VINW_MAPBOX_ACCESS_KEY|default('') }}" 
-                           style="border: 3px solid {{ options.mapbox_api_key_validate == '1' ? 'green' : 'red' }};">
+                    <input type="text" name="VINW_MAPBOX_ACCESS_KEY" id="api-input-mapbox" class="validable-field {{ options.mapbox_api_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.VINW_MAPBOX_ACCESS_KEY|default('') }}">
                     <input type="hidden" id="mapbox-api-key-validate" name="mapbox-api-key-validate" value="{{ options.mapbox_api_key_validate|default('0') }}">
                     <button type="button" class="button" id="validate-mapbox-api">{{ function('__', 'Test my Mapbox access token', 'HillebrandGoriEshipping')|escape }}</button>
                 </td>
