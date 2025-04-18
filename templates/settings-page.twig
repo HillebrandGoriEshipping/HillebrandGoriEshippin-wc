@@ -1,5 +1,5 @@
 <h1>{{ title }}</h1>
-<div class="wrap" id="VINW-connect">
+<div id="HGES-connect">
     <h3>{{ function('__', 'Please fill the information below in order to be able to use the plugin', 'HillebrandGoriEshipping')|escape }}</h3>
     <form method="post" action="">
         <h2>{{ function('__', 'Key settings', 'HillebrandGoriEshipping') }}</h2>
@@ -23,16 +23,16 @@
                 </td>
             </tr>
         </table>
-        <p id="alert-api-text" style="font-weight:900;background-color:#ffb900;width:fit-content;">
+        <p id="alert-api-text">
             {{ function('__', 'Please validate the API access before saving the modifications', 'HillebrandGoriEshipping')|escape }}
         </p>
         {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
-        {{ function('wp_nonce_field', 'save_settings_key', 'settings_key_nonce')|raw }}
+        {{ function('wp_nonce_field', 'save_settings', 'settings_nonce')|raw }}
     </form>
 </div>
 
 {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %}
-<div class="wrap" id="VINW-settings">
+<div id="HGES-settings">
     <h1>{{ function('__', 'Hillebrand Gori eShipping shipping settings', 'HillebrandGoriEshipping')|escape }}</h1>
     <h2>{{ function('__', 'Address used to calculate shipping charges', 'HillebrandGoriEshipping')|escape }}</h2>
     <p>{{ function('__', 'Contact our support if you need to edit those informations', 'HillebrandGoriEshipping')|escape }}</p>
@@ -58,7 +58,7 @@
         <tr valign="top">
             <th scope="row">{{ function('__', 'Phone', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
-                <label for="Adresse">{{ address.phone }}</label>
+                <label for="Adresse">{{ address.telephone }}</label>
             </td>
         </tr>
         <tr valign="top">
@@ -144,7 +144,7 @@
         <tr valign="top">
             <th scope="row">{{ function('__', 'Delivery preference', 'HillebrandGoriEshipping') }} :</th>
             <td>
-                <select id="form_trans" name="{{ hgesOptionName('HGES_PREF_DEL') }}" class="form-control" style="min-width: 250px;">
+                <select id="form_trans" name="{{ hgesOptionName('HGES_PREF_DEL') }}" class="form-control">
                     <option value="both" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'both', 'both') }}>
                         {{ function('__', 'At home / Pickup point', 'HillebrandGoriEshipping')|escape }}
                     </option>
@@ -157,7 +157,7 @@
         <tr valign="top">
             <th scope="row">{{ function('__', 'Duties and taxes at destination', 'HillebrandGoriEshipping') }} :</th>
             <td>
-                <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control" style="min-width: 250px;">
+                <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control">
                     {% if options.HGES_TAX_RIGHTS %}  
                         <option value="" disabled {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), '', '' ) }}>{{ function('__','Select your option', 'HillebrandGoriEshipping')|escape }}</option>
                         <option value="exp" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'exp', '' ) }}> {{ function('__',"At the sender's expense", 'HillebrandGoriEshipping')|escape }}</option>
@@ -181,9 +181,12 @@
             <tr valign="top">
                 <th scope="row">{{ function('__', 'VAT number', 'HillebrandGoriEshipping')|escape }} :</th>
                 <td>
-                    <input type="text" name="{{ hgesOptionName('HGES_VAT_NUMBER') }}" id="vat-number" value="{% if options.HGES_VAT_NUMBER %}
-                                                                                           {{ options.HGES_VAT_NUMBER }}
-                                                                                        {% endif %}">
+                    <input 
+                        type="text" 
+                        name="{{ hgesOptionName('HGES_VAT_NUMBER') }}" 
+                        id="vat-number" 
+                        value="{{ options.HGES_VAT_NUMBER|default('') }}"
+                    >
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Enter your VAT number (required)', 'HillebrandGoriEshipping')|escape }}</span>
                     </div>
@@ -208,9 +211,12 @@
             <tr valign="top">
                 <th scope="row">{{ function('__', 'EORI number', 'HillebrandGoriEshipping') }} :</th>
                 <td>
-                    <input type="text" name="{{ hgesOptionName('HGES_EORI_NUMBER') }}" id="eori-number" value="{% if options.HGES_EORI_NUMBER %}
-                                                                                           {{ options.HGES_EORI_NUMBER }}
-                                                                                        {% endif %}">
+                    <input 
+                        type="text" 
+                        name="{{ hgesOptionName('HGES_EORI_NUMBER') }}" 
+                        id="eori-number" 
+                        value="{{ options.HGES_EORI_NUMBER|default('') }}"
+                    >
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'HillebrandGoriEshipping') }}</span>
                     </div>
@@ -220,9 +226,12 @@
             <tr valign="top">
                 <th scope="row">{{ function('__', 'FDA number', 'HillebrandGoriEshipping') }} :</th>
                 <td>
-                    <input type="text" name="{{ hgesOptionName('HGES_FDA_NUMBER') }}" id="fda-number" value="{% if options.HGES_FDA_NUMBER %}
-                                                                                           {{ options.HGES_FDA_NUMBER }}
-                                                                                        {% endif %}">
+                    <input 
+                        type="text" 
+                        name="{{ hgesOptionName('HGES_FDA_NUMBER') }}" 
+                        id="fda-number" 
+                        value="{{ options.HGES_FDA_NUMBER|default('') }}"
+                    >
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'HillebrandGoriEshipping') }}</span>
                     </div>

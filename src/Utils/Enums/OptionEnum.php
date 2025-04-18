@@ -19,7 +19,6 @@ class OptionEnum
     const HGES_ASSURANCE = "HGES_ASSURANCE";
     const HGES_NBR_MIN = "HGES_NBR_MIN";
     const HGES_PREP_TIME = "HGES_PREP_TIME";
-    const HGES_EXP_DAYS_MIN = "HGES_EXP_DAYS_MIN";
     const HGES_PREF_DEL = "HGES_PREF_DEL";
 
 
@@ -44,7 +43,6 @@ class OptionEnum
             self::HGES_ASSURANCE,
             self::HGES_NBR_MIN,
             self::HGES_PREP_TIME,
-            self::HGES_EXP_DAYS_MIN,
             self::HGES_PREF_DEL,
         ];
     }

@@ -16,30 +16,31 @@ class SettingsController
             $options[$option] = get_option($option);
         }
 
-        //TODO : GET ADDRESS FROM API
-        $address = [
-            'addressName' => 'Main Office',
-            'company' => 'Hillebrand Gori',
-            'contact' => 'Mr Smith',
-            'phone' => '+33 1 23 45 67 89',
-            'address' => 'Rue de la Gare',
-            'addressComplement' => 'Bâtiment A',
-            'addressComplement2' => '',
-            'city' => 'Paris',
+        try {
+            $address = ApiClient::get('/address/get-addresses');
 
-        ];
+            if ($address['status'] === 200) {
+                $address = $address['data'];
+            } else {
+                $address = [];
+            }
+        } catch (\Throwable $th) {
+        }
 
         // Utiliser Twig pour rendre la page
         $twig = Twig::getTwig();
         echo $twig->render('settings-page.twig', [
             'title' => 'Hillebrand Gori eShipping Settings',
             'options' => $options,
-            'address' => $address,
+            'address' => $address[0],
         ]);
     }
 
     public static function saveSettings()
     {
+        if (wp_verify_nonce($_POST['settings_nonce'], 'save_settings') !== 1) {
+            throw new \Exception('Nonce verification failed');
+        }
         foreach (OptionEnum::getList() as $optionName) {
             if (!isset($_POST[$optionName])) {
                 continue;
