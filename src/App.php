@@ -6,6 +6,7 @@ use HGeS\Admin\Settings\Menu;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Admin\Settings\SettingsController;
+use HGeS\WooCommerce\ShippingMethod;
 
 /**
  * Plugin entry class
@@ -19,6 +20,8 @@ class App
         if (is_admin()) {
             self::runAdmin();
         }
+
+        add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
     }
 
     public static function runAdmin()
@@ -27,7 +30,6 @@ class App
 
         add_action('admin_enqueue_scripts', [self::class, 'enqueueAdminAssets']);
 
-        // add_action('admin_init', [self::class, 'registerSettings']);
         add_action('admin_init', [self::class, 'router']);
     }
 
@@ -58,12 +60,5 @@ class App
             'hges-settings-page-script',
             HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
         );
-    }
-
-    public static function registerSettings()
-    {
-        foreach (OptionEnum::getList() as $option) {
-            register_setting(OptionEnum::HGES_SETTINGS_GROUP, $option);
-        }
     }
 }
