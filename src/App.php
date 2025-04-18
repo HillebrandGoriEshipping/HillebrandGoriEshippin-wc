@@ -3,6 +3,9 @@
 namespace HGeS;
 
 use HGeS\Admin\Settings\Menu;
+use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Admin\Settings\SettingsController;
 
 /**
  * Plugin entry class
@@ -23,6 +26,22 @@ class App
         add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
 
         add_action('admin_enqueue_scripts', [self::class, 'enqueueAdminAssets']);
+
+        // add_action('admin_init', [self::class, 'registerSettings']);
+        add_action('admin_init', [self::class, 'router']);
+    }
+
+    public static function router()
+    {
+        if (
+            isset($_GET['page'])
+            && $_GET['page'] === 'hillebrand-gori-eshipping'
+            &&  $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            SettingsController::saveSettings();
+            wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
+            exit;
+        }
     }
 
     public static function enqueueAdminAssets()
@@ -39,5 +58,12 @@ class App
             'hges-settings-page-script',
             HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
         );
+    }
+
+    public static function registerSettings()
+    {
+        foreach (OptionEnum::getList() as $option) {
+            register_setting(OptionEnum::HGES_SETTINGS_GROUP, $option);
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace HGeS\Utils;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use HGeS\Utils\Enums\OptionEnum;
 
 class Twig
 {
@@ -25,7 +26,7 @@ class Twig
 
         self::$twig->addFunction(new \Twig\TwigFunction('carrierChecked', function ($carrierName) {
             $carrierChecked = '';
-            $carrier = get_option('VINW_PREF_TRANSP', []);
+            $carrier = get_option('HGES_PREF_TRANSP', []);
             if (is_array($carrier) && in_array($carrierName, $carrier)) {
                 $carrierChecked = 'checked';
             }
@@ -43,6 +44,10 @@ class Twig
             }
 
             return $optionSelected;
+        }));
+
+        self::$twig->addFunction(new \Twig\TwigFunction('hgesOptionName', function ($optionName) {
+            return OptionEnum::{$optionName};
         }));
 
         return self::$twig;
