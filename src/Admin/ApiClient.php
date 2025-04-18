@@ -44,22 +44,12 @@ class ApiClient
         }
 
         $client = HttpClient::create();
-        $response = $client->request(
-            'GET',
-            self::getApiUrl() . $route,
-            [
-                'headers' => $headers,
-            ]
-        );
+        $response = $client->request('GET', self::getApiUrl() . $route);
 
         if ($response->getStatusCode() !== 200) {
             throw new \Exception('Error: ' . $response->getStatusCode());
         }
 
-        return [
-            'status' => $response->getStatusCode(),
-            'headers' => $response->getHeaders(),
-            'data' => $response->toArray()
-        ];  
+        return $response->toArray();
     }
 }
