@@ -3,7 +3,6 @@
 namespace HGeS;
 
 use HGeS\Admin\Settings\Menu;
-use HGeS\Utils\ApiClient;
 
 /**
  * Plugin entry class
@@ -14,13 +13,9 @@ class App
 
     public static function run()
     {
-        var_dump(ApiClient::get('/package/get-sizes?nbBottles=1'));
-        exit();
         if (is_admin()) {
             self::runAdmin();
         }
-
-        
     }
 
     public static function runAdmin()
