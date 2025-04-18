@@ -48,7 +48,7 @@ class SettingsController
             if ($optionName === "HGES_ACCESS_KEY") {
                 try {
                     $result = ApiClient::get('/package/get-sizes?nbBottles=1');
-                    if ($result['status'] === 'success') {
+                    if ($result['status'] === 200) {
                         update_option(OptionEnum::access_key_validate, 1);
                     } else {
                         update_option(OptionEnum::access_key_validate, 0);

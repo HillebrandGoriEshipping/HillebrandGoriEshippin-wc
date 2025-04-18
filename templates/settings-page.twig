@@ -31,7 +31,7 @@
     </form>
 </div>
 
-{# {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %} #}
+{% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %}
 <div class="wrap" id="VINW-settings">
     <h1>{{ function('__', 'Hillebrand Gori eShipping shipping settings', 'HillebrandGoriEshipping')|escape }}</h1>
     <h2>{{ function('__', 'Address used to calculate shipping charges', 'HillebrandGoriEshipping')|escape }}</h2>
@@ -81,7 +81,6 @@
         </tr>
     </table>
 </div>
-{# {% endif %} #}
 
 <h2>{{ function('__', 'Configuration', 'HillebrandGoriEshipping')|escape }}</h2>
 <form method="post" action="" id="configuration_form">
@@ -250,3 +249,4 @@
     {{ function('submit_button') }}
     {{ function('wp_nonce_field', 'save_settings', 'settings_nonce' )|raw }}
 </form>
+{% endif %}
