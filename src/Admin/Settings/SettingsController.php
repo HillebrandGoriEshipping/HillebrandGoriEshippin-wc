@@ -2,6 +2,7 @@
 
 namespace HGeS\Admin\Settings;
 
+use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Twig;
 
@@ -43,8 +44,19 @@ class SettingsController
             if (!isset($_POST[$optionName])) {
                 continue;
             }
-            update_option($optionName, sanitize_text_field($_POST[$optionName]));
+            update_option($optionName, $_POST[$optionName]);
+            if ($optionName === "HGES_ACCESS_KEY") {
+                try {
+                    $result = ApiClient::get('/package/get-sizes?nbBottles=1');
+                    if ($result['status'] === 'success') {
+                        update_option(OptionEnum::access_key_validate, 1);
+                    } else {
+                        update_option(OptionEnum::access_key_validate, 0);
+                    }
+                } catch (\Throwable $th) {
+                    update_option(OptionEnum::access_key_validate, 0);
+                }
+            }
         }
-        // wp_redirect("?page=hillebrand-gori-eshipping");
     }
 }
