@@ -7,25 +7,14 @@ export default {
     async validateApiKey(apiKey) {
         console.log("API Key:", apiKey);
         try {
-            const response = await fetch(`${this.getApiUrl()}/package/get-sizes`, {
+            const response = await fetch(`${this.getApiUrl()}/package/get-sizes?nbBottles=5`, {
                 method: "GET",
                 headers: {
                 "Content-Type": "application/json",
                 "X-Auth-Token": apiKey,
                 },
-                redirect: "follow",
-                mode: "no-cors",
-                credentials: "include"
             });
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-                
-                return data.valid;
-            } else {
-                console.error("Error validating API key:", response.statusText);
-                return false;
-            }
+           return !!response.ok;
         } catch (error) {
             console.error("Error validating API key:", error);
             return false;
