@@ -2,6 +2,8 @@
 
 namespace HGeS\WooCommerce;
 
+use HGeS\Rate;
+
 class ShippingMethod extends \WC_Shipping_Method
 {
     const METHOD_ID = 'hges_shipping';
@@ -36,13 +38,14 @@ class ShippingMethod extends \WC_Shipping_Method
 
     public function calculate_shipping($package = [])
     {
+        echo '<pre>';
+        var_dump($package);
+        exit;
         //TODO: Implement the logic to calculate shipping rates based on the package details
-        if ($package['destination']['city'] === 'Test') {
-            $this->add_rate([
-                'id'    => $this->id,
-                'label' => 'Test label',
-                'cost'  =>  51.00,
-            ]);
+        $rates = Rate::getShippingRates($package);
+
+        foreach ($rates as $rate) {
+            $this->add_rate($rate);
         }
     }
 }
