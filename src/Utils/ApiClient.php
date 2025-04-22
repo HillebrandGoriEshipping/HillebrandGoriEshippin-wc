@@ -29,7 +29,7 @@ class ApiClient
      * @return array The response from the API
      * @throws \Exception If the request fails
      */
-    public static function get(string $route, bool $useToken = true): array
+    public static function get(string $route, array $urlParams = [], bool $useToken = true): array
     {
         $headers = [
             'Content-Type' => 'application/json',
@@ -44,9 +44,16 @@ class ApiClient
         }
 
         $client = HttpClient::create();
+
+        $url = self::getApiUrl() . $route;
+
+        if (!empty($urlParams)) {
+            $url .= '?' . urldecode(http_build_query($urlParams));
+        }
+
         $response = $client->request(
             'GET',
-            self::getApiUrl() . $route,
+            $url,
             [
                 'headers' => $headers,
             ]
@@ -60,6 +67,6 @@ class ApiClient
             'status' => $response->getStatusCode(),
             'headers' => $response->getHeaders(),
             'data' => $response->toArray()
-        ];  
+        ];
     }
 }

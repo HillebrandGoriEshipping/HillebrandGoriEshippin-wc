@@ -38,9 +38,6 @@ class ShippingMethod extends \WC_Shipping_Method
 
     public function calculate_shipping($package = [])
     {
-        echo '<pre>';
-        var_dump($package);
-        exit;
         //TODO: Implement the logic to calculate shipping rates based on the package details
         $rates = Rate::getShippingRates($package);
 

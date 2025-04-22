@@ -4,32 +4,28 @@ namespace HGeS;
 
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Address;
+use HGeS\Utils\Enums\OptionEnum;
 
 class Rate
 {
-
-
     public static function prepareUrlParams($package)
     {
-
         $expAddress = Address::fromApi();
 
         $params = [
             'expAddress' => [
                 'addressType' => 'company',
-                'zipCode' => $expAddress[0]['postcode'],
+                'zipCode' => $expAddress[0]['zipCode'],
                 'city' => $expAddress[0]['city'],
                 'country' => $expAddress[0]['country']['countryAlpha2'],
 
             ],
             'destAddress' => [
                 'addressType' => 'individual',
-                'zipCode' => $package['origin']['postcode'],
-                'city' => $package['origin']['city'],
+                'zipCode' => $package['destination']['postcode'],
+                'city' => $package['destination']['city'],
                 'country' => $package['destination']['country'],
-                // Add more address fields as needed
             ],
-            // Add more package details as needed
         ];
 
         if (!empty($expAddress[0]['stateCode'])) {
@@ -40,43 +36,75 @@ class Rate
             $params['destAddress']['state'] = $package['destination']['state'];
         }
 
+        $quantity = 0;
+        foreach ($package['contents'] as $item) {
+            $quantity += $item['quantity'];
+        }
 
-        return $urlQuery;
+        try {
+            $packageList = ApiClient::get('/package/get-sizes?nbBottles=' . $quantity);
+            $packageParam = [];
+            foreach ($packageList['data']['packages'][0] as $packageData) {
+                foreach ($packageData as $choice) {
+                    $packageParam[] = [
+                        'nbBottles' => $choice['nbBottles'] ?? 0,
+                        'nbMagnums' => $choice['nbMagnums'] ?? 0,
+                        'nb' => $choice['nbPackages'],
+                        'width' => $choice['sizes']['width'],
+                        'height' => $choice['sizes']['height'],
+                        'length' => $choice['sizes']['length'],
+                        // TODO: add weightSparkling handling
+                        'weight' => $choice['sizes']['weightStill'],
+                    ];
+                }
+                $params['packages'] = $packageParam;
+            }
+        } catch (\Throwable $th) {
+            $params['packages'] = [];
+        }
+
+        // TODO: Add working days list in settings
+        $workingDays = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ];
+
+        $pickupDate = new \DateTime();
+        $countedDays = 0;
+        while ($countedDays <= get_option(OptionEnum::HGES_PREP_TIME)) {
+            $pickupDate->modify('+' . $countedDays . ' days');
+            if (in_array($pickupDate->format('N'), $workingDays)) {
+                $countedDays++;
+            }
+        }
+        $params['pickupDate'] = $pickupDate->format('Y-m-d');
+        $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
+        $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
+        $params['nbBottles'] = $quantity;
+
+        $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
+        foreach ($carrierList as $carrier) {
+            $params[$carrier] = 1;
+        }
+
+        return $params;
     }
 
     public static function getRatesFromApi($package)
     {
-        // packages[0][nb]: 1
-        // packages[0][weight]: 4
-        // packages[0][width]: 27
-        // packages[0][height]: 14
-        // packages[0][length]: 39
-        // pickupDate: 2024-02-07
-        // minHour: 09:00:00
-        // cutoff: 19:00:00
-        // nbBottles: 14
-        // dhl: 1
-        // ups: 1
-        // fedex: 1
-        // tnt: 1
-        // chronopost: 1
-        // destAddress[state]: TX
-        // packages[1][nb]: 2
-        // packages[1][weight]: 10
-        // packages[1][width]: 27
-        // packages[1][height]: 40
-        // packages[1][length]: 39
-
-        $urlParams = self::prepareUrlParams($package);
-
         try {
-            $response = ApiClient::get('/shipment/get-rates');
+            $urlParams = self::prepareUrlParams($package);
+
+            $response = ApiClient::get('/shipment/get-rates', $urlParams);
             if (isset($response['data']) && is_array($response['data'])) {
                 return $response['data'];
             }
         } catch (\Exception $e) {
             error_log('Error fetching rates: ' . $e->getMessage());
-            return $error = '';
+            return ['error' => 'Error fetching rates: ' . $e->getMessage()];
         }
 
         return [];
@@ -84,20 +112,22 @@ class Rate
 
     public static function getShippingRates($package)
     {
-        $shippingRates = ApiClient::get('/shipment/get-rates');
-        $shippingRates[] = [
-            'id' => 'flat_rate',
-            'label' => 'Flat Rate',
-            'cost' => 25.00,
-        ];
-        $shippingRates[] = [
-            'id' => 'free_shipping',
-            'label' => 'Free Shipping',
-            'cost' => 0.00,
-        ];
-
+        $shippingRates = self::getRatesFromApi($package);
+        if (isset($shippingRates['error'])) {
+            return $shippingRates;
+        }
         // Add more shipping rates as needed
+        $formattedShippingRates = [];
+        foreach ($shippingRates as $rate) {
+            $formattedShippingRates[] = [
+                'id' => $rate['service'],
+                'label' => $rate['service'],
+                'cost' => $rate['price'],
+                'pickupDate' => $rate['pickupDate'],
+                'doorDelivery' => $rate['doorDelivery'],
+            ];
+        }
 
-        return $shippingRates;
+        return $formattedShippingRates;
     }
 }
