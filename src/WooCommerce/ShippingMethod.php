@@ -38,9 +38,31 @@ class ShippingMethod extends \WC_Shipping_Method
 
     public function calculate_shipping($package = [])
     {
+<<<<<<< HEAD
         $rates = Rate::getShippingRates($package);
         foreach ($rates as $rate) {
             $this->add_rate($rate);
         }
+=======
+        //TODO: Implement the logic to calculate shipping rates based on the package details
+        $this->add_rate([
+            'id'    => $this->id . uniqid(),
+            'label' => 'Door delivery',
+            'cost' => 11.00,
+            'meta_data' => [
+                'eta' => '24/08/2029'
+            ]
+        ]);
+
+        $this->add_rate([
+            'id'    => $this->id . uniqid(),
+            'label' => 'Pickup',
+            'cost' => 8.35,
+            'meta_data' => [
+                'eta' => '24/08/2028'
+            ]
+
+        ]);
+>>>>>>> 9f084f9 (tests overriding checkout shipping block)
     }
 }
