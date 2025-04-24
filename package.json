@@ -1,0 +1,14 @@
+{
+  "name": "hillebrandgorieshipping",
+  "version": "1.0.0",
+  "description": "This project is a WooCommerce plugin to calculate the shipping costs using the eShipping API and create an order in the eShipping system.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

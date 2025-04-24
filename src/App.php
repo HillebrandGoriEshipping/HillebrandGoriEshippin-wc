@@ -22,6 +22,8 @@ class App
         }
 
         add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
+
+        add_action('wp_enqueue_scripts', [self::class, 'enqueueAssets']);
     }
 
     public static function runAdmin()
@@ -46,10 +48,21 @@ class App
         }
     }
 
+    public static function enqueueAssets()
+    {
+        wp_enqueue_script(
+            'hges-shipping-rates-fill',
+            HGeS_PLUGIN_URL . 'dist/shippingRatesFill.js',
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            null,
+            ['in_footer' => true]
+        );
+    }
+
     public static function enqueueAdminAssets()
     {
         // Enqueue your admin scripts and styles here
-        if ($_GET['page'] === 'hillebrand-gori-eshipping') {
+        if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
             wp_enqueue_style(
                 'hges-admin-style',
                 HGeS_PLUGIN_URL . 'assets/css/admin.css',
