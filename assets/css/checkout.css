@@ -57,7 +57,7 @@
 }
 
 .rate-name {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -72,10 +72,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 5rem;
 }
 
 .rate-price {
   font-weight: 600;
+  font-size: 1rem;
   text-align: right;
   margin-bottom: 0;
 }
