@@ -1,0 +1,81 @@
+.wc-block-components-shipping-rates-control__package {
+  display: none !important;
+}
+
+.shipping-rates {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid hsla(0, 0%, 7%, 0.11);
+  border-radius: 5px;
+}
+
+.rate-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid hsla(0, 0%, 7%, 0.11);
+  padding: 1rem;
+}
+
+.shipping-rates .rate-content:hover {
+  background-color: hsla(0, 0%, 7%, 0.05);
+  cursor: pointer;
+}
+
+.rate-content.selected {
+  background-color: #90ee9081;
+}
+
+.rate-content.selected:hover {
+  background-color: #90ee9081;
+  cursor: pointer;
+}
+
+.shipping-rates:last-child {
+  border-bottom: none;
+}
+
+.rate-logo {
+  flex-grow: 1;
+}
+
+.rate-left {
+  display: flex;
+  flex-direction: row;
+}
+
+.rate-logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.rate-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.rate-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.rate-estimated-date {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.rate-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rate-price {
+  font-weight: 600;
+  text-align: right;
+  margin-bottom: 0;
+}

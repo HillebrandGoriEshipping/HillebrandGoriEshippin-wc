@@ -24,17 +24,43 @@ const MyCustomComponent = (props) => {
       r[md.key] = md.value;
     });
 
+    console.log(newRate);
     return newRate;
   });
 
   return (
-    <div>
+    <div className="shipping-rates">
       {shippingRates.map((rate) => (
         <label for={"radio-control-0-" + rate.name}>
-          <div key={rate.key} onClick={(e) => onClickedRate(rate)}>
-            <h4>{rate.name}</h4>
-            <div>ETA : {rate.eta}</div>
-            <p>Coût : {Number(rate.price / 100, 2)}</p>
+          <div
+            className={"rate-content" + (rate.selected ? " selected" : "")}
+            key={rate.key}
+            onClick={(e) => onClickedRate(rate)}
+          >
+            <div className="rate-left">
+              <div className="rate-logo">
+                <img
+                  src={rate.logo}
+                  alt={rate.name}
+                  className="rate-logo-image"
+                />
+              </div>
+              <div className="rate-info">
+                <p className="rate-name">{rate.name}</p>
+
+                <p className="rate-estimated-date">
+                  {__("Estimated delivery: ", "HillebrandGoriEshipping")}
+                  {rate.eta}
+                </p>
+              </div>
+            </div>
+            <div className="rate-right">
+              <p className="rate-price">
+                {rate.currency_prefix}
+                {Number(rate.price / 100).toFixed(2)}
+                {rate.currency_suffix}
+              </p>
+            </div>
           </div>
         </label>
       ))}

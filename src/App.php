@@ -57,6 +57,13 @@ class App
             null,
             ['in_footer' => true]
         );
+
+        wp_enqueue_style(
+            'hges-checkout-style',
+            HGeS_PLUGIN_URL . 'assets/css/checkout.css',
+            [],
+            null
+        );
     }
 
     public static function enqueueAdminAssets()
