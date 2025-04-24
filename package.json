@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "npx wp-scripts start assets/js/shippingRatesFill.js --output-path=dist",
+    "build": "npx wp-scripts build assets/js/shippingRatesFill.js --output-path=dist"
   },
   "author": "",
   "license": "ISC"
