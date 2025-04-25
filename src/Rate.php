@@ -144,6 +144,20 @@ class Rate
         }
         // Add more shipping rates as needed
         $formattedShippingRates = [];
+
+        // recup get option dans une variable
+        $deliveryPref = get_option(OptionEnum::HGES_PREF_DEL);
+
+        if ($deliveryPref === 'home') {
+            $shippingRates = array_filter($shippingRates, function ($rate) {
+                return $rate['doorDelivery'] === true;
+            });
+        } elseif ($deliveryPref === 'pickup_point') {
+            $shippingRates = array_filter($shippingRates, function ($rate) {
+                return $rate['doorDelivery'] == false;
+            });
+        }
+
         foreach ($shippingRates as $rate) {
             $formattedShippingRates[] = [
                 'id' => $rate['service'],
