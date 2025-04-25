@@ -9,6 +9,7 @@ use HGeS\Admin\Products\ProductMeta;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
 use HGeS\WooCommerce\ClassicUiRender;
+use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\ShippingMethod;
 
 /**
@@ -38,6 +39,7 @@ class App
         add_filter('woocommerce_package_rates', [ClassicUiRender::class, 'sortShippingMethods'], 10, 2);
         add_filter('woocommerce_cart_shipping_method_full_label', [ClassicUiRender::class, 'renderLabel'], 10, 2);
         add_filter('woocommerce_cart_shipping_packages', [ClassicUiRender::class, 'invalidateRatesCache'], 100);
+        add_action('woocommerce_blocks_loaded', [ShippingAddressFields::class, 'register']);
     }
 
     /**
