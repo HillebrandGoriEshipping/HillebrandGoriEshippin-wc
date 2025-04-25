@@ -8,6 +8,14 @@
   border-radius: 5px;
 }
 
+.shipping-rates div > label {
+  width: 100%;
+}
+
+.shipping-rates > div > label:first-child {
+  border-top: 1px solid hsla(0, 0%, 7%, 0.11);
+}
+
 .rate-content {
   display: flex;
   flex-direction: row;
@@ -31,10 +39,6 @@
   background-color: #90ee9081;
   cursor: pointer;
 }
-
-/* .shipping-rates:last-child {
-  border-bottom: none;
-} */
 
 .rate-logo {
   flex-grow: 1;
@@ -114,8 +118,4 @@
   padding: 1rem;
   border-top: none;
   padding: 0;
-}
-
-.accordion-content > div > label {
-  width: 100%;
 }

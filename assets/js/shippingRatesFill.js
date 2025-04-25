@@ -80,7 +80,6 @@ const MyCustomComponent = (props) => {
       r[md.key] = md.value;
     });
 
-    console.log(newRate);
     return newRate;
   });
 
@@ -88,18 +87,33 @@ const MyCustomComponent = (props) => {
   const doorDeliveryRates = shippingRates.filter(
     (rate) => rate.doorDelivery === "1"
   );
-  const otherRates = shippingRates.filter((rate) => rate.doorDelivery === "");
+  const pickupRates = shippingRates.filter((rate) => rate.doorDelivery === "");
 
-  return (
-    <div className="shipping-rates">
-      <Accordion title={__("Pickup points", "HillebrandGoriEshipping")}>
-        <RateGroup rates={otherRates} onClickedRate={onClickedRate} />
-      </Accordion>
-      <Accordion title={__("Door Delivery", "HillebrandGoriEshipping")}>
+  //si doordelivery rates est un tableau vide
+  if (doorDeliveryRates.length === 0) {
+    return (
+      <div className="shipping-rates">
+        <RateGroup rates={pickupRates} onClickedRate={onClickedRate} />
+      </div>
+    );
+  } else if (pickupRates.length === 0) {
+    return (
+      <div className="shipping-rates">
         <RateGroup rates={doorDeliveryRates} onClickedRate={onClickedRate} />
-      </Accordion>
-    </div>
-  );
+      </div>
+    );
+  } else {
+    return (
+      <div className="shipping-rates">
+        <Accordion title={__("Pickup points", "HillebrandGoriEshipping")}>
+          <RateGroup rates={pickupRates} onClickedRate={onClickedRate} />
+        </Accordion>
+        <Accordion title={__("Door Delivery", "HillebrandGoriEshipping")}>
+          <RateGroup rates={doorDeliveryRates} onClickedRate={onClickedRate} />
+        </Accordion>
+      </div>
+    );
+  }
 };
 
 const render = () => {
