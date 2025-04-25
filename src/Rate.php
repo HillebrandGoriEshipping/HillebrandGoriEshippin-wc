@@ -8,6 +8,15 @@ use HGeS\Utils\Enums\OptionEnum;
 
 class Rate
 {
+    /**
+     * Prepares URL parameters for the API request based on the provided package details.
+     *
+     * @param array $package The package details, including destination and contents.
+     * 
+     * @return array The prepared URL parameters
+     *
+     * @throws \Throwable If an error occurs while fetching package sizes from the API.
+     */
     public static function prepareUrlParams($package)
     {
         $expAddress = Address::fromApi();
@@ -93,6 +102,15 @@ class Rate
         return $params;
     }
 
+    /**
+     * Fetches shipping rates from the API based on the provided package details.
+     *
+     * @param array $package An associative array containing package details required to fetch shipping rates.
+     *
+     * @return array Returns an array of shipping rates if successful, or an array containing an error message in case of failure.
+     *
+     * @throws \Exception If an unexpected error occurs during the API call.
+     */
     public static function getRatesFromApi($package)
     {
         try {
@@ -110,6 +128,14 @@ class Rate
         return [];
     }
 
+    /**
+     * Retrieves and formats shipping rates for a given package.
+     *
+     * @param array $package An associative array containing package details required to fetch shipping rates (e.g., dimensions, weight, destination).
+     *
+     * @return array An array of formatted shipping rates
+     * 
+     */
     public static function getShippingRates($package)
     {
         $shippingRates = self::getRatesFromApi($package);
@@ -125,6 +151,13 @@ class Rate
                 'cost' => $rate['price'],
                 'pickupDate' => $rate['pickupDate'],
                 'doorDelivery' => $rate['doorDelivery'],
+                'insurancePrice' => $rate['insurancePrice'],
+                'meta_data' => [
+                    'carrierName ' => $rate['name'],
+                    'insurancePrice' => $rate['insurancePrice'],
+                    'pickupDate' => $rate['pickupDate'],
+                    'doorDelivery' => $rate['doorDelivery'],
+                ],
             ];
         }
 

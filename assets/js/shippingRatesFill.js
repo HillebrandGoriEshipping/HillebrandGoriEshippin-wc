@@ -40,18 +40,17 @@ const MyCustomComponent = (props) => {
             <div className="rate-left">
               <div className="rate-logo">
                 <img
-                  src={rate.logo}
+                  src={assetsPath.assetsUrl + rate.carrierName + ".png"}
                   alt={rate.name}
                   className="rate-logo-image"
                 />
               </div>
               <div className="rate-info">
                 <p className="rate-name">{rate.name}</p>
-
-                <p className="rate-estimated-date">
-                  {__("Estimated delivery: ", "HillebrandGoriEshipping")}
-                  {rate.eta}
-                </p>
+                <div className="rate-date-box">
+                  <p>{__("Estimated delivery: ", "HillebrandGoriEshipping")}</p>
+                  <p className="rate-estimated-date">{rate.pickupDate}</p>
+                </div>
               </div>
             </div>
             <div className="rate-right">

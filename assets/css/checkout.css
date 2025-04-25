@@ -48,6 +48,9 @@
   width: 50px;
   height: 50px;
   margin-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .rate-info {
@@ -62,9 +65,19 @@
   margin-bottom: 0.5rem;
 }
 
+.rate-date-box {
+  display: flex;
+  flex-direction: row;
+}
+
+.rate-date-box > p {
+  margin-bottom: 0;
+  margin-right: 0.5rem;
+}
+
 .rate-estimated-date {
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 0;
 }
 

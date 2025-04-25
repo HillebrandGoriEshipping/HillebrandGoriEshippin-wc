@@ -64,6 +64,13 @@ class App
             [],
             null
         );
+
+        // Pass the assets URL to the JavaScript file
+        wp_localize_script(
+            'hges-shipping-rates-fill',
+            'assetsPath',
+            ['assetsUrl' => HGeS_PLUGIN_URL . 'assets/img/']
+        );
     }
 
     public static function enqueueAdminAssets()
