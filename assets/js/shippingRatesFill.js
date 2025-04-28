@@ -37,8 +37,9 @@ const LoadingMask = ({
   );
 };
 
-const Accordion = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Accordion = ({ title, children, defaultOpen }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen || false);
+
   return (
     <div className="accordion">
       <button
@@ -113,10 +114,16 @@ const ShippingRatesContainer = ({
   } else {
     return (
       <div className="shipping-rates">
-        <Accordion title={__("Pickup points", "HillebrandGoriEshipping")}>
+        <Accordion
+          title={__("Pickup points", "HillebrandGoriEshipping")}
+          defaultOpen={!!pickupRates.find((r) => r.selected)}
+        >
           <RateGroup rates={pickupRates} setLoading={setLoading} />
         </Accordion>
-        <Accordion title={__("Door Delivery", "HillebrandGoriEshipping")}>
+        <Accordion
+          title={__("Door Delivery", "HillebrandGoriEshipping")}
+          defaultOpen={!!doorDeliveryRates.find((r) => r.selected)}
+        >
           <RateGroup rates={doorDeliveryRates} setLoading={setLoading} />
         </Accordion>
       </div>
