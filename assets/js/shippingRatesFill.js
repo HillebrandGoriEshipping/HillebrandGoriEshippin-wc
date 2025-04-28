@@ -3,6 +3,39 @@ const { registerPlugin } = window.wp.plugins;
 const { select } = window.wp.data;
 const { ExperimentalOrderShippingPackages } = window.wc.blocksCheckout;
 import { useState } from "react";
+import clsx from "clsx";
+const { Spinner } = window.wc.blocksComponents;
+
+const LoadingMask = ({
+  children,
+  className,
+  screenReaderLabel,
+  showSpinner = false,
+  isLoading = true,
+}) => {
+  return (
+    <div
+      className={clsx(className, {
+        "wc-block-components-loading-mask": isLoading,
+      })}
+    >
+      {isLoading && showSpinner && <Spinner />}
+      <div
+        className={clsx({
+          "wc-block-components-loading-mask__children": isLoading,
+        })}
+        aria-hidden={isLoading}
+      >
+        {children}
+      </div>
+      {isLoading && (
+        <span className="screen-reader-text">
+          {screenReaderLabel || __("Loading…", "woocommerce")}
+        </span>
+      )}
+    </div>
+  );
+};
 
 const Accordion = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,21 +56,14 @@ const Accordion = ({ title, children }) => {
     </div>
   );
 };
+
 // hack, waiting for WooCommerce to build a customizable shuipping method block
 //wc-blocks_render_blocks_frontend
-
-const onClickedRate = (e) => {
-  window.dispatchEvent(new Event("change"));
-};
-
-const RateGroup = ({ rates, onClickedRate }) => (
+const RateGroup = ({ rates }) => (
   <div>
     {rates.map((rate) => (
       <label htmlFor={"radio-control-0-" + rate.name} key={rate.key}>
-        <div
-          className={"rate-content" + (rate.selected ? " selected" : "")}
-          onClick={() => onClickedRate(rate)}
-        >
+        <div className={"rate-content" + (rate.selected ? " selected" : "")}>
           <div className="rate-left">
             <div className="rate-logo">
               <img
@@ -67,9 +93,47 @@ const RateGroup = ({ rates, onClickedRate }) => (
   </div>
 );
 
-const MyCustomComponent = (props) => {
-  const store = select("wc/store/cart");
-  const shippingPackages = store.getShippingRates();
+const ShippingRatesContainer = ({
+  doorDeliveryRates,
+  pickupRates,
+  setLoading,
+}) => {
+  if (doorDeliveryRates.length === 0) {
+    return (
+      <div className="shipping-rates">
+        <RateGroup rates={pickupRates} setLoading={setLoading} />
+      </div>
+    );
+  } else if (pickupRates.length === 0) {
+    return (
+      <div className="shipping-rates">
+        <RateGroup rates={doorDeliveryRates} setLoading={setLoading} />
+      </div>
+    );
+  } else {
+    return (
+      <div className="shipping-rates">
+        <Accordion title={__("Pickup points", "HillebrandGoriEshipping")}>
+          <RateGroup rates={pickupRates} setLoading={setLoading} />
+        </Accordion>
+        <Accordion title={__("Door Delivery", "HillebrandGoriEshipping")}>
+          <RateGroup rates={doorDeliveryRates} setLoading={setLoading} />
+        </Accordion>
+      </div>
+    );
+  }
+};
+
+const HgesShippingRates = () => {
+  const [loading, setLoading] = useState(false);
+  const cartStore = select("wc/store/cart");
+  const shippingPackages = cartStore.getShippingRates();
+
+  wp.data.subscribe(() => {
+    const isRateBeingSelected = cartStore.isShippingRateBeingSelected();
+    setLoading(isRateBeingSelected);
+  });
+
   const shippingRates = shippingPackages[0].shipping_rates.map((r, i) => {
     const newRate = {
       ...r,
@@ -89,37 +153,28 @@ const MyCustomComponent = (props) => {
   );
   const pickupRates = shippingRates.filter((rate) => rate.doorDelivery === "");
 
-  //si doordelivery rates est un tableau vide
-  if (doorDeliveryRates.length === 0) {
-    return (
-      <div className="shipping-rates">
-        <RateGroup rates={pickupRates} onClickedRate={onClickedRate} />
-      </div>
-    );
-  } else if (pickupRates.length === 0) {
-    return (
-      <div className="shipping-rates">
-        <RateGroup rates={doorDeliveryRates} onClickedRate={onClickedRate} />
-      </div>
-    );
-  } else {
-    return (
-      <div className="shipping-rates">
-        <Accordion title={__("Pickup points", "HillebrandGoriEshipping")}>
-          <RateGroup rates={pickupRates} onClickedRate={onClickedRate} />
-        </Accordion>
-        <Accordion title={__("Door Delivery", "HillebrandGoriEshipping")}>
-          <RateGroup rates={doorDeliveryRates} onClickedRate={onClickedRate} />
-        </Accordion>
-      </div>
-    );
-  }
+  return (
+    <LoadingMask
+      isLoading={loading}
+      screenReaderLabel={__(
+        "Loading shipping rates",
+        "HillebrandGoriEshipping"
+      )}
+      showSpinner={true}
+    >
+      <ShippingRatesContainer
+        doorDeliveryRates={doorDeliveryRates}
+        pickupRates={pickupRates}
+        setLoading={setLoading}
+      />
+    </LoadingMask>
+  );
 };
 
 const render = () => {
   return (
     <ExperimentalOrderShippingPackages>
-      <MyCustomComponent />
+      <HgesShippingRates />
     </ExperimentalOrderShippingPackages>
   );
 };

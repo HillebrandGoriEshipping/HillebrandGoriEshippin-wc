@@ -11,5 +11,8 @@
     "build": "npx wp-scripts build assets/js/shippingRatesFill.js --output-path=dist"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "clsx": "^2.1.1"
+  }
 }
