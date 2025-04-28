@@ -29,9 +29,7 @@ class App
     public static function runAdmin()
     {
         add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
-
         add_action('admin_enqueue_scripts', [self::class, 'enqueueAdminAssets']);
-
         add_action('admin_init', [self::class, 'router']);
     }
 

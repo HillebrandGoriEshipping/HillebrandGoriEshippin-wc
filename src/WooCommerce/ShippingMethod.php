@@ -25,9 +25,7 @@ class ShippingMethod extends \WC_Shipping_Method
         $this->method_description = __(self::METHOD_DESCRIPTION, 'hges');
         $this->enabled = 'yes';
         $this->title = self::METHOD_TITLE;
-        $this->supports[] = [
-            'shipping-zones',
-        ];
+        $this->supports[] = 'shipping-zones';
     }
 
     public static function register($methods)
