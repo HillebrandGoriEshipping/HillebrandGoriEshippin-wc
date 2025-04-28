@@ -39,6 +39,17 @@ class ShippingAddressFields {
         'hidden' => false,
         'validation' => [],
     ];
+    const COMPANY_NAME_FIELD_OPTIONS = [
+        'id' => 'hges/company-name',
+        'label' => 'Company name',
+        'optionalLabel' => 'Company name',
+        'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
+        'type' => self::WC_CHECKOUT_FIELDS_TYPES['TEXT'],
+        'attributes' => [],
+        'hidden' => false,
+        'validation' => [],
+    ];
+
 
     /**
      * List of translatable option fields
@@ -53,6 +64,7 @@ class ShippingAddressFields {
     public static function register(): void
     {
         self::isCompanyField();
+        self::companyNameField();
     }
 
     /**
@@ -63,6 +75,16 @@ class ShippingAddressFields {
         $options = self::applyI18n(self::IS_COMPANY_CHECKBOX_OPTIONS);
         \woocommerce_register_additional_checkout_field($options);
     }
+
+    /**
+     * Registers the "company name" text field
+     */
+    public static function companyNameField(): void
+    {
+        $options = self::applyI18n(self::COMPANY_NAME_FIELD_OPTIONS);
+        \woocommerce_register_additional_checkout_field($options);
+    }
+
 
     /**
      * Replaces the translatable strings from a given options array
