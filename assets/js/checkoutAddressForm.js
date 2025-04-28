@@ -14,7 +14,11 @@ wp.data.subscribe(() => {
     else if (!cartStore.isCustomerDataUpdating() && waitingForCalculation) {
         waitingForCalculation = false;
         companyNameField.removeAttribute('disabled');
-        const isCompanyFieldVisible = !!cartStore.getCustomerData().billingAddress['hges/is-company-address'];
-        companyNameField.style.display = isCompanyFieldVisible ? 'block' : 'none';
+        updateCompanyNameDisplay();
     }
 });
+
+const updateCompanyNameDisplay = () => {
+    const isCompanyFieldVisible = !!cartStore.getCustomerData().billingAddress['hges/is-company-address'];
+    companyNameField.style.display = isCompanyFieldVisible ? 'block' : 'none';
+}

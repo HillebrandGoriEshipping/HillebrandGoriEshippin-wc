@@ -46,6 +46,7 @@ class ShippingAddressFields {
         'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
         'type' => self::WC_CHECKOUT_FIELDS_TYPES['TEXT'],
         'attributes' => [],
+        'required' => false,
         'hidden' => false,
         'validation' => [],
     ];
