@@ -65,6 +65,8 @@
 }
 
 .rate-name {
+  display: flex;
+  align-items: center;
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -120,20 +122,15 @@
   padding: 0;
 }
 
-.wc-block-components-loading-mask {
-  position: relative;
-  min-height: 18px;
-  pointer-events: none;
+.wp-block-woocommerce-cart-order-summary-shipping-block .rate-left .rate-logo {
+  display: none;
+}
 
-  .components-spinner {
-    position: absolute;
-    margin: 0;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.rate-name .rate-logo-image {
+  width: 1rem;
+  margin-right: 0.5rem;
+}
 
-  .wc-block-components-loading-mask__children {
-    opacity: 0.25;
-  }
+.wp-block-woocommerce-checkout-fields-block .rate-name .rate-logo-image {
+  display: none;
 }

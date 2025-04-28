@@ -74,7 +74,14 @@ const RateGroup = ({ rates }) => (
               />
             </div>
             <div className="rate-info">
-              <p className="rate-name">{rate.name}</p>
+              <p className="rate-name">
+                <img
+                  src={assetsPath.assetsUrl + rate.carrierName + ".png"}
+                  alt={rate.name}
+                  className="rate-logo-image"
+                />
+                <span>{rate.name}</span>
+              </p>
               <div className="rate-date-box">
                 <p>{__("Estimated delivery: ", "HillebrandGoriEshipping")}</p>
                 <p className="rate-estimated-date">{rate.pickupDate}</p>
