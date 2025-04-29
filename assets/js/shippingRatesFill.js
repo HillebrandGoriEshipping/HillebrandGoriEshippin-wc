@@ -60,46 +60,62 @@ const Accordion = ({ title, children, defaultOpen }) => {
 
 // hack, waiting for WooCommerce to build a customizable shuipping method block
 //wc-blocks_render_blocks_frontend
-const RateGroup = ({ rates }) => (
-  <div>
-    {rates.map((rate) => (
-      <label htmlFor={"radio-control-0-" + rate.name} key={rate.key}>
-        <div className={"rate-content" + (rate.selected ? " selected" : "")}>
-          <div className="rate-left">
-            <div className="rate-logo">
-              <img
-                src={assetsPath.assetsUrl + rate.carrierName + ".png"}
-                alt={rate.name}
-                className="rate-logo-image"
-              />
-            </div>
-            <div className="rate-info">
-              <p className="rate-name">
+const RateGroup = ({ rates }) => {
+  rates = rates.map((rate) => {
+    let logoUrl = assetsPath.assetsUrl + rate.carrierName + ".png";
+
+    if (rate.name == "Aérien") {
+      logoUrl = assetsPath.assetsUrl + "airfreight.png";
+    } else if (rate.name === "Maritime") {
+      logoUrl = assetsPath.assetsUrl + "seafreight.png";
+    }
+    return {
+      ...rate,
+      logoUrl: logoUrl,
+    };
+  });
+
+  return (
+    <div>
+      {rates.map((rate) => (
+        <label htmlFor={"radio-control-0-" + rate.name} key={rate.key}>
+          <div className={"rate-content" + (rate.selected ? " selected" : "")}>
+            <div className="rate-left">
+              <div className="rate-logo">
                 <img
-                  src={assetsPath.assetsUrl + rate.carrierName + ".png"}
+                  src={rate.logoUrl}
                   alt={rate.name}
                   className="rate-logo-image"
                 />
-                <span>{rate.name}</span>
-              </p>
-              <div className="rate-date-box">
-                <p>{__("Estimated delivery: ", "HillebrandGoriEshipping")}</p>
-                <p className="rate-estimated-date">{rate.pickupDate}</p>
+              </div>
+              <div className="rate-info">
+                <p className="rate-name">
+                  <img
+                    src={rate.logoUrl}
+                    alt={rate.name}
+                    className="rate-logo-image"
+                  />
+                  <span>{rate.name}</span>
+                </p>
+                <div className="rate-date-box">
+                  <p>{__("Estimated delivery: ", "HillebrandGoriEshipping")}</p>
+                  <p className="rate-estimated-date">{rate.pickupDate}</p>
+                </div>
               </div>
             </div>
+            <div className="rate-right">
+              <p className="rate-price">
+                {rate.currency_prefix}
+                {Number(rate.price / 100).toFixed(2)}
+                {rate.currency_suffix}
+              </p>
+            </div>
           </div>
-          <div className="rate-right">
-            <p className="rate-price">
-              {rate.currency_prefix}
-              {Number(rate.price / 100).toFixed(2)}
-              {rate.currency_suffix}
-            </p>
-          </div>
-        </div>
-      </label>
-    ))}
-  </div>
-);
+        </label>
+      ))}
+    </div>
+  );
+};
 
 const ShippingRatesContainer = ({
   doorDeliveryRates,
