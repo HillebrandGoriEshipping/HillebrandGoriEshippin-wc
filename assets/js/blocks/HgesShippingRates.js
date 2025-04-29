@@ -46,11 +46,19 @@ const HgesShippingRates = () => {
     return newRate;
   });
 
-  // Filter the shipping rates based on the door delivery property
-  const doorDeliveryRates = shippingRates.filter(
-    (rate) => rate.doorDelivery === "1"
-  );
-  const pickupRates = shippingRates.filter((rate) => rate.doorDelivery === "");
+  // Sort the shipping rates by the door delivery property
+  const doorDeliveryRates = [];
+  const pickupRates = [];
+  const otherRates = [];
+  shippingRates.forEach((rate) => {
+    if (rate.doorDelivery === "1") {
+      doorDeliveryRates.push(rate);
+    } else if (rate.doorDelivery === "") {
+      pickupRates.push(rate);
+    } else {
+      otherRates.push(rate);
+    }
+  });
 
   return (
     <LoadingMask
@@ -64,6 +72,7 @@ const HgesShippingRates = () => {
       <ShippingRatesContainer
         doorDeliveryRates={doorDeliveryRates}
         pickupRates={pickupRates}
+        otherRates={otherRates}
         setLoading={setLoading}
       />
     </LoadingMask>

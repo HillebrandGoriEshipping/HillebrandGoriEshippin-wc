@@ -14,7 +14,7 @@ dayjs.locale(langCode);
 
 // hack, waiting for WooCommerce to build a customizable shuipping method block
 //wc-blocks_render_blocks_frontend
-const RateGroup = ({ rates }) => {
+const RateGroup = ({ rates, hasLogo = true }) => {
   rates = rates.map((rate) => {
     let logoUrl = assetsPath.assetsUrl + rate.carrierName + ".png";
 
@@ -32,23 +32,31 @@ const RateGroup = ({ rates }) => {
   return (
     <div>
       {rates.map((rate) => (
-        <label htmlFor={"radio-control-0-" + rate.name} key={rate.key}>
+        <label htmlFor={"radio-control-0-" + rate.rate_id} key={rate.key}>
           <div className={"rate-content" + (rate.selected ? " selected" : "")}>
             <div className="rate-left">
-              <div className="rate-logo">
-                <img
-                  src={rate.logoUrl}
-                  alt={rate.name}
-                  className="rate-logo-image"
-                />
-              </div>
-              <div className="rate-info">
-                <p className="rate-name">
+              {hasLogo ? (
+                <div className="rate-logo">
                   <img
                     src={rate.logoUrl}
                     alt={rate.name}
                     className="rate-logo-image"
                   />
+                </div>
+              ) : (
+                ""
+              )}
+              <div className="rate-info">
+                <p className="rate-name">
+                  {hasLogo ? (
+                    <img
+                      src={rate.logoUrl}
+                      alt={rate.name}
+                      className="rate-logo-image"
+                    />
+                  ) : (
+                    ""
+                  )}
                   <span>{rate.name}</span>
                 </p>
                 <div className="rate-date-box">

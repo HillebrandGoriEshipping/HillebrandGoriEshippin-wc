@@ -1,7 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const Accordion = ({ title, children, defaultOpen }) => {
+const Accordion = ({
+  title,
+  children,
+  defaultOpen,
+  display = true,
+  displayHeader = true,
+}) => {
   const [isOpen, setIsOpen] = useState(defaultOpen || false);
+  useEffect(() => {
+    setIsOpen(defaultOpen || false);
+  }, [defaultOpen]);
+
+  if (!display) {
+    return null;
+  }
+  if (displayHeader === false) {
+    return (
+      <div className="accordion">
+        <div className="accordion-content">{children}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="accordion">
