@@ -17,7 +17,10 @@ const getRadioButtonId = (rate) => {
   const radioInput = document.querySelector(
     ".wc-block-components-shipping-rates-control__package input[type='radio']"
   );
-  const packageIndex = radioInput.id.split("-")[2];
+  let packageIndex = 0;
+  if (radioInput) {
+    packageIndex = radioInput.id.split("-")[2];
+  }
 
   return `radio-control-${packageIndex}-${rate.rate_id}`;
 };
