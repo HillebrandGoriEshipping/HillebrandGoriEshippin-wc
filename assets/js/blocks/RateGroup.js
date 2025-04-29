@@ -1,4 +1,5 @@
 const { __ } = window.wp.i18n;
+const { select } = window.wp.data;
 
 // Date format localization
 import dayjs from "dayjs";
@@ -12,6 +13,14 @@ const browserLang = navigator.language || "en";
 const langCode = browserLang.split("-")[0];
 dayjs.locale(langCode);
 
+const getRadioButtonId = (rate) => {
+  const radioInput = document.querySelector(
+    ".wc-block-components-shipping-rates-control__package input[type='radio']"
+  );
+  const packageIndex = radioInput.id.split("-")[2];
+
+  return `radio-control-${packageIndex}-${rate.rate_id}`;
+};
 // hack, waiting for WooCommerce to build a customizable shuipping method block
 //wc-blocks_render_blocks_frontend
 const RateGroup = ({ rates, hasLogo = true }) => {
@@ -32,7 +41,7 @@ const RateGroup = ({ rates, hasLogo = true }) => {
   return (
     <div>
       {rates.map((rate) => (
-        <label htmlFor={"radio-control-0-" + rate.rate_id} key={rate.key}>
+        <label htmlFor={getRadioButtonId(rate)} key={rate.key}>
           <div className={"rate-content" + (rate.selected ? " selected" : "")}>
             <div className="rate-left">
               {hasLogo ? (
