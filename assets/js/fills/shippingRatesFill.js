@@ -3,6 +3,19 @@ const { registerPlugin } = window.wp.plugins;
 const { select } = window.wp.data;
 const { ExperimentalOrderShippingPackages } = window.wc.blocksCheckout;
 
+// Date format localization
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import "dayjs/locale/fr";
+import "dayjs/locale/en";
+import "dayjs/locale/de";
+dayjs.extend(localizedFormat);
+
+const browserLang = navigator.language || "en";
+const langCode = browserLang.split("-")[0];
+
+dayjs.locale(langCode);
+
 import { useState } from "react";
 import LoadingMask from "../blocks/LoadingMask";
 
@@ -68,7 +81,9 @@ const RateGroup = ({ rates }) => {
                 </p>
                 <div className="rate-date-box">
                   <p>{__("Estimated delivery: ", "HillebrandGoriEshipping")}</p>
-                  <p className="rate-estimated-date">{rate.pickupDate}</p>
+                  <p className="rate-estimated-date">
+                    {dayjs(rate.pickupDate).format("LL")}
+                  </p>
                 </div>
               </div>
             </div>

@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13"
   },
   "devDependencies": {
     "@wordpress/scripts": "^30.15.0"
