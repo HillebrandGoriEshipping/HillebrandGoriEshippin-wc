@@ -7,8 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "watch": "npx wp-scripts start assets/js/shippingRatesFill.js --output-path=dist",
-    "build": "npx wp-scripts build assets/js/shippingRatesFill.js --output-path=dist"
+    "watch": "npx wp-scripts start orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
+    "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist"
   },
   "author": "",
   "license": "ISC",

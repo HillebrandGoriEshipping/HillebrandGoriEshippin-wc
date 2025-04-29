@@ -134,3 +134,11 @@
 .wp-block-woocommerce-checkout-fields-block .rate-name .rate-logo-image {
   display: none;
 }
+
+.order-totals-shipping-rates-loading-mask {
+  display: none;
+}
+
+div:has(> .wc-block-components-order-meta) {
+  display: none;
+}

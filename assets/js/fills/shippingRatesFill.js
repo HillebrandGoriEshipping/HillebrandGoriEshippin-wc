@@ -2,40 +2,9 @@ const { __ } = window.wp.i18n;
 const { registerPlugin } = window.wp.plugins;
 const { select } = window.wp.data;
 const { ExperimentalOrderShippingPackages } = window.wc.blocksCheckout;
-import { useState } from "react";
-import clsx from "clsx";
-const { Spinner } = window.wc.blocksComponents;
 
-const LoadingMask = ({
-  children,
-  className,
-  screenReaderLabel,
-  showSpinner = false,
-  isLoading = true,
-}) => {
-  return (
-    <div
-      className={clsx(className, {
-        "wc-block-components-loading-mask": isLoading,
-      })}
-    >
-      {isLoading && showSpinner && <Spinner />}
-      <div
-        className={clsx({
-          "wc-block-components-loading-mask__children": isLoading,
-        })}
-        aria-hidden={isLoading}
-      >
-        {children}
-      </div>
-      {isLoading && (
-        <span className="screen-reader-text">
-          {screenReaderLabel || __("Loading…", "woocommerce")}
-        </span>
-      )}
-    </div>
-  );
-};
+import { useState } from "react";
+import LoadingMask from "../blocks/LoadingMask";
 
 const Accordion = ({ title, children, defaultOpen }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen || false);
@@ -162,6 +131,24 @@ const HgesShippingRates = () => {
   wp.data.subscribe(() => {
     const isRateBeingSelected = cartStore.isShippingRateBeingSelected();
     setLoading(isRateBeingSelected);
+
+    const LoadingMask = document.querySelector(
+      ".order-totals-shipping-rates-loading-mask"
+    );
+    const totalsShippingLine = document.querySelector(
+      ".wc-block-components-totals-shipping"
+    );
+    if (totalsShippingLine) {
+      totalsShippingLine.parentElement.appendChild(LoadingMask);
+    }
+
+    if (isRateBeingSelected) {
+      totalsShippingLine.style.display = "none";
+      LoadingMask.style.display = "block";
+    } else {
+      totalsShippingLine.style.display = "block";
+      LoadingMask.style.display = "none";
+    }
   });
 
   const shippingRates = shippingPackages[0].shipping_rates.map((r, i) => {
@@ -208,7 +195,7 @@ const render = () => {
     </ExperimentalOrderShippingPackages>
   );
 };
-registerPlugin("slot-and-fill-examples", {
+registerPlugin("hges-shipping-rates-fill", {
   render,
   scope: "woocommerce-checkout",
 });

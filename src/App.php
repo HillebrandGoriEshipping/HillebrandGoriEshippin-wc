@@ -56,6 +56,14 @@ class App
             ['in_footer' => true]
         );
 
+        wp_enqueue_script(
+            'hges-order-recap-fill',
+            HGeS_PLUGIN_URL . 'dist/orderRecapFill.js',
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            null,
+            ['in_footer' => true]
+        );
+
         wp_enqueue_style(
             'hges-checkout-style',
             HGeS_PLUGIN_URL . 'assets/css/checkout.css',
