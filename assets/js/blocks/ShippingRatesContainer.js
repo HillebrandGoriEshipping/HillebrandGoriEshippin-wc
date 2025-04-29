@@ -28,7 +28,7 @@ const ShippingRatesContainer = ({
         <RateGroup rates={doorDeliveryRates} setLoading={setLoading} />
       </Accordion>
       <Accordion
-        title={__("Other rates", "HillebrandGoriEshipping")}
+        title={__("Other shipping method", "HillebrandGoriEshipping")}
         defaultOpen={!!otherRates.find((r) => r.selected)}
         display={otherRates.length > 0}
         displayHeader={doorDeliveryRates.length > 0 || pickupRates.length > 0}

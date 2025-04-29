@@ -33,7 +33,12 @@ const HgesShippingRates = () => {
     }
   });
 
-  const shippingRates = shippingPackages[0].shipping_rates.map((r, i) => {
+  const shippingRates = [];
+
+  shippingPackages[0].shipping_rates.forEach((r, i) => {
+    if (r.method_id === "pickup_location") {
+      return;
+    }
     const newRate = {
       ...r,
       key: i,
@@ -43,7 +48,7 @@ const HgesShippingRates = () => {
       r[md.key] = md.value;
     });
 
-    return newRate;
+    shippingRates.push(newRate);
   });
 
   // Sort the shipping rates by the door delivery property
