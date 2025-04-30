@@ -22,7 +22,6 @@ class App
         }
 
         add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
-
         add_action('wp_enqueue_scripts', [self::class, 'enqueueAssets']);
     }
 
