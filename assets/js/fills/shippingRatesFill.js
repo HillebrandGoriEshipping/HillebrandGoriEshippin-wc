@@ -1,4 +1,3 @@
-const { __ } = window.wp.i18n;
 const { registerPlugin } = window.wp.plugins;
 
 const { ExperimentalOrderShippingPackages } = window.wc.blocksCheckout;
