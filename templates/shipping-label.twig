@@ -1,0 +1,23 @@
+<div class="hges-shipping-method" >
+    <div class="hges-shipping-method-left">
+        {% if metaData.carrierName != null %}
+        <div class="hges-shipping-logo">
+            <img src="{{ assetsPath }}" alt="Hillebrand Gori Eshipping" />
+        </div>
+        {% endif %}
+        <div class="hges-shipping-info">
+            <div class="hges-shipping-label">
+                {{ label }}
+            </div>
+            {% if metaData.deliveryDate %}
+            <div class="hges-shipping-delivery">
+                {{ function('__', 'Estimated delivery: ', 'HillebrandGoriEshipping') }} {{ metaData.deliveryDate }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="hges-shipping-price">
+        {{ cost|raw }}
+    </div>
+</div>

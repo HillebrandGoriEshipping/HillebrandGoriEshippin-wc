@@ -17,6 +17,13 @@ class Styles
             [],
             null
         );
+
+        wp_enqueue_style(
+            'hges-shipping-rates-classic-style',
+            HGeS_PLUGIN_URL . 'assets/css/shipping-rates-classic.css',
+            [],
+            null
+        );
     }
 
     /** 
