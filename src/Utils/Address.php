@@ -15,6 +15,7 @@ class Address
                 $address = [];
             }
         } catch (\Throwable $th) {
+            throw $th;
         }
 
         return $address;
