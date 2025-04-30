@@ -72,3 +72,8 @@ table {
 .validable-field.invalid {
   border-color: #f44336;
 }
+
+.time-field-label {
+  display: inline-block;
+  width: 5rem;
+}

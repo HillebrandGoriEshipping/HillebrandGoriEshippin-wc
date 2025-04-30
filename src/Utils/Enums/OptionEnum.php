@@ -20,6 +20,8 @@ class OptionEnum
     const HGES_NBR_MIN = "HGES_NBR_MIN";
     const HGES_PREP_TIME = "HGES_PREP_TIME";
     const HGES_PREF_DEL = "HGES_PREF_DEL";
+    const HGES_MINHOUR = "HGES_MINHOUR";
+    const HGES_CUTOFF = "HGES_CUTOFF";
 
 
     // WP setting group name
@@ -44,6 +46,8 @@ class OptionEnum
             self::HGES_NBR_MIN,
             self::HGES_PREP_TIME,
             self::HGES_PREF_DEL,
+            self::HGES_MINHOUR,
+            self::HGES_CUTOFF,
         ];
     }
 }

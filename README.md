@@ -30,6 +30,11 @@ This project is a WooCommerce plugin to calculate the shipping costs using the e
 
 - [eShipping API](https://eshipping.hillebrandgori.app/api/doc)
 
+# Warning
+
+- The local pickup will not show in shuipping methods.
+- Any other shipping method will show in the "Other shipping methods" section.
+
 # Build and Test
 
 TODO.

@@ -1,0 +1,144 @@
+.wc-block-components-shipping-rates-control__package {
+  display: none !important;
+}
+
+.shipping-rates {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+}
+
+.shipping-rates div > label {
+  width: 100%;
+}
+
+.shipping-rates > div > label:first-child {
+  border-top: 1px solid hsla(0, 0%, 7%, 0.11);
+}
+
+.rate-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid hsla(0, 0%, 7%, 0.11);
+  border-right: 1px solid hsla(0, 0%, 7%, 0.11);
+  border-left: 1px solid hsla(0, 0%, 7%, 0.11);
+  padding: 1rem;
+}
+
+.shipping-rates .rate-content:hover {
+  background-color: hsla(0, 0%, 7%, 0.05);
+  cursor: pointer;
+}
+
+.rate-content.selected {
+  background-color: #90ee9081;
+}
+
+.rate-content.selected:hover {
+  background-color: #90ee9081;
+  cursor: pointer;
+}
+
+.rate-logo {
+  flex-grow: 1;
+}
+
+.rate-left {
+  display: flex;
+  flex-direction: row;
+}
+
+.rate-logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rate-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.rate-name {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.rate-date-box {
+  display: flex;
+  flex-direction: row;
+}
+
+.rate-date-box > p {
+  margin-bottom: 0;
+  margin-right: 0.5rem;
+}
+
+.rate-estimated-date {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+.rate-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 5rem;
+}
+
+.rate-price {
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: right;
+  margin-bottom: 0;
+}
+
+.accordion {
+  margin-bottom: 1rem;
+}
+
+.accordion-header {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 1rem;
+  width: 100%;
+  text-align: left;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.accordion-content {
+  padding: 1rem;
+  border-top: none;
+  padding: 0;
+}
+
+.wp-block-woocommerce-cart-order-summary-shipping-block .rate-left .rate-logo {
+  display: none;
+}
+
+.rate-name .rate-logo-image {
+  width: 1rem;
+  margin-right: 0.5rem;
+}
+
+.wp-block-woocommerce-checkout-fields-block .rate-name .rate-logo-image {
+  display: none;
+}
+
+.order-totals-shipping-rates-loading-mask {
+  display: none;
+}
+
+div:has(> .wc-block-components-order-meta) {
+  display: none;
+}

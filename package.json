@@ -1,0 +1,22 @@
+{
+  "name": "hillebrandgorieshipping",
+  "version": "1.0.0",
+  "description": "This project is a WooCommerce plugin to calculate the shipping costs using the eShipping API and create an order in the eShipping system.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "watch": "npx wp-scripts start orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
+    "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^30.15.0"
+  }
+}

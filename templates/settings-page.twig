@@ -140,6 +140,26 @@
                 </fieldset>
             </td>
         </tr>
+        <!-- MINHOUR & CUTOFF -->
+        <tr valign="top">
+            <th scope="row">{{ function('__', 'Min hour & Cutoff', 'HillebrandGoriEshipping')|escape }}:</th>
+            <td>
+                <div>
+                    <label class="time-field-label" for="minhour">{{ function('__', 'Min hour', 'HillebrandGoriEshipping')|escape }}:</label>
+                    <input id="minhour" type="time" name="{{ hgesOptionName('HGES_MINHOUR') }}" value="{{ options.HGES_MINHOUR|default('') }}">
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ function('__', 'Set the minimum hour when the carrier can pick the parcels', 'HillebrandGoriEshipping')|escape }}</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="time-field-label" for="cutoff">{{ function('__', 'Cutoff', 'HillebrandGoriEshipping')|escape }}:</label>
+                    <input id="cutoff" type="time" name="{{ hgesOptionName('HGES_CUTOFF') }}" value="{{ options.HGES_CUTOFF|default('') }}">
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ function('__', 'Set the maximum hour when the carrier can pick the parcels', 'HillebrandGoriEshipping')|escape }}</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
         <!-- DELIVERY PREFERENCE -->
         <tr valign="top">
             <th scope="row">{{ function('__', 'Delivery preference', 'HillebrandGoriEshipping') }} :</th>

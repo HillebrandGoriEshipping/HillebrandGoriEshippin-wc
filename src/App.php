@@ -22,14 +22,13 @@ class App
         }
 
         add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
+        add_action('wp_enqueue_scripts', [self::class, 'enqueueAssets']);
     }
 
     public static function runAdmin()
     {
         add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
-
         add_action('admin_enqueue_scripts', [self::class, 'enqueueAdminAssets']);
-
         add_action('admin_init', [self::class, 'router']);
     }
 
@@ -46,19 +45,54 @@ class App
         }
     }
 
-    public static function enqueueAdminAssets()
+    public static function enqueueAssets()
     {
-        // Enqueue your admin scripts and styles here
+        wp_enqueue_script(
+            'hges-shipping-rates-fill',
+            HGeS_PLUGIN_URL . 'dist/shippingRatesFill.js',
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            null,
+            ['in_footer' => true]
+        );
+
+        wp_enqueue_script(
+            'hges-order-recap-fill',
+            HGeS_PLUGIN_URL . 'dist/orderRecapFill.js',
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            null,
+            ['in_footer' => true]
+        );
+
         wp_enqueue_style(
-            'hges-admin-style',
-            HGeS_PLUGIN_URL . 'assets/css/admin.css',
+            'hges-checkout-style',
+            HGeS_PLUGIN_URL . 'assets/css/checkout.css',
             [],
             null
         );
 
-        wp_enqueue_script_module(
-            'hges-settings-page-script',
-            HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
+        // Pass the assets URL to the JavaScript file
+        wp_localize_script(
+            'hges-shipping-rates-fill',
+            'assetsPath',
+            ['assetsUrl' => HGeS_PLUGIN_URL . 'assets/img/']
         );
+    }
+
+    public static function enqueueAdminAssets()
+    {
+        // Enqueue your admin scripts and styles here
+        if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
+            wp_enqueue_style(
+                'hges-admin-style',
+                HGeS_PLUGIN_URL . 'assets/css/admin.css',
+                [],
+                null
+            );
+
+            wp_enqueue_script_module(
+                'hges-settings-page-script',
+                HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
+            );
+        }
     }
 }
