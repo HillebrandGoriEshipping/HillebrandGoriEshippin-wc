@@ -3,37 +3,54 @@
 namespace HGeS;
 
 use HGeS\Admin\Settings\Menu;
-use HGeS\Utils\ApiClient;
-use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Admin\Settings\SettingsController;
+use HGeS\Assets\Scripts;
+use HGeS\Assets\Styles;
 use HGeS\WooCommerce\ShippingMethod;
 
 /**
  * Plugin entry class
- *
+ * It's role is to setup the plugin, no logic should be handled here.
+ * Add the hooks and filters to the WordPress lifecycle and handle the custom requ
  */
 class App
 {
-
-    public static function run()
+    /**
+     * Run the plugin
+     *
+     * @return void
+     */
+    public static function run(): void
     {
         if (is_admin()) {
             self::runAdmin();
         }
-
+        
         add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
-        add_action('wp_enqueue_scripts', [self::class, 'enqueueAssets']);
+
+        add_action('wp_enqueue_scripts', [Scripts::class, 'enqueue']);
+        add_action('wp_enqueue_scripts', [Styles::class, 'enqueue']);
     }
 
-    public static function runAdmin()
+    /**
+     * Setup the hooks/filters for the admin area
+     *
+     * @return void
+     */
+    public static function runAdmin(): void
     {
-        add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
-        add_action('admin_enqueue_scripts', [self::class, 'enqueueAdminAssets']);
+        add_action('admin_enqueue_scripts', [Scripts::class, 'enqueueAdmin']);
+        add_action('admin_enqueue_scripts', [Styles::class, 'enqueueAdmin']);
         add_action('admin_init', [self::class, 'router']);
-
+        add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
     }
 
-    public static function router()
+    /**
+     * Router for plugin specific actions
+     *
+     * @return void
+     */
+    public static function router(): void
     {
         if (
             isset($_GET['page'])
@@ -43,57 +60,6 @@ class App
             SettingsController::saveSettings();
             wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
             exit;
-        }
-    }
-
-    public static function enqueueAssets()
-    {
-        wp_enqueue_script(
-            'hges-shipping-rates-fill',
-            HGeS_PLUGIN_URL . 'dist/shippingRatesFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
-            null,
-            ['in_footer' => true]
-        );
-
-        wp_enqueue_script(
-            'hges-order-recap-fill',
-            HGeS_PLUGIN_URL . 'dist/orderRecapFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
-            null,
-            ['in_footer' => true]
-        );
-
-        wp_enqueue_style(
-            'hges-checkout-style',
-            HGeS_PLUGIN_URL . 'assets/css/checkout.css',
-            [],
-            null
-        );
-
-        // Pass the assets URL to the JavaScript file
-        wp_localize_script(
-            'hges-shipping-rates-fill',
-            'assetsPath',
-            ['assetsUrl' => HGeS_PLUGIN_URL . 'assets/img/']
-        );
-    }
-
-    public static function enqueueAdminAssets()
-    {
-        // Enqueue your admin scripts and styles here
-        if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
-            wp_enqueue_style(
-                'hges-admin-style',
-                HGeS_PLUGIN_URL . 'assets/css/admin.css',
-                [],
-                null
-            );
-
-            wp_enqueue_script_module(
-                'hges-settings-page-script',
-                HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
-            );
         }
     }
 }
