@@ -46,12 +46,42 @@ class ShippingAddressFields {
         'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
         'type' => self::WC_CHECKOUT_FIELDS_TYPES['TEXT'],
         'attributes' => [],
-        'required' => false,
-        'hidden' => false,
+        'required' => true,
+        'hidden'   => [
+            'if' => true
+        ],
         'validation' => [],
     ];
 
-
+/*
+		}
+			}
+		},
+		"customer": {
+			"type": "object",
+			"description": "Customer information",
+			"properties": {
+				"id": {
+					"type": "integer",
+					"description": "Customer ID, this will be 0 if the customer is not logged in"
+				},
+				"billing_address": {
+					"$ref": "#/definitions/address",
+					"description": "Customer's billing address"
+				},
+				"shipping_address": {
+					"$ref": "#/definitions/address",
+					"description": "Customer's shipping address"
+				},
+				"address": {
+					"$ref": "#/definitions/address",
+					"description": "This is a dynamic field that will be the billing or shipping address depending on the context of the field being evaluted."
+				}
+			}
+		}
+	},
+	"definitions": {
+*/
     /**
      * List of translatable option fields
      */
