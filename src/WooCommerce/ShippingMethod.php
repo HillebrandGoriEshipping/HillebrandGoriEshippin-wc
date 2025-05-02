@@ -10,15 +10,21 @@ class ShippingMethod extends \WC_Shipping_Method
     const METHOD_TITLE = 'Hillebrand Gori eShipping';
     const METHOD_DESCRIPTION = 'Hillebrand Gori eShipping Shipping Method';
     const ENABLED = 'yes';
+    const SUPPORTS = ['shipping-zones'];
 
-    public $id;
-    public $method_title;
-    public $method_description;
-    public $enabled;
-    public $title;
-    public $supports = [];
-    public $instance_id = '';
+    public int $id;
+    public int $instance_id = 0;
+    public string $method_title;
+    public string $method_description;
+    public bool $enabled;
+    public string $title;
+    public array $supports = [];
 
+    /**
+     * Constructor for the shipping method
+     * 
+     * @param int $instance_id
+     */
     public function __construct($instance_id = 0)
     {
         $this->id = self::METHOD_ID;
@@ -27,16 +33,30 @@ class ShippingMethod extends \WC_Shipping_Method
         $this->method_description = __(self::METHOD_DESCRIPTION, 'hges');
         $this->enabled = self::ENABLED;
         $this->title = self::METHOD_TITLE;
-        $this->supports[] = 'shipping-zones';
+        $this->supports = self::SUPPORTS;
     }
 
-    public static function register($methods)
+    /**
+     * Register the shipping method with WooCommerce
+     * 
+     * @param array $methods
+     * @return array
+     * @see https://woocommerce.github.io/code-reference/classes/WC-Shipping-Method.html#property_methods
+     */
+    public static function register($methods): array
     {
         $methods[self::METHOD_ID] = self::class;
         return $methods;
     }
 
-    public function calculate_shipping($package = [])
+    /**
+     * Calculate the shipping rates for the given package
+     * 
+     * @param array $package
+     * @return void
+     * @see https://woocommerce.github.io/code-reference/classes/WC-Shipping-Method.html#method_calculate_shipping
+     */
+    public function calculate_shipping($package = []): void
     {
 <<<<<<< HEAD
         $rates = Rate::getShippingRates($package);
