@@ -22,7 +22,7 @@ class Styles
     /** 
      * Enqueue the styles for the admin area
      */
-    public function enqueueAdmin(): void
+    public static function enqueueAdmin(): void
     {
         if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
             wp_enqueue_style(

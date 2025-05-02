@@ -5,7 +5,7 @@ namespace HGeS\Utils\Enums;
 class OptionEnum
 {
     const HGES_ACCESS_KEY = "HGES_ACCESS_KEY";
-    const access_key_validate = "access_key_validate";
+    const ACCESS_KEY_VALIDATE = "access_key_validate";
     const HGES_MAPBOX_ACCESS_KEY = "HGES_MAPBOX_ACCESS_KEY";
     const mapbox_api_key_validate = "mapbox_api_key_validate";
     const HGES_PREF_TRANSP = "HGES_PREF_TRANSP";
@@ -27,11 +27,16 @@ class OptionEnum
     // WP setting group name
     const HGES_SETTINGS_GROUP = "hges_settings_group";
 
-    public static function getList()
+    /**
+     * Get the list of options
+     * 
+     * @return array
+     */
+    public static function getList(): array
     {
         return [
             self::HGES_ACCESS_KEY,
-            self::access_key_validate,
+            self::ACCESS_KEY_VALIDATE,
             self::HGES_MAPBOX_ACCESS_KEY,
             self::mapbox_api_key_validate,
             self::HGES_PREF_TRANSP,

@@ -40,7 +40,7 @@ class Scripts
     /** 
      * Enqueue the scripts for the admin area
      */
-    public function enqueueAdmin(): void
+    public static function enqueueAdmin(): void
     {
          // Enqueue your admin scripts and styles here
          if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {

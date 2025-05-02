@@ -2,41 +2,45 @@
 
 namespace HGeS\Admin\Settings;
 
+use HGeS\Utils\Address;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Twig;
 
 class SettingsController
 {
-    public static function renderSettingsPage()
+    const SETTING_PAGE_TITLE = 'Hillebrand Gori eShipping Settings';
+
+    /**
+     * Render the settings page
+     * 
+     * @return void
+     */
+    public static function renderSettingsPage(): void
     {
         $options = [];
-
         foreach (OptionEnum::getList() as $option) {
             $options[$option] = get_option($option);
         }
 
-        try {
-            $address = ApiClient::get('/address/get-addresses');
-
-            if ($address['status'] === 200) {
-                $address = $address['data'];
-            } else {
-                $address = [];
-            }
-        } catch (\Throwable $th) {
-        }
+        $address = Address::fromApi();
 
         // Utiliser Twig pour rendre la page
         $twig = Twig::getTwig();
         echo $twig->render('settings-page.twig', [
-            'title' => 'Hillebrand Gori eShipping Settings',
+            'title' => __(self::SETTING_PAGE_TITLE),
             'options' => $options,
             'address' => $address[0],
         ]);
     }
 
-    public static function saveSettings()
+    /**
+     * Handle the settings form submission
+     * 
+     * @throws \Exception
+     * @return void
+     */
+    public static function saveSettings(): void
     {
         if (wp_verify_nonce($_POST['settings_nonce'], 'save_settings') !== 1) {
             throw new \Exception('Nonce verification failed');
@@ -50,12 +54,12 @@ class SettingsController
                 try {
                     $result = ApiClient::get('/package/get-sizes?nbBottles=1');
                     if ($result['status'] === 200) {
-                        update_option(OptionEnum::access_key_validate, 1);
+                        update_option(OptionEnum::ACCESS_KEY_VALIDATE, 1);
                     } else {
-                        update_option(OptionEnum::access_key_validate, 0);
+                        update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
                     }
                 } catch (\Throwable $th) {
-                    update_option(OptionEnum::access_key_validate, 0);
+                    update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
                 }
             }
         }

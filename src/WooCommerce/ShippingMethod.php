@@ -12,20 +12,20 @@ class ShippingMethod extends \WC_Shipping_Method
     const ENABLED = 'yes';
     const SUPPORTS = ['shipping-zones'];
 
-    public int $id;
-    public int $instance_id = 0;
-    public string $method_title;
-    public string $method_description;
-    public bool $enabled;
-    public string $title;
-    public array $supports = [];
+    public $id;
+    public $instance_id = 0;
+    public $method_title;
+    public $method_description;
+    public $enabled;
+    public $title;
+    public $supports = [];
 
     /**
      * Constructor for the shipping method
      * 
      * @param int $instance_id
      */
-    public function __construct($instance_id = 0)
+    public function __construct(int $instance_id = 0)
     {
         $this->id = self::METHOD_ID;
         $this->instance_id = $instance_id;
@@ -43,7 +43,7 @@ class ShippingMethod extends \WC_Shipping_Method
      * @return array
      * @see https://woocommerce.github.io/code-reference/classes/WC-Shipping-Method.html#property_methods
      */
-    public static function register($methods): array
+    public static function register(array $methods): array
     {
         $methods[self::METHOD_ID] = self::class;
         return $methods;
@@ -56,7 +56,7 @@ class ShippingMethod extends \WC_Shipping_Method
      * @return void
      * @see https://woocommerce.github.io/code-reference/classes/WC-Shipping-Method.html#method_calculate_shipping
      */
-    public function calculate_shipping($package = []): void
+    public function calculate_shipping($package = [])
     {
 <<<<<<< HEAD
         $rates = Rate::getShippingRates($package);
