@@ -97,6 +97,7 @@
                     name="{{ hgesOptionName('HGES_NBR_MIN') }}" 
                     value="{{ options.HGES_NBR_MIN|default('') }}"
                 >
+                {% include('form-error-message.twig') with {'error': errors.HGES_NBR_MIN} %}
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ function('__', 'Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page', 'HillebrandGoriEshipping')|escape }}</span>
                 </div>
@@ -107,6 +108,7 @@
             <th scope="row">{{ function('__', 'Preparation time', 'HillebrandGoriEshipping')|escape }}:</th>
             <td>
                 <input type="number" min="1" name="{{ hgesOptionName('HGES_PREP_TIME') }}" value="{{ options.HGES_PREP_TIME|default('') }}">
+                {% include('form-error-message.twig') with {'error': errors.HGES_PREP_TIME} %}
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ function('__', 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup', 'HillebrandGoriEshipping')|escape }}</span>
                 </div>
@@ -147,6 +149,8 @@
                 <div>
                     <label class="time-field-label" for="minhour">{{ function('__', 'Min hour', 'HillebrandGoriEshipping')|escape }}:</label>
                     <input id="minhour" type="time" name="{{ hgesOptionName('HGES_MINHOUR') }}" value="{{ options.HGES_MINHOUR|default('') }}">
+
+                    {% include('form-error-message.twig') with {'error': errors.HGES_MINHOUR} %}
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Set the minimum hour when the carrier can pick the parcels', 'HillebrandGoriEshipping')|escape }}</span>
                     </div>
@@ -154,6 +158,7 @@
                 <div>
                     <label class="time-field-label" for="cutoff">{{ function('__', 'Cutoff', 'HillebrandGoriEshipping')|escape }}:</label>
                     <input id="cutoff" type="time" name="{{ hgesOptionName('HGES_CUTOFF') }}" value="{{ options.HGES_CUTOFF|default('') }}">
+                    {% include('form-error-message.twig') with {'error': errors.HGES_CUTOFF} %}
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Set the maximum hour when the carrier can pick the parcels', 'HillebrandGoriEshipping')|escape }}</span>
                     </div>
@@ -207,6 +212,8 @@
                         id="vat-number" 
                         value="{{ options.HGES_VAT_NUMBER|default('') }}"
                     >
+
+                    {% include('form-error-message.twig') with {'error': errors.HGES_VAT_NUMBER} %}
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Enter your VAT number (required)', 'HillebrandGoriEshipping')|escape }}</span>
                     </div>
@@ -237,6 +244,7 @@
                         id="eori-number" 
                         value="{{ options.HGES_EORI_NUMBER|default('') }}"
                     >
+                    {% include('form-error-message.twig') with {'error': errors.HGES_EORI_NUMBER} %}
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'HillebrandGoriEshipping') }}</span>
                     </div>
@@ -252,6 +260,7 @@
                         id="fda-number" 
                         value="{{ options.HGES_FDA_NUMBER|default('') }}"
                     >
+                    {% include('form-error-message.twig') with {'error': errors.HGES_FDA_NUMBER} %}
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ function('__', 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'HillebrandGoriEshipping') }}</span>
                     </div>

@@ -62,7 +62,6 @@ class App
             &&  $_SERVER['REQUEST_METHOD'] === 'POST'
         ) {
             SettingsController::saveSettings();
-            wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
             exit;
         }
     }

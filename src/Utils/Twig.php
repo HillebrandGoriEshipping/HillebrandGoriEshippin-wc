@@ -16,6 +16,7 @@ class Twig
             $loader = new FilesystemLoader(HGeS_PLUGIN_DIR . '/templates');
             self::$twig = new Environment($loader, [
                 'cache' => false,
+                'debug' => $_ENV['WP_DEBUG'] ?? true,
             ]);
             self::customFunctions();
         }
