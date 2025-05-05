@@ -45,6 +45,14 @@ class SettingsController
         if (wp_verify_nonce($_POST['settings_nonce'], 'save_settings') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
+
+        $settingsFormData = new SettingsFormData($_POST);
+        $errors = $settingsFormData->validate();
+
+        if ($errors->count() > 0) {
+            exit($errors);
+        }
+
         foreach (OptionEnum::getList() as $optionName) {
             if (!isset($_POST[$optionName])) {
                 continue;
