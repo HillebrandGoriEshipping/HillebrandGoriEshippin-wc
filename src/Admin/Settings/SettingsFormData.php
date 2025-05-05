@@ -3,9 +3,8 @@
 namespace HGeS\Admin\Settings;
 
 use HGeS\Utils\Enums\OptionEnum;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
-use Symfony\Component\Validator\Validation;
+use HGeS\Utils\Traits\Validable;
 
 /**
  * This class is used to define the data structure for the settings form, 
@@ -13,6 +12,12 @@ use Symfony\Component\Validator\Validation;
  */
 class SettingsFormData
 {
+    /**
+     * This trait is used to add validation capabilities to a class.
+     * This class must implement the loadValidatorMetadata method to define the validation rules.
+     */
+    use Validable;
+    
     /**
      * We need to explicitly define the properties here,
      * otherwise they won't be recognized by the Symfony Validator
@@ -41,23 +46,12 @@ class SettingsFormData
      * 
      * @param array $postData the data from the form
      */
-    public function __construct($postData)
+    public function __construct(array $postData)
     {
         // Each post data is assigne to the corresponding property if it's defined in OptionEnum
         foreach (OptionEnum::getList() as $option) {
             $this->$option = isset($postData[$option]) ? $postData[$option] : '';
         }
-    }
-
-    /**
-     * Used to trigger the validation process from the controller
-     */
-    public function validate(): ConstraintViolationListInterface 
-    {
-        $validator = Validation::createValidatorBuilder()
-            ->addMethodMapping('loadValidatorMetadata')
-            ->getValidator();
-        return $validator->validate($this);
     }
 
     /**

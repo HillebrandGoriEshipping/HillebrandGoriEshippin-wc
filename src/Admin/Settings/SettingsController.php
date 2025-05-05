@@ -49,8 +49,8 @@ class SettingsController
         $settingsFormData = new SettingsFormData($_POST);
         $errors = $settingsFormData->validate();
 
-        if ($errors->count() > 0) {
-            exit($errors);
+        if ($errors) {
+            
         }
 
         foreach (OptionEnum::getList() as $optionName) {

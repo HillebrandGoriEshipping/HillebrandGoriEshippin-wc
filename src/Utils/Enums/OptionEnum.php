@@ -2,7 +2,6 @@
 
 namespace HGeS\Utils\Enums;
 
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class OptionEnum
@@ -65,12 +64,6 @@ class OptionEnum
     public static function getConstraints($option): array | null
     {
         $constraints = [
-            self::HGES_ACCESS_KEY => [
-                new NotBlank(),
-            ],
-            self::HGES_MAPBOX_ACCESS_KEY => [
-                new NotBlank(),
-            ],
             self::HGES_PREF_TRANSP => [
                 new NotBlank(),
             ],
