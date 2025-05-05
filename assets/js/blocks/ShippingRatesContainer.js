@@ -2,6 +2,7 @@ const { __ } = window.wp.i18n;
 
 import RateGroup from "./RateGroup";
 import Accordion from "./Accordion";
+import PickupPointsMap from "./PickupPointsMap";
 
 const ShippingRatesContainer = ({
   doorDeliveryRates,
@@ -35,6 +36,10 @@ const ShippingRatesContainer = ({
       >
         <RateGroup rates={otherRates} setLoading={setLoading} hasLogo={false} />
       </Accordion>
+
+      { pickupRates.length > 0 && (
+        <PickupPointsMap  />
+      )}
     </div>
   );
 };
