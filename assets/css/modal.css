@@ -15,8 +15,19 @@
 }
 
 .modal .modal__content {
+    position: relative;
     background-color: #fefefe;
     margin: 15vh 15vw;
     padding: 1rem;
     width: 80%;
+}
+
+.modal .modal__close {
+    color: #aaa;
+    position: absolute;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    right: 1rem;
+    top: 1rem;
 }

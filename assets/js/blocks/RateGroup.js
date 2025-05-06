@@ -41,10 +41,16 @@ const RateGroup = ({ rates, hasLogo = true }) => {
     };
   });
 
+  const onRateClick = (rate) => {
+    if (!rate.doorDelivery) {
+      window.dispatchEvent(new CustomEvent('hges:show-pickup-points-map', { detail: { rate } }));
+    }
+  };
+
   return (
     <div>
       {rates.map((rate) => (
-        <label htmlFor={getRadioButtonId(rate)} key={rate.key}>
+        <label onClick={() => onRateClick(rate)} rate={rate} htmlFor={getRadioButtonId(rate)} key={rate.key}>
           <div className={"rate-content" + (rate.selected ? " selected" : "")}>
             <div className="rate-left">
               {hasLogo ? (
