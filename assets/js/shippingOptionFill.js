@@ -9,10 +9,6 @@ window.addEventListener('wc-blocks_render_blocks_frontend', function() {
     document.querySelector('.wc-block-components-shipping-rates-control__package').remove();
 });
 
-const onClickedRate = (e) => {
-    window.dispatchEvent(new Event('change'));
-}
-
 const MyCustomComponent = (props) => {
     const store = select( 'wc/store/cart' );
     const shippingPackages = store.getShippingRates();
@@ -32,7 +28,7 @@ const MyCustomComponent = (props) => {
 
 	return (<div>
         {shippingRates.map((rate) => (
-          <div key={rate.key} onClick={(e) => onClickedRate(rate)}>
+          <div key={rate.key}>
             <h4>{rate.name}</h4>
             <div>ETA : {rate.eta}</div>
             <p>Coût : {Number(rate.price / 100, 2)}</p>
