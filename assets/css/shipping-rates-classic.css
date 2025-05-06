@@ -43,7 +43,10 @@ input[type="radio"]:checked + label .hges-shipping-method {
 }
 .cart_totals .shipping_method,
 .woocommerce-checkout .shipping_method {
-  opacity: 0;
-  position: absolute;
-  pointer-events: none;
+  display: none;
+}
+
+.woocommerce-checkout-review-order-table h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
 }
