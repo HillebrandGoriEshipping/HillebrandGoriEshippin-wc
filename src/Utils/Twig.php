@@ -17,8 +17,13 @@ class Twig
             self::$twig = new Environment($loader, [
                 'cache' => false,
             ]);
+            self::customFunctions();
         }
+        return self::$twig;
+    }
 
+    public static function customFunctions()
+    {
         //Add custom functions
         self::$twig->addFunction(new \Twig\TwigFunction('function', function ($name, ...$args) {
             return call_user_func_array("\\" . $name, $args);
@@ -49,7 +54,5 @@ class Twig
         self::$twig->addFunction(new \Twig\TwigFunction('hgesOptionName', function ($optionName) {
             return OptionEnum::{$optionName};
         }));
-
-        return self::$twig;
     }
 }

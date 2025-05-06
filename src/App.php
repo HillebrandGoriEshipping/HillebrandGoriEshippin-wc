@@ -6,6 +6,7 @@ use HGeS\Admin\Settings\Menu;
 use HGeS\Admin\Settings\SettingsController;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
+use HGeS\WooCommerce\ClassicUiRender;
 use HGeS\WooCommerce\ShippingMethod;
 
 /**
@@ -25,11 +26,14 @@ class App
         if (is_admin()) {
             self::runAdmin();
         }
-        
+
         add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
 
         add_action('wp_enqueue_scripts', [Scripts::class, 'enqueue']);
         add_action('wp_enqueue_scripts', [Styles::class, 'enqueue']);
+        add_filter('woocommerce_package_rates', [ClassicUiRender::class, 'sortShippingMethods'], 10, 2);
+        add_filter('woocommerce_cart_shipping_method_full_label', [ClassicUiRender::class, 'renderLabel'], 10, 2);
+        add_filter('woocommerce_cart_shipping_packages', [ClassicUiRender::class, 'invalidateRatesCache'], 100);
     }
 
     /**

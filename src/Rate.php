@@ -167,6 +167,7 @@ class Rate
                 'doorDelivery' => $rate['doorDelivery'],
                 'insurancePrice' => $rate['insurancePrice'],
                 'meta_data' => [
+                    'deliveryDate' => $rate['deliveryDate'],
                     'carrierName ' => $rate['name'],
                     'insurancePrice' => $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
