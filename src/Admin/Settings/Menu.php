@@ -4,10 +4,14 @@ namespace HGeS\Admin\Settings;
 
 
 class Menu
-{
-    public static function addSettingsMenu()
+{   
+    /** 
+     * Add the settings menu to the WooCommerce menu
+     * 
+     * @return void
+     */
+    public static function addSettingsMenu(): void
     {
-
         add_submenu_page(
             'woocommerce',
             'Hillebrand Gori eShipping',

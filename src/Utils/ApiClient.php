@@ -44,7 +44,6 @@ class ApiClient
         }
 
         $client = HttpClient::create();
-
         $url = self::getApiUrl() . $route;
 
         if (!empty($urlParams)) {

@@ -2,9 +2,18 @@
 
 namespace HGeS\Utils;
 
+/**
+ * Address Model
+ */
 class Address
 {
-    public static function fromApi()
+    /**
+     * Get the address from the API
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public static function fromApi(): array
     {
         try {
             $address = ApiClient::get('/address/get-addresses');
