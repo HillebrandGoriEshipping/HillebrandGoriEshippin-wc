@@ -24,6 +24,13 @@ class Styles
             [],
             null
         );
+        
+        wp_enqueue_style(
+            'hges-modal-style',
+            HGeS_PLUGIN_URL . 'assets/css/modal.css',
+            [],
+            null
+        );
     }
 
     /** 

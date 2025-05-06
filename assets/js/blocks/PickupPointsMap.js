@@ -11,7 +11,8 @@ const PickupPointsMap = () =>{
         closeModal();
     });
 
-    const closeModal = () => {
+    const closeModal = (e) => {
+        e.preventDefault();
         const modal = document.querySelector('#pickup-points-map-modal');
         if (modal) {
             modal.classList.add('hidden');
@@ -29,8 +30,9 @@ const PickupPointsMap = () =>{
     return (
         <div id="pickup-points-map-modal" className="modal hidden">
             <div className="modal__content">
-                <button className="modal__close" onClick={closeModal}>
-                    <SVG src={'../img/close.svg'} className="modal__close-icon" />
+                <button className="modal__close" onClick={closeModal}>  
+                    {/* hges object is injected from the Assets\Scripts class */}
+                    <SVG src={hges.assetsUrl + 'img/close.svg'} className="modal__close-icon" />
                 </button>
                 MAP
             </div>
