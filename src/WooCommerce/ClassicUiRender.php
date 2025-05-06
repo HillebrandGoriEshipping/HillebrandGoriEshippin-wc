@@ -3,6 +3,7 @@
 namespace HGeS\WooCommerce;
 
 use HGeS\Utils\Twig;
+use WC_Shipping_Method;
 
 class ClassicUiRender
 {
@@ -16,7 +17,7 @@ class ClassicUiRender
      * @return array An array of shipping rates sorted in the order: pickup, door delivery, others.
      *
      */
-    public static function sortShippingMethods($rates)
+    public static function sortShippingMethods(array $rates): array
     {
         $doorDeliveryRates = [];
         $pickupRates = [];
@@ -58,7 +59,7 @@ class ClassicUiRender
      * @return string The rendered shipping label HTML.
      *
      */
-    public static function renderLabel($labelHtml, $method)
+    public static function renderLabel(string $labelHtml, WC_Shipping_Method $method): string
     {
         $metadata = $method->get_meta_data();
         if (empty($metadata['carrierName'])) {
@@ -105,5 +106,20 @@ class ClassicUiRender
         ]);
 
         return $labelHtml;
+    }
+
+    /**
+     * Invalidates the rate cache for the given shipping packages.
+     *
+     * @param array $packages An array of shipping packages.
+     * @return array The modified array of shipping packages with invalidated rate caches.
+     */
+    public static function invalidateRatesCache(array $packages): array
+    {
+        foreach ($packages as &$package) {
+            $package['rate_cache'] = wp_rand();
+        }
+
+        return $packages;
     }
 }
