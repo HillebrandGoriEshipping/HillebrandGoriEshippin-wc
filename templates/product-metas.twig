@@ -1,0 +1,103 @@
+<div id="HGeS_product_tab_options" class="panel woocommerce_options_panel">
+    <p class="form-field">
+        <label for="_number_of_bottle">{{ function('__', 'Number of bottle', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="_number_of_bottle"
+            name="_number_of_bottle"
+            value="{{ number_of_bottle|e('html_attr') }}"
+            min="1"
+            step="1"
+        />
+        <span class="description">{{ function('__', 'Quantity of bottle per product', 'HillebrandGoriEshipping') }}</span>
+    </p>
+
+    <p class="form-field">
+        <label for="_size_of_bottle">{{ function('__', 'Size of bottle', 'HillebrandGoriEshipping') }}</label>
+        <select id="_size_of_bottle" name="_size_of_bottle" class="short">
+            <option value="standard" {{ size_of_bottle == 'standard' ? 'selected' : '' }}>750ml (Standard)</option>
+            <option value="magnum" {{ size_of_bottle == 'magnum' ? 'selected' : '' }}>1500ml (Magnum)</option>
+        </select>
+    </p>
+
+    <p class="form-field">
+        <label for="_type">{{ function('__', 'Type', 'HillebrandGoriEshipping') }}</label>
+        <select id="_type" name="_type" class="short">
+            <option value="" >{{ function('__', 'Select a type', 'HillebrandGoriEshipping') }}</option>
+            <option value="still" {{ type == 'still' ? 'selected' : '' }}>{{ function('__', 'Still wine', 'HillebrandGoriEshipping') }}</option>
+            <option value="sparkling" {{ type == 'sparkling' ? 'selected' : '' }}>{{ function('__', 'Sparkling wine', 'HillebrandGoriEshipping') }}</option>
+            <option value="spirit" {{ type == 'spirit' ? 'selected' : '' }}>{{ function('__', 'Spirit', 'HillebrandGoriEshipping') }}</option>
+            <option value="nonAlcoholic" {{ type == 'nonAlcoholic' ? 'selected' : '' }}>{{ function('__', 'Non Alcoholic', 'HillebrandGoriEshipping') }}</option>
+        </select>
+    </p>
+
+    <p class="form-field">
+        <label for="color">{{ function('__', 'Color', 'HillebrandGoriEshipping') }}</label>
+        <select id="_color" name="_color" class="short">
+            <option value="" >{{ function('__', 'Select a color', 'HillebrandGoriEshipping') }}</option>
+            <option value="red" {{ type == 'red' ? 'selected' : '' }}>{{ function('__', 'Red', 'HillebrandGoriEshipping') }}</option>
+            <option value="white" {{ type == 'white' ? 'selected' : '' }}>{{ function('__', 'White', 'HillebrandGoriEshipping') }}</option>
+            <option value="rose" {{ type == 'rose' ? 'selected' : '' }}>{{ function('__', 'Rosé', 'HillebrandGoriEshipping') }}</option>
+            <option value="spirits" {{ type == 'spirits' ? 'selected' : '' }}>{{ function('__', 'Spirits', 'HillebrandGoriEshipping') }}</option>
+            <option value="beer" {{ type == 'beer' ? 'selected' : '' }}>{{ function('__', 'Beer', 'HillebrandGoriEshipping') }}</option>
+        </select>
+    </p>
+
+    <p class="form-field">
+        <label for="capacity">{{ function('__', 'Capacity', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="_capacity"
+            name="_capacity"
+            value="{{ capacity|e('html_attr') }}"
+            min="1"
+            step="1"
+        />
+    <span class="description">{{ function('__', 'Capacity of a single product (in mL)', 'HillebrandGoriEshipping') }}</span>
+    </p>
+    
+    <p class="form-field">
+        <label for="alcohol_percentage">{{ function('__', 'Alcohol percentage', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="_alcohol_percentage"
+            name="_alcohol_percentage"
+            value="{{ alcohol_percentage|e('html_attr') }}"
+            min="1"
+            step="1"
+        />
+    </p>
+
+    <p class="form-field">
+        <label for="_vintage">{{ function('__', 'Vintage Year', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="_vintage"
+            name="_vintage"
+            value="{{ alcohol_percentage|e('html_attr') }}"
+            min="1900"
+            max= "{{ 'now'|date('Y') }}"
+            step="1"
+        />
+    </p>
+
+    <p class="form-field">
+        <label for="producing_country">{{ function('__', 'Producing country', 'HillebrandGoriEshipping') }}</label>
+        <select id="_producing_country" name="_producing_country" class="short">
+            {# TODO: Add producing country options #}
+            <option value="" >Test country</option>
+        </select>
+    </p>
+
+    <p class="form-field">
+        <label for="appellation">{{ function('__', 'Appellation', 'HillebrandGoriEshipping') }}</label>
+        <select id="_appellation" name="_appellation" class="short">
+            {# TODO: Add appellation options #}
+            <option value="" >Test appellation</option>
+        </select>
+    </p>
+</div>
