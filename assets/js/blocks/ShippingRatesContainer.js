@@ -38,7 +38,7 @@ const ShippingRatesContainer = ({
       </Accordion>
 
       { pickupRates.length > 0 && (
-        <PickupPointsMap  />
+        <PickupPointsMap />
       )}
     </div>
   );

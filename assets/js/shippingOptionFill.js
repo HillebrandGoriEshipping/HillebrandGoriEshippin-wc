@@ -6,12 +6,10 @@ const { ExperimentalOrderShippingPackages } = window.wc.blocksCheckout;
 // hack, waiting for WooCommerce to build a customizable shuipping method block
 //wc-blocks_render_blocks_frontend
 window.addEventListener('wc-blocks_render_blocks_frontend', function() {
-    console.log('load checkout');
     document.querySelector('.wc-block-components-shipping-rates-control__package').remove();
 });
 
 const onClickedRate = (e) => {
-    console.log(e);
     window.dispatchEvent(new Event('change'));
 }
 
