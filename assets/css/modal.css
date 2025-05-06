@@ -17,11 +17,16 @@
 
 .modal .modal__content {
     display: flex;
+    gap: 1rem;
     position: relative;
     background-color: #fefefe;
     padding: 1rem;
     width: 100%;
     height: 100%;
+}
+
+.modal .modal__side {
+    margin-top: 3rem;
 }
 
 .modal .modal__close {
