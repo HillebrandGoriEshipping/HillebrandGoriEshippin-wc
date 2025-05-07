@@ -6,7 +6,7 @@
             class="short"
             id="_number_of_bottle"
             name="_number_of_bottle"
-            value="{{ number_of_bottle|e('html_attr') }}"
+            value="{{ data.bottleNumber }}"
             min="1"
             step="1"
         />
@@ -16,8 +16,8 @@
     <p class="form-field">
         <label for="_size_of_bottle">{{ function('__', 'Size of bottle', 'HillebrandGoriEshipping') }}</label>
         <select id="_size_of_bottle" name="_size_of_bottle" class="short">
-            <option value="standard" {{ size_of_bottle == 'standard' ? 'selected' : '' }}>750ml (Standard)</option>
-            <option value="magnum" {{ size_of_bottle == 'magnum' ? 'selected' : '' }}>1500ml (Magnum)</option>
+            <option value="standard" {{ data.bottleSize == 'standard' ? 'selected' : '' }}>750ml (Standard)</option>
+            <option value="magnum" {{ data.bottleSize == 'magnum' ? 'selected' : '' }}>1500ml (Magnum)</option>
         </select>
     </p>
 
@@ -25,10 +25,10 @@
         <label for="_type">{{ function('__', 'Type', 'HillebrandGoriEshipping') }}</label>
         <select id="_type" name="_type" class="short">
             <option value="" >{{ function('__', 'Select a type', 'HillebrandGoriEshipping') }}</option>
-            <option value="still" {{ type == 'still' ? 'selected' : '' }}>{{ function('__', 'Still wine', 'HillebrandGoriEshipping') }}</option>
-            <option value="sparkling" {{ type == 'sparkling' ? 'selected' : '' }}>{{ function('__', 'Sparkling wine', 'HillebrandGoriEshipping') }}</option>
-            <option value="spirit" {{ type == 'spirit' ? 'selected' : '' }}>{{ function('__', 'Spirit', 'HillebrandGoriEshipping') }}</option>
-            <option value="nonAlcoholic" {{ type == 'nonAlcoholic' ? 'selected' : '' }}>{{ function('__', 'Non Alcoholic', 'HillebrandGoriEshipping') }}</option>
+            <option value="still" {{ data.type == 'still' ? 'selected' : '' }}>{{ function('__', 'Still wine', 'HillebrandGoriEshipping') }}</option>
+            <option value="sparkling" {{ data.type == 'sparkling' ? 'selected' : '' }}>{{ function('__', 'Sparkling wine', 'HillebrandGoriEshipping') }}</option>
+            <option value="spirit" {{ data.type == 'spirit' ? 'selected' : '' }}>{{ function('__', 'Spirit', 'HillebrandGoriEshipping') }}</option>
+            <option value="nonAlcoholic" {{ data.type == 'nonAlcoholic' ? 'selected' : '' }}>{{ function('__', 'Non Alcoholic', 'HillebrandGoriEshipping') }}</option>
         </select>
     </p>
 
@@ -36,11 +36,11 @@
         <label for="color">{{ function('__', 'Color', 'HillebrandGoriEshipping') }}</label>
         <select id="_color" name="_color" class="short">
             <option value="" >{{ function('__', 'Select a color', 'HillebrandGoriEshipping') }}</option>
-            <option value="red" {{ type == 'red' ? 'selected' : '' }}>{{ function('__', 'Red', 'HillebrandGoriEshipping') }}</option>
-            <option value="white" {{ type == 'white' ? 'selected' : '' }}>{{ function('__', 'White', 'HillebrandGoriEshipping') }}</option>
-            <option value="rose" {{ type == 'rose' ? 'selected' : '' }}>{{ function('__', 'Rosé', 'HillebrandGoriEshipping') }}</option>
-            <option value="spirits" {{ type == 'spirits' ? 'selected' : '' }}>{{ function('__', 'Spirits', 'HillebrandGoriEshipping') }}</option>
-            <option value="beer" {{ type == 'beer' ? 'selected' : '' }}>{{ function('__', 'Beer', 'HillebrandGoriEshipping') }}</option>
+            <option value="red" {{ data.color == 'red' ? 'selected' : '' }}>{{ function('__', 'Red', 'HillebrandGoriEshipping') }}</option>
+            <option value="white" {{ data.color == 'white' ? 'selected' : '' }}>{{ function('__', 'White', 'HillebrandGoriEshipping') }}</option>
+            <option value="rose" {{ data.color == 'rose' ? 'selected' : '' }}>{{ function('__', 'Rosé', 'HillebrandGoriEshipping') }}</option>
+            <option value="spirits" {{ data.color == 'spirits' ? 'selected' : '' }}>{{ function('__', 'Spirits', 'HillebrandGoriEshipping') }}</option>
+            <option value="beer" {{ data.color == 'beer' ? 'selected' : '' }}>{{ function('__', 'Beer', 'HillebrandGoriEshipping') }}</option>
         </select>
     </p>
 
@@ -51,7 +51,7 @@
             class="short"
             id="_capacity"
             name="_capacity"
-            value="{{ capacity|e('html_attr') }}"
+            value="{{ data.capacity }}"
             min="1"
             step="1"
         />
@@ -65,9 +65,9 @@
             class="short"
             id="_alcohol_percentage"
             name="_alcohol_percentage"
-            value="{{ alcohol_percentage|e('html_attr') }}"
+            value="{{ data.alcoholPercentage }}"
             min="1"
-            step="1"
+            step="0.1"
         />
     </p>
 
@@ -78,7 +78,7 @@
             class="short"
             id="_vintage"
             name="_vintage"
-            value="{{ alcohol_percentage|e('html_attr') }}"
+            value="{{ data.vintageYear }}"
             min="1900"
             max= "{{ 'now'|date('Y') }}"
             step="1"
@@ -89,7 +89,7 @@
         <label for="producing_country">{{ function('__', 'Producing country', 'HillebrandGoriEshipping') }}</label>
         <select id="_producing_country" name="_producing_country" class="short">
             {# TODO: Add producing country options #}
-            <option value="" >Test country</option>
+            <option value="test" >Test country</option>
         </select>
     </p>
 
@@ -97,7 +97,7 @@
         <label for="appellation">{{ function('__', 'Appellation', 'HillebrandGoriEshipping') }}</label>
         <select id="_appellation" name="_appellation" class="short">
             {# TODO: Add appellation options #}
-            <option value="" >Test appellation</option>
+            <option value="test" >Test appellation</option>
         </select>
     </p>
 </div>

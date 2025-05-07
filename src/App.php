@@ -53,6 +53,7 @@ class App
         add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
         add_filter('woocommerce_product_data_tabs', [ProductMeta::class, 'customTab']);
         add_action('woocommerce_product_data_panels', [ProductMeta::class, 'displayProductFields']);
+        add_action('woocommerce_process_product_meta', [ProductMeta::class, 'saveProductFields']);
     }
 
     /**
