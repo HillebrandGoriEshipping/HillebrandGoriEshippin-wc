@@ -56,7 +56,6 @@ class Scripts
      */
     public static function enqueueAdmin(): void
     {
-        // Enqueue your admin scripts and styles here
         if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
             wp_enqueue_script_module(
                 'hges-settings-page-script',

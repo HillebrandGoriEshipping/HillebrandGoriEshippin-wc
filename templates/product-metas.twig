@@ -89,15 +89,21 @@
         <label for="producing_country">{{ function('__', 'Producing country', 'HillebrandGoriEshipping') }}</label>
         <select id="_producing_country" name="_producing_country" class="short">
             {# TODO: Add producing country options #}
-            <option value="test" >Test country</option>
+            <option value="FR" >France</option>
+            <option value="GB" >Les ANGLOIS</option>
         </select>
     </p>
 
+    {% if data.appellation %}
     <p class="form-field">
         <label for="appellation">{{ function('__', 'Appellation', 'HillebrandGoriEshipping') }}</label>
         <select id="_appellation" name="_appellation" class="short">
-            {# TODO: Add appellation options #}
-            <option value="test" >Test appellation</option>
+            {% for appellationItem in appellations %}
+                <option value="{{ appellationItem|url_encode }}" {{ appellationItem == data.appellation ? 'selected' : '' }}>
+            {{ appellationItem|title }}
+                </option>
+            {% endfor %}
         </select>
     </p>
+    {% endif %}
 </div>

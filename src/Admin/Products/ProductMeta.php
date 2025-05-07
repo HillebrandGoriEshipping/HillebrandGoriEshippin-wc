@@ -4,6 +4,7 @@ namespace HGeS\Admin\Products;
 
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
+use HGeS\Utils\ApiClient;
 
 class ProductMeta
 {
@@ -61,6 +62,7 @@ class ProductMeta
 
         $html = $twig->render('product-metas.twig', [
             'data' => $data,
+            'appellations' => self::getAppellationsFromApi(),
         ]);
 
         echo $html;
@@ -80,6 +82,37 @@ class ProductMeta
             if (isset($_POST[$meta])) {
                 update_post_meta($post_id, $meta, $_POST[$meta]);
             }
+        }
+    }
+
+    public static function getAppellationsFromApi(string $producingCountry = "FR"): array
+    {
+        $appellationList = [];
+        try {
+            $result = ApiClient::get('/get-appellations?producingCountry=' . $producingCountry);
+            if ($result['status'] === 200) {
+                $appellationList = $result['data'];
+            }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $appellationList;
+    }
+
+    public static function getAppellationsByCountry()
+    {
+        if (!isset($_GET['country'])) {
+            wp_send_json_error('Missing country param', 400);
+        }
+
+        $country = sanitize_text_field($_GET['country']);
+
+        try {
+            $appellations = self::getAppellationsFromApi($country);
+            wp_send_json_success($appellations);
+        } catch (\Throwable $e) {
+            wp_send_json_error($e->getMessage(), 500);
         }
     }
 }
