@@ -51,14 +51,7 @@ export default {
 
         const marker = L.marker([lat, lng], options);
         marker.bindPopup(options.popupContent);
-        marker.on('click', () => {
-            if (this.map) {
-                this.map.setView(marker.getLatLng(), 16);
-            }
-            this.parentElement.dispatchEvent(new CustomEvent('LeafletMarkerClick', {
-                detail: { marker }
-            }));
-        });
+        
         this.markers.push(marker);
         marker.addTo(this.map);
         return marker;
@@ -79,11 +72,5 @@ export default {
     },
     getMarkers() {
         return this.markers;
-    },
-    getParentElement() {
-        return this.parentElement;
-    },
-    getOptions() {
-        return this.options;
     }
 }

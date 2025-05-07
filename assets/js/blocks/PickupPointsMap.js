@@ -27,8 +27,8 @@ const PickupPointsMap = () =>{
         modalRef.current.classList.add('hidden');
         setShowModal(false);
     }
-    useEffect(() => {
 
+    useEffect(() => {
         window.addEventListener('hges:show-pickup-points-map', openModal);
         window.addEventListener('hges:hide-pickup-points-map', closeModal);
 
@@ -37,7 +37,6 @@ const PickupPointsMap = () =>{
             window.removeEventListener('hges:hide-pickup-points-map', closeModal);
         };
     }, []);
-
   
     useEffect(() => {
         if (showModal && !map && mapContainerRef.current) {
@@ -71,11 +70,15 @@ const PickupPointsMap = () =>{
                 markerPopupTemplate.current.querySelector('.marker-popup__address').innerHTML = pickupPoint.addLine1;
                 markerPopupTemplate.current.querySelector('.marker-popup__distance').innerHTML = pickupPoint.distance + 'm';
                 options.popupContent = markerPopupTemplate.current.innerHTML;
-                leafletMap.addMarker(
+                const marker = leafletMap.addMarker(
                     pickupPoint.latitude,
                     pickupPoint.longitude,
                     options
                 );
+
+                marker.on('click', () => {
+                    map.setView(marker.getLatLng(), 16);
+                });
             });
 
             map.setView([pickupPointList[0].latitude, pickupPointList[0].longitude], 14);
