@@ -135,10 +135,33 @@
   display: none;
 }
 
-.order-totals-shipping-rates-loading-mask {
+.wp-block-woocommerce-checkout-order-summary-block {
+  border-bottom: none;
+}
+
+.order-totals-shipping-rates-hges-fill {
   display: none;
 }
 
-div:has(> .wc-block-components-order-meta) {
+#totals-selected-pickup-point-template {
   display: none;
+}
+
+#totals-selected-pickup-point-current {
+  padding: 0 1rem;
+}
+
+.selected-pickup-point {
+  padding: 0;
+}
+.selected-pickup-point h3 {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin: 0 0 0.2rem 0;
+}
+
+.selected-pickup-point p {
+  font-size: 0.7rem;
+  font-weight: bold;
+  margin: 0;
 }
