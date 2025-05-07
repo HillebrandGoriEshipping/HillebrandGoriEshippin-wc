@@ -37,32 +37,24 @@ class ProductMeta
     {
         $twig = Twig::getTwig();
 
-        $bottleNumber = get_post_meta(get_the_ID(), ProductMetaEnum::NUMBER_OF_BOTTLE, true);
-        $bottleSize = get_post_meta(get_the_ID(), ProductMetaEnum::NUMBER_OF_BOTTLE, true);
-        $type = get_post_meta(get_the_ID(), ProductMetaEnum::TYPE, true);
-        $color = get_post_meta(get_the_ID(), ProductMetaEnum::COLOR, true);
-        $capacity = get_post_meta(get_the_ID(), ProductMetaEnum::CAPACITY, true);
-        $alcoholPercentage = get_post_meta(get_the_ID(), ProductMetaEnum::ALCOHOL_PERCENTAGE, true);
-        $vintageYear = get_post_meta(get_the_ID(), ProductMetaEnum::VINTAGE_YEAR, true);
-        $producingCountry = get_post_meta(get_the_ID(), ProductMetaEnum::PRODUCING_COUNTRY, true);
-        $appellation = get_post_meta(get_the_ID(), ProductMetaEnum::APPELLATION, true);
+        $productMeta = [];
+        foreach (ProductMetaEnum::getList() as $meta) {
+            $productMeta[$meta] = get_post_meta(get_the_ID(), $meta, true);
+        }
 
-        $data = [
-            'bottleNumber' => $bottleNumber,
-            'bottleSize' => $bottleSize,
-            'type' => $type,
-            'color' => $color,
-            'capacity' => $capacity,
-            'alcoholPercentage' => $alcoholPercentage,
-            'vintageYear' => $vintageYear,
-            'producingCountry' => $producingCountry,
-            'appellation' => $appellation,
+        $producingCounties = [
+            'FR' => 'France',
+            'GB' => 'Great Britain',
+            'IT' => 'Italy',
+            'ES' => 'Spain',
+            'PT' => 'Portugal',
         ];
 
-
         $html = $twig->render('product-metas.twig', [
-            'data' => $data,
-            'appellations' => self::getAppellationsFromApi(),
+            // 'data' => $data,
+            'productMeta' => $productMeta,
+            'appellationList' => self::getAppellationsFromApi($productMeta[ProductMetaEnum::PRODUCING_COUNTRY]),
+            'producingCountries' => $producingCounties,
         ]);
 
         echo $html;
@@ -85,7 +77,16 @@ class ProductMeta
         }
     }
 
-    public static function getAppellationsFromApi(string $producingCountry = "FR"): array
+    /**
+     * Retrieves a list of appellations from the API based on the producing country.
+     *
+     * @param string $producingCountry The name of the producing country to filter appellations.
+     * 
+     * @return array An array of appellations retrieved from the API.
+     * 
+     * @throws \Throwable If an error occurs during the API request or processing.
+     */
+    public static function getAppellationsFromApi(string $producingCountry): array
     {
         $appellationList = [];
         try {
@@ -100,7 +101,15 @@ class ProductMeta
         return $appellationList;
     }
 
-    public static function getAppellationsByCountry()
+    /**
+     * Retrieves appellations by country and sends a JSON response.
+     *
+     * @return void
+     *
+     * @throws \Throwable If an error occurs during the API call.
+     *
+     */
+    public static function getAppellationsByCountry(): void
     {
         if (!isset($_GET['country'])) {
             wp_send_json_error('Missing country param', 400);

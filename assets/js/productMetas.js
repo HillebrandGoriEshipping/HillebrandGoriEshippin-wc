@@ -3,30 +3,41 @@ document.addEventListener("DOMContentLoaded", function () {
   const appellationSelect = document.getElementById("_appellation");
 
   countrySelect.addEventListener("change", function () {
-    console.log("Selected country:", this.value);
+    loadAppellationInSelect();
+  });
 
-    const country = this.value;
-
-    if (country) {
-      console.log("Fetching appellations for country:", country);
-
+  function loadAppellationInSelect() {
+    const selectedCountry = countrySelect.value;
+    if (selectedCountry) {
       fetch(
         `${
           HGES_Ajax.ajax_url
         }?action=get_appellations_by_country&country=${encodeURIComponent(
-          country
+          selectedCountry
         )}`
       )
         .then((response) => response.json())
         .then((result) => {
           if (result.success) {
             const appellations = result.data;
-            console.log("Appellations:", appellations);
+            // Clear the existing options
+            appellationSelect.innerHTML = "";
+            // Populate the appellation select with new options
+            appellations.forEach((appellation) => {
+              const option = document.createElement("option");
+              // encode the appelation value to be URL safe
+              const encodedAppellation = encodeURIComponent(appellation);
+              option.value = encodedAppellation;
+              option.textContent = appellation;
+              appellationSelect.appendChild(option);
+            });
+            // Enable the appellation select
+            appellationSelect.disabled = false;
           }
         })
         .catch((error) => {
           console.log("Erreur réseau ou serveur :", error);
         });
     }
-  });
+  }
 });
