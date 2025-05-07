@@ -39,19 +39,28 @@ export default {
             maxZoom: 20
         }).addTo(this.map);
 
-        this.updateMarkers();
         return this;
     },
     addMarker(lat, lng, options) {
-        const marker = {lat, lng, options};
-        marker.options.icon = L.icon({
+        options.icon = L.icon({
             iconUrl: hges.assetsUrl + 'img/marker.png',
             iconSize: [25, 41],
             iconAnchor: [12, 41],
             popupAnchor: [-3, -76],
         });
 
+        const marker = L.marker([lat, lng], options);
+        marker.bindPopup(options.popupContent);
+        marker.on('click', () => {
+            if (this.map) {
+                this.map.setView(marker.getLatLng(), 16);
+            }
+            this.parentElement.dispatchEvent(new CustomEvent('LeafletMarkerClick', {
+                detail: { marker }
+            }));
+        });
         this.markers.push(marker);
+        marker.addTo(this.map);
         return marker;
     },
     removeMarker(marker) {
@@ -62,30 +71,8 @@ export default {
         this.markers.forEach(marker => this.map.removeLayer(marker));
         this.markers = [];
     },
-    updateMarkers() {
-        this.markers.forEach(marker => {
-            const newMarker = L.marker([marker.lat, marker.lng], marker.options);
-            newMarker.addTo(this.map);
-            const markerPopupTemplate = document.querySelector('#marker-popup-template');
-
-            if (markerPopupTemplate) {
-                const popupContent = markerPopupTemplate.innerHTML
-                    .replace('{{title}}', marker.options.title || '')
-                    .replace('{{distance}}', marker.options.distance || '');
-                newMarker.bindPopup(popupContent);
-            } else {
-                newMarker.bindPopup(marker.options.title || '');
-            }
-            
-            newMarker.on('click', () => {
-                this.parentElement.dispatchEvent(new CustomEvent('LeafletMarkerClick', {
-                    detail: { marker }
-                }));
-            });
-        });
-    },
-    setView(lat, lon, zoom) {
-        this.map.setView([lat, lon], zoom);
+    setView(latLon, zoom) {
+        this.map.setView(latLon, zoom);
     },
     getMap() {
         return this.map;
