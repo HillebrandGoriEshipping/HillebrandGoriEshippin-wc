@@ -5,6 +5,7 @@ import apiClient from '../apiClient';
 import { useState, useEffect, useRef } from '@wordpress/element';
 const { select } = window.wp.data;
 const cartStore = select("wc/store/cart");
+const checkoutStore = select("wc/store/checkout");
 import dayjs from "dayjs";
 
 const PickupPointsMap = () => {
@@ -105,8 +106,17 @@ const PickupPointsMap = () => {
         }
     }
 
-    const selectThisPickupPoint = (e) => {
+    const selectThisPickupPoint = async (e) => {
         e.preventDefault();
+        await apiClient.postProxy(
+            '/order/set-current-pickup-point',
+            {
+                orderId: checkoutStore.getOrderId()
+            },
+            {
+                pickupPoint: currentPickupPoint
+            }
+        );
         closeModal(e);
         window.dispatchEvent(new CustomEvent('hges:pickup-points-selected', {
             detail: {

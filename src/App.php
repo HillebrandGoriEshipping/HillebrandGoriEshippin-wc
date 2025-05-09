@@ -32,7 +32,6 @@ class App
             self::runAdmin();
         }
 
-
         add_action('wp_enqueue_scripts', [Scripts::class, 'enqueue']);
         add_action('wp_enqueue_scripts', [Styles::class, 'enqueue']);
         add_action('rest_api_init', [CustomEndpoints::class, 'register']);
