@@ -19,7 +19,10 @@ const PickupPointsMap = () => {
     const [currentPickupPoint, setCurrentPickupPoint] = useState(null);
 
     const openModal = (e) => {
-        setCurrentRate(e.detail.rate);
+        e.preventDefault();
+        if (e.detail?.rate) {
+            setCurrentRate(e.detail.rate);
+        }
         modalRef.current.classList.remove('hidden');
         setShowModal(true);
     }

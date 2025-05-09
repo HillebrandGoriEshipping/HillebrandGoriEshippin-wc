@@ -131,6 +131,10 @@
   margin-right: 0.5rem;
 }
 
+.pickup-point-button {
+  margin-top: 1rem;
+}
+
 .wp-block-woocommerce-checkout-fields-block .rate-name .rate-logo-image {
   display: none;
 }
@@ -164,4 +168,15 @@
   font-size: 0.7rem;
   font-weight: bold;
   margin: 0;
+}
+
+.selected-pickup-point .button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.selected-pickup-point .button {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  max-width: 100%;
 }

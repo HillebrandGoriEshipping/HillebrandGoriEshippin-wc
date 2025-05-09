@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "@wordpress/element";
+import { __ } from "@wordpress/i18n";
 
 const SelectedPickupPoint = () => {
 
@@ -15,7 +16,7 @@ const SelectedPickupPoint = () => {
             return;
         }
         
-            const formerSelectedBlock = totalsShippingContainer.querySelector('#totals-selected-pickup-point-current');
+        const formerSelectedBlock = totalsShippingContainer.querySelector('#totals-selected-pickup-point-current');
         if (formerSelectedBlock) {
             totalsShippingContainer.removeChild(formerSelectedBlock);
         }
@@ -24,6 +25,14 @@ const SelectedPickupPoint = () => {
         newSelectedPickupPointBlock.id = `totals-selected-pickup-point-current`;
         newSelectedPickupPointBlock.classList.remove("hidden");
         totalsShippingContainer.appendChild(newSelectedPickupPointBlock);
+        const button = newSelectedPickupPointBlock.querySelector('.button');
+        if (button) {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.dispatchEvent(new Event('hges:show-pickup-points-map'));
+                console.log('button clicked');
+            });
+        }
     }, [selectedPickupPoint]);
 
     return (
@@ -33,6 +42,9 @@ const SelectedPickupPoint = () => {
                     <h3>{ selectedPickupPoint.name }</h3>
                     <p>{ selectedPickupPoint.addLine1 }</p>
                     <p>{ selectedPickupPoint.zipCode } { selectedPickupPoint.city }</p>
+                    <div className="button-container">
+                        <button className="button">{__('Choose another pickup point')}</button>
+                    </div>
                 </div>
             )}
         </div>
