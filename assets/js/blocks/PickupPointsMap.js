@@ -2,6 +2,7 @@
 import SVG from './SVG';
 import leafletMap from '../leafletMap';
 import apiClient from '../apiClient';
+const { Spinner } = window.wc.blocksComponents;
 import { useState, useEffect, useRef } from '@wordpress/element';
 const { select } = window.wp.data;
 const cartStore = select("wc/store/cart");
@@ -18,6 +19,7 @@ const PickupPointsMap = () => {
     const [showModal, setShowModal] = useState(false);
     const [currentRate, setCurrentRate] = useState(null);
     const [currentPickupPoint, setCurrentPickupPoint] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     const openModal = (e) => {
         e.preventDefault();
@@ -49,13 +51,15 @@ const PickupPointsMap = () => {
             const m = leafletMap.init(mapContainerRef.current);
             setMap(m);
         }
-    }, [showModal, map]);
+
+    }, [showModal, map, mapContainerRef]);
 
     useEffect(() => {
         const loadPickupPoints = async () => {
 
             if (!map || !currentRate || !markerPopupTemplate) return;
 
+            setIsLoading(true);
             const shippingAddress = cartStore.getCustomerData().shippingAddress;
             const pickupPointList = await apiClient.getFromProxy(
                 '/pickup-points',
@@ -90,6 +94,7 @@ const PickupPointsMap = () => {
 
             map.setView([pickupPointList[0].latitude, pickupPointList[0].longitude], 14);
             setPickupPoints(pickupPointList);
+            setIsLoading(false);
         }
         loadPickupPoints(currentRate);
     }, [map, currentRate, markerPopupTemplate]);
@@ -108,6 +113,7 @@ const PickupPointsMap = () => {
 
     const selectThisPickupPoint = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         await apiClient.postProxy(
             '/order/set-current-pickup-point',
             {
@@ -117,6 +123,7 @@ const PickupPointsMap = () => {
                 pickupPoint: currentPickupPoint
             }
         );
+        setIsLoading(false);
         closeModal(e);
         window.dispatchEvent(new CustomEvent('hges:pickup-points-selected', {
             detail: {
@@ -128,6 +135,7 @@ const PickupPointsMap = () => {
     return (
         <div id="pickup-points-map-modal" className={`modal ${showModal ? '' : 'hidden'}`} ref={modalRef}>
             <div className="modal__content">
+                <div className={`modal__load-mask ${isLoading ? '' : 'hidden'}`}><Spinner /></div>
                 <button className="modal__close" onClick={closeModal}>
                     {/* hges object is injected from the Assets\Scripts class */}
                     <SVG src={hges.assetsUrl + 'img/close.svg'} className="modal__close-icon" />
