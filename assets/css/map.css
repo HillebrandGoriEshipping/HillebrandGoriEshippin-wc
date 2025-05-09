@@ -4,7 +4,8 @@
 }
 
 #pickup-points-list {
-  width: 35%;
+  max-height: calc(100% - 4rem);
+  overflow-y: auto;
 }
 
 #pickup-points-list .pickup-point {
@@ -49,4 +50,8 @@
 
 .leaflet-touch .leaflet-bar a {
     text-decoration: none;
+}
+
+.pickup-point__select-btn {
+  margin-top: 1rem;
 }
