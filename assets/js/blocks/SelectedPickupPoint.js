@@ -30,7 +30,6 @@ const SelectedPickupPoint = () => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.dispatchEvent(new Event('hges:show-pickup-points-map'));
-                console.log('button clicked');
             });
         }
     }, [selectedPickupPoint]);
