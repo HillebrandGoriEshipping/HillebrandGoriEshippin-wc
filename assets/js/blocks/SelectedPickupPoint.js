@@ -9,6 +9,10 @@ const SelectedPickupPoint = () => {
     window.addEventListener('hges:pickup-points-selected', (e) => {
         setSelectedPickupPoint(e.detail.pickupPoint);
     });
+    
+    window.addEventListener('hges:pickup-points-unselect', (e) => {
+        setSelectedPickupPoint(null);
+    });
 
     useEffect(() => {
         const totalsShippingContainer = document.querySelector('.wc-block-components-totals-shipping');
@@ -19,6 +23,10 @@ const SelectedPickupPoint = () => {
         const formerSelectedBlock = totalsShippingContainer.querySelector('#totals-selected-pickup-point-current');
         if (formerSelectedBlock) {
             totalsShippingContainer.removeChild(formerSelectedBlock);
+        }
+        
+        if (!selectedPickupPoint) {
+            return;
         }
 
         const newSelectedPickupPointBlock = selectedPickupPointTemplate.current.cloneNode(true);

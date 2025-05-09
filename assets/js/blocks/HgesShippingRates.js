@@ -84,6 +84,14 @@ const HgesShippingRates = () => {
       LoadingMask.style.display = "none";
     }
 
+    shippingPackages.forEach(p => {
+      const selectedRate = p.shipping_rates.find(rate => rate.selected);
+      if (selectedRate && selectedRate.doorDelivery)  {
+        window.dispatchEvent(new Event('hges:pickup-points-unselect'));
+      }
+    });
+  });
+
   const shippingRates = [];
 
   rates.forEach((r, i) => {
