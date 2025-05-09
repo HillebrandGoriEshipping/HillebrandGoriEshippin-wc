@@ -25,13 +25,15 @@ export default {
         this.parentElement = parentElement;
         this.options = options || {};
         this.markers = markers || [];
-        if (!this.map) {
-            this.map = L.map(parentElement.id, {
-                center: options?.center || [48, 10],
-                zoom: options?.zoom || 5,
-                layers: options?.layers || []
-            });
+        if (this.map) {
+            this.map = null;
         }
+        this.map = L.map(parentElement.id, {
+            center: options?.center || [48, 10],
+            zoom: options?.zoom || 5,
+            layers: options?.layers || []
+        });
+            
     
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
