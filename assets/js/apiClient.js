@@ -38,6 +38,22 @@ export default {
       throw new Error("Error in API Client : " + e.message);
     }
   },
+  async post(url, urlParams, data, headers) {
+
+    if (urlParams) {
+      const params = new URLSearchParams(urlParams);
+      url += `?${params.toString()}`;
+    }
+
+    return await fetch(
+      url,
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers
+      }
+    );
+  },
   async validateApiKey(apiKey) {
     try {
       const response = await this.get(
