@@ -2,6 +2,8 @@
 
 namespace HGeS\Utils\Enums;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 class OptionEnum
 {
     const HGES_ACCESS_KEY = "HGES_ACCESS_KEY";
@@ -54,5 +56,58 @@ class OptionEnum
             self::HGES_MINHOUR,
             self::HGES_CUTOFF,
         ];
+    }
+
+    /**
+     * Return the constraints for a given option
+     */
+    public static function getConstraints($option): array | null
+    {
+        $constraints = [
+            self::HGES_PREF_TRANSP => [
+                new NotBlank(),
+            ],
+            self::HGES_PREF_STAT => [
+                new NotBlank(),
+            ],
+            self::HGES_TAX_RIGHTS => [
+                new NotBlank(),
+            ],
+            self::HGES_VAT_CHOICE => [
+                new NotBlank(),
+            ],
+            self::HGES_VAT_NUMBER => [
+                new NotBlank(),
+            ],
+            self::HGES_VAT_OSS => [
+                new NotBlank(),
+            ],
+            self::HGES_EORI_NUMBER => [
+                new NotBlank(),
+            ],
+            self::HGES_FDA_NUMBER => [
+                new NotBlank(),
+            ],
+            self::HGES_ASSURANCE => [
+                new NotBlank(),
+            ],
+            self::HGES_NBR_MIN => [
+                new NotBlank(),
+            ],
+            self::HGES_PREP_TIME => [
+                new NotBlank(),
+            ],
+            self::HGES_PREF_DEL => [
+                new NotBlank(),
+            ],
+            self::HGES_MINHOUR => [
+                new NotBlank(),
+            ],
+            self::HGES_CUTOFF => [
+                new NotBlank(),
+            ]
+        ];
+
+        return $constraints[$option] ?? null;
     }
 }

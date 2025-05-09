@@ -5,6 +5,7 @@ namespace HGeS\Admin\Settings;
 use HGeS\Utils\Address;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Utils\FormSessionMessages;
 use HGeS\Utils\Twig;
 
 class SettingsController
@@ -27,10 +28,12 @@ class SettingsController
 
         // Utiliser Twig pour rendre la page
         $twig = Twig::getTwig();
+        
         echo $twig->render('settings-page.twig', [
             'title' => __(self::SETTING_PAGE_TITLE),
             'options' => $options,
             'address' => $address[0],
+            'errors' => FormSessionMessages::getMessages('error'),
         ]);
     }
 
@@ -45,6 +48,16 @@ class SettingsController
         if (wp_verify_nonce($_POST['settings_nonce'], 'save_settings') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
+
+        $settingsFormData = new SettingsFormData($_POST);
+        $errors = $settingsFormData->validate();
+
+        if ($errors) {
+            FormSessionMessages::setMessages('error', $errors);
+            wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
+            return;
+        }
+
         foreach (OptionEnum::getList() as $optionName) {
             if (!isset($_POST[$optionName])) {
                 continue;
@@ -63,5 +76,7 @@ class SettingsController
                 }
             }
         }
+
+        wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
     }
 }
