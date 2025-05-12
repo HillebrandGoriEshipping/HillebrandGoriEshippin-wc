@@ -6,10 +6,7 @@ export default {
   },
   async get(url, urlParams, headers) {
 
-    if (urlParams) {
-      const params = new URLSearchParams(urlParams);
-      url += `?${params.toString()}`;
-    }
+   url = this.appendUrlParams(url, urlParams);
 
     return await fetch(
       url,
@@ -85,5 +82,27 @@ export default {
       console.error("Error posting data to proxy:", error);
       return null;
     }
+  },
+  appendUrlParams(url, urlParams) {
+
+    if (url.includes('?')) {
+      const queryString = url.split('?').pop();
+      const formerParams = new URLSearchParams(queryString);
+      if (!urlParams) {
+        urlParams = {};
+      }
+      for (const [key, value] of formerParams.entries()) {
+        console.log(key, value);
+        urlParams[key] = value;
+      }
+    }
+
+    if (urlParams) {
+      const newUrlParams = new URLSearchParams(urlParams);
+      const newQueryString = newUrlParams.toString();
+      url += `?${newQueryString}`;
+    }
+    
+    return url;
   }
 };
