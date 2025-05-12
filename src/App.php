@@ -54,6 +54,8 @@ class App
         add_filter('woocommerce_product_data_tabs', [ProductMeta::class, 'customTab']);
         add_action('woocommerce_product_data_panels', [ProductMeta::class, 'displayProductFields']);
         add_action('woocommerce_process_product_meta', [ProductMeta::class, 'saveProductFields']);
+        add_action('woocommerce_product_after_variable_attributes', [ProductMeta::class, 'displayVariableProductField'], 10, 3);
+        add_action('woocommerce_save_product_variation', [ProductMeta::class, 'saveVariableProductField'], 10, 2);
     }
 
     /**
