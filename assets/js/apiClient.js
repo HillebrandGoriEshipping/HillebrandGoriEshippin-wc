@@ -1,6 +1,6 @@
 import config from "./conf.json" with { type: "json" };
 
-// hges is the global data object defined server-side
+// window.hges is the global data object defined server-side
 
 export default {
   getApiUrl() {
@@ -9,14 +9,12 @@ export default {
   async get(url, urlParams, headers) {
     url = this.appendUrlParams(url, urlParams);
     headers = this.prepareHeaders(headers);
+    const method = 'GET';
     
     try {
       const response = await fetch(
         url,
-        {
-          method: "GET",
-          headers
-        }
+        {method, headers}
       );
   
       return response.json();
@@ -27,14 +25,13 @@ export default {
   async post(url, urlParams, data, headers) { 
     url = this.appendUrlParams(url, urlParams);
     headers = this.prepareHeaders(headers);
+    const method = 'POST';
+    const body = JSON.stringify(data);
+
     try {
       const response = await fetch(
         url,
-        {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers
-        }
+        {method, body, headers}
       );
 
       return response.json();
@@ -46,8 +43,8 @@ export default {
     try {
       const response = await this.get(
         `${this.getApiUrl()}/package/get-sizes`,
-        { nbBottles: 5 },
-        { "X-Auth-Token": apiKey }
+        {nbBottles: 5},
+        {"X-Auth-Token": apiKey}
       );
       return !!response;
     } catch (error) {
