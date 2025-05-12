@@ -1,29 +1,30 @@
 import config from "./conf.json" with { type: "json" };
 
+// hges is the global data object defined server-side
+
 export default {
   getApiUrl() {
     return config.apiUrl;
   },
   async get(url, urlParams, headers) {
-
-   url = this.appendUrlParams(url, urlParams);
-
-    return await fetch(
+    url = this.appendUrlParams(url, urlParams);
+    headers = this.prepareHeaders(headers);
+    
+    const response = await fetch(
       url,
       {
         method: "GET",
         headers
       }
     );
+
+    return response.json();
   },
-  async post(url, urlParams, data, headers) {
+  async post(url, urlParams, data, headers) { 
+    url = this.appendUrlParams(url, urlParams);
+    headers = this.prepareHeaders(headers);
 
-    if (urlParams) {
-      const params = new URLSearchParams(urlParams);
-      url += `?${params.toString()}`;
-    }
-
-    return await fetch(
+    const response = await fetch(
       url,
       {
         method: "POST",
@@ -31,20 +32,17 @@ export default {
         headers
       }
     );
+
+    return response.json();
   },
   async validateApiKey(apiKey) {
     try {
       const response = await this.get(
         `${this.getApiUrl()}/package/get-sizes`,
-        {
-          nbBottles: 5
-        },
-        {
-          "Content-Type": "application/json",
-          "X-Auth-Token": apiKey,
-        }
+        { nbBottles: 5 },
+        { "X-Auth-Token": apiKey }
       );
-      return !!response.ok;
+      return !!response;
     } catch (error) {
       console.error("Error validating API key:", error);
       return false;
@@ -53,14 +51,7 @@ export default {
   async getFromProxy(url, urlParams) {
     url = config.proxyApiUrl + url;
     try {
-      const response = await this.get(
-        url,
-        urlParams,
-        {
-          "Content-Type": "application/json"
-        }
-      )
-      return await response.json();
+      return response = await this.get(url, urlParams);
     } catch (error) {
       console.error("Error fetching data from proxy:", error);
       return null;
@@ -69,22 +60,21 @@ export default {
   async postProxy(url, urlParams, data) {
     url = config.proxyApiUrl + url;
     try {
-      const response = await this.post(
-        url,
-        urlParams,
-        data,
-        {
-          "Content-Type": "application/json"
-        }
-      )
-      return await response.json();
+      return response = await this.post(url, urlParams, data);
     } catch (error) {
       console.error("Error posting data to proxy:", error);
       return null;
     }
   },
+  /**
+   * returns the URL with the query string generated from urlParams object
+   * if the url already contains any url parameters, they'll be kept.
+   * 
+   * @param {string} url 
+   * @param {object} urlParams 
+   * @returns string
+   */
   appendUrlParams(url, urlParams) {
-
     if (url.includes('?')) {
       const queryString = url.split('?').pop();
       const formerParams = new URLSearchParams(queryString);
@@ -102,7 +92,30 @@ export default {
       const newQueryString = newUrlParams.toString();
       url += `?${newQueryString}`;
     }
-    
+
     return url;
+  },
+  /**
+   * Adds default headers if not already set
+   * The headers that are set explicitely in the headers param won't be overwritten.
+   * 
+   * @param {object} headers 
+   * @returns object
+   */
+  prepareHeaders(headers) {
+    headers = headers || {};
+
+    const defaultHeaders = {
+      'X-Auth-Token': hges.apiKey || '',
+      'Content-Type': 'application/json'
+    };
+
+    for (const key in defaultHeaders) {
+      if (typeof headers[key] === 'undefined') {
+        headers[key] = defaultHeaders[key];
+      }
+    }
+
+    return headers;
   }
 };
