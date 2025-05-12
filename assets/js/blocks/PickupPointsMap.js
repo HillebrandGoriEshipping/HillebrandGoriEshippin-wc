@@ -69,7 +69,7 @@ const PickupPointsMap = () => {
                     city: shippingAddress.city,
                     shipmentDate: dayjs(currentRate.pickupDate).format('DD/MM/YYYY'),
                     country: shippingAddress.country,
-                    productCode: 86
+                    productCode: currentRate.pickupServiceId
                 }
             );
 
