@@ -1,0 +1,1 @@
+// this file is enqueued only as an entry point for the wp_add_inline_script in the server-side scripts enqueuer

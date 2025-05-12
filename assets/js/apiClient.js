@@ -10,30 +10,37 @@ export default {
     url = this.appendUrlParams(url, urlParams);
     headers = this.prepareHeaders(headers);
     
-    const response = await fetch(
-      url,
-      {
-        method: "GET",
-        headers
-      }
-    );
-
-    return response.json();
+    try {
+      const response = await fetch(
+        url,
+        {
+          method: "GET",
+          headers
+        }
+      );
+  
+      return response.json();
+    } catch (e) {
+      throw new Error('Error in API Client : ' + e.message);
+    }
   },
   async post(url, urlParams, data, headers) { 
     url = this.appendUrlParams(url, urlParams);
     headers = this.prepareHeaders(headers);
+    try {
+      const response = await fetch(
+        url,
+        {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers
+        }
+      );
 
-    const response = await fetch(
-      url,
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers
-      }
-    );
-
-    return response.json();
+      return response.json();
+    } catch (e) {
+      throw new Error('Error in API Client : ' + e.message);
+    }
   },
   async validateApiKey(apiKey) {
     try {
