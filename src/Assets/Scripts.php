@@ -68,7 +68,6 @@ class Scripts
             HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
-
         self::globalObjectInjection();
     }
 
