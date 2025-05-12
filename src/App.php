@@ -54,7 +54,6 @@ class App
         add_filter('woocommerce_product_data_tabs', [ProductMeta::class, 'customTab']);
         add_action('woocommerce_product_data_panels', [ProductMeta::class, 'displayProductFields']);
         add_action('woocommerce_process_product_meta', [ProductMeta::class, 'saveProductFields']);
-        add_action('wp_ajax_get_appellations_by_country', [ProductMeta::class, 'getAppellationsByCountry']);
     }
 
     /**

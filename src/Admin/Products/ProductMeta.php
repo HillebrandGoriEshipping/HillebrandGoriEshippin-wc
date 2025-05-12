@@ -51,9 +51,7 @@ class ProductMeta
         ];
 
         $html = $twig->render('product-metas.twig', [
-            // 'data' => $data,
             'productMeta' => $productMeta,
-            'appellationList' => self::getAppellationsFromApi($productMeta[ProductMetaEnum::PRODUCING_COUNTRY]),
             'producingCountries' => $producingCounties,
         ]);
 
@@ -74,54 +72,6 @@ class ProductMeta
             if (isset($_POST[$meta])) {
                 update_post_meta($post_id, $meta, $_POST[$meta]);
             }
-        }
-    }
-
-    /**
-     * Retrieves a list of appellations from the API based on the producing country.
-     *
-     * @param string $producingCountry The name of the producing country to filter appellations.
-     * 
-     * @return array An array of appellations retrieved from the API.
-     * 
-     * @throws \Throwable If an error occurs during the API request or processing.
-     */
-    public static function getAppellationsFromApi(string $producingCountry): array
-    {
-        $appellationList = [];
-        try {
-            $result = ApiClient::get('/get-appellations?producingCountry=' . $producingCountry);
-            if ($result['status'] === 200) {
-                $appellationList = $result['data'];
-            }
-        } catch (\Throwable $th) {
-            throw $th;
-        }
-
-        return $appellationList;
-    }
-
-    /**
-     * Retrieves appellations by country and sends a JSON response.
-     *
-     * @return void
-     *
-     * @throws \Throwable If an error occurs during the API call.
-     *
-     */
-    public static function getAppellationsByCountry(): void
-    {
-        if (!isset($_GET['country'])) {
-            wp_send_json_error('Missing country param', 400);
-        }
-
-        $country = sanitize_text_field($_GET['country']);
-
-        try {
-            $appellations = self::getAppellationsFromApi($country);
-            wp_send_json_success($appellations);
-        } catch (\Throwable $e) {
-            wp_send_json_error($e->getMessage(), 500);
         }
     }
 }

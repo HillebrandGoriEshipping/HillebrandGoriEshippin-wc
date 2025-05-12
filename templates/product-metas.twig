@@ -98,13 +98,18 @@
 
 <p class="form-field">
     <label for="{{ hgesProductMeta('APPELLATION') }}">{{ function('__', 'Appellation', 'HillebrandGoriEshipping') }}</label>
-    <select id="{{ hgesProductMeta('APPELLATION') }}" name="{{ hgesProductMeta('APPELLATION') }}" class="short">
-        {% for appellationItem in appellationList %}
-            <option value="{{ appellationItem|url_encode }}" {{ appellationItem|url_encode == productMeta[hgesProductMeta('APPELLATION')] ? 'selected' : '' }}>
-                {{ appellationItem }}
+    <select id="{{ hgesProductMeta('APPELLATION') }}" name="{{ hgesProductMeta('APPELLATION') }}" data-saved-value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" class="short">
+        {% if productMeta[hgesProductMeta('APPELLATION')] %}
+            <option value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" selected>
+                {{ productMeta[hgesProductMeta('APPELLATION')] }}
             </option>
-        {% endfor %}
+        {% else %}
+        <option value="">{{ function('__', 'Select an appellation', 'HillebrandGoriEshipping') }}</option>
+        {% endif %}
+
     </select>
 </p>
+
+<div id="error-container"></div>
 
 </div>
