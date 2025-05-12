@@ -39,14 +39,6 @@ class Scripts
         );
 
         wp_enqueue_script_module(
-            'hges-test',
-            HGeS_PLUGIN_URL . 'assets/js/test.js',
-            [],
-            null,
-            ['in_footer' => true]
-        );
-
-        wp_enqueue_script_module(
             'hges-api-client',
             HGeS_PLUGIN_URL . 'assets/js/apiClient.js',
             [],
