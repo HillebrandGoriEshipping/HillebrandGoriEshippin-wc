@@ -5,6 +5,7 @@ namespace HGeS;
 use HGeS\Admin\Settings\Menu;
 use HGeS\Admin\Settings\SettingsController;
 use HGeS\Api\CustomEndpoints;
+use HGeS\Admin\Products\ProductMeta;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
 use HGeS\WooCommerce\ClassicUiRender;
@@ -33,7 +34,7 @@ class App
         add_action('wp_enqueue_scripts', [Scripts::class, 'enqueue']);
         add_action('wp_enqueue_scripts', [Styles::class, 'enqueue']);
         add_action('rest_api_init', [CustomEndpoints::class, 'register']);
-        
+
         add_filter('woocommerce_package_rates', [ClassicUiRender::class, 'sortShippingMethods'], 10, 2);
         add_filter('woocommerce_cart_shipping_method_full_label', [ClassicUiRender::class, 'renderLabel'], 10, 2);
         add_filter('woocommerce_cart_shipping_packages', [ClassicUiRender::class, 'invalidateRatesCache'], 100);
@@ -50,6 +51,11 @@ class App
         add_action('admin_enqueue_scripts', [Styles::class, 'enqueueAdmin']);
         add_action('admin_init', [self::class, 'router']);
         add_action('admin_menu', [Menu::class, 'addSettingsMenu']);
+        add_filter('woocommerce_product_data_tabs', [ProductMeta::class, 'customTab']);
+        add_action('woocommerce_product_data_panels', [ProductMeta::class, 'displayProductFields']);
+        add_action('woocommerce_process_product_meta', [ProductMeta::class, 'saveProductFields']);
+        add_action('woocommerce_product_after_variable_attributes', [ProductMeta::class, 'displayVariableProductField'], 10, 3);
+        add_action('woocommerce_save_product_variation', [ProductMeta::class, 'saveVariableProductField'], 10, 2);
     }
 
     /**

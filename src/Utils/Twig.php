@@ -5,6 +5,7 @@ namespace HGeS\Utils;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Utils\Enums\ProductMetaEnum;
 
 class Twig
 {
@@ -54,6 +55,10 @@ class Twig
 
         self::$twig->addFunction(new \Twig\TwigFunction('hgesOptionName', function ($optionName) {
             return OptionEnum::{$optionName};
+        }));
+
+        self::$twig->addFunction(new \Twig\TwigFunction('hgesProductMeta', function ($metaName) {
+            return ProductMetaEnum::{$metaName};
         }));
     }
 }

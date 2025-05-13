@@ -56,13 +56,21 @@ class Scripts
      */
     public static function enqueueAdmin(): void
     {
-        // Enqueue your admin scripts and styles here
         if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
             wp_enqueue_script_module(
                 'hges-settings-page-script',
                 HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
             );
         }
+
+        wp_enqueue_script_module(
+            'hges-product-metas',
+            HGeS_PLUGIN_URL . 'assets/js/productMetas.js',
+            [],
+            false,
+            true
+        );
+
         wp_enqueue_script(
             'hges-global-object-injection',
             HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'

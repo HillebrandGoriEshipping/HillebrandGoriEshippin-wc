@@ -1,0 +1,15 @@
+<p class="form-field">
+    <label for="_variation_quantity_{{ index }}">
+        {{ function('__', 'Quantity', 'HillebrandGoriEshipping') }}
+    </label>
+    <input
+    type="number"
+    class="short"
+    id="test"
+    name="_variation_quantity[{{ index }}]"
+    value="{{ value }}"
+    min="1"
+    step="1"
+    />
+    <span class="description">{{ function('__', 'Quantity of bottle per variation of the product', 'HillebrandGoriEshipping') }}</span>
+</p>

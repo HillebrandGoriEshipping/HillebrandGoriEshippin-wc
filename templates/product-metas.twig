@@ -1,0 +1,115 @@
+<div id="HGeS_product_tab_options" class="panel woocommerce_options_panel">
+    <p class="form-field">
+        <label for="{{ hgesProductMeta('NUMBER_OF_BOTTLE') }}">{{ function('__', 'Number of bottle', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="{{ hgesProductMeta('NUMBER_OF_BOTTLE') }}"
+            name="{{ hgesProductMeta('NUMBER_OF_BOTTLE') }}"
+            value="{{ productMeta[hgesProductMeta('NUMBER_OF_BOTTLE')] }}"
+            min="1"
+            step="1"
+        />
+        <span class="description">{{ function('__', 'Quantity of bottle per product', 'HillebrandGoriEshipping') }}</span>
+    </p>
+
+    <p class="form-field">
+        <label for="{{ hgesProductMeta('SIZE_OF_BOTTLE') }}">{{ function('__', 'Size of bottle', 'HillebrandGoriEshipping') }}</label>
+        <select id="{{ hgesProductMeta('SIZE_OF_BOTTLE') }}" name="{{ hgesProductMeta('SIZE_OF_BOTTLE') }}" class="short">
+            <option value="standard" {{ productMeta[hgesProductMeta('SIZE_OF_BOTTLE')] == 'standard' ? 'selected' : '' }}>750ml (Standard)</option>
+            <option value="magnum" {{ productMeta[hgesProductMeta('SIZE_OF_BOTTLE')] == 'magnum' ? 'selected' : '' }}>1500ml (Magnum)</option>
+        </select>
+    </p>
+
+    <p class="form-field">
+        <label for="{{ hgesProductMeta('TYPE') }}">{{ function('__', 'Type', 'HillebrandGoriEshipping') }}</label>
+        <select id="{{ hgesProductMeta('TYPE') }}" name="{{ hgesProductMeta('TYPE') }}" class="short">
+            <option value="" >{{ function('__', 'Select a type', 'HillebrandGoriEshipping') }}</option>
+            <option value="still" {{ productMeta[hgesProductMeta('TYPE')] == 'still' ? 'selected' : '' }}>{{ function('__', 'Still wine', 'HillebrandGoriEshipping') }}</option>
+            <option value="sparkling" {{ productMeta[hgesProductMeta('TYPE')] == 'sparkling' ? 'selected' : '' }}>{{ function('__', 'Sparkling wine', 'HillebrandGoriEshipping') }}</option>
+            <option value="spirit" {{ productMeta[hgesProductMeta('TYPE')] == 'spirit' ? 'selected' : '' }}>{{ function('__', 'Spirit', 'HillebrandGoriEshipping') }}</option>
+            <option value="nonAlcoholic" {{ productMeta[hgesProductMeta('TYPE')] == 'nonAlcoholic' ? 'selected' : '' }}>{{ function('__', 'Non Alcoholic', 'HillebrandGoriEshipping') }}</option>
+        </select>
+    </p>
+
+    <p class="form-field">
+        <label for="{{ hgesProductMeta('COLOR') }}">{{ function('__', 'Color', 'HillebrandGoriEshipping') }}</label>
+        <select id="{{ hgesProductMeta('COLOR') }}" name="{{ hgesProductMeta('COLOR') }}" class="short">
+            <option value="" >{{ function('__', 'Select a color', 'HillebrandGoriEshipping') }}</option>
+            <option value="red" {{ productMeta[hgesProductMeta('COLOR')] == 'red' ? 'selected' : '' }}>{{ function('__', 'Red', 'HillebrandGoriEshipping') }}</option>
+            <option value="white" {{ productMeta[hgesProductMeta('COLOR')] == 'white' ? 'selected' : '' }}>{{ function('__', 'White', 'HillebrandGoriEshipping') }}</option>
+            <option value="rose" {{ productMeta[hgesProductMeta('COLOR')] == 'rose' ? 'selected' : '' }}>{{ function('__', 'Rosé', 'HillebrandGoriEshipping') }}</option>
+            <option value="spirits" {{ productMeta[hgesProductMeta('COLOR')] == 'spirits' ? 'selected' : '' }}>{{ function('__', 'Spirits', 'HillebrandGoriEshipping') }}</option>
+            <option value="beer" {{ productMeta[hgesProductMeta('COLOR')] == 'beer' ? 'selected' : '' }}>{{ function('__', 'Beer', 'HillebrandGoriEshipping') }}</option>
+        </select>
+    </p>
+
+    <p class="form-field">
+        <label for="{{ hgesProductMeta('CAPACITY') }}">{{ function('__', 'Capacity', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="{{ hgesProductMeta('CAPACITY') }}"
+            name="{{ hgesProductMeta('CAPACITY') }}"
+            value="{{ productMeta[hgesProductMeta('CAPACITY')] }}"
+            min="1"
+            step="1"
+        />
+    <span class="description">{{ function('__', 'Capacity of a single product (in mL)', 'HillebrandGoriEshipping') }}</span>
+    </p>
+    
+    <p class="form-field">
+        <label for="{{ hgesProductMeta('ALCOHOL_PERCENTAGE') }}">{{ function('__', 'Alcohol percentage', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="{{ hgesProductMeta('ALCOHOL_PERCENTAGE') }}"
+            name="{{ hgesProductMeta('ALCOHOL_PERCENTAGE') }}"
+            value="{{ productMeta[hgesProductMeta('ALCOHOL_PERCENTAGE')] }}"
+            min="1"
+            step="0.1"
+        />
+    </p>
+
+    <p class="form-field">
+        <label for="{{ hgesProductMeta('VINTAGE_YEAR') }}">{{ function('__', 'Vintage Year', 'HillebrandGoriEshipping') }}</label>
+        <input
+            type="number"
+            class="short"
+            id="{{ hgesProductMeta('VINTAGE_YEAR') }}"
+            name="{{ hgesProductMeta('VINTAGE_YEAR') }}"
+            value="{{ productMeta[hgesProductMeta('VINTAGE_YEAR')] }}"
+            min="1900"
+            max= "{{ 'now'|date('Y') }}"
+            step="1"
+        />
+    </p>
+
+   <p class="form-field">
+    <label for="{{ hgesProductMeta('PRODUCING_COUNTRY') }}">{{ function('__', 'Producing country', 'HillebrandGoriEshipping') }}</label>
+    <select id="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" name="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" class="short">
+        {% for code, country in producingCountries %}
+            <option value="{{ code }}" {{ code == productMeta[hgesProductMeta('PRODUCING_COUNTRY')] ? 'selected' : '' }}>
+                {{ country }}
+            </option>
+        {% endfor %}
+    </select>
+</p>
+
+<p class="form-field">
+    <label for="{{ hgesProductMeta('APPELLATION') }}">{{ function('__', 'Appellation', 'HillebrandGoriEshipping') }}</label>
+    <select id="{{ hgesProductMeta('APPELLATION') }}" name="{{ hgesProductMeta('APPELLATION') }}" data-saved-value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" class="short">
+        {% if productMeta[hgesProductMeta('APPELLATION')] %}
+            <option value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" selected>
+                {{ productMeta[hgesProductMeta('APPELLATION')] }}
+            </option>
+        {% else %}
+        <option value="">{{ function('__', 'Select an appellation', 'HillebrandGoriEshipping') }}</option>
+        {% endif %}
+
+    </select>
+</p>
+
+<div id="error-container"></div>
+
+</div>

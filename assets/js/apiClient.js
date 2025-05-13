@@ -9,42 +9,36 @@ export default {
   async get(url, urlParams, headers) {
     url = this.appendUrlParams(url, urlParams);
     headers = this.prepareHeaders(headers);
-    const method = 'GET';
-    
+    const method = "GET";
+
     try {
-      const response = await fetch(
-        url,
-        {method, headers}
-      );
-  
+      const response = await fetch(url, { method, headers });
+
       return response.json();
     } catch (e) {
-      throw new Error('Error in API Client : ' + e.message);
+      throw new Error("Error in API Client : " + e.message);
     }
   },
-  async post(url, urlParams, data, headers) { 
+  async post(url, urlParams, data, headers) {
     url = this.appendUrlParams(url, urlParams);
     headers = this.prepareHeaders(headers);
-    const method = 'POST';
+    const method = "POST";
     const body = JSON.stringify(data);
 
     try {
-      const response = await fetch(
-        url,
-        {method, body, headers}
-      );
+      const response = await fetch(url, { method, body, headers });
 
       return response.json();
     } catch (e) {
-      throw new Error('Error in API Client : ' + e.message);
+      throw new Error("Error in API Client : " + e.message);
     }
   },
   async validateApiKey(apiKey) {
     try {
       const response = await this.get(
         `/package/get-sizes`,
-        {nbBottles: 5},
-        {"X-Auth-Token": apiKey}
+        { nbBottles: 5 },
+        { "X-Auth-Token": apiKey }
       );
       return !!response;
     } catch (error) {
@@ -55,7 +49,7 @@ export default {
   async getFromProxy(url, urlParams) {
     url = config.proxyApiUrl + url;
     try {
-      return response = await this.get(url, urlParams);
+      return (response = await this.get(url, urlParams));
     } catch (error) {
       console.error("Error fetching data from proxy:", error);
       return null;
@@ -64,7 +58,7 @@ export default {
   async postProxy(url, urlParams, data) {
     url = config.proxyApiUrl + url;
     try {
-      return response = await this.post(url, urlParams, data);
+      return (response = await this.post(url, urlParams, data));
     } catch (error) {
       console.error("Error posting data to proxy:", error);
       return null;
@@ -73,14 +67,14 @@ export default {
   /**
    * returns the URL with the query string generated from urlParams object
    * if the url already contains any url parameters, they'll be kept.
-   * 
-   * @param {string} url 
-   * @param {object} urlParams 
+   *
+   * @param {string} url
+   * @param {object} urlParams
    * @returns string
    */
   appendUrlParams(url, urlParams) {
-    if (url.includes('?')) {
-      const queryString = url.split('?').pop();
+    if (url.includes("?")) {
+      const queryString = url.split("?").pop();
       const formerParams = new URLSearchParams(queryString);
       if (!urlParams) {
         urlParams = {};
@@ -97,33 +91,33 @@ export default {
       url += `?${newQueryString}`;
     }
 
-    if (!url.includes('http')) {
+    if (!url.includes("http")) {
       url = this.getApiUrl() + url;
     }
-    
+
     return url;
   },
   /**
    * Adds default headers if not already set
    * The headers that are set explicitely in the headers param won't be overwritten.
-   * 
-   * @param {object} headers 
+   *
+   * @param {object} headers
    * @returns object
    */
   prepareHeaders(headers) {
     headers = headers || {};
 
     const defaultHeaders = {
-      'X-Auth-Token': hges.apiKey || '',
-      'Content-Type': 'application/json'
+      "X-Auth-Token": hges.apiKey || "",
+      "Content-Type": "application/json",
     };
 
     for (const key in defaultHeaders) {
-      if (typeof headers[key] === 'undefined') {
+      if (typeof headers[key] === "undefined") {
         headers[key] = defaultHeaders[key];
       }
     }
 
     return headers;
-  }
+  },
 };
