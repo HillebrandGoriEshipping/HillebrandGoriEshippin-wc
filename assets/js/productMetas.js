@@ -21,11 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
   async function loadAppellationInSelect() {
     const selectedCountry = countrySelect.value;
     if (selectedCountry) {
-      const response = await apiClient.get("/get-appellations", {
+      const result = await apiClient.get("/get-appellations", {
         producingCountry: selectedCountry,
       });
-
-      const result = await response.json();
 
       if (result) {
         const appellations = result;
@@ -63,15 +61,12 @@ document.addEventListener("DOMContentLoaded", function () {
       currentAlcoholPercentage &&
       currentColor
     ) {
-      const hsCode = await apiClient.get("/get-hscode", {
+      const result = await apiClient.get("/get-hscode", {
         appellationName: selectedAppellation,
         capacity: currentCapacity,
         alcoholDegree: currentAlcoholPercentage,
         color: currentColor,
       });
-
-      const result = await hsCode.json();
-      console.log(result);
 
       if (result === "") {
         // Show an error message
