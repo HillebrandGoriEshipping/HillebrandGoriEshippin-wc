@@ -42,7 +42,7 @@ export default {
   async validateApiKey(apiKey) {
     try {
       const response = await this.get(
-        `${this.getApiUrl()}/package/get-sizes`,
+        `/package/get-sizes`,
         {nbBottles: 5},
         {"X-Auth-Token": apiKey}
       );
@@ -97,6 +97,10 @@ export default {
       url += `?${newQueryString}`;
     }
 
+    if (!url.includes('http')) {
+      url = this.getApiUrl() + url;
+    }
+    
     return url;
   },
   /**
