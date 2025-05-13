@@ -7,7 +7,7 @@ export default {
     return config.apiUrl;
   },
   async get(url, urlParams, headers) {
-    url = this.getApiUrl() + this.appendUrlParams(url, urlParams);
+    url = this.appendUrlParams(url, urlParams);
     headers = this.prepareHeaders(headers);
     const method = "GET";
 
