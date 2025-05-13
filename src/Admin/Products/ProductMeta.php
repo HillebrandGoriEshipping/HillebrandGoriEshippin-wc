@@ -42,7 +42,7 @@ class ProductMeta
             $productMeta[$meta] = get_post_meta(get_the_ID(), $meta, true);
         }
 
-        $producingCounties = [
+        $producingCountries = [
             'FR' => 'France',
             'GB' => 'Great Britain',
             'IT' => 'Italy',
@@ -52,7 +52,7 @@ class ProductMeta
 
         $html = $twig->render('product-metas.twig', [
             'productMeta' => $productMeta,
-            'producingCountries' => $producingCounties,
+            'producingCountries' => $producingCountries,
         ]);
 
         echo $html;

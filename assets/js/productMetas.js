@@ -4,9 +4,9 @@ import utils from "./utils.js";
 document.addEventListener("DOMContentLoaded", function () {
   const countrySelect = document.getElementById("_producing_country");
   const appellationSelect = document.getElementById("_appellation");
-  const capacity = document.getElementById("_capacity");
-  const alcoholPercentage = document.getElementById("_alcohol_percentage");
-  const color = document.getElementById("_color");
+  const capacityField = document.getElementById("_capacity");
+  const alcoholPercentageField = document.getElementById("_alcohol_percentage");
+  const colorField = document.getElementById("_color");
 
   loadAppellationInSelect();
 
@@ -49,9 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function checkHsCode() {
-    const currentCapacity = capacity.value;
-    const currentAlcoholPercentage = alcoholPercentage.value;
-    const currentColor = color.value;
+    const currentCapacity = capacityField.value;
+    const currentAlcoholPercentage = alcoholPercentageField.value;
+    const currentColor = colorField.value;
     const selectedAppellation = appellationSelect.value;
     const errorContainer = document.querySelector("#error-container");
 
