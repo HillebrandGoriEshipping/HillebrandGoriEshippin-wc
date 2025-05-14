@@ -7,7 +7,7 @@ describe('Cart spec', () => {
   });
 
   it('Select a shipping method in cart view', () => {
-    cy.visit('/index.php/cart');
+    cy.visit('/cart');
 
     const cartShippingFormButton = cy.get('.wc-block-components-totals-shipping-panel > div[role="button"]').should('be.visible');
     cartShippingFormButton.click();
