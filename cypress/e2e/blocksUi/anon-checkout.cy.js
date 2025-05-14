@@ -1,6 +1,6 @@
-import addToCart from "../support/addToCart";
-import { selectRateInAccordion } from "../support/shippingRates";
-import { shippingAddressFormFill } from "../support/formFill";
+import addToCart from "../../support/addToCart";
+import { selectRateInAccordion } from "../../support/shippingRates";
+import { shippingAddressFormFill } from "../../support/formFill";
 
 describe('Checkout spec', () => {
 
