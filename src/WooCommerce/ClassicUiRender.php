@@ -3,7 +3,7 @@
 namespace HGeS\WooCommerce;
 
 use HGeS\Utils\Twig;
-use WC_Shipping_Method;
+use WC_Shipping_Rate;
 
 class ClassicUiRender
 {
@@ -51,26 +51,26 @@ class ClassicUiRender
     }
 
     /**
-     * Renders the shipping label HTML for a given shipping method.
+     * Renders the shipping label HTML for a given shipping rate.
      *
      * @param string $labelHtml The initial label HTML (unused in the method).
-     * @param WC_Shipping_Method $method The shipping method object containing metadata and label information.
+     * @param WC_Shipping_Rate $method The shipping rate object containing metadata and label information.
      * 
      * @return string The rendered shipping label HTML.
      *
      */
-    public static function renderLabel(string $labelHtml, WC_Shipping_Method $method): string
+    public static function renderLabel(string $labelHtml, WC_Shipping_Rate $rate): string
     {
-        $metadata = $method->get_meta_data();
+        $metadata = $rate->get_meta_data();
         if (empty($metadata['carrierName'])) {
             $assetsPath = null;
         } else {
             $assetsPath = HGeS_PLUGIN_URL . 'assets/img/' . $metadata['carrierName'] . '.png';
         }
 
-        if ($method->get_label() === 'Aérien') {
+        if ($rate->get_label() === 'Aérien') {
             $assetsPath = HGeS_PLUGIN_URL . 'assets/img/airfreight.png';
-        } else if ($method->get_label() === 'Maritime') {
+        } else if ($rate->get_label() === 'Maritime') {
             $assetsPath = HGeS_PLUGIN_URL . 'assets/img/seafreight.png';
         }
 
@@ -98,8 +98,8 @@ class ClassicUiRender
 
         $twig = Twig::getTwig();
         $labelHtml = $twig->render('shipping-label.twig', [
-            'label' => $method->get_label(),
-            'cost' => wc_price($method->get_cost()),
+            'label' => $rate->get_label(),
+            'cost' => wc_price($rate->get_cost()),
             'metaData' => $metadata,
             'assetsPath' => $assetsPath,
             'doorDelivery' => $metadata['doorDelivery'],
