@@ -39,18 +39,18 @@ const HgesShippingRates = () => {
     if (r.method_id === "pickup_location") {
       return;
     }
+  
+    r.meta_data.forEach((md) => {
+      r[md.key] = md.value;
+    });
+
     const newRate = {
       ...r,
       key: i,
     };
 
-    r.meta_data.forEach((md) => {
-      r[md.key] = md.value;
-    });
-
     shippingRates.push(newRate);
   });
-
   // Sort the shipping rates by the door delivery property
   const doorDeliveryRates = [];
   const pickupRates = [];
