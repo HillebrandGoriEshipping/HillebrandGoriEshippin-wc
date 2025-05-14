@@ -28,12 +28,12 @@ const getRadioButtonId = (rate) => {
 //wc-blocks_render_blocks_frontend
 const RateGroup = ({ rates, hasLogo = true }) => {
   rates = rates.map((rate) => {
-    let logoUrl = hges.assetsUrl.assetsUrl + rate.carrierName + ".png";
+    let logoUrl = window.hges.assetsUrl + 'img/' + rate.carrierName + ".png";
 
     if (rate.name == "Aérien") {
-      logoUrl = hges.assetsUrl.assetsUrl + "airfreight.png";
+      logoUrl = window.hges.assetsUrl + "img/airfreight.png";
     } else if (rate.name === "Maritime") {
-      logoUrl = hges.assetsUrl.assetsUrl + "seafreight.png";
+      logoUrl = window.hges.assetsUrl + "img/seafreight.png";
     }
     return {
       ...rate,
