@@ -48,6 +48,7 @@ class Rate
 
         $standardQuantity = 0;
         $magnumQuantity = 0;
+        $containsSparkling = false;
 
         foreach ($package['contents'] as $item) {
             $productId = $item['product_id'];
@@ -55,6 +56,7 @@ class Rate
 
             $itemQuantity = get_post_meta($productId, ProductMetaEnum::NUMBER_OF_BOTTLE, true);
             $bottleSize = get_post_meta($productId, ProductMetaEnum::SIZE_OF_BOTTLE, true);
+            $productType = get_post_meta($productId, ProductMetaEnum::TYPE, true);
 
             if ($item['variation_id'] !== 0) {
                 $itemQuantity = get_post_meta($variationId, '_variation_quantity', true);
@@ -73,6 +75,10 @@ class Rate
             } else {
                 $standardQuantity += $totalItemQuantity;
             }
+
+            if ($productType === 'sparkling') {
+                $containsSparkling = true;
+            }
         }
 
         try {
@@ -87,8 +93,7 @@ class Rate
                         'width' => $choice['sizes']['width'],
                         'height' => $choice['sizes']['height'],
                         'length' => $choice['sizes']['length'],
-                        // TODO: add weightSparkling handling
-                        'weight' => $choice['sizes']['weightStill'],
+                        'weight' => $containsSparkling ? $choice['sizes']['weightSparkling'] : $choice['sizes']['weightStill'],
                     ];
                 }
                 $params['packages'] = $packageParam;
