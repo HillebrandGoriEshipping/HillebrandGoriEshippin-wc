@@ -5,6 +5,7 @@ namespace HGeS;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Address;
 use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Utils\Enums\ProductMetaEnum;
 
 class Rate
 {
@@ -45,13 +46,43 @@ class Rate
             $params['destAddress']['state'] = $package['destination']['state'];
         }
 
-        $quantity = 0;
+        $standardQuantity = 0;
+        $magnumQuantity = 0;
+        $containsSparkling = false;
+
         foreach ($package['contents'] as $item) {
-            $quantity += $item['quantity'];
+            $productId = $item['product_id'];
+            $variationId = $item['variation_id'];
+
+            $itemQuantity = get_post_meta($productId, ProductMetaEnum::NUMBER_OF_BOTTLE, true);
+            $bottleSize = get_post_meta($productId, ProductMetaEnum::SIZE_OF_BOTTLE, true);
+            $productType = get_post_meta($productId, ProductMetaEnum::TYPE, true);
+
+            if ($item['variation_id'] !== 0) {
+                $itemQuantity = get_post_meta($variationId, '_variation_quantity', true);
+            }
+
+            if ($itemQuantity === '') {
+                $itemQuantity = $item['quantity'];
+            } else {
+                $itemQuantity = (int) $itemQuantity;
+            }
+
+            $totalItemQuantity = $itemQuantity * $item['quantity'];
+
+            if ($bottleSize === 'magnum') {
+                $magnumQuantity += $totalItemQuantity;
+            } else {
+                $standardQuantity += $totalItemQuantity;
+            }
+
+            if ($productType === 'sparkling') {
+                $containsSparkling = true;
+            }
         }
 
         try {
-            $packageList = ApiClient::get('/package/get-sizes?nbBottles=' . $quantity);
+            $packageList = ApiClient::get('/package/get-sizes?nbBottles=' . $standardQuantity . '&nbMagnums=' . $magnumQuantity);
             $packageParam = [];
             foreach ($packageList['data']['packages'][0] as $packageData) {
                 foreach ($packageData as $choice) {
@@ -62,8 +93,7 @@ class Rate
                         'width' => $choice['sizes']['width'],
                         'height' => $choice['sizes']['height'],
                         'length' => $choice['sizes']['length'],
-                        // TODO: add weightSparkling handling
-                        'weight' => $choice['sizes']['weightStill'],
+                        'weight' => $containsSparkling ? $choice['sizes']['weightSparkling'] : $choice['sizes']['weightStill'],
                     ];
                 }
                 $params['packages'] = $packageParam;
@@ -92,7 +122,7 @@ class Rate
         $params['pickupDate'] = $pickupDate->format('Y-m-d');
         $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
-        $params['nbBottles'] = $quantity;
+        $params['nbBottles'] = $magnumQuantity + $standardQuantity;
 
         $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
         foreach ($carrierList as $carrier) {
