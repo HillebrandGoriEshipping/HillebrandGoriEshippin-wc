@@ -27,9 +27,7 @@ class SettingsFormData
     private $HGES_MAPBOX_ACCESS_KEY;
     private $mapbox_api_key_validate;
     private $HGES_PREF_TRANSP;
-    private $HGES_PREF_STAT;
     private $HGES_TAX_RIGHTS;
-    private $HGES_VAT_CHOICE;
     private $HGES_VAT_NUMBER;
     private $HGES_VAT_OSS;
     private $HGES_EORI_NUMBER;
@@ -62,7 +60,11 @@ class SettingsFormData
     {
         foreach (OptionEnum::getList() as $optionName) {
             // each option can have multiple constraints, we need to iterate over them
-            foreach (OptionEnum::getConstraints($optionName) as $constraint) {
+            $optionConstraints = OptionEnum::getConstraints($optionName);
+            if ($optionConstraints === null) {
+                continue;
+            }
+            foreach ($optionConstraints as $constraint) {
                 $metadata->addPropertyConstraint($optionName, $constraint);
             }
         }

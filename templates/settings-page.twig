@@ -264,8 +264,8 @@
                 <th scope="row">{{ __( 'OSS:') }}</th>
                 <td>
                     <select name="{{ hgesOptionName('HGES_VAT_OSS') }}">
-                        <option value="no" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
-                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
+                        <option value="no" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
                     </select>
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ __( 'Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.') }}</span>
@@ -313,8 +313,8 @@
                 <th scope="row">{{ __( 'Activate insurance:') }}</th>
                 <td>
                     <select name="{{ hgesOptionName('HGES_ASSURANCE') }}">
-                        <option value="no" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
-                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
+                        <option value="no" {{ optionSelected(hgesOptionName('HGES_ASSURANCE'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_ASSURANCE'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
                     </select>
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ __( 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)') }}</span>
