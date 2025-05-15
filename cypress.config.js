@@ -7,6 +7,14 @@ module.exports = defineConfig({
     defaultCommandTimeout: 10000,
     baseUrl: 'http://localhost:8888',
     setupNodeEvents(on, config) {
+
+      on('before:spec', (spec) => {
+        const { execSync } = require('child_process');
+        const output = execSync('node ./cypress/nodeScripts/resetDb.js').toString();
+        console.log(output);
+      })
+
+
        on('task', {
         setUiToBlocks() {
           const { execSync } = require('child_process');
