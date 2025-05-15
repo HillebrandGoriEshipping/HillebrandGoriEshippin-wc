@@ -3,7 +3,7 @@ import runSqlDump from './runSqlDump.js';
 import getConnection from './dbConnection.js';
 
 async function update() {
-  await runSqlDump(await getConnection(), './cypress/fixtures/db/set-classic-ui.sql');
+  await runSqlDump(Path.resolve('./cypress/fixtures/db/set-classic-ui.sql'));
 }
 
 update();

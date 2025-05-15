@@ -1,6 +1,7 @@
 // cypress/nodeScripts/resetDb.js
 import runSqlDump from './runSqlDump.js';
 import getConnection from './dbConnection.js';
+import path from 'path';
 
 console.log('Resetting database to initial state');
 
@@ -13,7 +14,7 @@ async function update() {
     await dbConnection.end();
     
     dbConnection = await getConnection();
-    await runSqlDump(dbConnection, '../../../tests/dump.sql');
+    await runSqlDump(path.resolve('../../../tests/dump.sql'));
     await dbConnection.end();
     process.exit(0);
 }
