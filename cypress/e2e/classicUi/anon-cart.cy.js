@@ -7,22 +7,18 @@ describe('Classic UI Cart spec', () => {
   });
 
   beforeEach(() => {
-    addToCart();
+    addToCart('classic');
   });
 
   it('Select a shipping method in cart view', () => {
     cy.visit('/cart');
 
     // Define a country and a city to enable the display of the shipping rates
-    const cartShippingFormButton = cy.get('.wc-block-components-totals-shipping-panel > div[role="button"]').should('be.visible');
-    cartShippingFormButton.click();
-    cy.get('.wc-block-components-address-form__postcode input').type('45000');
-    cy.get('.wc-block-components-address-form__city input').type('Orléans');
-    cy.get('form.wc-block-components-shipping-calculator-address .wc-block-components-shipping-calculator-address__button').click();
+    const cartCalculateShippingLink = cy.get('a').contains('Calculate shipping').should('be.visible');
+    cartCalculateShippingLink.click();
 
-    // select a shipping method
-    selectRateInAccordion('Door Delivery', 'Chrono 18');
-    // then another
-    selectRateInAccordion('Other shipping method', 'Flat rate');
+    cy.get('.shipping-calculator-form #calc_shipping_city').type('Orléans');
+    cy.get('.shipping-calculator-form #calc_shipping_postcode').type('45000');
+    cy.get('.shipping-calculator-form button').contains('Update').click();
   });
 });

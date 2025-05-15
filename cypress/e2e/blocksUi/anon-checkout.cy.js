@@ -8,7 +8,7 @@ describe('Block UI Checkout spec', () => {
   });
   
   beforeEach(() => {
-    addToCart();
+    addToCart('blocks');
   });
 
   it('Select a shipping method in checkout view', () => {

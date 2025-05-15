@@ -7,7 +7,7 @@ describe('Block UI Cart spec', () => {
   });
   
   beforeEach(() => {
-    addToCart();
+    addToCart('blocks');
   });
 
   it('Select a shipping method in cart view', () => {
