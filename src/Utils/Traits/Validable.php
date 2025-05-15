@@ -13,17 +13,20 @@ use Symfony\Component\Validator\Validation;
  * 
  * The class must implement the loadValidatorMetadata method to define the validation rules.
  */
-Trait Validable
+trait Validable
 {
     /**
      * Used to trigger the validation process from the controller
      */
-    public function validate(): array 
+    public function validate(): array
     {
         $validator = Validation::createValidatorBuilder()
             ->addMethodMapping('loadValidatorMetadata')
             ->getValidator();
-        return self::formatErrors($validator->validate($this));
+
+        $errors = self::formatErrors($validator->validate($this));
+        error_log(print_r($errors, true));
+        return $errors;
     }
 
     public static function formatErrors(ConstraintViolationListInterface $errors): array
