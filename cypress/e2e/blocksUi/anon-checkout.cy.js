@@ -3,7 +3,10 @@ import { selectRateInAccordion } from "../../support/shippingRates";
 import { shippingAddressFormFill } from "../../support/formFill";
 
 describe('Checkout spec', () => {
-
+  before(() => {
+    cy.task('setUiToBlocks');
+  });
+  
   beforeEach(() => {
     addToCart();
   });
