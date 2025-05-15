@@ -2,7 +2,10 @@ import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
 
 describe('Cart spec', () => {
-
+  before(() => {
+    cy.task('setUiToBlocks');
+  });
+  
   beforeEach(() => {
     addToCart();
   });
