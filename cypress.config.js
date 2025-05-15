@@ -23,10 +23,9 @@ export default defineConfig({
       on('before:spec', (spec) => {
         const output = execSync('node ./cypress/nodeScripts/resetDb.js --input-type=module').toString();
         console.log(output);
-      })
+      });
 
-
-       on('task', {
+      on('task', {
         setUiToBlocks() {
           const output = execSync('node ./cypress/nodeScripts/setUiToBlocks.js').toString();
           console.log(output);
@@ -36,7 +35,7 @@ export default defineConfig({
           const output = execSync('node ./cypress/nodeScripts/setUiToClassic.js').toString();
           return output;
         }
-       });
+      });
     },
   },
 });
