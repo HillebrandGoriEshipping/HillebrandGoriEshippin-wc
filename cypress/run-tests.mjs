@@ -1,4 +1,4 @@
-const cypress = require('cypress');
+import cypress from 'cypress';
 
 const specs = [
   'cypress/e2e/blocksUi/anon-cart.cy.js',

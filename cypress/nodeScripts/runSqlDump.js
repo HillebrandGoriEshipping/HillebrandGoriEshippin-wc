@@ -1,11 +1,11 @@
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
 /**
  * Executes a SQL dump file against a MySQL database.
  * @param {import('mysql2/promise').Connection} connection - Connection to the MySQL database
  * @param {string} filePath - Path to the SQL dump file to execute
  */
-module.exports = async (filePath) => {
+export default async (filePath) => {
 
   const {
     DB_HOST,

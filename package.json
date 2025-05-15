@@ -10,7 +10,7 @@
     "watch": "npx wp-scripts start orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
     "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
     "cypress-open": "cypress open",
-    "cypress-run": "node ./cypress/run-tests.js"
+    "cypress-run": "node ./cypress/run-tests.mjs"
   },
   "author": "",
   "license": "ISC",
