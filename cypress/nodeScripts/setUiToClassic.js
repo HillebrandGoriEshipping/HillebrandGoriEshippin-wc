@@ -1,9 +1,9 @@
 console.log('Setting UI to classic');
 import runSqlDump from './runSqlDump.js';
-import getConnection from './dbConnection.js';
+import path from 'path';
 
 async function update() {
-  await runSqlDump(Path.resolve('./cypress/fixtures/db/set-classic-ui.sql'));
+  await runSqlDump(path.resolve('./cypress/fixtures/db/set-classic-ui.sql'));
 }
 
 update();
