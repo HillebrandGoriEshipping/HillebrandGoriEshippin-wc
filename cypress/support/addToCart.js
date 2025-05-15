@@ -1,7 +1,7 @@
 export default function() {
     cy.visit('/shop');
 
-    cy.contains('h2', 'Château Bois-Serein')
+    cy.contains('h2', 'Clos des Murmures')
         .should('be.visible')
         .parents('li')
         .as('firstProduct');
@@ -27,7 +27,7 @@ export default function() {
 
     cy.get('.wc-block-cart-items__row').should('have.length', 2);
 
-    const expectedUrl = Cypress.config('baseUrl') + '/product/chateau-bois-serein/';
+    const expectedUrl = Cypress.config('baseUrl') + '/product/clos-des-murmures/';
 
     cy.get('.wc-block-cart-items__row').first()
         .find('a')
