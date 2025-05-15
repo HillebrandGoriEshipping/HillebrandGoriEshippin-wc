@@ -24,6 +24,7 @@ class OptionEnum
     const HGES_PREF_DEL = "HGES_PREF_DEL";
     const HGES_MINHOUR = "HGES_MINHOUR";
     const HGES_CUTOFF = "HGES_CUTOFF";
+    const HGES_WORKING_DAYS = "HGES_WORKING_DAYS";
 
 
     // WP setting group name
@@ -55,6 +56,7 @@ class OptionEnum
             self::HGES_PREF_DEL,
             self::HGES_MINHOUR,
             self::HGES_CUTOFF,
+            self::HGES_WORKING_DAYS,
         ];
     }
 
@@ -105,7 +107,10 @@ class OptionEnum
             ],
             self::HGES_CUTOFF => [
                 new NotBlank(),
-            ]
+            ],
+            self::HGES_WORKING_DAYS => [
+                new NotBlank(),
+            ],
         ];
 
         return $constraints[$option] ?? null;
