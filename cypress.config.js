@@ -1,11 +1,22 @@
 const { defineConfig } = require("cypress");
 const dotenv = require("dotenv");
-dotenv.config({ path: ['../../../.env', '../../../.env.e2e'] });
+const path = require('path');
+const fs = require('fs');
+
+const envPaths = [
+  path.resolve('../../../.env'),
+  path.resolve('../../../.env.e2e'),
+];
+const envFiles = envPaths.filter((file) => fs.existsSync(file));
+dotenv.config({
+  override: true,
+  path: envFiles 
+});
 
 module.exports = defineConfig({
   e2e: {
     defaultCommandTimeout: 10000,
-    baseUrl: 'http://localhost:8888',
+    baseUrl: process.env.WP_HOME,
     setupNodeEvents(on, config) {
 
       on('before:spec', (spec) => {
