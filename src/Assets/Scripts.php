@@ -76,20 +76,24 @@ class Scripts
             HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
-        self::globalObjectInjection();
+        self::globalObjectInjection(true);
     }
 
     /**
      * Injects a global JavaScript object into specified frontend scripts.
      *
+     * @param bool $admin Indicates if the injection is for admin scripts.
      * @return void
      */
-    public static function globalObjectInjection(): void
+    public static function globalObjectInjection(bool $admin = false): void
     {
         $frontendJsGlobalObject = [
             'assetsUrl' => HGeS_PLUGIN_URL . 'assets/',
-            'apiKey' => get_option(OptionEnum::HGES_ACCESS_KEY, '')
         ];
+
+        if ($admin) {
+            $frontendJsGlobalObject['apiKey'] = get_option(OptionEnum::HGES_ACCESS_KEY, '');
+        }
 
         $jsonObject = json_encode($frontendJsGlobalObject);
         $javascriptString =  "window.hges = $jsonObject;";
