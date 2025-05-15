@@ -28,7 +28,7 @@ class SettingsController
 
         // Utiliser Twig pour rendre la page
         $twig = Twig::getTwig();
-        
+
         echo $twig->render('settings-page.twig', [
             'title' => __(self::SETTING_PAGE_TITLE),
             'options' => $options,

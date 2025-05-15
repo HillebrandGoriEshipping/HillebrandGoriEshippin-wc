@@ -41,6 +41,16 @@ class Twig
             return $carrierChecked;
         }));
 
+        self::$twig->addFunction(new \Twig\TwigFunction('workingDayChecked', function ($dayValue) {
+            $workingDayChecked = '';
+            $day = get_option('HGES_WORKING_DAYS', []);
+            if (is_array($day) && in_array($dayValue, $day)) {
+                $workingDayChecked = 'checked';
+            }
+
+            return $workingDayChecked;
+        }));
+
         self::$twig->addFunction(new \Twig\TwigFunction('optionSelected', function ($optionName, $expectedValue, $defaultValue = '') {
             $optionSelected = '';
 

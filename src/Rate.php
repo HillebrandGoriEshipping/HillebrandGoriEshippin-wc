@@ -102,14 +102,7 @@ class Rate
             $params['packages'] = [];
         }
 
-        // TODO: Add working days list in settings
-        $workingDays = [
-            1,
-            2,
-            3,
-            4,
-            5,
-        ];
+        $workingDays = get_option(OptionEnum::HGES_WORKING_DAYS, []);;
 
         $pickupDate = new \DateTime();
         $countedDays = 0;

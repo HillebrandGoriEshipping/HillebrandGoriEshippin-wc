@@ -17,7 +17,7 @@ class SettingsFormData
      * This class must implement the loadValidatorMetadata method to define the validation rules.
      */
     use Validable;
-    
+
     /**
      * We need to explicitly define the properties here,
      * otherwise they won't be recognized by the Symfony Validator
@@ -40,6 +40,7 @@ class SettingsFormData
     private $HGES_PREF_DEL;
     private $HGES_MINHOUR;
     private $HGES_CUTOFF;
+    private $HGES_WORKING_DAYS;
 
     /**
      * The class properties are dynamically created based on the OptionEnum class
