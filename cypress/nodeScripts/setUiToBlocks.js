@@ -1,6 +1,5 @@
 console.log('Setting UI to blocks');
 import runSqlDump from './runSqlDump.js';
-import getConnection from './dbConnection.js';
 import path from 'path';
 
 async function update() {
