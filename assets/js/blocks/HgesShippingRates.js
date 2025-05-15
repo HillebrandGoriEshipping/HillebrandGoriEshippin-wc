@@ -70,7 +70,7 @@ const HgesShippingRates = () => {
       isLoading={loading}
       screenReaderLabel={__(
         "Loading shipping rates",
-        "HillebrandGoriEshipping"
+        "hges"
       )}
       showSpinner={true}
     >
