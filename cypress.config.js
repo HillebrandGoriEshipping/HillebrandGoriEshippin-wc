@@ -1,6 +1,6 @@
 const { defineConfig } = require("cypress");
 const dotenv = require("dotenv");
-dotenv.config({ path: ['../../../.env.e2e'] });
+dotenv.config({ path: ['../../../.env', '../../../.env.e2e'] });
 
 module.exports = defineConfig({
   e2e: {
