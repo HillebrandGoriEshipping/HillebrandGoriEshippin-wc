@@ -2,10 +2,10 @@ import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
 
 describe('Cart spec', () => {
-  brefore(() => {
-    cy.task('seedDatabaseForTestA');
+  before(() => {
+    cy.task('setUiToClassic');
   });
-  
+
   beforeEach(() => {
     addToCart();
   });
