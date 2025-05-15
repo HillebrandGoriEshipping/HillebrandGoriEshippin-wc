@@ -1,7 +1,7 @@
 import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
 
-describe('Cart spec', () => {
+describe('Classic UI Cart spec', () => {
   before(() => {
     cy.task('setUiToClassic');
   });

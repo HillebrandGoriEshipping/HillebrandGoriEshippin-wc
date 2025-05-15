@@ -2,7 +2,7 @@ import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
 import { shippingAddressFormFill } from "../../support/formFill";
 
-describe('Checkout spec', () => {
+describe('Block UI Checkout spec', () => {
   before(() => {
     cy.task('setUiToBlocks');
   });

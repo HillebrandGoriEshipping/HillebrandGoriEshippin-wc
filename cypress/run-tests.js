@@ -18,7 +18,7 @@ const specs = [
         video: false
       }
     });
-
+    
     if (result.totalFailed > 0) {
       console.error(`❌ Échec détecté dans : ${spec}`);
       process.exit(1);

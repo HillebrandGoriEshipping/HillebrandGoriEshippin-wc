@@ -1,6 +1,6 @@
-const mysql = require('mysql2/promise');
+import mysql from 'mysql2/promise';
 
-module.exports = () => {
+export default () => {
     return mysql.createConnection({
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,

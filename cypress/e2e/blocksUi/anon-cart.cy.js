@@ -1,7 +1,7 @@
 import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
 
-describe('Cart spec', () => {
+describe('Block UI Cart spec', () => {
   before(() => {
     cy.task('setUiToBlocks');
   });
@@ -24,5 +24,6 @@ describe('Cart spec', () => {
     selectRateInAccordion('Door Delivery', 'Chrono 18');
     // then another
     selectRateInAccordion('Other shipping method', 'Flat rate');
+    console.log('Anon Cart spec done');
   });
 });

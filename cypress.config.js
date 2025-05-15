@@ -10,7 +10,7 @@ module.exports = defineConfig({
 
       on('before:spec', (spec) => {
         const { execSync } = require('child_process');
-        const output = execSync('node ./cypress/nodeScripts/resetDb.js').toString();
+        const output = execSync('node ./cypress/nodeScripts/resetDb.js --input-type=module').toString();
         console.log(output);
       })
 
