@@ -31,6 +31,11 @@ class Twig
             return call_user_func_array("\\" . $name, $args);
         }));
 
+        // Custom translation function
+        self::$twig->addFunction(new \Twig\TwigFunction('__', function ($text, $domain = 'hges') {
+            return __($text, $domain);
+        }));
+
         self::$twig->addFunction(new \Twig\TwigFunction('carrierChecked', function ($carrierName) {
             $carrierChecked = '';
             $carrier = get_option('HGES_PREF_TRANSP', []);

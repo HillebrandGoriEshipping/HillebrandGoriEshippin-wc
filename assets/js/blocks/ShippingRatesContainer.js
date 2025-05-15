@@ -12,7 +12,7 @@ const ShippingRatesContainer = ({
   return (
     <div className="shipping-rates">
       <Accordion
-        title={__("Pickup points", "HillebrandGoriEshipping")}
+        title={__("Pickup points", "hges")}
         defaultOpen={!!pickupRates.find((r) => r.selected)}
         display={pickupRates.length > 0}
         displayHeader={doorDeliveryRates.length > 0 || otherRates.length > 0}
@@ -20,7 +20,7 @@ const ShippingRatesContainer = ({
         <RateGroup rates={pickupRates} setLoading={setLoading} />
       </Accordion>
       <Accordion
-        title={__("Door Delivery", "HillebrandGoriEshipping")}
+        title={__("Door Delivery", "hges")}
         defaultOpen={!!doorDeliveryRates.find((r) => r.selected)}
         display={doorDeliveryRates.length > 0}
         displayHeader={pickupRates.length > 0 || otherRates.length > 0}
@@ -28,7 +28,7 @@ const ShippingRatesContainer = ({
         <RateGroup rates={doorDeliveryRates} setLoading={setLoading} />
       </Accordion>
       <Accordion
-        title={__("Other shipping method", "HillebrandGoriEshipping")}
+        title={__("Other shipping method", "hges")}
         defaultOpen={!!otherRates.find((r) => r.selected)}
         display={otherRates.length > 0}
         displayHeader={doorDeliveryRates.length > 0 || pickupRates.length > 0}

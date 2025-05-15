@@ -1,30 +1,30 @@
 <h1>{{ title }}</h1>
 <div id="HGES-connect">
-    <h3>{{ function('__', 'Please fill the information below in order to be able to use the plugin', 'HillebrandGoriEshipping')|escape }}</h3>
+    <h3>{{ __( 'Please fill the information below in order to be able to use the plugin')|escape }}</h3>
     <form method="post" action="">
-        <h2>{{ function('__', 'Key settings', 'HillebrandGoriEshipping') }}</h2>
+        <h2>{{ __( 'Key settings') }}</h2>
         <table class="form-table states">
             <tr valign="top">
                 <td scope="row" class="titledesc">
-                    <label for="order_shipped">{{ function('__', 'Insert your Hillebrand Gori eShipping API token',  'HillebrandGoriEshipping')|escape }}</label>
+                    <label for="order_shipped">{{ __( 'Insert your Hillebrand Gori eShipping API token')|escape }}</label>
                 </td>
                 <td>
                     <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
-                    <button type="button" class="button" id="validate-api">{{ function('__', 'Test my access token', 'HillebrandGoriEshipping')|escape }}</button>
+                    <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
                 </td>
             </tr>
             <tr valign="top">
                 <td scope="row" class="titledesc">
-                    <label for="order_shipped">{{ function('__', 'Insert your MapBox API token', 'HillebrandGoriEshipping')|escape }}</label>
+                    <label for="order_shipped">{{ __( 'Insert your MapBox API token')|escape }}</label>
                 </td>
                 <td>
                     <input type="text" name="{{ hgesOptionName('HGES_MAPBOX_ACCESS_KEY') }}" id="api-input-mapbox" class="validable-field {{ options.mapbox_api_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_MAPBOX_ACCESS_KEY|default('') }}">
-                    <button type="button" class="button" id="validate-mapbox-api">{{ function('__', 'Test my Mapbox access token', 'HillebrandGoriEshipping')|escape }}</button>
+                    <button type="button" class="button" id="validate-mapbox-api">{{ __( 'Test my Mapbox access token')|escape }}</button>
                 </td>
             </tr>
         </table>
         <p id="alert-api-text">
-            {{ function('__', 'Please validate the API access before saving the modifications', 'HillebrandGoriEshipping')|escape }}
+            {{ __( 'Please validate the API access before saving the modifications')|escape }}
         </p>
         {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
         {{ function('wp_nonce_field', 'save_settings', 'settings_nonce')|raw }}
@@ -33,36 +33,36 @@
 
 {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %}
 <div id="HGES-settings">
-    <h1>{{ function('__', 'Hillebrand Gori eShipping shipping settings', 'HillebrandGoriEshipping')|escape }}</h1>
-    <h2>{{ function('__', 'Address used to calculate shipping charges', 'HillebrandGoriEshipping')|escape }}</h2>
-    <p>{{ function('__', 'Contact our support if you need to edit those informations', 'HillebrandGoriEshipping')|escape }}</p>
+    <h1>{{ __( 'Hillebrand Gori eShipping shipping settings')|escape }}</h1>
+    <h2>{{ __( 'Address used to calculate shipping charges')|escape }}</h2>
+    <p>{{ __( 'Contact our support if you need to edit those informations')|escape }}</p>
     <table class="form-table states">
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Address', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Address')|escape }}:</th>
             <td>
                 <label for="Adresse">{{ address.addressName }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Company', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Company')|escape }}:</th>
             <td>
                 <label for="Adresse">{{ address.company }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Contact', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Contact')|escape }}:</th>
             <td>
                 <label for="Adresse">{{ address.contact }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Phone', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Phone')|escape }}:</th>
             <td>
                 <label for="Adresse">{{ address.telephone }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Address', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Address')|escape }}:</th>
             <td>
                 <label for="Adresse">{{ address.address }}</label>
                 {% if address.addressComplement != '' %}
@@ -74,7 +74,7 @@
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ function('__', 'City', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'City')|escape }}:</th>
             <td>
                 <label for="Adresse">{{ address.city }}</label>
             </td>
@@ -82,14 +82,14 @@
     </table>
 </div>
 
-<h2>{{ function('__', 'Configuration', 'HillebrandGoriEshipping')|escape }}</h2>
+<h2>{{ __( 'Configuration')|escape }}</h2>
 <form method="post" action="" id="configuration_form">
     {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group2')|raw }}
     {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group2')|raw }}
     <table class="form-table states">
         <!-- MINIMUM NUMBER OF BOTTLES -->
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Minimum number of bottles', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Minimum number of bottles')|escape }}:</th>
             <td>
                 <input 
                     type="number" 
@@ -99,63 +99,63 @@
                 >
                 {% include('form-error-message.twig') with {'error': errors.HGES_NBR_MIN} %}
                 <div class="tooltip">?
-                    <span class="tooltiptext">{{ function('__', 'Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page', 'HillebrandGoriEshipping')|escape }}</span>
+                    <span class="tooltiptext">{{ __( 'Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page')|escape }}</span>
                 </div>
             </td>
         </tr>
         <!-- PREPARATION TIME -->
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Preparation time', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Preparation time')|escape }}:</th>
             <td>
                 <input type="number" min="1" name="{{ hgesOptionName('HGES_PREP_TIME') }}" value="{{ options.HGES_PREP_TIME|default('') }}">
                 {% include('form-error-message.twig') with {'error': errors.HGES_PREP_TIME} %}
                 <div class="tooltip">?
-                    <span class="tooltiptext">{{ function('__', 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup', 'HillebrandGoriEshipping')|escape }}</span>
+                    <span class="tooltiptext">{{ __( 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup')|escape }}</span>
                 </div>
             </td>
         </tr>
         <!-- WORKING DAYS -->
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Working days', 'HillebrandGoriEshipping')|escape }}</th>
+            <th scope="row">{{ __( 'Working days')|escape }}</th>
             <td>
                 <fieldset id="working_days" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}">
                     <div>
                         <input type="checkbox" id="monday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="1" {{ workingDayChecked('1') }}>
-                        <label for="monday">{{ function('__', 'Monday', 'HillebrandGoriEshipping') }}</label>
+                        <label for="monday">{{ __( 'Monday') }}</label>
                     </div>
                     <div>
                         <input type="checkbox" id="tuesday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="2" {{ workingDayChecked('2') }}>
-                        <label for="tuesday">{{ function('__', 'Tuesday', 'HillebrandGoriEshipping') }}</label>
+                        <label for="tuesday">{{ __( 'Tuesday') }}</label>
                     </div>
                     <div>
                         <input type="checkbox" id="wednesday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="3" {{ workingDayChecked('3') }}>
-                        <label for="wednesday">{{ function('__', 'Wednesday', 'HillebrandGoriEshipping') }}</label>
+                        <label for="wednesday">{{ __( 'Wednesday') }}</label>
                     </div>
                     <div>
                         <input type="checkbox" id="thursday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="4" {{ workingDayChecked('4') }}>
-                        <label for="thursday">{{ function('__', 'Thursday', 'HillebrandGoriEshipping') }}</label>
+                        <label for="thursday">{{ __( 'Thursday') }}</label>
                     </div>
                     <div>
                         <input type="checkbox" id="friday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="5" {{ workingDayChecked('5') }}>
-                        <label for="friday">{{ function('__', 'Friday', 'HillebrandGoriEshipping') }}</label>
+                        <label for="friday">{{ __( 'Friday') }}</label>
                     </div>
                     <div>
                         <input type="checkbox" id="saturday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="6" {{ workingDayChecked('6') }}>
-                        <label for="saturday">{{ function('__', 'Saturday', 'HillebrandGoriEshipping') }}</label>
+                        <label for="saturday">{{ __( 'Saturday') }}</label>
                     </div>
                     <div>
                         <input type="checkbox" id="sunday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="0" {{ workingDayChecked('0') }}>
-                        <label for="sunday">{{ function('__', 'Sunday', 'HillebrandGoriEshipping') }}</label>
+                        <label for="sunday">{{ __( 'Sunday') }}</label>
                     </div>
                 </fieldset>
                 <div class="tooltip">?
-                    <span class="tooltiptext">{{ function('__', 'Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.', 'HillebrandGoriEshipping')|escape }}</span>
+                    <span class="tooltiptext">{{ __( 'Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.')|escape }}</span>
                 </div>
             </td>
         </tr>
         <!-- CARRIER PREFERENCE -->
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Carrier preference', 'HillebrandGoriEshipping')|escape }}</th>
+            <th scope="row">{{ __( 'Carrier preference')|escape }}</th>
             <td>
                 <fieldset id="transport_pref" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}">
                     <div>
@@ -183,67 +183,67 @@
         </tr>
         <!-- MINHOUR & CUTOFF -->
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Min hour & Cutoff', 'HillebrandGoriEshipping')|escape }}:</th>
+            <th scope="row">{{ __( 'Min hour & Cutoff')|escape }}:</th>
             <td>
                 <div>
-                    <label class="time-field-label" for="minhour">{{ function('__', 'Min hour', 'HillebrandGoriEshipping')|escape }}:</label>
+                    <label class="time-field-label" for="minhour">{{ __( 'Min hour')|escape }}:</label>
                     <input id="minhour" type="time" name="{{ hgesOptionName('HGES_MINHOUR') }}" value="{{ options.HGES_MINHOUR|default('') }}">
 
                     {% include('form-error-message.twig') with {'error': errors.HGES_MINHOUR} %}
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__', 'Set the minimum hour when the carrier can pick the parcels', 'HillebrandGoriEshipping')|escape }}</span>
+                        <span class="tooltiptext">{{ __( 'Set the minimum hour when the carrier can pick the parcels')|escape }}</span>
                     </div>
                 </div>
                 <div>
-                    <label class="time-field-label" for="cutoff">{{ function('__', 'Cutoff', 'HillebrandGoriEshipping')|escape }}:</label>
+                    <label class="time-field-label" for="cutoff">{{ __( 'Cutoff')|escape }}:</label>
                     <input id="cutoff" type="time" name="{{ hgesOptionName('HGES_CUTOFF') }}" value="{{ options.HGES_CUTOFF|default('') }}">
                     {% include('form-error-message.twig') with {'error': errors.HGES_CUTOFF} %}
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__', 'Set the maximum hour when the carrier can pick the parcels', 'HillebrandGoriEshipping')|escape }}</span>
+                        <span class="tooltiptext">{{ __( 'Set the maximum hour when the carrier can pick the parcels')|escape }}</span>
                     </div>
                 </div>
             </td>
         </tr>
         <!-- DELIVERY PREFERENCE -->
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Delivery preference', 'HillebrandGoriEshipping') }} :</th>
+            <th scope="row">{{ __( 'Delivery preference') }} :</th>
             <td>
                 <select id="form_trans" name="{{ hgesOptionName('HGES_PREF_DEL') }}" class="form-control">
                     <option value="both" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'both', 'both') }}>
-                        {{ function('__', 'At home / Pickup point', 'HillebrandGoriEshipping')|escape }}
+                        {{ __( 'At home / Pickup point')|escape }}
                     </option>
-                    <option value="home" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'home', 'both') }}>{{ function('__', 'At home', 'HillebrandGoriEshipping')|escape }}</option>
-                    <option value="pickup_point" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'), 'pickup_point', 'both') }}>{{ function('__', 'Pickup point', 'HillebrandGoriEshipping')|escape }}</option>
+                    <option value="home" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'home', 'both') }}>{{ __( 'At home')|escape }}</option>
+                    <option value="pickup_point" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'), 'pickup_point', 'both') }}>{{ __( 'Pickup point')|escape }}</option>
                 </select>
             </td>
         </tr>
         <!-- DUTIES & TAX -->
         <tr valign="top">
-            <th scope="row">{{ function('__', 'Duties and taxes at destination', 'HillebrandGoriEshipping') }} :</th>
+            <th scope="row">{{ __( 'Duties and taxes at destination') }} :</th>
             <td>
                 <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control">
                     {% if options.HGES_TAX_RIGHTS %}  
-                        <option value="" disabled {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), '', '' ) }}>{{ function('__','Select your option', 'HillebrandGoriEshipping')|escape }}</option>
-                        <option value="exp" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'exp', '' ) }}> {{ function('__',"At the sender's expense", 'HillebrandGoriEshipping')|escape }}</option>
-                        <option value="dest" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'dest', '' ) }}>{{ function('__',"At the recipient's expense", 'HillebrandGoriEshipping')|escape }}</option>
+                        <option value="" disabled {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), '', '' ) }}>{{ __('Select your option')|escape }}</option>
+                        <option value="exp" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'exp', '' ) }}> {{ __("At the sender's expense")|escape }}</option>
+                        <option value="dest" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'dest', '' ) }}>{{ __("At the recipient's expense")|escape }}</option>
                     {% else %}
-                        <option value="" disabled>{{ function('__','Select your option', 'HillebrandGoriEshipping')|escape }}</option>
-                        <option value="exp">{{ function('__',"At the sender's expense", 'HillebrandGoriEshipping')|escape }}</option>
-                        <option value="dest">{{ function('__',"At the recipient's expense", 'HillebrandGoriEshipping')|escape }}</option>
+                        <option value="" disabled>{{ __('Select your option')|escape }}</option>
+                        <option value="exp">{{ __("At the sender's expense")|escape }}</option>
+                        <option value="dest">{{ __("At the recipient's expense")|escape }}</option>
                     {% endif %}
                 </select>
                 <div class="tooltip">?
-                    <span class="tooltiptext">{{ function('__', 'Displays the duties and taxes estimation on the checkout page if you choose the "At the recipient\'s expense" option (domestic international shipments)', 'HillebrandGoriEshipping')|escape }}</span>
+                    <span class="tooltiptext">{{ __( 'Displays the duties and taxes estimation on the checkout page if you choose the "At the recipient\'s expense" option (domestic international shipments)')|escape }}</span>
                 </div>
             </td>
         </tr>
     </table>
 
-    <h2>{{ function('__', 'Numbers & Registrations', 'HillebrandGoriEshipping')|escape }}</h2>
+    <h2>{{ __( 'Numbers & Registrations')|escape }}</h2>
         <table class="form-table states">
             <!-- VAT NUMBER -->
             <tr valign="top">
-                <th scope="row">{{ function('__', 'VAT number', 'HillebrandGoriEshipping')|escape }} :</th>
+                <th scope="row">{{ __( 'VAT number')|escape }} :</th>
                 <td>
                     <input 
                         type="text" 
@@ -254,28 +254,28 @@
 
                     {% include('form-error-message.twig') with {'error': errors.HGES_VAT_NUMBER} %}
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__', 'Enter your VAT number (required)', 'HillebrandGoriEshipping')|escape }}</span>
+                        <span class="tooltiptext">{{ __( 'Enter your VAT number (required)')|escape }}</span>
                     </div>
                 </td>
             </tr>
 
             <!-- OSS -->
             <tr valign="top">
-                <th scope="row">{{ function('__', 'OSS:', 'HillebrandGoriEshipping') }}</th>
+                <th scope="row">{{ __( 'OSS:') }}</th>
                 <td>
                     <select name="{{ hgesOptionName('HGES_VAT_OSS') }}">
-                        <option value="no" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'no', 'no' ) }}>{{ function('__', 'No', 'HillebrandGoriEshipping') }}</option>
-                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'yes', 'no' ) }}>{{ function('__', 'Yes', 'HillebrandGoriEshipping') }}</option>
+                        <option value="no" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
                     </select>
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__', 'Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.', 'HillebrandGoriEshipping') }}</span>
+                        <span class="tooltiptext">{{ __( 'Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.') }}</span>
                     </div>
                 </td>
             </tr>
 
             <!-- EORI NUMBER -->
             <tr valign="top">
-                <th scope="row">{{ function('__', 'EORI number', 'HillebrandGoriEshipping') }} :</th>
+                <th scope="row">{{ __( 'EORI number') }} :</th>
                 <td>
                     <input 
                         type="text" 
@@ -285,13 +285,13 @@
                     >
                     {% include('form-error-message.twig') with {'error': errors.HGES_EORI_NUMBER} %}
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__', 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.', 'HillebrandGoriEshipping') }}</span>
+                        <span class="tooltiptext">{{ __( 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.') }}</span>
                     </div>
                 </td>
             </tr>
             <!-- FDA NUMBER -->
             <tr valign="top">
-                <th scope="row">{{ function('__', 'FDA number', 'HillebrandGoriEshipping') }} :</th>
+                <th scope="row">{{ __( 'FDA number') }} :</th>
                 <td>
                     <input 
                         type="text" 
@@ -301,23 +301,23 @@
                     >
                     {% include('form-error-message.twig') with {'error': errors.HGES_FDA_NUMBER} %}
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__', 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.', 'HillebrandGoriEshipping') }}</span>
+                        <span class="tooltiptext">{{ __( 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.') }}</span>
                     </div>
                 </td>
             </tr>
         </table>
         <!-- INSURANCE -->
-        <h2>{{ function('__', 'Insurance', 'HillebrandGoriEshipping') }}</h2>
+        <h2>{{ __( 'Insurance') }}</h2>
         <table class="form-table states" role="presentation">
             <tr valign="top">
-                <th scope="row">{{ function('__', 'Activate insurance:', 'HillebrandGoriEshipping') }}</th>
+                <th scope="row">{{ __( 'Activate insurance:') }}</th>
                 <td>
                     <select name="{{ hgesOptionName('HGES_ASSURANCE') }}">
-                        <option value="no" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'no', 'no' ) }}>{{ function('__', 'No', 'HillebrandGoriEshipping') }}</option>
-                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'yes', 'no' ) }}>{{ function('__', 'Yes', 'HillebrandGoriEshipping') }}</option>
+                        <option value="no" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
                     </select>
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ function('__', 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)', 'HillebrandGoriEshipping') }}</span>
+                        <span class="tooltiptext">{{ __( 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)') }}</span>
                     </div>
                 </td>
             </tr>
