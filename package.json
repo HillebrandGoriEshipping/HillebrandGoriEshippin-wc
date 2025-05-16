@@ -8,15 +8,20 @@
   },
   "scripts": {
     "watch": "npx wp-scripts start orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
-    "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist"
+    "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
+    "cypress-open": "cypress open",
+    "cypress-run": "node ./cypress/run-tests.mjs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "clsx": "^2.1.1",
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "dotenv": "^16.5.0"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.15.0"
+    "@wordpress/scripts": "^30.15.0",
+    "cypress": "^14.3.3",
+    "mysql2": "^3.14.1"
   }
 }
