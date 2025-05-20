@@ -1,5 +1,6 @@
 import apiClient from "./apiClient.js";
 import utils from "./utils.js";
+const { __ } = window.wp.i18n;
 
 document.addEventListener("DOMContentLoaded", function () {
   const countrySelect = document.getElementById("_producing_country");
@@ -71,13 +72,13 @@ document.addEventListener("DOMContentLoaded", function () {
       if (result === "") {
         // Show an error message
         utils.showAdminNotice(
-          "Product settings are not valid! Please try again",
+          __(hges.messages.productMeta.settingsError),
           errorContainer,
           "error"
         );
       } else {
         utils.showAdminNotice(
-          "Product settings are valid!",
+          __(hges.messages.productMeta.settingsSuccess),
           errorContainer,
           "success"
         );
