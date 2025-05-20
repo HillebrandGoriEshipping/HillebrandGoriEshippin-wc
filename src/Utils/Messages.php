@@ -2,10 +2,22 @@
 
 namespace HGeS\Utils;
 
+
+/**
+ * Class Messages
+ *
+ * Utility class for retrieving message strings from a JSON configuration file.
+ * Provides static methods to fetch individual messages by key or retrieve the entire list of messages.
+ */
 class Messages
 {
-    // Create a PHP class that provides a `getMessage(messageKey)` from a json file based on a given `messageKey`.
-    //This JSON file must contain all the frontend messages and be also usable in the javascript files.
+    /**
+     * Retrieves a message string from a JSON configuration file based on the provided message key.
+     *
+     * @param string $messageKey The key identifying the message to retrieve.
+     * @return string The message string associated with the provided key.
+     * @throws \Exception If the JSON file cannot be read, decoded, or if the message key is not found.
+     */
     public static function getMessage(string $messageKey): string
     {
         $jsonFilePath = HGeS_PLUGIN_DIR . '/assets/js/config/messages.json';
@@ -27,6 +39,14 @@ class Messages
         }
     }
 
+    /**
+     * Retrieves a list of messages from a JSON configuration file.
+     *
+     * @throws \Exception If the JSON file cannot be read, if the JSON cannot be decoded,
+     *                    or if the decoded content is not an array.
+     *
+     * @return array The list of messages as an associative array.
+     */
     public static function getMessageList(): array
     {
         $jsonFilePath = HGeS_PLUGIN_DIR . '/assets/js/config/messages.json';
