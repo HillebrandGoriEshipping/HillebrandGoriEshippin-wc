@@ -170,6 +170,12 @@ class Rate
      */
     public static function getShippingRates($package)
     {
+        // do not attempt retrieving rates if destination address is not set
+        if (empty($package['destination']['city']) || empty($package['destination']['postcode'])) {
+            trigger_error('HillebrandGori eShipping : Destination address is not set, returning empty rates array.', E_USER_NOTICE);
+            return [];
+        }
+
         $shippingRates = self::getRatesFromApi($package);
         if (isset($shippingRates['error'])) {
             return $shippingRates;
