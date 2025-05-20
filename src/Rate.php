@@ -104,9 +104,15 @@ class Rate
 
         $workingDays = get_option(OptionEnum::HGES_WORKING_DAYS, []);;
 
+        if (!$workingDays) {
+            throw new \Exception('No working days set in the configuration.');
+        }
+
         $pickupDate = new \DateTime();
         $countedDays = 0;
-        while ($countedDays <= get_option(OptionEnum::HGES_PREP_TIME)) {
+        $prepTime = get_option(OptionEnum::HGES_PREP_TIME);
+        
+        while ($countedDays <= $prepTime) {
             $pickupDate->modify('+' . $countedDays . ' days');
             if (in_array($pickupDate->format('N'), $workingDays)) {
                 $countedDays++;
