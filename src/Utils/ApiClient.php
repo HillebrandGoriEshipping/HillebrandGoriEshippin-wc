@@ -59,7 +59,15 @@ class ApiClient
         );
 
         if ($response->getStatusCode() !== 200) {
-            throw new \Exception('Error: ' . $response->getStatusCode());
+            $content = $response->getContent(false);
+            $message = '';
+            $data = json_decode($content, true);
+            if (json_last_error() === JSON_ERROR_NONE && isset($data['message'])) {
+                $message = $data['message'];
+            } else {
+                $message = $content;
+            }
+            throw new \Exception('Error: ' . $message);
         }
 
         return [
