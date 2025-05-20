@@ -58,9 +58,14 @@ class ShippingMethod extends \WC_Shipping_Method
      */
     public function calculate_shipping($package = [])
     {
-        $rates = Rate::getShippingRates($package);
-        foreach ($rates as $rate) {
-            $this->add_rate($rate);
+        try {
+           $rates = Rate::getShippingRates($package);
+           foreach ($rates as $rate) {
+               $this->add_rate($rate);
+           }
+        } catch (\Exception $e) {
+            error_log('Error calculating shipping: ' . $e->getMessage());
+            throw new \Exception('Error calculating shipping: ' . $e->getMessage());
         }
     }
 }

@@ -16,7 +16,7 @@ class Rate
      * 
      * @return array The prepared URL parameters
      *
-     * @throws \Throwable If an error occurs while fetching package sizes from the API.
+     * @throws \Exception If an error occurs while fetching package sizes from the API.
      */
     public static function prepareUrlParams($package)
     {
@@ -98,16 +98,15 @@ class Rate
                 }
                 $params['packages'] = $packageParam;
             }
-        } catch (\Throwable $th) {
-            $params['packages'] = [];
+        } catch (\Exception $th) {
+            throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
         }
 
-        $workingDays = get_option(OptionEnum::HGES_WORKING_DAYS, []);;
+        $workingDays = get_option(OptionEnum::HGES_WORKING_DAYS, []);
 
         if (!$workingDays) {
             throw new \Exception('No working days set in the configuration.');
         }
-
 
         // Increment the pickup date to reach the prep time set in the user settings
         // We add a day to the pickup date until the number of working days is spent to reach the prep time
@@ -155,8 +154,7 @@ class Rate
                 return $response['data'];
             }
         } catch (\Exception $e) {
-            error_log('Error fetching rates: ' . $e->getMessage());
-            return ['error' => 'Error fetching rates: ' . $e->getMessage()];
+            throw $e;
         }
 
         return [];
