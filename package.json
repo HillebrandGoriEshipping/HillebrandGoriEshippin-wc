@@ -11,7 +11,7 @@
     "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
     "cypress-open": "cypress open",
     "cypress-run": "node ./cypress/run-tests.mjs",
-    "documentation-generate": "vendor/bin/phpdoc && markdown-to-html-cli --source ./docs/sources/guide/index.md --output ./docs/guide/index.html"
+    "documentation-generate": "vendor/bin/phpdoc && ./generate-md-doc.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +19,9 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
-    "markdown-to-html-cli": "^5.0.3"
+    "fs-extra": "^11.3.0",
+    "marked": "^15.0.12",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@wordpress/scripts": "^30.15.0",
