@@ -4,6 +4,7 @@ namespace HGeS\WooCommerce;
 
 use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Twig;
+use Automattic\WooCommerce\Admin\Overrides\Order;
 
 /**
  * Class ShippingAddressFields
@@ -200,5 +201,33 @@ class ShippingAddressFields {
             'order-edit/shipping-address-custom-fields.twig',
             $data,
         );
+    }
+
+    /**
+     * Displays the custom fields in the order confirmation page in classic UI mode
+     * 
+     * @param string $address
+     * @param string $rawAddress
+     * @param \WC_Order $order
+     * @return string
+     */
+    public static function renderOrderConfirmation(string $address,array $rawAddress, Order $order): string
+    {
+        if ('store-api' === $order->get_created_via()) {
+            return $address;
+        }
+
+        $data = [
+            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),
+            'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
+        ];
+
+        $companyBlock = Twig::getTwig()->render(
+            'checkout/shipping-address-custom-fields.twig',
+            $data,
+        );
+
+        $address .= $companyBlock;
+        return $address;
     }
 }
