@@ -1,4 +1,4 @@
-import config from "./conf.json" with { type: "json" };
+import config from "./config/config.json" with { type: "json" };
 
 // window.hges is the global data object defined server-side
 

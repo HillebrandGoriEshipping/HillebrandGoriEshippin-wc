@@ -3,6 +3,7 @@
 namespace HGeS\Assets;
 
 use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Utils\Messages;
 
 class Scripts
 {
@@ -66,9 +67,9 @@ class Scripts
         wp_enqueue_script_module(
             'hges-product-metas',
             HGeS_PLUGIN_URL . 'assets/js/productMetas.js',
-            [],
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
             false,
-            true
+            ['in_footer' => true]
         );
 
         wp_enqueue_script(
@@ -89,6 +90,7 @@ class Scripts
     {
         $frontendJsGlobalObject = [
             'assetsUrl' => HGeS_PLUGIN_URL . 'assets/',
+            'messages' => Messages::getMessageList(),
         ];
 
         if ($admin) {

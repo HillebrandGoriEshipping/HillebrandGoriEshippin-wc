@@ -1,0 +1,6 @@
+{
+  "productMeta": {
+    "settingsError": "The product settings are incorrect",
+    "settingsSuccess": "The product settings are correct"
+  }
+}
