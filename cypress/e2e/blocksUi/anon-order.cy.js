@@ -1,6 +1,7 @@
 import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
 import { shippingAddressFormBlocksFill } from "../../support/formFill";
+import { checkOrderConfirmationContent } from "../../support/orderConfirmation";
 
 describe('Block UI Order spec', () => {
   before(() => {
@@ -41,15 +42,6 @@ describe('Block UI Order spec', () => {
     cy.get('button.wc-block-components-checkout-place-order-button').should('be.visible');
     cy.get('button.wc-block-components-checkout-place-order-button').click();
 
-    cy.get('h1').should('have.text', 'Order received');
-
-    (["billing","shipping"]).forEach((addressType) => {
-      cy.get(`.woocommerce-column--${addressType}-address`).then(addressColumn => {
-        cy.wrap(addressColumn).find('dt').contains('Business order').should('be.visible');
-        cy.wrap(addressColumn).find('dd').contains('Yes').should('be.visible');
-        cy.wrap(addressColumn).find('dt').contains('Company name').should('be.visible');
-        cy.wrap(addressColumn).find('dd').contains('Test Company').should('be.visible');
-      });
-    });
+    checkOrderConfirmationContent();
   });
 });
