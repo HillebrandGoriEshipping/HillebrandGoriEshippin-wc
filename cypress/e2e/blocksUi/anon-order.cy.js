@@ -1,6 +1,6 @@
 import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
-import { shippingAddressFormFill } from "../../support/formFill";
+import { shippingAddressFormBlocksFill } from "../../support/formFill";
 
 describe('Block UI Order spec', () => {
   before(() => {
@@ -18,7 +18,7 @@ describe('Block UI Order spec', () => {
     cy.get('.wc-block-components-address-form__email input').should('have.value', '');
     cy.get('.wc-block-components-address-form__email input').type('test@test.com');
 
-    shippingAddressFormFill({
+    shippingAddressFormBlocksFill({
       'shipping-first_name': 'Jean',
       'shipping-last_name': 'Némar',
       'shipping-address_1': '1 rue du Test Automatisé',
