@@ -1,6 +1,6 @@
 import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
-import { shippingAddressFormFill } from "../../support/formFill";
+import { shippingAddressFormBlocksFill } from "../../support/formFill";
 
 describe('Block UI Checkout spec', () => {
   before(() => {
@@ -16,7 +16,7 @@ describe('Block UI Checkout spec', () => {
 
     cy.contains('Proceed to Checkout').click();
 
-    shippingAddressFormFill({
+    shippingAddressFormBlocksFill({
       'shipping-first_name': 'Jean',
       'shipping-last_name': 'Némar',
       'shipping-address_1': '1 rue du Test Automatisé',
