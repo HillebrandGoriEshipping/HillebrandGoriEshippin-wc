@@ -6,7 +6,7 @@
 >
     <title>phpDocumentor</title>
     <paths>
-        <output>docs/</output>
+        <output>docs/api</output>
     </paths>
     <version number="0.0.1">
         <api>
