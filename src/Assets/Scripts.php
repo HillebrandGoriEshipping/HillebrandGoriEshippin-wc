@@ -38,6 +38,11 @@ class Scripts
             ['in_footer' => true]
         );
 
+        wp_enqueue_script(
+            'hges-global-object-injection',
+            HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
+        );
+
         self::globalObjectInjection();
     }
 
@@ -61,6 +66,11 @@ class Scripts
             ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
             false,
             ['in_footer' => true]
+        );
+
+        wp_enqueue_script(
+            'hges-global-object-injection',
+            HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
         self::globalObjectInjection(true);
