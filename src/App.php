@@ -30,16 +30,19 @@ class App
             self::runAdmin();
         }
 
-        add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
 
+        add_action('woocommerce_blocks_loaded', [ShippingAddressFields::class, 'register']);
         add_action('wp_enqueue_scripts', [Scripts::class, 'enqueue']);
         add_action('wp_enqueue_scripts', [Styles::class, 'enqueue']);
         add_action('rest_api_init', [CustomEndpoints::class, 'register']);
+        add_action('woocommerce_checkout_create_order', [ShippingAddressFields::class, 'onOrderCreate'], 10, 2);
 
+        add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
         add_filter('woocommerce_package_rates', [ClassicUiRender::class, 'sortShippingMethods'], 10, 2);
         add_filter('woocommerce_cart_shipping_method_full_label', [ClassicUiRender::class, 'renderLabel'], 10, 2);
         add_filter('woocommerce_cart_shipping_packages', [ClassicUiRender::class, 'invalidateRatesCache'], 100);
-        add_action('woocommerce_blocks_loaded', [ShippingAddressFields::class, 'register']);
+        add_filter('woocommerce_checkout_fields', [ShippingAddressFields::class, 'filterClassicUiFields'], 10, 1);
+
     }
 
     /**
@@ -49,6 +52,7 @@ class App
      */
     public static function runAdmin(): void
     {
+        add_action('woocommerce_admin_order_data_after_shipping_address', [ShippingAddressFields::class, 'renderAdminOrderMeta']);
         add_action('admin_enqueue_scripts', [Scripts::class, 'enqueueAdmin']);
         add_action('admin_enqueue_scripts', [Styles::class, 'enqueueAdmin']);
         add_action('admin_init', [self::class, 'router']);

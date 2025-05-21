@@ -2,6 +2,19 @@
 
 namespace HGeS\WooCommerce;
 
+use HGeS\Utils\Enums\GlobalEnum;
+use HGeS\Utils\Twig;
+
+/**
+ * Class ShippingAddressFields
+ * @package HGeS\WooCommerce
+ *
+ * This class is responsible for registering the custom fields in the checkout page. 
+ * The methods are mostly designed to be used in blocks UI mode, but the class also
+ * handles the classic UI mode `woocommerce_checkout_fields` filter callback.
+ *
+ * @see https://developer.woocommerce.com/docs/cart-and-checkout-additional-checkout-fields/
+ */
 class ShippingAddressFields {
 
     /**
@@ -23,6 +36,9 @@ class ShippingAddressFields {
         'SELECT' => 'select',
         'CHECKBOX' => 'checkbox',
     ];
+
+    const WC_ORDER_META_PREFIX_SHIPPING = 'wc_shipping/';
+    const WC_ORDER_META_PREFIX_BILLING = 'wc_billing/';
 
     /**
      * See the woocommerce documentation to get the list of available options
@@ -51,41 +67,16 @@ class ShippingAddressFields {
         'validation' => [],
     ];
 
-/*
-		}
-			}
-		},
-		"customer": {
-			"type": "object",
-			"description": "Customer information",
-			"properties": {
-				"id": {
-					"type": "integer",
-					"description": "Customer ID, this will be 0 if the customer is not logged in"
-				},
-				"billing_address": {
-					"$ref": "#/definitions/address",
-					"description": "Customer's billing address"
-				},
-				"shipping_address": {
-					"$ref": "#/definitions/address",
-					"description": "Customer's shipping address"
-				},
-				"address": {
-					"$ref": "#/definitions/address",
-					"description": "This is a dynamic field that will be the billing or shipping address depending on the context of the field being evaluted."
-				}
-			}
-		}
-	},
-	"definitions": {
-*/
     /**
      * List of translatable option fields
      */
     const TRANSLATABLE_FIELDS = [
         'optionLabel', 'label'
     ];
+
+    const SHIPPING_IS_COMPANY_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'];
+    const SHIPPING_COMPANY_NAME_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'];
+
 
     /**
      * Controls the custom field registration
@@ -123,9 +114,91 @@ class ShippingAddressFields {
         $translated = $options;
         foreach ($options as $optionKey => $optionValue) {
             if (in_array($optionKey, self::TRANSLATABLE_FIELDS)) {
-                $translated[$optionKey] = \__($optionValue, 'HillebrandGorieShipping');
+                $translated[$optionKey] = __($optionValue, GlobalEnum::TRANSLATION_DOMAIN);
             }
         }
         return $translated;
+    }
+
+    /**
+     * Add the fields to the checkout fields array in classic UI mode
+     * 
+     * @param array $fields
+     * @return array
+     */
+    public static function filterClassicUiFields(array $fields): array
+    {
+        $isCompanyCheckbox = [
+            'type' => 'checkbox',
+            'label' => __(self::IS_COMPANY_CHECKBOX_OPTIONS['label'], GlobalEnum::TRANSLATION_DOMAIN),
+            'class' => ['form-row-wide'],
+            'required' => false,
+        ];
+        $companyNameField = [
+            'type' => 'text',
+            'label' => __(self::COMPANY_NAME_FIELD_OPTIONS['label'], GlobalEnum::TRANSLATION_DOMAIN),
+            'class' => ['form-row-wide'],
+            'required' => false,
+        ];
+        // generate the field id to match the behavior of the blocks UI mode 
+        $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']] = $isCompanyCheckbox;
+        $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']] = $isCompanyCheckbox;
+        $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
+        $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
+        return $fields;
+    }
+
+    /**
+     * Handles the order creation process to save the custom fields in classic UI mode
+     * 
+     * @param \WC_Order $order
+     */
+    public static function onOrderCreate($order, $data): void
+    {
+        if (empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']])
+            && empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']])
+        ) {
+            return;
+        }
+
+        $customPostFields = [
+            self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'],
+            self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'],
+            self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id'],
+            self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'],
+        ];
+
+        foreach ($customPostFields as $field) {
+            if (isset($data[$field])) {
+                $order->update_meta_data('_'.$field, $data[$field]);
+            }
+        }
+
+        if (!$data['ship_to_different_address']) {
+            $billingIsCompanyValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']];
+            $billingCompanyNameValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']];
+            
+            $order->update_meta_data(self::SHIPPING_IS_COMPANY_METANAME, $billingIsCompanyValue);
+            $order->update_meta_data(self::SHIPPING_COMPANY_NAME_METANAME, $billingCompanyNameValue);
+        }
+    }
+
+    /**
+     * Displays the custom fields in the order edit page
+     * 
+     * @param \WC_Order $order
+     * @return void
+     */
+    public static function renderAdminOrderMeta(\WC_Order $order): void
+    {
+        $data = [
+            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),
+            'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
+        ];
+
+        echo Twig::getTwig()->render(
+            'order-edit/shipping-address-custom-fields.twig',
+            $data,
+        );
     }
 }
