@@ -213,7 +213,7 @@ class ShippingAddressFields {
      */
     public static function renderOrderConfirmation(string $address,array $rawAddress, Order $order): string
     {
-        if ('store-api' === $order->get_created_via()) {
+        if ('store-api' === $order->get_created_via() || is_admin()) {
             return $address;
         }
 
