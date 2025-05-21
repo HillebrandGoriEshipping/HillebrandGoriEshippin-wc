@@ -4,7 +4,6 @@ namespace HGeS\Utils\Enums;
 
 /**
  * Class GlobalEnum
- * @package HGeS\Utils\Enums
  *
  * This class is used to define the global enums for the plugin.
  */

@@ -8,7 +8,6 @@ use Automattic\WooCommerce\Admin\Overrides\Order;
 
 /**
  * Class ShippingAddressFields
- * @package HGeS\WooCommerce
  *
  * This class is responsible for registering the custom fields in the checkout page. 
  * The methods are mostly designed to be used in blocks UI mode, but the class also
