@@ -30,8 +30,8 @@ class ShippingAddressFields {
      */
     const IS_COMPANY_CHECKBOX_OPTIONS = [
         'id' => 'hges/is-company-address',
-        'label' => 'Company address',
-        'optionalLabel' => 'I am a company',
+        'label' => 'Business order',
+        'optionalLabel' => 'Business order',
         'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
         'type' => self::WC_CHECKOUT_FIELDS_TYPES['CHECKBOX'],
         'attributes' => [],
@@ -46,10 +46,8 @@ class ShippingAddressFields {
         'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
         'type' => self::WC_CHECKOUT_FIELDS_TYPES['TEXT'],
         'attributes' => [],
-        'required' => true,
-        'hidden'   => [
-            'if' => true
-        ],
+        'required' => false,
+        'hidden' => false,
         'validation' => [],
     ];
 
