@@ -26,4 +26,14 @@ describe('Block UI Cart spec', () => {
     selectRateInAccordion('Other shipping method', 'Flat rate');
     console.log('Anon Cart spec done');
   });
+
+  it('Remove items from cart', () => {
+    cy.visit('/cart');
+    cy.get('.wc-block-cart-item__remove-link').click({ multiple: true });
+    cy.wait(10000);
+
+    // Check that the cart is empty
+    cy.get('.wp-block-woocommerce-empty-cart-block').should('exist');
+    cy.get('.wp-block-woocommerce-empty-cart-block').should('be.visible');
+  });
 });

@@ -1,6 +1,6 @@
 const { __ } = window.wp.i18n;
 const { select } = window.wp.data;
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import LoadingMask from "../blocks/LoadingMask";
 import ShippingRatesContainer from "../blocks/ShippingRatesContainer";
@@ -10,37 +10,24 @@ const HgesShippingRates = () => {
   const cartStore = select("wc/store/cart");
   const shippingPackages = cartStore.getShippingRates();
 
-  wp.data.subscribe(() => {
-    const isRateBeingSelected = cartStore.isShippingRateBeingSelected();
-    setLoading(isRateBeingSelected);
+  if (
+    !Array.isArray(shippingPackages) ||
+    !shippingPackages.length ||
+    !shippingPackages[0]?.shipping_rates?.length
+  ) {
+    return null;
+  }
 
-    const LoadingMask = document.querySelector(
-      ".order-totals-shipping-rates-loading-mask"
-    );
-    const totalsShippingLine = document.querySelector(
-      ".wc-block-components-totals-shipping"
-    );
-    if (totalsShippingLine) {
-      totalsShippingLine.parentElement.appendChild(LoadingMask);
-    }
-
-    if (isRateBeingSelected) {
-      totalsShippingLine.style.display = "none";
-      LoadingMask.style.display = "block";
-    } else {
-      totalsShippingLine.style.display = "block";
-      LoadingMask.style.display = "none";
-    }
-  });
+  const rates = shippingPackages[0].shipping_rates;
 
   const shippingRates = [];
 
-  shippingPackages[0].shipping_rates.forEach((r, i) => {
+  rates.forEach((r, i) => {
     if (r.method_id === "pickup_location") {
       return;
     }
-  
-    r.meta_data.forEach((md) => {
+
+    r.meta_data?.forEach((md) => {
       r[md.key] = md.value;
     });
 
@@ -51,10 +38,11 @@ const HgesShippingRates = () => {
 
     shippingRates.push(newRate);
   });
-  // Sort the shipping rates by the door delivery property
+
   const doorDeliveryRates = [];
   const pickupRates = [];
   const otherRates = [];
+
   shippingRates.forEach((rate) => {
     if (rate.doorDelivery === "1") {
       doorDeliveryRates.push(rate);
@@ -64,6 +52,32 @@ const HgesShippingRates = () => {
       otherRates.push(rate);
     }
   });
+
+  useEffect(() => {
+    const unsubscribe = wp.data.subscribe(() => {
+      const isRateBeingSelected = cartStore.isShippingRateBeingSelected();
+      setLoading(isRateBeingSelected);
+
+      const LoadingMask = document.querySelector(".order-totals-shipping-rates-loading-mask");
+      const totalsShippingLine = document.querySelector(".wc-block-components-totals-shipping");
+
+      if (totalsShippingLine && totalsShippingLine.parentElement && LoadingMask) {
+        if (!totalsShippingLine.parentElement.contains(LoadingMask)) {
+          totalsShippingLine.parentElement.appendChild(LoadingMask);
+        }
+
+        if (isRateBeingSelected) {
+          totalsShippingLine.style.display = "none";
+          LoadingMask.style.display = "block";
+        } else {
+          totalsShippingLine.style.display = "block";
+          LoadingMask.style.display = "none";
+        }
+      }
+    });
+
+    return () => unsubscribe?.();
+  }, []);
 
   return (
     <LoadingMask
@@ -83,5 +97,4 @@ const HgesShippingRates = () => {
     </LoadingMask>
   );
 };
-
 export default HgesShippingRates;
