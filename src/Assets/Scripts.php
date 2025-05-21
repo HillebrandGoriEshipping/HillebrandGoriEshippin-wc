@@ -8,15 +8,6 @@ use HGeS\Utils\Messages;
 class Scripts
 {
     /**
-     * The script key list for which we want to provide the global JS object
-     */
-    const GLOBAL_INJECT_TO = [
-        'hges-shipping-rates-fill',
-        'hges-order-recap-fill',
-        'hges-global-object-injection',
-    ];
-
-    /**
      * Enqueue the scripts for the frontend
      *
      * @return void
@@ -100,12 +91,10 @@ class Scripts
         $jsonObject = json_encode($frontendJsGlobalObject);
         $javascriptString =  "window.hges = $jsonObject;";
 
-        foreach (self::GLOBAL_INJECT_TO as $script) {
-            wp_add_inline_script(
-                $script,
-                $javascriptString,
-                'before'
-            );
-        }
+        wp_add_inline_script(
+            'hges-global-object-injection',
+            $javascriptString,
+            'before'
+        );
     }
 }
