@@ -2,6 +2,7 @@ describe('Admin Bottle shipping class spec', () => {
   beforeEach(() => {
         cy.visit('/wp/wp-admin/admin.php?page=wc-settings&tab=shipping&section=classes');
         cy.get('#user_login').type('hges');
+        cy.wait(1000);
         cy.get('#user_pass').type('hges');
         cy.get('#wp-submit').click();
     });
