@@ -60,13 +60,17 @@ class Scripts
             );
         }
 
-        wp_enqueue_script_module(
-            'hges-product-metas',
-            HGeS_PLUGIN_URL . 'assets/js/productMetas.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
-            false,
-            ['in_footer' => true]
-        );
+        $screen = get_current_screen();
+
+        if ($screen && $screen->post_type === 'product' && $screen->base === 'post') {
+            wp_enqueue_script_module(
+                'hges-product-metas',
+                HGeS_PLUGIN_URL . 'assets/js/productMetas.js',
+                ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+                false,
+                ['in_footer' => true]
+            );
+        }
 
         wp_enqueue_script(
             'hges-global-object-injection',
