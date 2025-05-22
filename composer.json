@@ -7,7 +7,8 @@
   "scripts": {
     "test": [
       "phpunit tests/"
-    ]
+    ],
+    "documentation-generate": "vendor/bin/phpdoc --template=\"vendor/saggre/phpdocumentor-markdown/themes/markdown\""
   },
   "require": {
     "twig/twig": "^3.20",
@@ -15,7 +16,8 @@
     "symfony/validator": "^7.2"
   },
   "require-dev": {
-    "phpdocumentor/shim": "^3.7"
+    "phpdocumentor/shim": "^3.7",
+    "saggre/phpdocumentor-markdown": "^0.1.4"
   },
   "config": {
     "allow-plugins": {
