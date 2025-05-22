@@ -7,8 +7,9 @@ describe('Admin Bottle shipping class spec', () => {
     });
     
     it ('Check bottle shipping class exist in shipping classes list', () => {
-        cy.get('wc-shipping-class-name').find('.view').should('exist');
-        cy.get('wc-shipping-class-name').find('.view').contains('Bottle');
+        cy.get('.wc-shipping-class-name').should('be.visible');
+        cy.get('.wc-shipping-class-name').find('.view').should('exist');
+        cy.get('.wc-shipping-class-name').find('.view').contains('Bottle');
     });
     
     it ('Check bottle shipping class exist in product settings', () => {
