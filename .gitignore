@@ -10,6 +10,6 @@ node_modules
 /cypress/downloads
 
 /docs/*
-!/docs/sources
+!/docs/guide
 
 /.phpdoc
