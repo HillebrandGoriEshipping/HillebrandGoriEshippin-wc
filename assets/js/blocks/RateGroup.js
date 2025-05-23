@@ -26,7 +26,7 @@ const getRadioButtonId = (rate) => {
 };
 // hack, waiting for WooCommerce to build a customizable shuipping method block
 //wc-blocks_render_blocks_frontend
-const RateGroup = ({ rates, hasLogo = true }) => {
+const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
   rates = rates.map((rate) => {
     let logoUrl = window.hges.assetsUrl + "img/" + rate.carrierName + ".png";
 
@@ -88,7 +88,7 @@ const RateGroup = ({ rates, hasLogo = true }) => {
                   </p>
                 </div>
 
-                {!rate.isPickup || !rate.selected ? '': (
+                {!rate.isPickup || !rate.selected || currentContext === 'woocommerce/cart' ? '': (
                   <div className="pickup-point-button">
                     <button onClick={openSelectPickupPointModal}>{__(`Choose your pickup point`)}</button>
                   </div>
