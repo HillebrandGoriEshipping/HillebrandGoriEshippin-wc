@@ -62,35 +62,6 @@ const HgesShippingRates = () => {
   }
 
   const rates = shippingPackages[0].shipping_rates;
-    const LoadingMask = document.querySelector(
-      ".order-totals-shipping-rates-loading-mask"
-    );
-    const totalsShippingLine = document.querySelector(
-      ".wc-block-components-totals-shipping"
-    );
-    if (totalsShippingLine && LoadingMask) {
-      totalsShippingLine.parentElement.appendChild(LoadingMask);
-    }
-
-    if (!LoadingMask || !totalsShippingLine) {
-      return;
-    }
-    
-    if (isRateBeingSelected) {
-      totalsShippingLine.style.display = "none";
-      LoadingMask.style.display = "block";
-    } else {
-      totalsShippingLine.style.display = "block";
-      LoadingMask.style.display = "none";
-    }
-
-    shippingPackages.forEach(p => {
-      const selectedRate = p.shipping_rates.find(rate => rate.selected);
-      if (selectedRate && selectedRate.doorDelivery)  {
-        window.dispatchEvent(new Event('hges:pickup-points-unselect'));
-      }
-    });
-  });
 
   const shippingRates = [];
 
