@@ -19,7 +19,7 @@ class BottleShippingClass
     public static function create(): void
     {
         $class_name = 'Bottle';
-        $slug       = sanitize_title($class_name);
+        $slug = sanitize_title($class_name);
 
         $existing = get_terms('product_shipping_class', [
             'slug'   => $slug,
