@@ -10,7 +10,7 @@ class Order {
     /**
      * The pickup point meta key used in database
      */
-    const PICKUP_POINT_META_KEY = 'pickup_point';
+    const PICKUP_POINT_META_KEY = 'hges_pickup_point';
 
     /**
      * Update the selected pickup point for the given order
