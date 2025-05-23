@@ -1,5 +1,6 @@
 import addToCart from "../../support/addToCart";
 import { selectRateInAccordion } from "../../support/shippingRates";
+import { blocksFillDeliveryAddress } from "../../support/cartPageHelper";
 
 describe('Block UI Cart spec', () => {
   before(() => {
@@ -12,23 +13,28 @@ describe('Block UI Cart spec', () => {
 
   it('Select a shipping method in cart view', () => {
     cy.visit('/cart');
-
-    // Define a country and a city to enable the display of the shipping rates
-    const cartShippingFormButton = cy.get('.wc-block-components-totals-shipping-panel > div[role="button"]').should('be.visible');
-    cartShippingFormButton.click();
-    cy.get('.wc-block-components-address-form__postcode input').type('45000');
-    cy.get('.wc-block-components-address-form__city input').type('Orléans');
-    cy.get('form.wc-block-components-shipping-calculator-address .wc-block-components-shipping-calculator-address__button').click();
+    cy.get('h1').contains('Cart').should('be.visible');
+    blocksFillDeliveryAddress();
 
     // select a shipping method
     selectRateInAccordion('Door Delivery', 'Chrono 18');
-    // then another
     selectRateInAccordion('Other shipping method', 'Flat rate');
+    // then another
     console.log('Anon Cart spec done');
+  });
+
+  it('Select a pickup delivery mode shipping method in checkout view', () => {
+    cy.visit('/cart');
+    cy.get('h1').contains('Cart').should('be.visible');
+    blocksFillDeliveryAddress();
+
+    // select a pickup shipping method
+    selectRateInAccordion('Pickup points', 'Chrono Relais 13H');
   });
 
   it('Remove items from cart', () => {
     cy.visit('/cart');
+    cy.get('h1').contains('Cart').should('be.visible');
     cy.get('.wc-block-cart-item__remove-link').click({ multiple: true });
     cy.wait(10000);
 
