@@ -19,13 +19,13 @@ describe('Api key validation spec', () => {
     cy.get('.notice-success').contains(messages.apiKeyValidation.apiKeySuccess);
   });
 
-    it ('Check api key validation error', () => {
-        cy.get('#api-input').should('be.visible');
-        cy.get('#api-input').clear();
-        cy.get('#api-input').type('12345');
-        cy.get('#validate-api').click();
-        cy.get('#api-input').should('have.class', 'invalid');
-        cy.get('.notice-error').should('be.visible');
-        cy.get('.notice-error').contains(messages.apiKeyValidation.apiKeyError);
-    });
+  it ('Check api key validation error', () => {
+    cy.get('#api-input').should('be.visible');
+    cy.get('#api-input').clear();
+    cy.get('#api-input').type('12345');
+    cy.get('#validate-api').click();
+    cy.get('#api-input').should('have.class', 'invalid');
+    cy.get('.notice-error').should('be.visible');
+    cy.get('.notice-error').contains(messages.apiKeyValidation.apiKeyError);
+  });
 });
