@@ -12,9 +12,14 @@ export default {
     const method = "GET";
 
     try {
-      const response = await fetch(url, { method, headers });
+    const response = await fetch(url, { method, headers });
 
-      return response.json();
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`HTTP ${response.status} - ${errorText}`);
+    }
+
+    return response.json();
     } catch (e) {
       throw new Error("Error in API Client : " + e.message);
     }
