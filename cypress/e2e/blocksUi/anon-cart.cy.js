@@ -30,6 +30,10 @@ describe('Block UI Cart spec', () => {
 
     // select a pickup shipping method
     selectRateInAccordion('Pickup points', 'Chrono Relais 13H');
+
+    cy.get('.rate-content.selected').then(($label) => {
+      const pickupButton = cy.wrap($label).get('div.pickup-point-button > button').should('not.exist');
+    });
   });
 
   it('Remove items from cart', () => {
