@@ -23,16 +23,16 @@ const HgesShippingRates = () => {
     const loadingMask = document.querySelector(".order-totals-shipping-rates-loading-mask");
     const totalsShippingLine = document.querySelector(".wc-block-components-totals-shipping");
 
-    // On ne fait rien si les éléments n'existent pas encore
+    // We check if the loading mask and totalsShippingLine are available, if not we return
     if (!loadingMask || !totalsShippingLine || !totalsShippingLine.parentElement) {
       return;
     }
 
-    // On vérifie que le masque n'est pas déjà dans le parent pour éviter les conflits
+    // We check if the loading mask is already appended to avoid duplicates
     const alreadyAppended = Array.from(totalsShippingLine.parentElement.children).includes(loadingMask);
 
     if (!alreadyAppended) {
-      // On clone le masque au lieu de déplacer l’élément géré par React
+      // We clone the loading mask to avoid conflicts with other plugins
       const clonedMask = loadingMask.cloneNode(true);
       clonedMask.style.display = isRateBeingSelected ? "block" : "none";
       clonedMask.classList.add("cloned-shipping-mask");
