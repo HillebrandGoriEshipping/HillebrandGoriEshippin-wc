@@ -1,5 +1,6 @@
 import apiClient from "./apiClient.js";
 import utils from "./utils.js";
+const { __ } = window.wp.i18n;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Select the API key validation button
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // If the API key is empty, show an error message & change input css class
     if (result) {
       utils.showAdminNotice(
-        "API Key is valid! You can now use the plugin.",
+        __(hges.messages.apiKeyValidation.apiKeySuccess),
         document.querySelector("#api-input").parentElement,
         "success"
       );
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       // If the API key is invalid, show an error message & change input css class
       utils.showAdminNotice(
-        "API Key is invalid! Please try again",
+        __(hges.messages.apiKeyValidation.apiKeyError),
         document.querySelector("#api-input").parentElement,
         "error"
       );

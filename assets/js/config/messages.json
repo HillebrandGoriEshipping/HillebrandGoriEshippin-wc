@@ -1,4 +1,8 @@
 {
+  "apiKeyValidation": {
+    "apiKeyError": "API Key is invalid! Please try again",
+    "apiKeySuccess": "API Key is valid! You can now use the plugin."
+  },
   "productMeta": {
     "settingsError": "The product settings are incorrect",
     "settingsSuccess": "The product settings are correct"
