@@ -44,4 +44,63 @@ describe('Block UI Order spec', () => {
 
     checkOrderConfirmationContent();
   });
+
+
+  it('Selects a pickup point in map', () => {
+    cy.visit('/cart');
+
+    cy.contains('Proceed to Checkout').click();
+    cy.get('.wc-block-components-address-form__email input').should('be.visible');
+    cy.get('.wc-block-components-address-form__email input').should('have.value', '');
+    cy.get('.wc-block-components-address-form__email input').type('test@test.com');
+    shippingAddressFormBlocksFill({
+      'shipping-first_name': 'Jean',
+      'shipping-last_name': 'Némar',
+      'shipping-address_1': '1 rue du Test Automatisé',
+      'shipping-postcode': '45000',
+      'shipping-city': 'Orléans'
+    });
+
+    // select a pickup shipping method
+    selectRateInAccordion('Pickup points', 'Chrono Relais 13H');
+
+    cy.get('.rate-content.selected').then(($label) => {
+      const pickupButton = cy.wrap($label).get('div.pickup-point-button > button').should('be.visible');
+      pickupButton.click();
+    });
+
+    cy.get('#pickup-points-map-modal').should('be.visible');
+    cy.get('#pickup-points-map').should('be.visible');
+    cy.get('#pickup-points-list .pickup-point').should('be.visible').then($pickupPointItem => {
+      cy.wrap($pickupPointItem).first().find('a').click();
+    });
+
+    cy.get('#pickup-points-list .pickup-point').should('be.visible').then($pickupPointItem => {
+      cy.wrap($pickupPointItem).eq(1).find('a').click();
+    });
+
+    let thirdPickupPointName = '';
+    cy.get('#pickup-points-list .pickup-point').should('be.visible').then($pickupPointItem => {
+      thirdPickupPointName = $pickupPointItem.eq('2').find('a').text();
+      cy.wrap($pickupPointItem).eq(2).find('a').click();
+
+      cy.get('#pickup-points-map .marker-popup__title').should('be.visible').then($popup => {
+        const popupText = $popup.text();
+        expect(popupText).to.include(thirdPickupPointName);
+
+        cy.get('button.pickup-point__select-btn').click();
+      });
+    });
+
+    cy.get('#pickup-points-map-modal').should('not.be.visible');
+    cy.get('.selected-pickup-point').should('be.visible').then($selectedPickupPoint => {
+      cy.log('Selected pickup point:', $selectedPickupPoint);
+      const selectedText = $selectedPickupPoint.text();
+      cy.log('Selected pickup point text:', selectedText);
+      expect(selectedText).to.include(thirdPickupPointName);
+    });
+    cy.get('button').contains('Place Order').click(); 
+
+    cy.get('.woocommerce-column--shipping-address address strong').contains(thirdPickupPointName).should('be.visible');
+  });
 });
