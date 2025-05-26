@@ -1,19 +1,62 @@
-const { __ } = window.wp.i18n;
-const { select } = window.wp.data;
 import { useState, useEffect } from "react";
+import { useSelect } from "@wordpress/data";
+const { select } = window.wp.data;
+const { __ } = window.wp.i18n;
 
 import LoadingMask from "../blocks/LoadingMask";
 import ShippingRatesContainer from "../blocks/ShippingRatesContainer";
+const cartStore = wp.data.select("wc/store/cart");
 
 const HgesShippingRates = () => {
   const [loading, setLoading] = useState(false);
-  const cartStore = select("wc/store/cart");
-  const shippingPackages = cartStore.getShippingRates();
+
+  const shippingPackages = useSelect(
+    () => cartStore.getShippingRates(),
+    []
+  );
+
+ useEffect(() => {
+  const unsubscribe = wp.data.subscribe(() => {
+
+    const isRateBeingSelected = cartStore?.isShippingRateBeingSelected?.() || false;
+    setLoading(isRateBeingSelected);
+
+    const loadingMask = document.querySelector(".order-totals-shipping-rates-loading-mask");
+    const totalsShippingLine = document.querySelector(".wc-block-components-totals-shipping");
+
+    // We check if the loading mask and totalsShippingLine are available, if not we return
+    if (!loadingMask || !totalsShippingLine || !totalsShippingLine.parentElement) {
+      return;
+    }
+
+    // We check if the loading mask is already appended to avoid duplicates
+    const alreadyAppended = Array.from(totalsShippingLine.parentElement.children).includes(loadingMask);
+
+    if (!alreadyAppended) {
+      // We clone the loading mask to avoid conflicts with other plugins
+      const clonedMask = loadingMask.cloneNode(true);
+      clonedMask.style.display = isRateBeingSelected ? "block" : "none";
+      clonedMask.classList.add("cloned-shipping-mask");
+      totalsShippingLine.parentElement.appendChild(clonedMask);
+    } else {
+      const clonedMask = document.querySelector(".cloned-shipping-mask");
+      if (clonedMask) {
+        clonedMask.style.display = isRateBeingSelected ? "block" : "none";
+      }
+    }
+
+    totalsShippingLine.style.display = isRateBeingSelected ? "none" : "block";
+  });
+
+  return () => unsubscribe?.();
+}, []);
+
 
   if (
     !Array.isArray(shippingPackages) ||
-    !shippingPackages.length ||
-    !shippingPackages[0]?.shipping_rates?.length
+    shippingPackages.length === 0 ||
+    !shippingPackages[0]?.shipping_rates ||
+    shippingPackages[0].shipping_rates.length === 0
   ) {
     return null;
   }
@@ -23,20 +66,18 @@ const HgesShippingRates = () => {
   const shippingRates = [];
 
   rates.forEach((r, i) => {
-    if (r.method_id === "pickup_location") {
-      return;
-    }
+    if (!r || r.method_id === "pickup_location") return;
 
     r.meta_data?.forEach((md) => {
-      r[md.key] = md.value;
+      if (md?.key) {
+        r[md.key] = md.value;
+      }
     });
 
-    const newRate = {
+    shippingRates.push({
       ...r,
       key: i,
-    };
-
-    shippingRates.push(newRate);
+    });
   });
 
   const doorDeliveryRates = [];
@@ -53,48 +94,19 @@ const HgesShippingRates = () => {
     }
   });
 
-  useEffect(() => {
-    const unsubscribe = wp.data.subscribe(() => {
-      const isRateBeingSelected = cartStore.isShippingRateBeingSelected();
-      setLoading(isRateBeingSelected);
-
-      const LoadingMask = document.querySelector(".order-totals-shipping-rates-loading-mask");
-      const totalsShippingLine = document.querySelector(".wc-block-components-totals-shipping");
-
-      if (totalsShippingLine && totalsShippingLine.parentElement && LoadingMask) {
-        if (!totalsShippingLine.parentElement.contains(LoadingMask)) {
-          totalsShippingLine.parentElement.appendChild(LoadingMask);
-        }
-
-        if (isRateBeingSelected) {
-          totalsShippingLine.style.display = "none";
-          LoadingMask.style.display = "block";
-        } else {
-          totalsShippingLine.style.display = "block";
-          LoadingMask.style.display = "none";
-        }
-      }
-    });
-
-    return () => unsubscribe?.();
-  }, []);
-
   return (
     <LoadingMask
       isLoading={loading}
-      screenReaderLabel={__(
-        "Loading shipping rates",
-        "hges"
-      )}
+      screenReaderLabel={__("Loading shipping rates", "hges")}
       showSpinner={true}
     >
       <ShippingRatesContainer
         doorDeliveryRates={doorDeliveryRates}
         pickupRates={pickupRates}
         otherRates={otherRates}
-        setLoading={setLoading}
       />
     </LoadingMask>
   );
 };
+
 export default HgesShippingRates;
