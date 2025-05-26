@@ -2,6 +2,7 @@
 
 namespace HGeS;
 
+use HGeS\Admin\Products\ProductBottle;
 use HGeS\Admin\Settings\Menu;
 use HGeS\Admin\Settings\SettingsController;
 use HGeS\Api\CustomEndpoints;
@@ -65,6 +66,7 @@ class App
         add_action('woocommerce_product_after_variable_attributes', [ProductMeta::class, 'displayVariableProductField'], 10, 3);
         add_action('woocommerce_save_product_variation', [ProductMeta::class, 'saveVariableProductField'], 10, 2);
         add_action('init', [BottleShippingClass::class, 'create']);
+        add_filter('product_type_selector', [ProductBottle::class, 'addToSelect']);
     }
 
     /**
