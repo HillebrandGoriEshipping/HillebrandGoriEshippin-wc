@@ -20,11 +20,12 @@ class ProductMeta
     public static function customTab(array $tabs): array
     {
         $tabs['HGeS_product_tab'] = [
-            'label'    => __('Hillebrand Gori eSHipping', 'woocommerce'),
+            'label'    => __('Bottle Settings', 'woocommerce'),
             'target'   => 'HGeS_product_tab_options',
-            'class'    => [],
+            'class'    => ['show_if_simpleBottleProduct', 'show_if_variableBottleProduct'],
             'priority' => 21,
         ];
+
         return $tabs;
     }
 

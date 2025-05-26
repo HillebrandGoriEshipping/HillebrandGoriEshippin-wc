@@ -14,6 +14,9 @@ use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\ShippingMethod;
 use HGeS\WooCommerce\BottleShippingClass;
 use HGeS\WooCommerce\PickupPointsRender;
+use HGeS\Admin\Products\SimpleProductBottle;
+use HGeS\Admin\Products\VariableProductBottle;
+
 
 /**
  * Plugin entry class
@@ -66,7 +69,8 @@ class App
         add_action('woocommerce_product_after_variable_attributes', [ProductMeta::class, 'displayVariableProductField'], 10, 3);
         add_action('woocommerce_save_product_variation', [ProductMeta::class, 'saveVariableProductField'], 10, 2);
         add_action('init', [BottleShippingClass::class, 'create']);
-        add_filter('product_type_selector', [ProductBottle::class, 'addToSelect']);
+        add_filter('product_type_selector', [SimpleProductBottle::class, 'addToSelect']);
+        add_filter('product_type_selector', [VariableProductBottle::class, 'addToSelect']);
     }
 
     /**
