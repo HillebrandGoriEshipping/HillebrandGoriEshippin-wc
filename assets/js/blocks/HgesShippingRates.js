@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
 import { useSelect } from "@wordpress/data";
+const { select } = window.wp.data;
 const { __ } = window.wp.i18n;
 
 import LoadingMask from "../blocks/LoadingMask";
 import ShippingRatesContainer from "../blocks/ShippingRatesContainer";
+const cartStore = wp.data.select("wc/store/cart");
 
 const HgesShippingRates = () => {
   const [loading, setLoading] = useState(false);
 
   const shippingPackages = useSelect(
-    (select) => select("wc/store/cart").getShippingRates(),
+    () => cartStore.getShippingRates(),
     []
   );
 
  useEffect(() => {
   const unsubscribe = wp.data.subscribe(() => {
-    const cartStore = wp.data.select("wc/store/cart");
 
     const isRateBeingSelected = cartStore?.isShippingRateBeingSelected?.() || false;
     setLoading(isRateBeingSelected);
@@ -68,7 +69,9 @@ const HgesShippingRates = () => {
     if (!r || r.method_id === "pickup_location") return;
 
     r.meta_data?.forEach((md) => {
-      if (md?.key) r[md.key] = md.value;
+      if (md?.key) {
+        r[md.key] = md.value;
+      }
     });
 
     shippingRates.push({
