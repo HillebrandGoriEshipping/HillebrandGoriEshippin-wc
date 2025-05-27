@@ -66,6 +66,17 @@ class ShippingAddressFields {
         'hidden' => false,
         'validation' => [],
     ];
+    const EXCISE_NUMBER_FIELD_OPTIONS = [
+        'id' => 'hges/excise-number',
+        'label' => 'Excise number',
+        'optionalLabel' => 'Excise number',
+        'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
+        'type' => self::WC_CHECKOUT_FIELDS_TYPES['TEXT'],
+        'attributes' => ['type' => 'number'],
+        'required' => false,
+        'hidden' => false,
+        'validation' => [],
+    ];
 
     /**
      * List of translatable option fields
@@ -76,6 +87,7 @@ class ShippingAddressFields {
 
     const SHIPPING_IS_COMPANY_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'];
     const SHIPPING_COMPANY_NAME_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'];
+    const SHIPPING_EXCISE_NUMBER_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id'];
 
 
     /**
@@ -85,6 +97,7 @@ class ShippingAddressFields {
     {
         self::isCompanyField();
         self::companyNameField();
+        self::exciseNumberField();
     }
 
     /**
@@ -105,6 +118,14 @@ class ShippingAddressFields {
         \woocommerce_register_additional_checkout_field($options);
     }
 
+    /**
+     * Registers the "excise number" text field
+     */
+    public static function exciseNumberField(): void
+    {
+        $options = self::applyI18n(self::EXCISE_NUMBER_FIELD_OPTIONS);
+        \woocommerce_register_additional_checkout_field($options);
+    }
 
     /**
      * Replaces the translatable strings from a given options array
