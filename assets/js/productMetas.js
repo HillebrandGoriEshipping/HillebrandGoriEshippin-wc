@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const target = document.querySelector("#product_attributes");
   
   loadAppellationInSelect();
+
+  hges.pricableProductTypes.forEach((productType) => {
+    document.querySelector('.options_group.pricing').classList.add('show_if_' + productType);
+  });
   
   const mutationObserver = new MutationObserver((mutationsList, observer) => {
     for (const mutation of mutationsList) {

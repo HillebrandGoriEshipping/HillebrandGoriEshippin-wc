@@ -2,6 +2,7 @@
 
 namespace HGeS\Assets;
 
+use HGeS\Admin\Products\SimpleProductBottle;
 use HGeS\Admin\Products\VariableProductBottle;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
@@ -94,6 +95,9 @@ class Scripts
             'messages' => Messages::getMessageList(),
             'variableProductTypes' => [
                 VariableProductBottle::PRODUCT_TYPE,
+            ],
+            'pricableProductTypes' => [
+                SimpleProductBottle::PRODUCT_TYPE,
             ],
         ];
 

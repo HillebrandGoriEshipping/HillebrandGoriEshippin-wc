@@ -117,4 +117,42 @@ class ProductMeta
             );
         }
     }
+
+    /**
+     * Returns the fully qualified class name for a given product type.
+     *
+     * @param string $classname     The default class name to return if no match is found.
+     * @param string $product_type  The product type identifier to check.
+     * @return string               The fully qualified class name for the product type, or the default class name.
+     */
+    public static function getClassNameByProductType(string $classname, string $product_type): string
+    {
+        switch ($product_type) {
+            case SimpleProductBottle::PRODUCT_TYPE:
+                return 'HGES\Admin\Products\SimpleProductBottle';
+            case VariableProductBottle::PRODUCT_TYPE:
+                return 'HGES\Admin\Products\VariableProductBottle';
+            default:
+                return $classname;
+        }
+    }
+
+    /**
+     * Modifies the classes of product data tabs for custom product types.
+     *
+     * @param array $tabs The array of product data tabs, each containing tab properties including 'class'.
+     * @return array The modified array of tabs with updated classes for custom product types.
+     */
+    public static function getGeneralTabInCustomTypes(array $tabs): array
+    {
+        foreach ($tabs as $key => &$tab) {
+            if ($key === 'variations') {
+                $tab['class'][] = 'show_if_' . VariableProductBottle::PRODUCT_TYPE;
+            }
+            if (isset($tab['class']) && in_array('show_if_simple', $tab['class'])) {
+                $tab['class'][] = 'show_if_bottle-simple';
+            }
+        }
+        return $tabs;
+    }
 }

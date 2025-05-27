@@ -71,33 +71,8 @@ class App
         add_action('init', [BottleShippingClass::class, 'create']);
         add_filter('product_type_selector', [SimpleProductBottle::class, 'addToSelect']);
         add_filter('product_type_selector', [VariableProductBottle::class, 'addToSelect']);
-        add_filter('woocommerce_product_class', function ($classname, $product_type) {
-            switch ($product_type) {
-                case SimpleProductBottle::PRODUCT_TYPE:
-                    return 'HGES\Admin\Products\SimpleProductBottle';
-                case VariableProductBottle::PRODUCT_TYPE:
-                    return 'HGES\Admin\Products\VariableProductBottle';
-                default:
-                    return $classname;
-            }
-        }, 10, 2);
-        add_filter('woocommerce_product_data_tabs', function ($tabs) {
-            foreach ($tabs as $key => &$tab) {
-                if ($key === 'variations') {
-                    $tab['class'][] = 'show_if_' . VariableProductBottle::PRODUCT_TYPE;
-                }
-                if (isset($tab['class']) && in_array('show_if_simple', $tab['class'])) {
-                    $tab['class'][] = 'hide_if_simple';
-                }
-                if (isset($tab['target']) && $tab['target'] === 'general_product_data') {
-                    if (!isset($tab['class'])) {
-                        $tab['class'] = [];
-                    }
-                    $tab['class'][] = 'hide_if_simple';
-                }
-            }
-            return $tabs;
-        }, 1);
+        add_filter('woocommerce_product_class', [ProductMeta::class, 'getClassNameByProductType'], 10, 2);
+        add_filter('woocommerce_product_data_tabs', [ProductMeta::class, 'getGeneralTabInCustomTypes']);
     }
 
     /**
