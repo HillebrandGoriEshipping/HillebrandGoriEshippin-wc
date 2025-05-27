@@ -1,5 +1,5 @@
-import setUiToClassic from '../cypress/nodeScripts/setUiToClassic.js';
-import setUiToBlocks from '../cypress/nodeScripts/setUiToBlocks.js';
+import setUiToClassic from './setUiToClassic.js';
+import setUiToBlocks from './setUiToBlocks.js';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
