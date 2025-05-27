@@ -22,8 +22,8 @@ class ProductMeta
         $tabs['HGeS_product_tab'] = [
             'label'    => __('Bottle Settings', 'woocommerce'),
             'target'   => 'HGeS_product_tab_options',
-            'class'    => ['show_if_simpleBottleProduct', 'show_if_variableBottleProduct'],
             'priority' => 21,
+            'class'    => ['show_if_bottle-simple', 'show_if_bottle-variable'],
         ];
 
         return $tabs;
@@ -74,7 +74,7 @@ class ProductMeta
         $twig = Twig::getTwig();
         $value = get_post_meta($variation->ID, '_variation_quantity', true);
 
-        if ($product->is_type('variation')) {
+        if ($product->is_type(VariableProductBottle::PRODUCT_TYPE)) {
             echo $twig->render('variable-product-meta.twig', [
                 'value' => $value,
                 'index' => $loop_index,

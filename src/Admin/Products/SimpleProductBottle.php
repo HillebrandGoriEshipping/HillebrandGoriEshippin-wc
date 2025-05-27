@@ -2,23 +2,30 @@
 
 namespace HGeS\Admin\Products;
 
-use WC_Product_Simple;
-
-class SimpleProductBottle extends WC_Product_Simple
+class SimpleProductBottle extends \WC_Product
 {
+    const PRODUCT_TYPE = 'bottle-simple';
+    const PRODUCT_TYPE_LABEL = 'Simple Bottle Product';
+
     /**
-     * Gets the type identifier for the product.
+     * Returns the product type.
      *
-     * @return string Returns the product type as 'simpleBottleProduct'.
+     * @return string The product type constant defined by PRODUCT_TYPE.
      */
-    public function getType(): string
+    public function get_type(): string
     {
-        return 'simpleBottleProduct';
+        return self::PRODUCT_TYPE;
     }
 
-    public static function addToSelect($types): array
+    /**
+     * Adds the custom product type to the selection array.
+     *
+     * @param array $types The existing array of product types.
+     * @return array The modified array including the custom product type.
+     */
+    public static function addToSelect(array $types): array
     {
-        $types['simpleBottleProduct'] = __('Simple Bottle Product', 'hges');
+        $types[self::PRODUCT_TYPE] = __(self::PRODUCT_TYPE_LABEL, 'hges');
         return $types;
     }
 }
