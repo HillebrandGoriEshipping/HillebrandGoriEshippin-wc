@@ -94,13 +94,10 @@ describe('Block UI Order spec', () => {
 
     cy.get('#pickup-points-map-modal').should('not.be.visible');
     cy.get('.selected-pickup-point').should('be.visible').then($selectedPickupPoint => {
-      cy.log('Selected pickup point:', $selectedPickupPoint);
-      const selectedText = $selectedPickupPoint.text();
-      cy.log('Selected pickup point text:', selectedText);
+      const selectedText = $selectedPickupPoint.eq(0).text();
       expect(selectedText).to.include(thirdPickupPointName);
+      cy.get('button').contains('Place Order').click(); 
+      cy.get('.woocommerce-column--shipping-address address').contains(thirdPickupPointName).should('be.visible');
     });
-    cy.get('button').contains('Place Order').click(); 
-
-    cy.get('.woocommerce-column--shipping-address address strong').contains(thirdPickupPointName).should('be.visible');
   });
 });
