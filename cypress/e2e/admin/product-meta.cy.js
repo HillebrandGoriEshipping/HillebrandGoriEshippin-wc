@@ -11,7 +11,8 @@ describe('Admin Product Meta spec ', () => {
   
   it ('Check product meta form message success', () => {
     cy.get('#product-type').should('be.visible');
-    cy.get('#product-type').select('bottleProduct');
+    cy.get('#product-type').select('bottle-simple');
+    cy.get('.general_tab').should('be.visible');
     cy.get('.HGeS_product_tab_options').should('be.visible');
     cy.get('.HGeS_product_tab_options').click();
     cy.get('.HGeS_product_tab_options').should('have.class', 'active');
@@ -40,7 +41,8 @@ describe('Admin Product Meta spec ', () => {
 
   it ('Check product meta form message error', () => {
     cy.get('#product-type').should('be.visible');
-    cy.get('#product-type').select('bottleProduct');
+    cy.get('#product-type').select('bottle-variable');
+    cy.get('.general_tab').should('not.be.visible');
     cy.get('.HGeS_product_tab_options').should('be.visible');
     cy.get('.HGeS_product_tab_options').click();
     cy.get('.HGeS_product_tab_options').should('have.class', 'active');
