@@ -192,9 +192,15 @@ class Rate
      */
     public static function getShippingRates($package)
     {
-        // do not attempt retrieving rates if destination address is not set
+        // do not attempt retrieving rates if current action is "add-to-cart"
         if (!empty($_POST['add-to-cart']) 
-            ||empty($package['destination']['city'])
+            || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
+        ) {
+            trigger_error('HillebrandGori eShipping : Current action is "add-to-cart", returning empty rates array.', E_USER_NOTICE);
+            return [];
+        }
+        // do not attempt retrieving rates if destination address is not set
+        if (empty($package['destination']['city'])
             || empty($package['destination']['postcode'])
         ) {
             trigger_error('HillebrandGori eShipping : Destination address is not set, returning empty rates array.', E_USER_NOTICE);
