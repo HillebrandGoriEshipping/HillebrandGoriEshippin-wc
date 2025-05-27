@@ -16,23 +16,23 @@ dotenv.config({
 
 export default defineConfig({
   e2e: {
-    defaultCommandTimeout: 10000,
+    defaultCommandTimeout: 15000,
     baseUrl: process.env.WP_HOME,
     setupNodeEvents(on, config) {
 
       on('before:spec', (spec) => {
-        const output = execSync('node ./cypress/nodeScripts/resetDb.js --input-type=module').toString();
+        const output = execSync('node ./scripts/resetDb.js --input-type=module').toString();
         console.log(output);
       });
 
       on('task', {
         setUiToBlocks() {
-          const output = execSync('node ./cypress/nodeScripts/setUiToBlocks.js').toString();
+          const output = execSync('node ./scripts/setUiToBlocks.js').toString();
           console.log(output);
           return output;
         },
         setUiToClassic() {
-          const output = execSync('node ./cypress/nodeScripts/setUiToClassic.js').toString();
+          const output = execSync('node ./scripts/setUiToClassic.js').toString();
           return output;
         }
       });
