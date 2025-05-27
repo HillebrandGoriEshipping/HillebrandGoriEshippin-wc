@@ -11,6 +11,29 @@ document.addEventListener("DOMContentLoaded", function () {
   const target = document.querySelector("#product_attributes");
   
   loadAppellationInSelect();
+  
+  const mutationObserver = new MutationObserver((mutationsList, observer) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === "childList" || mutation.type === "attributes") {
+        evalUseInVariationCheckboxDisplay();
+      }
+    }
+  });
+
+  const tabs = document.querySelectorAll(".attribute_tab");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", function () {
+      evalUseInVariationCheckboxDisplay();
+    });
+  });
+
+  mutationObserver.observe(target, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class", "style"]
+  });
 
   hges.pricableProductTypes.forEach((productType) => {
     document.querySelector('.options_group.pricing').classList.add('show_if_' + productType);
