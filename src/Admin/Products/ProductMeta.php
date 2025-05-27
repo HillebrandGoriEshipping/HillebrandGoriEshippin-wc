@@ -68,13 +68,14 @@ class ProductMeta
      *
      * @return void
      */
-    public static function displayVariableProductField($loop_index, $variation_data, $variation): void
+    public static function displayVariableProductField(int $loop_index, array $variation_data, object $variation): void
     {
-        $product = wc_get_product($variation->ID);
-        $twig = Twig::getTwig();
-        $value = get_post_meta($variation->ID, '_variation_quantity', true);
+        $parent_product = wc_get_product($variation->post_parent);
 
-        if ($product->is_type(VariableProductBottle::PRODUCT_TYPE)) {
+        if ($parent_product && $parent_product->is_type(VariableProductBottle::PRODUCT_TYPE)) {
+            $twig = Twig::getTwig();
+            $value = get_post_meta($variation->ID, '_variation_quantity', true);
+
             echo $twig->render('variable-product-meta.twig', [
                 'value' => $value,
                 'index' => $loop_index,
@@ -107,7 +108,7 @@ class ProductMeta
      *
      * @return void
      */
-    public static function saveVariableProductField($variation_id, $i): void
+    public static function saveVariableProductField(int $variation_id, int $i): void
     {
         if (isset($_POST['_variation_quantity'][$i])) {
             update_post_meta(
