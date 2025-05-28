@@ -9,6 +9,20 @@ use HGeS\Utils\Enums\ProductMetaEnum;
 
 class Rate
 {
+
+    /**
+     * Temp : Map of the pickup services (id => name)
+     */
+    const SERVICES_NAMES = [
+        '1' => 'Chrono 13H',
+        '16' => 'Chrono 18H',
+        '44' => 'Chrono Classic (Pays CEE en voie routière)',
+        '49' => 'Chrono Relais Europe',
+        '86' => 'Chrono Relais 13H', 
+        '1S' => 'Chrono 13 Instance Agence'
+    ];
+
+
     /**
      * Prepares URL parameters for the API request based on the provided package details.
      *
@@ -205,6 +219,11 @@ class Rate
         }
 
         foreach ($shippingRates as $rate) {
+
+            if (!$rate['doorDelivery']) {
+                $pickupServiceId = array_search($rate['service'], self::SERVICES_NAMES);
+            }
+
             $formattedShippingRates[] = [
                 'id' => $rate['service'],
                 'label' => $rate['service'],
@@ -218,6 +237,7 @@ class Rate
                     'insurancePrice' => $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
                     'doorDelivery' => $rate['doorDelivery'],
+                    'pickupServiceId' => $pickupServiceId
                 ],
             ];
         }

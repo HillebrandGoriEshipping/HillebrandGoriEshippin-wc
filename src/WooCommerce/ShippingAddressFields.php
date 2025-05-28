@@ -203,7 +203,7 @@ class ShippingAddressFields {
         ];
 
         $companyBlock = Twig::getTwig()->render(
-            'checkout/shipping-address-custom-fields.twig',
+            'checkout/confirm-shipping-address-custom-fields.twig',
             $data,
         );
 

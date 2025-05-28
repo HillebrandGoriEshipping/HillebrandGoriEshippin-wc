@@ -7,7 +7,7 @@ import LoadingMask from "../blocks/LoadingMask";
 import ShippingRatesContainer from "../blocks/ShippingRatesContainer";
 const cartStore = wp.data.select("wc/store/cart");
 
-const HgesShippingRates = () => {
+const HgesShippingRates = (data) => {
   const [loading, setLoading] = useState(false);
 
   const shippingPackages = useSelect(
@@ -52,6 +52,7 @@ const HgesShippingRates = () => {
 }, []);
 
 
+  const currentContext = data.context;
   if (
     !Array.isArray(shippingPackages) ||
     shippingPackages.length === 0 ||
@@ -86,10 +87,13 @@ const HgesShippingRates = () => {
 
   shippingRates.forEach((rate) => {
     if (rate.doorDelivery === "1") {
+      rate.isPickup = false;
       doorDeliveryRates.push(rate);
     } else if (rate.doorDelivery === "") {
+      rate.isPickup = true;
       pickupRates.push(rate);
     } else {
+      rate.isPickup = false;
       otherRates.push(rate);
     }
   });
@@ -104,6 +108,8 @@ const HgesShippingRates = () => {
         doorDeliveryRates={doorDeliveryRates}
         pickupRates={pickupRates}
         otherRates={otherRates}
+        setLoading={setLoading}
+        currentContext={currentContext}
       />
     </LoadingMask>
   );

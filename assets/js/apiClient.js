@@ -3,11 +3,15 @@ import config from "./config/config.json" with { type: "json" };
 // window.hges is the global data object defined server-side
 
 export default {
-  getApiUrl() {
+  getApiUrl(isProxy) {
+    if (isProxy) {
+      return config.proxyApiUrl;
+    }
+
     return config.apiUrl;
   },
-  async get(url, urlParams, headers) {
-    url = this.appendUrlParams(url, urlParams);
+  async get(url, urlParams, headers, isProxy) {
+    url = this.appendUrlParams(url, urlParams, isProxy);
     headers = this.prepareHeaders(headers);
     const method = "GET";
 
@@ -24,8 +28,8 @@ export default {
       throw new Error("Error in API Client : " + e.message);
     }
   },
-  async post(url, urlParams, data, headers) {
-    url = this.appendUrlParams(url, urlParams);
+  async post(url, urlParams, data, headers, isProxy) {
+    url = this.appendUrlParams(url, urlParams, isProxy);
     headers = this.prepareHeaders(headers);
     const method = "POST";
     const body = JSON.stringify(data);
@@ -52,18 +56,16 @@ export default {
     }
   },
   async getFromProxy(url, urlParams) {
-    url = config.proxyApiUrl + url;
     try {
-      return (response = await this.get(url, urlParams));
+      return (await this.get(url, urlParams, null, true));
     } catch (error) {
       console.error("Error fetching data from proxy:", error);
       return null;
     }
   },
   async postProxy(url, urlParams, data) {
-    url = config.proxyApiUrl + url;
     try {
-      return (response = await this.post(url, urlParams, data));
+      return (await this.post(url, urlParams, data, null, true));
     } catch (error) {
       console.error("Error posting data to proxy:", error);
       return null;
@@ -77,7 +79,7 @@ export default {
    * @param {object} urlParams
    * @returns string
    */
-  appendUrlParams(url, urlParams) {
+  appendUrlParams(url, urlParams, isProxy) {
     if (url.includes("?")) {
       const queryString = url.split("?").pop();
       const formerParams = new URLSearchParams(queryString);
@@ -97,7 +99,7 @@ export default {
     }
 
     if (!url.includes("http")) {
-      url = this.getApiUrl() + url;
+      url = this.getApiUrl(isProxy) + url;
     }
 
     return url;

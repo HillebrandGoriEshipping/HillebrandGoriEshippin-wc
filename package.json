@@ -17,7 +17,8 @@
   "dependencies": {
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "leaflet": "^1.9.4"
   },
   "devDependencies": {
     "@wordpress/scripts": "^30.15.0",

@@ -26,7 +26,7 @@ const getRadioButtonId = (rate) => {
 };
 // hack, waiting for WooCommerce to build a customizable shuipping method block
 //wc-blocks_render_blocks_frontend
-const RateGroup = ({ rates, hasLogo = true }) => {
+const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
   rates = rates.map((rate) => {
     let logoUrl = window.hges.assetsUrl + "img/" + rate.carrierName + ".png";
 
@@ -41,10 +41,18 @@ const RateGroup = ({ rates, hasLogo = true }) => {
     };
   });
 
+  const openSelectPickupPointModal = (e) => {
+    e.preventDefault();
+    const label = e.currentTarget.closest("label");
+    label.dispatchEvent(new Event("click"));
+    const rate = label.getAttribute("rate");
+    window.dispatchEvent(new CustomEvent('hges:show-pickup-points-map', { detail: { rate } }));
+  }
+
   return (
     <div>
       {rates.map((rate) => (
-        <label htmlFor={getRadioButtonId(rate)} key={rate.key}>
+        <label rate={rate} htmlFor={getRadioButtonId(rate)} key={rate.key}>
           <div className={"rate-content" + (rate.selected ? " selected" : "")}>
             <div className="rate-left">
               {hasLogo ? (
@@ -70,13 +78,21 @@ const RateGroup = ({ rates, hasLogo = true }) => {
                     ""
                   )}
                   <span>{rate.name}</span>
+                            
                 </p>
+                
                 <div className="rate-date-box">
                   <p>{__("Estimated delivery: ", "hges")}</p>
                   <p className="rate-estimated-date">
                     {dayjs(rate.pickupDate).format("LL")}
                   </p>
                 </div>
+
+                {!rate.isPickup || !rate.selected || currentContext === 'woocommerce/cart' ? '': (
+                  <div className="pickup-point-button">
+                    <button onClick={openSelectPickupPointModal}>{__(`Choose your pickup point`)}</button>
+                  </div>
+                )}   
               </div>
             </div>
             <div className="rate-right">

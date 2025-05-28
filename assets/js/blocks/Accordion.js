@@ -26,12 +26,12 @@ const Accordion = ({
   return (
     <div className="accordion">
       <button
-        className="accordion-header"
         onClick={(e) => {
           e.preventDefault();
           setIsOpen(!isOpen);
         }}
         aria-expanded={isOpen}
+        className={`accordion-header ${(isOpen ? "open" : "collapsed")}`}
       >
         <span>{isOpen ? "− " : "+ "}</span>
         <span>{title}</span>
