@@ -10,6 +10,7 @@ use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
 use HGeS\WooCommerce\BottleShippingClass;
 use HGeS\WooCommerce\ClassicUiRender;
+use HGeS\WooCommerce\PickupPointsRender;
 use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\ShippingMethod;
 use HGeS\WooCommerce\SimpleProductBottle;
