@@ -39,33 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
     attributeFilter: ["class", "style"]
   });
 
-  hges.pricableProductTypes.forEach((productType) => {
-    document.querySelector('.options_group.pricing').classList.add('show_if_' + productType);
-  });
-  
-  const mutationObserver = new MutationObserver((mutationsList, observer) => {
-    for (const mutation of mutationsList) {
-      if (mutation.type === "childList" || mutation.type === "attributes") {
-        evalUseInVariationCheckboxDisplay();
-      }
-    }
-  });
-
-  const tabs = document.querySelectorAll(".attribute_tab");
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", function () {
-      evalUseInVariationCheckboxDisplay();
-    });
-  });
-
-  mutationObserver.observe(target, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["class", "style"]
-  });
-
   countrySelect.addEventListener("change", function () {
     loadAppellationInSelect();
   });
