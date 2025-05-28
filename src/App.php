@@ -55,7 +55,6 @@ class App
      */
     public static function runAdmin(): void
     {
-        add_action('woocommerce_admin_order_data_after_shipping_address', [ShippingAddressFields::class, 'renderAdminOrderMeta']);
         add_action('admin_enqueue_scripts', [Scripts::class, 'enqueueAdmin']);
         add_action('admin_enqueue_scripts', [Styles::class, 'enqueueAdmin']);
         add_action('admin_init', [self::class, 'router']);
