@@ -9,10 +9,6 @@ const SelectedPickupPoint = () => {
     window.addEventListener('hges:pickup-points-selected', (e) => {
         setSelectedPickupPoint(e.detail.pickupPoint);
     });
-    
-    window.addEventListener('hges:pickup-points-unselect', (e) => {
-        setSelectedPickupPoint(null);
-    });
 
     useEffect(() => {
         const totalsShippingContainer = document.querySelector('.wc-block-components-totals-shipping');
