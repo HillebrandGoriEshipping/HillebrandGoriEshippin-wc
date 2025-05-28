@@ -4,7 +4,7 @@ namespace HGeS\Admin\Products;
 
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
-use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\GlobalEnum;
 
 class ProductMeta
 {
@@ -20,7 +20,7 @@ class ProductMeta
     public static function customTab(array $tabs): array
     {
         $tabs['HGeS_product_tab'] = [
-            'label'    => __('Bottle Settings', 'woocommerce'),
+            'label'    => __('Bottle Settings', GlobalEnum::TRANSLATION_DOMAIN),
             'target'   => 'HGeS_product_tab_options',
             'priority' => 21,
             'class'    => ['show_if_bottle-simple', 'show_if_bottle-variable'],

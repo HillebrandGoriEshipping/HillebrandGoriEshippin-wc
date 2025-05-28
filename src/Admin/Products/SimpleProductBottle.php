@@ -2,6 +2,8 @@
 
 namespace HGeS\Admin\Products;
 
+use HGeS\Utils\Enums\GlobalEnum;
+
 class SimpleProductBottle extends \WC_Product
 {
     const PRODUCT_TYPE = 'bottle-simple';
@@ -25,7 +27,7 @@ class SimpleProductBottle extends \WC_Product
      */
     public static function addToSelect(array $types): array
     {
-        $types[self::PRODUCT_TYPE] = __(self::PRODUCT_TYPE_LABEL, 'hges');
+        $types[self::PRODUCT_TYPE] = __(self::PRODUCT_TYPE_LABEL, GlobalEnum::TRANSLATION_DOMAIN);
         return $types;
     }
 }
