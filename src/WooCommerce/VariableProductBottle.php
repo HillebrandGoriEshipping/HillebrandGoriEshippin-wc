@@ -33,10 +33,15 @@ class VariableProductBottle extends \WC_Product_Variable
         return $types;
     }
 
-    public function get_children($visible_only = '')
+    /**
+     * Adds or overrides the data store class for variable product bottles in the WooCommerce data store registry.
+     *
+     * @param array $stores Existing array of WooCommerce product data stores.
+     * @return array Modified array including the data store for variable product bottles.
+     */
+    public static function createDataStore($stores)
     {
-        $children = parent::get_children($visible_only);
-        error_log(print_r($children, true)); // Ajoute ça
-        return $children;
+        $stores['product-' . VariableProductBottle::PRODUCT_TYPE] = 'WC_Product_Variable_Data_Store_CPT';
+        return $stores;
     }
 }
