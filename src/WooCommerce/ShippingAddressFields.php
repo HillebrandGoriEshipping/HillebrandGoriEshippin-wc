@@ -225,25 +225,27 @@ class ShippingAddressFields {
      * @param \WC_Order $order
      * @return string
      */
-    public static function renderOrderConfirmationAddress(string $address, array $rawAddress = null, Order | null $order): string
+    public static function renderOrderConfirmationAddress(string $address, array $rawAddress = null, Order | null $order): void
+    {
+        $address = self::getRenderedOrderConfirmationAddress($address, null, $order);
+        echo $address;
+    }
+
+    public static function getRenderedOrderConfirmationAddress(string $address, array $rawAddress = null, Order $order): string
     {
         if ('store-api' === $order->get_created_via() || is_admin()) {
             return $address;
         }
-
-        $address = self::getRenderedOrderConfirmationAddress($address);
-        echo $address;
-    }
-
-    public static function getRenderedOrderConfirmationAddress(string $address): string
-    {
         $companyBlock = self::getRenderedCompanyBlock($order);
         $address .= $companyBlock;
         return $address;
     }
 
-    public static function renderCompanyBlock($order)
+    public static function renderCompanyBlock($order): void
     {
+        if ('store-api' === $order->get_created_via() || is_admin()) {
+            return;
+        }
         $companyBlock = self::getRenderedCompanyBlock($order);
         echo $companyBlock;
     }

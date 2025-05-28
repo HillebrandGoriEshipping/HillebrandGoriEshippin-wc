@@ -39,9 +39,8 @@ class App
         add_action('rest_api_init', [CustomEndpoints::class, 'register']);
         add_action('woocommerce_blocks_loaded', [ShippingAddressFields::class, 'register']);
         add_action('woocommerce_checkout_create_order', [ShippingAddressFields::class, 'onOrderCreate'], 10, 2);
-
-        add_filter('woocommerce_order_get_formatted_shipping_address', [ShippingAddressFields::class, 'renderOrderConfirmationAddress'], 9, 3);
-        add_filter('woocommerce_order_get_formatted_shipping_address', [PickupPointsRender::class, 'renderOrderConfirmation'], 10, 3);
+        add_filter('woocommerce_order_get_formatted_shipping_address', [ShippingAddressFields::class, 'getRenderedOrderConfirmationAddress'], 9, 3);
+        add_filter('woocommerce_order_get_formatted_billing_address', [PickupPointsRender::class, 'renderOrderConfirmation'], 10, 3);
         add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
         add_filter('woocommerce_package_rates', [ClassicUiRender::class, 'sortShippingMethods'], 10, 2);
         add_filter('woocommerce_cart_shipping_method_full_label', [ClassicUiRender::class, 'renderLabel'], 10, 2);
