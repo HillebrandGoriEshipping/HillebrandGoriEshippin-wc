@@ -44,6 +44,13 @@ describe('Admin Product Meta spec ', () => {
     cy.get('#product-type').select('bottle-variable');
     cy.get('.general_tab').should('not.be.visible');
     cy.get('.HGeS_product_tab_options').should('be.visible');
+
+    cy.get('.variations_tab').should('be.visible');
+    cy.get('.variations_tab').click();
+    cy.get('.variations_tab').should('have.class', 'active');
+    cy.get('.edit_variation').first().click();
+    cy.get('#variation_quantity_0').should('be.visible');
+
     cy.get('.HGeS_product_tab_options').click();
     cy.get('.HGeS_product_tab_options').should('have.class', 'active');
     cy.get('#error-container').should('not.be.visible');
