@@ -2,17 +2,18 @@
 
 namespace HGeS;
 
+use HGeS\Admin\Products\ProductMeta;
 use HGeS\Admin\Settings\Menu;
 use HGeS\Admin\Settings\SettingsController;
 use HGeS\Api\CustomEndpoints;
-use HGeS\Admin\Products\ProductMeta;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
+use HGeS\WooCommerce\BottleShippingClass;
 use HGeS\WooCommerce\ClassicUiRender;
 use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\ShippingMethod;
-use HGeS\WooCommerce\BottleShippingClass;
-use HGeS\WooCommerce\PickupPointsRender;
+use HGeS\WooCommerce\SimpleProductBottle;
+use HGeS\WooCommerce\VariableProductBottle;
 
 /**
  * Plugin entry class
@@ -65,6 +66,10 @@ class App
         add_action('woocommerce_product_after_variable_attributes', [ProductMeta::class, 'displayVariableProductField'], 10, 3);
         add_action('woocommerce_save_product_variation', [ProductMeta::class, 'saveVariableProductField'], 10, 2);
         add_action('init', [BottleShippingClass::class, 'create']);
+        add_filter('product_type_selector', [SimpleProductBottle::class, 'addToSelect']);
+        add_filter('product_type_selector', [VariableProductBottle::class, 'addToSelect']);
+        add_filter('woocommerce_product_class', [ProductMeta::class, 'getClassNameByProductType'], 10, 2);
+        add_filter('woocommerce_product_data_tabs', [ProductMeta::class, 'getGeneralTabInCustomTypes']);
     }
 
     /**

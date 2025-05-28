@@ -4,11 +4,15 @@ describe('Admin Product Meta spec ', () => {
   beforeEach(() => {
     cy.visit('/wp/wp-admin/post.php?post=39&action=edit');
     cy.get('#user_login').type('hges');
+    cy.wait(1000);
     cy.get('#user_pass').type('hges');
     cy.get('#wp-submit').click();
   });
   
   it ('Check product meta form message success', () => {
+    cy.get('#product-type').should('be.visible');
+    cy.get('#product-type').select('bottle-simple');
+    cy.get('.general_tab').should('be.visible');
     cy.get('.HGeS_product_tab_options').should('be.visible');
     cy.get('.HGeS_product_tab_options').click();
     cy.get('.HGeS_product_tab_options').should('have.class', 'active');
@@ -36,7 +40,17 @@ describe('Admin Product Meta spec ', () => {
   });
 
   it ('Check product meta form message error', () => {
+    cy.get('#product-type').should('be.visible');
+    cy.get('#product-type').select('bottle-variable');
+    cy.get('.general_tab').should('not.be.visible');
     cy.get('.HGeS_product_tab_options').should('be.visible');
+
+    cy.get('.variations_tab').should('be.visible');
+    cy.get('.variations_tab').click();
+    cy.get('.variations_tab').should('have.class', 'active');
+    cy.get('.edit_variation').first().click();
+    cy.get('#variation_quantity_0').should('be.visible');
+
     cy.get('.HGeS_product_tab_options').click();
     cy.get('.HGeS_product_tab_options').should('have.class', 'active');
     cy.get('#error-container').should('not.be.visible');

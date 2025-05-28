@@ -4,7 +4,9 @@ namespace HGeS\Admin\Products;
 
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
-use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\GlobalEnum;
+use HGeS\WooCommerce\SimpleProductBottle;
+use HGeS\WooCommerce\VariableProductBottle;
 
 class ProductMeta
 {
@@ -20,11 +22,12 @@ class ProductMeta
     public static function customTab(array $tabs): array
     {
         $tabs['HGeS_product_tab'] = [
-            'label'    => __('Hillebrand Gori eSHipping', 'woocommerce'),
+            'label'    => __('Bottle Settings', GlobalEnum::TRANSLATION_DOMAIN),
             'target'   => 'HGeS_product_tab_options',
-            'class'    => [],
             'priority' => 21,
+            'class'    => ['show_if_bottle-simple', 'show_if_bottle-variable'],
         ];
+
         return $tabs;
     }
 
@@ -67,13 +70,14 @@ class ProductMeta
      *
      * @return void
      */
-    public static function displayVariableProductField($loop_index, $variation_data, $variation): void
+    public static function displayVariableProductField(int $loop_index, array $variation_data, object $variation): void
     {
-        $product = wc_get_product($variation->ID);
-        $twig = Twig::getTwig();
-        $value = get_post_meta($variation->ID, '_variation_quantity', true);
+        $parent_product = wc_get_product($variation->post_parent);
 
-        if ($product->is_type('variation')) {
+        if ($parent_product && $parent_product->is_type(VariableProductBottle::PRODUCT_TYPE)) {
+            $twig = Twig::getTwig();
+            $value = get_post_meta($variation->ID, '_variation_quantity', true);
+
             echo $twig->render('variable-product-meta.twig', [
                 'value' => $value,
                 'index' => $loop_index,
@@ -106,7 +110,7 @@ class ProductMeta
      *
      * @return void
      */
-    public static function saveVariableProductField($variation_id, $i): void
+    public static function saveVariableProductField(int $variation_id, int $i): void
     {
         if (isset($_POST['_variation_quantity'][$i])) {
             update_post_meta(
@@ -115,5 +119,43 @@ class ProductMeta
                 $_POST['_variation_quantity'][$i]
             );
         }
+    }
+
+    /**
+     * Returns the fully qualified class name for a given product type.
+     *
+     * @param string $classname     The default class name to return if no match is found.
+     * @param string $product_type  The product type identifier to check.
+     * @return string               The fully qualified class name for the product type, or the default class name.
+     */
+    public static function getClassNameByProductType(string $classname, string $product_type): string
+    {
+        switch ($product_type) {
+            case SimpleProductBottle::PRODUCT_TYPE:
+                return SimpleProductBottle::class;
+            case VariableProductBottle::PRODUCT_TYPE:
+                return VariableProductBottle::class;
+            default:
+                return $classname;
+        }
+    }
+
+    /**
+     * Modifies the classes of product data tabs for custom product types.
+     *
+     * @param array $tabs The array of product data tabs, each containing tab properties including 'class'.
+     * @return array The modified array of tabs with updated classes for custom product types.
+     */
+    public static function getGeneralTabInCustomTypes(array $tabs): array
+    {
+        foreach ($tabs as $key => &$tab) {
+            if ($key === 'variations') {
+                $tab['class'][] = 'show_if_' . VariableProductBottle::PRODUCT_TYPE;
+            }
+            if (isset($tab['class']) && in_array('show_if_simple', $tab['class'])) {
+                $tab['class'][] = 'show_if_bottle-simple';
+            }
+        }
+        return $tabs;
     }
 }

@@ -8,8 +8,63 @@ document.addEventListener("DOMContentLoaded", function () {
   const capacityField = document.getElementById("_capacity");
   const alcoholPercentageField = document.getElementById("_alcohol_percentage");
   const colorField = document.getElementById("_color");
-
+  const target = document.querySelector("#product_attributes");
+  
   loadAppellationInSelect();
+
+  hges.pricableProductTypes.forEach((productType) => {
+    document.querySelector('.options_group.pricing').classList.add('show_if_' + productType);
+  });
+  
+  const mutationObserver = new MutationObserver((mutationsList, observer) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === "childList" || mutation.type === "attributes") {
+        evalUseInVariationCheckboxDisplay();
+      }
+    }
+  });
+
+  const tabs = document.querySelectorAll(".attribute_tab");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", function () {
+      evalUseInVariationCheckboxDisplay();
+    });
+  });
+
+  mutationObserver.observe(target, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class", "style"]
+  });
+
+  hges.pricableProductTypes.forEach((productType) => {
+    document.querySelector('.options_group.pricing').classList.add('show_if_' + productType);
+  });
+  
+  const mutationObserver = new MutationObserver((mutationsList, observer) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === "childList" || mutation.type === "attributes") {
+        evalUseInVariationCheckboxDisplay();
+      }
+    }
+  });
+
+  const tabs = document.querySelectorAll(".attribute_tab");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", function () {
+      evalUseInVariationCheckboxDisplay();
+    });
+  });
+
+  mutationObserver.observe(target, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class", "style"]
+  });
 
   countrySelect.addEventListener("change", function () {
     loadAppellationInSelect();
@@ -18,6 +73,20 @@ document.addEventListener("DOMContentLoaded", function () {
   appellationSelect.addEventListener("change", function () {
     checkHsCode();
   });
+
+  function evalUseInVariationCheckboxDisplay() {
+    const productTypeSelect = document.getElementById("product-type");
+    const variationCheckbox = document.querySelectorAll(".enable_variation");
+
+    if (hges.variableProductTypes.indexOf(productTypeSelect.value) > -1) {
+      setTimeout(() => {
+        for (const checkbox of variationCheckbox) {
+          checkbox.style.display = "block";
+          checkbox.querySelector('input').checked = true;
+        }
+      }, 500);
+    }
+  }
 
   async function loadAppellationInSelect() {
     const selectedCountry = countrySelect.value;
