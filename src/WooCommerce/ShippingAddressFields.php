@@ -184,25 +184,6 @@ class ShippingAddressFields {
     }
 
     /**
-     * Displays the custom fields in the order edit page
-     * 
-     * @param \WC_Order $order
-     * @return void
-     */
-    public static function renderAdminOrderMeta(\WC_Order $order): void
-    {
-        $data = [
-            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),
-            'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
-        ];
-
-        echo Twig::getTwig()->render(
-            'order-edit/shipping-address-custom-fields.twig',
-            $data,
-        );
-    }
-
-    /**
      * Displays the custom fields in the order confirmation page in classic UI mode
      * 
      * @param string $address
