@@ -2,7 +2,6 @@
 
 namespace HGeS;
 
-use HGeS\Admin\Products\ProductBottle;
 use HGeS\Admin\Settings\Menu;
 use HGeS\Admin\Settings\SettingsController;
 use HGeS\Api\CustomEndpoints;
