@@ -3,8 +3,6 @@
 namespace HGeS\WooCommerce;
 
 use HGeS\Utils\Enums\GlobalEnum;
-use WC_Product_Attribute;
-use WC_Product_Variation;
 
 class VariableProductBottle extends \WC_Product_Variable
 {
