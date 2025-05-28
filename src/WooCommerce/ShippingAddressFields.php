@@ -243,7 +243,7 @@ class ShippingAddressFields {
 
     public static function renderCompanyBlock($order): void
     {
-        if ('store-api' === $order->get_created_via() || is_admin()) {
+        if ('store-api' === $order->get_created_via() ) {
             return;
         }
         $companyBlock = self::getRenderedCompanyBlock($order);
