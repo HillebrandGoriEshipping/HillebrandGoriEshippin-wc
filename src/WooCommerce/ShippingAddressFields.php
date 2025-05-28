@@ -209,9 +209,11 @@ class ShippingAddressFields {
         if (!$data['ship_to_different_address']) {
             $billingIsCompanyValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']];
             $billingCompanyNameValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']];
+            $billingExciseNumberValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']];
             
             $order->update_meta_data(self::SHIPPING_IS_COMPANY_METANAME, $billingIsCompanyValue);
             $order->update_meta_data(self::SHIPPING_COMPANY_NAME_METANAME, $billingCompanyNameValue);
+            $order->update_meta_data(self::SHIPPING_EXCISE_NUMBER_METANAME, $billingExciseNumberValue);
         }
     }
 
