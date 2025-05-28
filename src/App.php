@@ -71,6 +71,7 @@ class App
         add_filter('product_type_selector', [VariableProductBottle::class, 'addToSelect']);
         add_filter('woocommerce_product_class', [ProductMeta::class, 'getClassNameByProductType'], 10, 2);
         add_filter('woocommerce_product_data_tabs', [ProductMeta::class, 'getGeneralTabInCustomTypes']);
+        add_filter('woocommerce_data_stores', [VariableProductBottle::class, 'createDataStore'], 10, 1);
     }
 
     /**

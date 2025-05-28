@@ -30,4 +30,16 @@ class VariableProductBottle extends \WC_Product_Variable
         $types[self::PRODUCT_TYPE] = __(self::PRODUCT_TYPE_LABEL, GlobalEnum::TRANSLATION_DOMAIN);
         return $types;
     }
+
+    /**
+     * Adds or overrides the data store class for variable product bottles in the WooCommerce data store registry.
+     *
+     * @param array $stores Existing array of WooCommerce product data stores.
+     * @return array Modified array including the data store for variable product bottles.
+     */
+    public static function createDataStore($stores)
+    {
+        $stores['product-' . VariableProductBottle::PRODUCT_TYPE] = 'WC_Product_Variable_Data_Store_CPT';
+        return $stores;
+    }
 }
