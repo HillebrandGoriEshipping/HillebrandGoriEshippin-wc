@@ -2,20 +2,18 @@
 
 namespace HGeS;
 
+use HGeS\Admin\Products\ProductMeta;
 use HGeS\Admin\Settings\Menu;
 use HGeS\Admin\Settings\SettingsController;
 use HGeS\Api\CustomEndpoints;
-use HGeS\Admin\Products\ProductMeta;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
+use HGeS\WooCommerce\BottleShippingClass;
 use HGeS\WooCommerce\ClassicUiRender;
 use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\ShippingMethod;
-use HGeS\WooCommerce\BottleShippingClass;
-use HGeS\WooCommerce\PickupPointsRender;
-use HGeS\Admin\Products\SimpleProductBottle;
-use HGeS\Admin\Products\VariableProductBottle;
-
+use HGeS\WooCommerce\SimpleProductBottle;
+use HGeS\WooCommerce\VariableProductBottle;
 
 /**
  * Plugin entry class

@@ -1,6 +1,6 @@
 <?php
 
-namespace HGeS\Admin\Products;
+namespace HGeS\WooCommerce;
 
 use HGeS\Utils\Enums\GlobalEnum;
 

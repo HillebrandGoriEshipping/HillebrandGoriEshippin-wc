@@ -5,6 +5,8 @@ namespace HGeS\Admin\Products;
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Enums\GlobalEnum;
+use HGeS\WooCommerce\SimpleProductBottle;
+use HGeS\WooCommerce\VariableProductBottle;
 
 class ProductMeta
 {
@@ -130,9 +132,9 @@ class ProductMeta
     {
         switch ($product_type) {
             case SimpleProductBottle::PRODUCT_TYPE:
-                return 'HGES\Admin\Products\SimpleProductBottle';
+                return SimpleProductBottle::class;
             case VariableProductBottle::PRODUCT_TYPE:
-                return 'HGES\Admin\Products\VariableProductBottle';
+                return VariableProductBottle::class;
             default:
                 return $classname;
         }
