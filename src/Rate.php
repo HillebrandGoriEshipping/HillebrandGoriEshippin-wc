@@ -84,6 +84,11 @@ class Rate
         try {
             $packageList = ApiClient::get('/package/get-sizes?nbBottles=' . $standardQuantity . '&nbMagnums=' . $magnumQuantity);
             $packageParam = [];
+            
+            if (empty($packageList['data']['packages'])) {
+                return [];
+            }
+            
             foreach ($packageList['data']['packages'][0] as $packageData) {
                 foreach ($packageData as $choice) {
                     $packageParam[] = [
@@ -148,6 +153,9 @@ class Rate
     {
         try {
             $urlParams = self::prepareUrlParams($package);
+            if (!$urlParams) {
+                return ['error' => 'No package sizes available for the given contents.'];
+            }
 
             $response = ApiClient::get('/shipment/get-rates', $urlParams);
             if (isset($response['data']) && is_array($response['data'])) {
