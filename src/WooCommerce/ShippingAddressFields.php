@@ -72,7 +72,7 @@ class ShippingAddressFields {
         'optionalLabel' => 'Excise number',
         'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
         'type' => self::WC_CHECKOUT_FIELDS_TYPES['TEXT'],
-        'attributes' => ['type' => 'number'],
+        'attributes' => [],
         'required' => false,
         'hidden' => false,
         'validation' => [],
@@ -161,11 +161,20 @@ class ShippingAddressFields {
             'class' => ['form-row-wide'],
             'required' => false,
         ];
+        $exciseNumberField = [
+            'type' => 'text',
+            'label' => __(self::EXCISE_NUMBER_FIELD_OPTIONS['label'], GlobalEnum::TRANSLATION_DOMAIN),
+            'class' => ['form-row-wide'],
+            'required' => false,
+        ];
         // generate the field id to match the behavior of the blocks UI mode 
         $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']] = $isCompanyCheckbox;
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']] = $isCompanyCheckbox;
         $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
+        $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
+        $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
+
         return $fields;
     }
 
@@ -187,6 +196,8 @@ class ShippingAddressFields {
             self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'],
             self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id'],
             self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'],
+            self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id'],
+            self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id'],
         ];
 
         foreach ($customPostFields as $field) {
@@ -221,6 +232,7 @@ class ShippingAddressFields {
         $data = [
             'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),
             'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
+            'exciseNumber' => $order->get_meta(self::SHIPPING_EXCISE_NUMBER_METANAME, true),
         ];
 
         $companyBlock = Twig::getTwig()->render(
