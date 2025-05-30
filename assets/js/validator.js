@@ -3,7 +3,6 @@ window.hges.validator = {
     constraints: {},
     init() {
         this.constraints = window.hges.validatorConstraints;
-console.log('init this.constraints:', this.constraints);
         if (!this.constraints) {
             throw new Error("validatorConstraints is not defined");
         }
@@ -62,7 +61,6 @@ console.log('init this.constraints:', this.constraints);
         }
     },
     displayErrors(form, errors) {
-
         errors.forEach(error => {
             const errorElement = document.createElement("div");
             errorElement.className = "error-message";
@@ -77,8 +75,4 @@ console.log('init this.constraints:', this.constraints);
         });
     }
 }
-
-
-
-
 document.addEventListener("DOMContentLoaded", window.hges.validator.init.bind(window.hges.validator));
