@@ -1,3 +1,5 @@
+const __ = wp.i18n.__;
+
 window.hges.validator = {
     initialized: false,
     constraints: {},
@@ -47,7 +49,7 @@ window.hges.validator = {
 
             for (const constraintKey in validatorConstraints[field]) {
                 const fieldError = this.matchConstraint(value, constraintKey, validatorConstraints[field][constraintKey], field);
-                
+
                 if (!fieldError) {
                     continue;
                 }
@@ -113,7 +115,7 @@ window.hges.validator = {
                 }
                 if (typeof value !== constraint.type) {
                     const message = constraint.message.replace('{{ type }}', convertedType);
-                    error.message = message || `This field must be of type ${convertedType}.`;
+                    error.message = __(message) || __(`This field must be of type ${convertedType}.`);
                 }
                 break;
             default:
