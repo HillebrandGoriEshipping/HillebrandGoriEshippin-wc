@@ -46,9 +46,13 @@ window.hges.validator = {
             }
 
             for (const constraintKey in validatorConstraints[field]) {
-                if (!validatorConstraints[field][constraintKey].allowNull && (value === null || value === '')) {
-                    errors.push({field, message: validatorConstraints[field][constraintKey].message || "This field is required."});
+                const fieldError = this.matchConstraint(value, constraintKey, validatorConstraints[field][constraintKey], field);
+                console.log('field error', fieldError);
+                if (!fieldError) {
                     continue;
+                }
+                if (fieldError) {
+                    errors.push(fieldError);
                 }
             }
         }
@@ -73,8 +77,25 @@ window.hges.validator = {
             fieldElement.insertAdjacentElement('afterend', errorElement);
         });
     },
-    matchConstraint(value, constraint) {
-        
+    matchConstraint(value, constraintKey, constraint, field) {
+        if (!constraint) {
+            return null;
+        }
+
+        const error = { field };
+        switch (constraintKey) {
+            case 'NotBlank':
+                if (!constraint.allowNull && (value === null || value === '')) {
+                    error.message = constraint.message || "This field cannot be blank.";
+                } else {
+                    return null;
+                }
+                break;
+            default:
+                return null;
+        }
+
+        return error;
     }
 }
 document.addEventListener("DOMContentLoaded", window.hges.validator.init.bind(window.hges.validator));
