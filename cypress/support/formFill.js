@@ -1,36 +1,33 @@
-export const shippingAddressFormBlocksFill = (data) => {
-    cy.get('.wp-block-woocommerce-checkout-shipping-address-block input')
-        .each(($input) => {
-            const id = $input.attr('id');
-            const value = data[id];
+let data;
 
-            if (value === undefined) {
-                return;
-            }
+export const shippingAddressFormFill = (uiMode, formData) => {
+    data = formData;
+    let inputSelector = '.wp-block-woocommerce-checkout-shipping-address-block input';
+    if (uiMode === 'classic') {
+        inputSelector = '.woocommerce-billing-fields input'
+    }
 
-            switch ($input.attr('type')) {
-                case 'checkbox':
-                    if (value) {
-                        cy.wrap($input).check();
-                    } else {
-                        cy.wrap($input).uncheck();
-                    }
-                    return;
-                default:
-                    cy.wrap($input).clear({force: true}).type(value);
-                    break;
-            }
-        });
+    cy.get(inputSelector).each(fillForm);
 }
 
-export const shippingAddressFormClassicFill = (data) => {
-    cy.get('.woocommerce-billing-fields input')
-        .each(($input) => {
-            const id = $input.attr('id');
-            const value = data[id];
+function fillForm($input) {
+    const id = $input.attr('id');
+    const value = data[id];
 
-            if (value !== undefined) {
-                cy.wrap($input).clear().type(value);
+    if (value === undefined) {
+        return;
+    }
+
+    switch ($input.attr('type')) {
+        case 'checkbox':
+            if (value) {
+                cy.wrap($input).check();
+            } else {
+                cy.wrap($input).uncheck();
             }
-        });
+            return;
+        default:
+            cy.wrap($input).clear({force: true}).type(value);
+            break;
+    }
 }

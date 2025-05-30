@@ -1,5 +1,5 @@
 import addToCart from "../../support/addToCart";
-import { shippingAddressFormClassicFill } from "../../support/formFill";
+import { shippingAddressFormFill } from "../../support/formFill";
 import { checkOrderConfirmationContent } from "../../support/orderConfirmation";
 
 describe('Classic UI Cart spec', () => {
@@ -16,7 +16,7 @@ describe('Classic UI Cart spec', () => {
     cy.contains('Proceed to checkout').should('be.visible').click();
 
     cy.get('h1').should('have.text', 'Checkout');
-    shippingAddressFormClassicFill({
+    shippingAddressFormFill('classic', {
       'billing_first_name': 'Jean',
       'billing_last_name': 'Némar',
       'billing_address_1': '1 rue du Test Automatisé',
@@ -51,6 +51,27 @@ describe('Classic UI Cart spec', () => {
     cy.get('button[name="woocommerce_checkout_place_order"]').should('be.visible');
     cy.get('button[name="woocommerce_checkout_place_order"]').click();
     
-    checkOrderConfirmationContent();
+    checkOrderConfirmationContent(false);
+  });
+
+  it('Saves custom buisiness order address fields', () => {
+    cy.visit('/checkout');
+
+    shippingAddressFormFill('classic', {
+      'billing_first_name': 'Jean',
+      'billing_last_name': 'Némar',
+      'billing_address_1': '1 rue du Test Automatisé',
+      'billing_postcode': '45000',
+      'billing_city': 'Orléans',
+      'billing_email': 'test@test.com',
+      'wc_billing/hges/is-company-address': true,
+      'wc_billing/hges/company-name': 'Test Company',
+      'wc_billing/hges/excise-number': '12345678901234'
+    });
+
+    cy.get('button[name="woocommerce_checkout_place_order"]').should('be.visible');
+    cy.get('button[name="woocommerce_checkout_place_order"]').click();
+    
+    checkOrderConfirmationContent(true);
   });
 });
