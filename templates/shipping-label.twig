@@ -21,7 +21,7 @@
                     {{ __('Estimated delivery: ') }} {{ metaData.deliveryDate }}
                 </div>
                 {% if metaData.doorDelivery is same as "" %}
-                    <div class="pickup-point-button">
+                    <div id="pickup-point-button" class="pickup-point-button">
                         <span >{{ __('Choose your pickup point') }}</span>
                     </div>
                 {% endif %}

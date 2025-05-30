@@ -45,6 +45,11 @@ class Scripts
             HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
+        wp_enqueue_script(
+            'hges-classic-pickup-map-handler',
+            HGeS_PLUGIN_URL . 'assets/js/classicPickupMap.js'
+        );
+
         self::globalObjectInjection();
     }
 
