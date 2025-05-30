@@ -90,6 +90,7 @@ class Scripts
      */
     public static function globalObjectInjection(bool $admin = false): void
     {
+        
         $frontendJsGlobalObject = [
             'assetsUrl' => HGeS_PLUGIN_URL . 'assets/',
             'messages' => Messages::getMessageList(),
@@ -103,6 +104,7 @@ class Scripts
 
         if ($admin) {
             $frontendJsGlobalObject['apiKey'] = get_option(OptionEnum::HGES_ACCESS_KEY, '');
+            $frontendJsGlobalObject['validatorConstraints'] = FrontendValidator::getAll();
         }
 
         $jsonObject = json_encode($frontendJsGlobalObject);
