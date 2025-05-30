@@ -62,7 +62,7 @@ describe('Block UI Order spec', () => {
     });
 
     // select a pickup shipping method
-    selectRateInAccordion('Pickup points', 'Chrono Relais 13H');
+    selectRateInAccordion('Pickup points', 0);
 
     cy.get('.rate-content.selected').then(($label) => {
       const pickupButton = cy.wrap($label).get('div.pickup-point-button > button').should('be.visible');

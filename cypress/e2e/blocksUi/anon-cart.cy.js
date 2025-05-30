@@ -17,7 +17,7 @@ describe('Block UI Cart spec', () => {
     blocksFillDeliveryAddress();
 
     // select a shipping method
-    selectRateInAccordion('Door Delivery', 'Chrono 18');
+    selectRateInAccordion('Door Delivery', 0);
     selectRateInAccordion('Other shipping method', 'Flat rate');
     // then another
     console.log('Anon Cart spec done');
@@ -29,7 +29,7 @@ describe('Block UI Cart spec', () => {
     blocksFillDeliveryAddress();
 
     // select a pickup shipping method
-    selectRateInAccordion('Pickup points', 'Chrono Relais 13H');
+    selectRateInAccordion('Pickup points', 0);
 
     cy.get('.rate-content.selected').then(($label) => {
       const pickupButton = cy.wrap($label).get('div.pickup-point-button > button').should('not.exist');
