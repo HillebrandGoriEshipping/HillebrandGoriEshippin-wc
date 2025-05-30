@@ -84,7 +84,7 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
                 <div className="rate-date-box">
                   <p>{__("Estimated delivery: ", "hges")}</p>
                   <p className="rate-estimated-date">
-                    {dayjs(rate.pickupDate).format("LL")}
+                    {dayjs(rate.deliveryDate).format("LL")}
                   </p>
                 </div>
 
