@@ -96,7 +96,7 @@ window.hges.validator = {
             case 'NotBlank':
             case 'NotEmpty':
             case 'NotNull':
-                if (!constraint.allowNull && (value === null || value === '')) {
+                if (!constraint.allowNull && !this.notNullConstraint(value)) {
                     error.message = constraint.message || "This field cannot be blank.";
                 } else {
                     return null;
@@ -104,18 +104,13 @@ window.hges.validator = {
                 break;
             case 'Type':
                 let convertedType = constraint.type;
-                if (convertedType === 'integer') {
-                    convertedType = 'number';
-                }
-                if (convertedType === 'float') {
-                    convertedType = 'number';
-                }
-                if (convertedType === 'boolean') {
-                    convertedType = 'boolean';
-                }
-                if (typeof value !== constraint.type) {
+                const numberTypes = ['integer', 'float', 'double', 'number'];
+                if (numberTypes.includes(convertedType) && !this.numberConstraint(value)) {
                     const message = constraint.message.replace('{{ type }}', convertedType);
                     error.message = __(message) || __(`This field must be of type ${convertedType}.`);
+                    return error;
+                } else {
+                    return null;
                 }
                 break;
             default:
@@ -123,6 +118,12 @@ window.hges.validator = {
         }
 
         return error;
+    },
+    notNullConstraint(value) {
+        return !(value === null || value === '' || value === undefined);
+    },
+    numberConstraint(value) {
+        return !isNaN(value) && !isNaN(parseFloat(value));
     }
 }
 document.addEventListener("DOMContentLoaded", window.hges.validator.init.bind(window.hges.validator));
