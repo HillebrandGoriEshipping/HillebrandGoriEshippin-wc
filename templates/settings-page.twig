@@ -323,7 +323,7 @@
             </tr>
         </table>
 
-    {{ function('submit_button') }}
+    {{ function('submit_button', '', 'primary', 'submit_button') }}
     {{ function('wp_nonce_field', 'save_settings', 'settings_nonce' )|raw }}
 </form>
 {% endif %}
