@@ -27,6 +27,6 @@ describe('Block UI Checkout spec', () => {
     // select a shipping method
     selectRateInAccordion('Other shipping method', 'Flat rate');
     // then another
-    selectRateInAccordion('Door Delivery', 'Chrono 18');
+    selectRateInAccordion('Door Delivery', 0);
   });
 });
