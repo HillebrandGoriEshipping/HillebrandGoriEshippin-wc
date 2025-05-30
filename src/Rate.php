@@ -220,9 +220,6 @@ class Rate
 
         foreach ($shippingRates as $rate) {
 
-            if (!$rate['doorDelivery']) {
-                $pickupServiceId = array_search($rate['service'], self::SERVICES_NAMES);
-            }
 
             $formattedShippingRates[] = [
                 'id' => $rate['service'],
@@ -236,10 +233,13 @@ class Rate
                     'carrierName ' => $rate['name'],
                     'insurancePrice' => $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
-                    'doorDelivery' => $rate['doorDelivery'],
-                    'pickupServiceId' => $pickupServiceId
+                    'doorDelivery' => $rate['doorDelivery']
                 ],
-            ];
+            ]; 
+            
+            if (!$rate['doorDelivery']) {
+                $formattedShippingRates['meta_data']['pickupServiceId'] = array_search($rate['service'], self::SERVICES_NAMES);
+            }
         }
 
         return $formattedShippingRates;
