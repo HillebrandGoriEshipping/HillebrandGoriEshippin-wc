@@ -18,10 +18,9 @@ class Rate
         '16' => 'Chrono 18H',
         '44' => 'Chrono Classic (Pays CEE en voie routière)',
         '49' => 'Chrono Relais Europe',
-        '86' => 'Chrono Relais 13H', 
+        '86' => 'Chrono Relais 13H',
         '1S' => 'Chrono 13 Instance Agence'
     ];
-
 
     /**
      * Prepares URL parameters for the API request based on the provided package details.
@@ -98,11 +97,11 @@ class Rate
         try {
             $packageList = ApiClient::get('/package/get-sizes?nbBottles=' . $standardQuantity . '&nbMagnums=' . $magnumQuantity);
             $packageParam = [];
-            
+
             if (empty($packageList['data']['packages'])) {
                 return [];
             }
-            
+
             foreach ($packageList['data']['packages'][0] as $packageData) {
                 foreach ($packageData as $choice) {
                     $packageParam[] = [
@@ -199,6 +198,10 @@ class Rate
         }
 
         $shippingRates = self::getRatesFromApi($package);
+        // echo '<pre>';
+        // var_dump($shippingRates);
+        // echo '</pre>';
+        // exit;
         if (isset($shippingRates['error'])) {
             return $shippingRates;
         }
@@ -235,13 +238,16 @@ class Rate
                     'pickupDate' => $rate['pickupDate'],
                     'doorDelivery' => $rate['doorDelivery']
                 ],
-            ]; 
-            
+            ];
+
             if (!$rate['doorDelivery']) {
                 $formattedShippingRates['meta_data']['pickupServiceId'] = array_search($rate['service'], self::SERVICES_NAMES);
             }
         }
-
+        // echo '<pre>';
+        // var_dump($formattedShippingRates);
+        // echo '</pre>';
+        // exit;
         return $formattedShippingRates;
     }
 }
