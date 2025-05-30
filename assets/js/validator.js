@@ -47,7 +47,7 @@ window.hges.validator = {
 
             for (const constraintKey in validatorConstraints[field]) {
                 const fieldError = this.matchConstraint(value, constraintKey, validatorConstraints[field][constraintKey], field);
-                console.log('field error', fieldError);
+                
                 if (!fieldError) {
                     continue;
                 }
