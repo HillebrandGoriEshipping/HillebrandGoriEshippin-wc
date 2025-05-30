@@ -17,9 +17,14 @@
                 {{ label }}
             </div>
             {% if metaData.deliveryDate %}
-            <div class="hges-shipping-delivery">
-                {{ __('Estimated delivery: ') }} {{ metaData.deliveryDate }}
-            </div>
+                <div class="hges-shipping-delivery">
+                    {{ __('Estimated delivery: ') }} {{ metaData.deliveryDate }}
+                </div>
+                {% if metaData.doorDelivery is same as "" %}
+                    <div class="pickup-point-button">
+                        <span >{{ __('Choose your pickup point') }}</span>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>
