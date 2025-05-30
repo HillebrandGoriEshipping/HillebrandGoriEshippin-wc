@@ -5,7 +5,7 @@ describe('Admin HGeS settings page spec', () => {
         login('hges', 'hges');
     });
     
-    it('Api Key upadate', () => {
+    it('Api Key update', () => {
         cy.visit('/wp/wp-admin/admin.php?page=hillebrand-gori-eshipping');
         cy.get('h1').contains('Hillebrand Gori eShipping Settings').should('be.visible');
         cy.get('#api-input').should('be.visible');
