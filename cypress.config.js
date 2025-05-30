@@ -27,12 +27,12 @@ export default defineConfig({
 
       on('task', {
         setUiToBlocks() {
-          const output = execSync('node ./scripts/setUiToBlocks.js').toString();
+          const output = execSync('node ./scripts/switchui.js blocks').toString();
           console.log(output);
           return output;
         },
         setUiToClassic() {
-          const output = execSync('node ./scripts/setUiToClassic.js').toString();
+          const output = execSync('node ./scripts/switchui.js classic').toString();
           return output;
         }
       });
