@@ -3,6 +3,7 @@
 namespace HGeS\Utils\Enums;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class OptionEnum
 {
@@ -79,6 +80,7 @@ class OptionEnum
             ],
             self::HGES_FDA_NUMBER => [
                 new NotBlank(),
+                new Type(['type' => 'integer']),
             ],
             self::HGES_ASSURANCE => [
                 new NotBlank(),
