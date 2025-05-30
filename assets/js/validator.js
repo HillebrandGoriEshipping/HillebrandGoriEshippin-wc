@@ -45,9 +45,9 @@ window.hges.validator = {
                 continue;
             }
 
-            for (const constraint of validatorConstraints[field]) {
-                if (!constraint.allowNull && (value === null || value === '')) {
-                    errors.push({field, message: constraint.message || "This field is required."});
+            for (const constraintKey in validatorConstraints[field]) {
+                if (!validatorConstraints[field][constraintKey].allowNull && (value === null || value === '')) {
+                    errors.push({field, message: validatorConstraints[field][constraintKey].message || "This field is required."});
                     continue;
                 }
             }
@@ -72,6 +72,9 @@ window.hges.validator = {
             });
             fieldElement.insertAdjacentElement('afterend', errorElement);
         });
+    },
+    matchConstraint(value, constraint) {
+        
     }
 }
 document.addEventListener("DOMContentLoaded", window.hges.validator.init.bind(window.hges.validator));

@@ -18,9 +18,15 @@ class FrontendValidator
                     $optionConstraints[$option] = false;
                     continue;
                 }
+                $constraintsWithKeys = [];
+                foreach ($constraints as $constraint) {
+                    $key = array_pop(explode('\\', get_class($constraint)));
+                    $constraintsWithKeys[$key] = json_decode(json_encode($constraint), true);
+                }
 
-                $optionConstraints[$option] = $constraints;
+                $optionConstraints[$option] = $constraintsWithKeys;
             }
+            
             return $optionConstraints;
         } else {
             return [];
