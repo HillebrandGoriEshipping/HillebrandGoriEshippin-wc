@@ -77,6 +77,14 @@ window.hges.validator = {
             fieldElement.insertAdjacentElement('afterend', errorElement);
         });
     },
+    /**
+     * 
+     * @param {string} value The value to validate
+     * @param {string} constraintKey the key of the constraint to match (classname from Symfony Validator Contraint)
+     * @param {object} constraint the content of the constraint
+     * @param {string} field the field name to which the constraint applies
+     * @returns 
+     */
     matchConstraint(value, constraintKey, constraint, field) {
         if (!constraint) {
             return null;
@@ -85,6 +93,8 @@ window.hges.validator = {
         const error = { field };
         switch (constraintKey) {
             case 'NotBlank':
+            case 'NotEmpty':
+            case 'NotNull':
                 if (!constraint.allowNull && (value === null || value === '')) {
                     error.message = constraint.message || "This field cannot be blank.";
                 } else {
