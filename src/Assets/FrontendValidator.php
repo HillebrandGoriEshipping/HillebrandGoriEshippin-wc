@@ -3,7 +3,6 @@
 namespace HGeS\Assets;
 
 use HGeS\Utils\Enums\OptionEnum;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * Class FrontendValidator
