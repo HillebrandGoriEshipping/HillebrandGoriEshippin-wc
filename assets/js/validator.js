@@ -41,7 +41,6 @@ window.hges.validator = {
         const formData = new FormData(form);
 
         for (const [field, value] of formData.entries()) {
-            console.log(`Field: ${field}, Value: ${value}`);
             if (! validatorConstraints[field]) {
                 continue;
             }
