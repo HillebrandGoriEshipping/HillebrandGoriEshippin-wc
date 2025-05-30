@@ -60,6 +60,12 @@ class Scripts
                 'hges-settings-page-script',
                 HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
             );
+
+            wp_enqueue_script_module(
+                'hges-validator',
+                HGeS_PLUGIN_URL . 'assets/js/validator.js',
+                ['hges-settings-page-script'],
+            );
         }
 
         $screen = get_current_screen();
