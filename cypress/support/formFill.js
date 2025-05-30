@@ -4,8 +4,21 @@ export const shippingAddressFormBlocksFill = (data) => {
             const id = $input.attr('id');
             const value = data[id];
 
-            if (value !== undefined) {
-                cy.wrap($input).clear().type(value);
+            if (value === undefined) {
+                return;
+            }
+
+            switch ($input.attr('type')) {
+                case 'checkbox':
+                    if (value) {
+                        cy.wrap($input).check();
+                    } else {
+                        cy.wrap($input).uncheck();
+                    }
+                    return;
+                default:
+                    cy.wrap($input).clear({force: true}).type(value);
+                    break;
             }
         });
 }
