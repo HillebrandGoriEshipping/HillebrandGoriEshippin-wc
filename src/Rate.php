@@ -198,10 +198,7 @@ class Rate
         }
 
         $shippingRates = self::getRatesFromApi($package);
-        // echo '<pre>';
-        // var_dump($shippingRates);
-        // echo '</pre>';
-        // exit;
+
         if (isset($shippingRates['error'])) {
             return $shippingRates;
         }
@@ -244,10 +241,7 @@ class Rate
                 $formattedShippingRates['meta_data']['pickupServiceId'] = array_search($rate['service'], self::SERVICES_NAMES);
             }
         }
-        // echo '<pre>';
-        // var_dump($formattedShippingRates);
-        // echo '</pre>';
-        // exit;
+
         return $formattedShippingRates;
     }
 }
