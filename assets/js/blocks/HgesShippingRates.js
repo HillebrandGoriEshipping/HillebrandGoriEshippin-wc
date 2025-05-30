@@ -11,7 +11,7 @@ const HgesShippingRates = (data) => {
   const [loading, setLoading] = useState(false);
 
   const shippingPackages = useSelect(
-    () => cartStore.getShippingRates(),
+    (s) => s("wc/store/cart").getShippingRates(),
     []
   );
 
