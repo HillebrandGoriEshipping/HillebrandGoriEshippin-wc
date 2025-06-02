@@ -18,7 +18,7 @@ class Messages
      * @return string The message string associated with the provided key.
      * @throws \Exception If the JSON file cannot be read, decoded, or if the message key is not found.
      */
-    public static function getMessage(string $messageKey): string
+    public static function getMessage(string $messageKey): array | string
     {
         $jsonFilePath = HGeS_PLUGIN_DIR . '/assets/js/config/messages.json';
 
