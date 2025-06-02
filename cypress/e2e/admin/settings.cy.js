@@ -1,5 +1,6 @@
 import { login } from '../../support/admin.js';
 import messages from '../../../assets/js/config/messages.json';
+import { checkFieldValidation } from '../../support/validation.js';
 
 describe('Admin HGeS settings page spec', () => {
     beforeEach(() => {
@@ -35,12 +36,26 @@ describe('Admin HGeS settings page spec', () => {
             cy.wrap(rows).eq(4).find('td').contains('69B rue du Colombier').should('be.visible');
             cy.wrap(rows).eq(5).find('td').contains('Orléans').should('be.visible');
         });
-        cy.get('input[name="HGES_VAT_NUMBER"]').clear().type('i am a string');
-        cy.get('#configuration_form').submit();
-        cy.get('input[name="HGES_VAT_NUMBER"]').parents('td').find('.error-message').should('be.visible').then(($error) => {
-            expect($error.text().trim()).to.equal(messages.settings.vatNumberError);
-        });
 
+        checkFieldValidation(
+            'input[name="HGES_VAT_NUMBER"]',
+            'invalid_vat_number',
+            'FR123456789',
+            messages.settings.vatNumberError
+        );
 
+        checkFieldValidation(
+            'input[name="HGES_EORI_NUMBER"]',
+            'invalid_eori_number',
+            'FR123456789',
+            messages.settings.eoriNumberError
+        );
+        
+        checkFieldValidation(
+            'input[name="HGES_FDA_NUMBER"]',
+            'invalid_fda_number',
+            '12345678901',
+            messages.settings.fdaNumberError
+        );
     });
 });
