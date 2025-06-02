@@ -4,6 +4,7 @@ namespace HGeS\Utils\Enums;
 
 use HGeS\Utils\Messages;
 use HGeS\Utils\ValidationConstraints\EORIConstraint;
+use HGeS\Utils\ValidationConstraints\FDAConstraint;
 use HGeS\Utils\ValidationConstraints\VATConstraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -82,7 +83,7 @@ class OptionEnum
                 new EORIConstraint(),
             ],
             self::HGES_FDA_NUMBER => [
-                new NotBlank(),
+                new FDAConstraint(),
             ],
             self::HGES_ASSURANCE => [
                 new NotBlank(),
