@@ -110,9 +110,9 @@ window.hges.validator = {
                     return error;
                 }
                 break;
-            case 'EORIConstraint':
-            case 'VATConstraint':
-            case 'FDAConstraint':
+            case 'EoriNumber':
+            case 'VatNumber':
+            case 'FdaNumber':
                 const pattern = new RegExp(constraint.pattern.replace(/^\/|\/$/g, ''));
                 if (value && !value.match(pattern)) {
                     error.message = constraint.message || "This field does not match the required format.";

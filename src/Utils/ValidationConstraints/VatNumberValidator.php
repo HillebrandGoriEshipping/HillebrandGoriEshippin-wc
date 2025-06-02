@@ -5,7 +5,7 @@ namespace HGeS\Utils\ValidationConstraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class VATConstraintValidator extends ConstraintValidator
+class VatNumberValidator extends ConstraintValidator
 {
     /**
      * Validates the VAT number against the defined pattern.
@@ -23,13 +23,13 @@ class VATConstraintValidator extends ConstraintValidator
             return;
         }
 
-        if (!$constraint instanceof VATConstraint) {
-            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', VATConstraint::class, get_class($constraint)));
+        if (!$constraint instanceof VatNumber) {
+            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', VatNumber::class, get_class($constraint)));
         }
 
         if (!preg_match($constraint->pattern, $value, $matches)) {
             $this->context->buildViolation($constraint->message)
-                ->setCode(VATConstraint::PATTERN)
+                ->setCode(VatNumber::PATTERN)
                 ->addViolation();
         }
     }

@@ -5,7 +5,7 @@ namespace HGeS\Utils\ValidationConstraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class EORIConstraintValidator extends ConstraintValidator
+class EoriNumberValidator extends ConstraintValidator
 {
     /**
      * Validates the EORI number against the defined pattern.
@@ -23,13 +23,13 @@ class EORIConstraintValidator extends ConstraintValidator
             return;
         }
 
-        if (!$constraint instanceof EORIConstraint) {
-            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', EORIConstraint::class, get_class($constraint)));
+        if (!$constraint instanceof EoriNumber) {
+            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', EoriNumber::class, get_class($constraint)));
         }
 
         if (!preg_match($constraint->pattern, $value, $matches)) {
             $this->context->buildViolation($constraint->message)
-                ->setCode(VATConstraint::PATTERN)
+                ->setCode(VatNumber::PATTERN)
                 ->addViolation();
         }
     }

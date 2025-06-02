@@ -5,7 +5,7 @@ namespace HGeS\Utils\ValidationConstraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class FDAConstraintValidator extends ConstraintValidator
+class FdaNumberValidator extends ConstraintValidator
 {
     /**
      * Validates the FDA number against the defined pattern.
@@ -23,13 +23,13 @@ class FDAConstraintValidator extends ConstraintValidator
             return;
         }
 
-        if (!$constraint instanceof FDAConstraint) {
-            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', VATConstraint::class, get_class($constraint)));
+        if (!$constraint instanceof FdaNumber) {
+            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', VatNumber::class, get_class($constraint)));
         }
 
         if (!preg_match($constraint->pattern, $value, $matches)) {
             $this->context->buildViolation($constraint->message)
-                ->setCode(FDAConstraint::PATTERN)
+                ->setCode(FdaNumber::PATTERN)
                 ->addViolation();
         }
     }
