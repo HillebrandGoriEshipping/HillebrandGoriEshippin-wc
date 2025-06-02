@@ -98,25 +98,30 @@ window.hges.validator = {
             case 'NotNull':
                 if (!constraint.allowNull && !this.notNullConstraint(value)) {
                     error.message = constraint.message || "This field cannot be blank.";
-                } else {
-                    return null;
+                    return error;
                 }
                 break;
             case 'Type':
                 let convertedType = constraint.type;
                 const numberTypes = ['integer', 'float', 'double', 'number'];
-                if (numberTypes.includes(convertedType) && !this.numberConstraint(value)) {
+                if (value && numberTypes.includes(convertedType) && !this.numberConstraint(value)) {
                     const message = constraint.message.replace('{{ type }}', convertedType);
                     error.message = __(message) || __(`This field must be of type ${convertedType}.`);
-                } else {
-                    return null;
+                    return error;
                 }
                 break;
-            default:
-                return null;
+            case 'EORIConstraint':
+            case 'VATConstraint':
+            case 'FDAConstraint':
+                const pattern = new RegExp(constraint.pattern.replace(/^\/|\/$/g, ''));
+                if (value && !value.match(pattern)) {
+                    error.message = constraint.message || "This field does not match the required format.";
+                    return error;
+                } 
+                break;
         }
 
-        return error;
+        return null;
     },
     notNullConstraint(value) {
         return !(value === null || value === '' || value === undefined);
