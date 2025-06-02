@@ -8,6 +8,7 @@
     "settingsSuccess": "The product settings are correct"
   },
   "settings": {
-    "vatNumberError": "VAT number is invalid! Please check the format."
+    "vatNumberError": "VAT number is invalid! Please check the format.",
+    "eoriNumberError": "EORI number is invalid! Please check the format."
   }
 }
