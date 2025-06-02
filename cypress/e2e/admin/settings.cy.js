@@ -1,4 +1,5 @@
 import { login } from '../../support/admin.js';
+import messages from '../../../assets/js/config/messages.json';
 
 describe('Admin HGeS settings page spec', () => {
     beforeEach(() => {
@@ -33,7 +34,13 @@ describe('Admin HGeS settings page spec', () => {
             cy.wrap(rows).eq(3).find('td').contains('33102030405').should('be.visible');
             cy.wrap(rows).eq(4).find('td').contains('69B rue du Colombier').should('be.visible');
             cy.wrap(rows).eq(5).find('td').contains('Orléans').should('be.visible');
-            
         });
+        cy.get('input[name="HGES_VAT_NUMBER"]').clear().type('i am a string');
+        cy.get('#configuration_form').submit();
+        cy.get('input[name="HGES_VAT_NUMBER"]').parents('td').find('.error-message').should('be.visible').then(($error) => {
+            expect($error.text().trim()).to.equal(messages.settings.vatNumberError);
+        });
+
+
     });
 });
