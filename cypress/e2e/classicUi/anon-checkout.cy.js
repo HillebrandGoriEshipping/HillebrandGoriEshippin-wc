@@ -1,5 +1,5 @@
 import addToCart from "../../support/addToCart";
-import { shippingAddressFormClassicFill } from "../../support/formFill";
+import { shippingAddressFormFill } from "../../support/formFill";
 
 describe('Classic UI Cart spec', () => {
   before(() => {
@@ -15,7 +15,7 @@ describe('Classic UI Cart spec', () => {
     cy.contains('Proceed to checkout').should('be.visible').click();
 
     cy.get('h1').should('have.text', 'Checkout');
-    shippingAddressFormClassicFill({
+    shippingAddressFormFill('classic', {
       'billing_first_name': 'Jean',
       'billing_last_name': 'Némar',
       'billing_address_1': '1 rue du Test Automatisé',

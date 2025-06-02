@@ -66,6 +66,17 @@ class ShippingAddressFields {
         'hidden' => false,
         'validation' => [],
     ];
+    const EXCISE_NUMBER_FIELD_OPTIONS = [
+        'id' => 'hges/excise-number',
+        'label' => 'Excise number',
+        'optionalLabel' => 'Excise number',
+        'location' => self::WC_CHECKOUT_FIELDS_LOCATIONS['ADDRESS'],
+        'type' => self::WC_CHECKOUT_FIELDS_TYPES['TEXT'],
+        'attributes' => [],
+        'required' => false,
+        'hidden' => false,
+        'validation' => [],
+    ];
 
     /**
      * List of translatable option fields
@@ -76,6 +87,7 @@ class ShippingAddressFields {
 
     const SHIPPING_IS_COMPANY_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'];
     const SHIPPING_COMPANY_NAME_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'];
+    const SHIPPING_EXCISE_NUMBER_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id'];
 
 
     /**
@@ -85,6 +97,7 @@ class ShippingAddressFields {
     {
         self::isCompanyField();
         self::companyNameField();
+        self::exciseNumberField();
     }
 
     /**
@@ -105,6 +118,14 @@ class ShippingAddressFields {
         \woocommerce_register_additional_checkout_field($options);
     }
 
+    /**
+     * Registers the "excise number" text field
+     */
+    public static function exciseNumberField(): void
+    {
+        $options = self::applyI18n(self::EXCISE_NUMBER_FIELD_OPTIONS);
+        \woocommerce_register_additional_checkout_field($options);
+    }
 
     /**
      * Replaces the translatable strings from a given options array
@@ -140,11 +161,20 @@ class ShippingAddressFields {
             'class' => ['form-row-wide'],
             'required' => false,
         ];
+        $exciseNumberField = [
+            'type' => 'text',
+            'label' => __(self::EXCISE_NUMBER_FIELD_OPTIONS['label'], GlobalEnum::TRANSLATION_DOMAIN),
+            'class' => ['form-row-wide'],
+            'required' => false,
+        ];
         // generate the field id to match the behavior of the blocks UI mode 
         $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']] = $isCompanyCheckbox;
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']] = $isCompanyCheckbox;
         $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
+        $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
+        $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
+
         return $fields;
     }
 
@@ -166,6 +196,8 @@ class ShippingAddressFields {
             self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'],
             self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id'],
             self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'],
+            self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id'],
+            self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id'],
         ];
 
         foreach ($customPostFields as $field) {
@@ -177,9 +209,11 @@ class ShippingAddressFields {
         if (!$data['ship_to_different_address']) {
             $billingIsCompanyValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']];
             $billingCompanyNameValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']];
+            $billingExciseNumberValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']];
             
             $order->update_meta_data(self::SHIPPING_IS_COMPANY_METANAME, $billingIsCompanyValue);
             $order->update_meta_data(self::SHIPPING_COMPANY_NAME_METANAME, $billingCompanyNameValue);
+            $order->update_meta_data(self::SHIPPING_EXCISE_NUMBER_METANAME, $billingExciseNumberValue);
         }
     }
 
@@ -191,15 +225,37 @@ class ShippingAddressFields {
      * @param \WC_Order $order
      * @return string
      */
-    public static function renderOrderConfirmation(string $address,array $rawAddress, Order $order): string
+    public static function renderOrderConfirmationAddress(string $address, array $rawAddress = null, Order | null $order): void
+    {
+        $address = self::getRenderedOrderConfirmationAddress($address, null, $order);
+        echo $address;
+    }
+
+    public static function getRenderedOrderConfirmationAddress(string $address, array $rawAddress = null, Order $order): string
     {
         if ('store-api' === $order->get_created_via() || is_admin()) {
             return $address;
         }
+        $companyBlock = self::getRenderedCompanyBlock($order);
+        $address .= $companyBlock;
+        return $address;
+    }
 
+    public static function renderCompanyBlock($order): void
+    {
+        if ('store-api' === $order->get_created_via() ) {
+            return;
+        }
+        $companyBlock = self::getRenderedCompanyBlock($order);
+        echo $companyBlock;
+    }
+
+    public static function getRenderedCompanyBlock(Order $order): string
+    {
         $data = [
             'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),
             'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
+            'exciseNumber' => $order->get_meta(self::SHIPPING_EXCISE_NUMBER_METANAME, true),
         ];
 
         $companyBlock = Twig::getTwig()->render(
@@ -207,7 +263,6 @@ class ShippingAddressFields {
             $data,
         );
 
-        $address .= $companyBlock;
-        return $address;
+        return $companyBlock;
     }
 }
