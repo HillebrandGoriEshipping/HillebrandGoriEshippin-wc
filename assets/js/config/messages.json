@@ -6,5 +6,8 @@
   "productMeta": {
     "settingsError": "The product settings are incorrect",
     "settingsSuccess": "The product settings are correct"
+  },
+  "settings": {
+    "vatNumberError": "VAT number is invalid! Please check the format."
   }
 }

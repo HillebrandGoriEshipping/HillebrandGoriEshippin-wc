@@ -2,6 +2,8 @@
 
 namespace HGeS\Utils\Enums;
 
+use HGeS\Utils\Messages;
+use HGeS\Utils\ValidationConstraints\VATConstraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -71,6 +73,7 @@ class OptionEnum
             ],
             self::HGES_VAT_NUMBER => [
                 new NotBlank(),
+                new VATConstraint(),
             ],
             self::HGES_VAT_OSS => [
                 new NotBlank(),
@@ -80,7 +83,6 @@ class OptionEnum
             ],
             self::HGES_FDA_NUMBER => [
                 new NotBlank(),
-                new Type(['type' => 'integer']),
             ],
             self::HGES_ASSURANCE => [
                 new NotBlank(),
