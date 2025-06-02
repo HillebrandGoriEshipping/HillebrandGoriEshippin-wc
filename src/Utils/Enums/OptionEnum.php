@@ -68,16 +68,16 @@ class OptionEnum
     {
         $constraints = [
             self::HGES_PREF_TRANSP => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_TAX_RIGHTS => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_VAT_NUMBER => [
                 new VATConstraint(),
             ],
             self::HGES_VAT_OSS => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_EORI_NUMBER => [
                 new EORIConstraint(),
@@ -86,25 +86,25 @@ class OptionEnum
                 new FDAConstraint(),
             ],
             self::HGES_ASSURANCE => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_NBR_MIN => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_PREP_TIME => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_PREF_DEL => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_MINHOUR => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_CUTOFF => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_WORKING_DAYS => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
         ];
 
