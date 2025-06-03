@@ -95,7 +95,7 @@ class Rate
         }
 
         try {
-            $packageList = ApiClient::get('/package/get-sizes?nbBottles=' . $standardQuantity . '&nbMagnums=' . $magnumQuantity);
+            $packageList = ApiClient::get('/packageget-sizes?nbBottles=' . $standardQuantity . '&nbMagnums=' . $magnumQuantity);
             $packageParam = [];
 
             if (empty($packageList['data']['packages'])) {
@@ -117,6 +117,7 @@ class Rate
                 $params['packages'] = $packageParam;
             }
         } catch (\Exception $th) {
+            \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
         }
 
@@ -175,6 +176,7 @@ class Rate
                 return $response['data'];
             }
         } catch (\Exception $e) {
+            \Sentry\captureException($e);
             throw $e;
         }
 
