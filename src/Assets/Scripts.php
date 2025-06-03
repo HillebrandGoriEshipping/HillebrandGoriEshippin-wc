@@ -45,6 +45,11 @@ class Scripts
             HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
+        wp_enqueue_script(
+            'hges-sentry',
+            'https://js-de.sentry-cdn.com/1f044be1171ec06afb585510f3681fa0.min.js',           
+        );
+
         self::globalObjectInjection();
     }
 
