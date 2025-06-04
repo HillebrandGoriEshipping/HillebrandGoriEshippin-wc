@@ -18,4 +18,12 @@ interface EnumInterface
      * @return array
      */
     public static function getConstraints(string $option): array | null;
+
+    /**
+     * Return the sanitization type for a given option
+     *
+     * @param string $option
+     * @return string|null
+     */
+    public static function getSanitizationType(string $option): string | null;
 }

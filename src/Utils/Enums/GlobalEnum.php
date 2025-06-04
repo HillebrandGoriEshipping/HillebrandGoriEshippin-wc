@@ -23,4 +23,11 @@ class GlobalEnum implements EnumInterface {
         // No constraints defined for global enums
         return null;
     }
+
+
+    public static function getSanitizationType(string $option): string | null
+    {
+        // No specific sanitization types defined for options
+        return null;
+    }
 }

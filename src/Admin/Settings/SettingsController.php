@@ -50,6 +50,7 @@ class SettingsController
         }
 
         $settingsFormData = new SettingsFormData($_POST);
+        $settingsFormData->sanitize(OptionEnum::class);
         $errors = $settingsFormData->validate();
 
         if ($errors) {
@@ -59,10 +60,10 @@ class SettingsController
         }
 
         foreach (OptionEnum::getList() as $optionName) {
-            if (!isset($_POST[$optionName])) {
+            if (!isset($settingsFormData->$optionName)) {
                 continue;
             }
-            update_option($optionName, $_POST[$optionName]);
+            update_option($optionName, $settingsFormData->$optionName);
             if ($optionName === "HGES_ACCESS_KEY") {
                 try {
                     $result = ApiClient::get('/package/get-sizes?nbBottles=1');

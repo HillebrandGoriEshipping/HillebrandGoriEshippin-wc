@@ -105,4 +105,10 @@ class OptionEnum implements EnumInterface
 
         return $constraints[$option] ?? null;
     }
+
+    public static function getSanitizationType(string $option): string | null
+    {
+        // No specific sanitization types defined for options
+        return null;
+    }
 }
