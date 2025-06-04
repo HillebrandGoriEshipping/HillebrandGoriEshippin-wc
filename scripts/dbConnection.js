@@ -3,6 +3,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default () => {
+    console.log('Connecting to the database with', {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        database: process.env.DB_NAME
+    });
     return mysql.createConnection({
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
