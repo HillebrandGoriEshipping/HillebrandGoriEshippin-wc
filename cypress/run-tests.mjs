@@ -21,7 +21,7 @@ getSpecFiles(e2eDir);
 (async () => {
   try {
     for (const spec of specs) {
-      console.log(`\n➡️ Exécution du test : ${spec}`);
+      console.log(`\n➡️ Executing test: ${spec}`);
 
       const result = await cypress.run({
         spec,
@@ -33,14 +33,14 @@ getSpecFiles(e2eDir);
       });
 
       if (result.totalFailed > 0) {
-        console.error(`❌ Échec détecté dans : ${spec}`);
+        console.error(`❌ Failure in: ${spec}`);
         process.exit(1);
       }
     }
 
     console.log('\n🎉 Tous les tests ont été exécutés avec succès.');
   } catch (err) {
-    console.error(`❌ Erreur pendant l’exécution de Cypress :\n`, err);
-    process.exit(1); // <-- forcer l'échec même pour une erreur de config, de plugin, etc.
+    console.error(`❌ Error in Cypress tests:\n`, err);
+    process.exit(1);
   }
 })();
