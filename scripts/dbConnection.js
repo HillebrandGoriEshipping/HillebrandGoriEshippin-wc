@@ -1,5 +1,8 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+
 const envPaths = [
   path.resolve('../../../.env'),
   path.resolve('../../../.env.e2e'),
