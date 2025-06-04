@@ -4,7 +4,7 @@ import { join } from 'path';
 
 const specs = [];
 // get recursive list of all .cy.js files path in the cypress/e2e directory
-const e2eDir = join(__dirname, 'cypress', 'e2e');
+const e2eDir = join('cypress', 'e2e');
 const getSpecFiles = (dir) => {
   const files = readdirSync(dir, { withFileTypes: true });
   for (const file of files) {
