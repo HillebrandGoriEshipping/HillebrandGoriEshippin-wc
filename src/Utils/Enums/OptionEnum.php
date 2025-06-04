@@ -4,7 +4,7 @@ namespace HGeS\Utils\Enums;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class OptionEnum
+class OptionEnum implements EnumInterface
 {
     const HGES_ACCESS_KEY = "HGES_ACCESS_KEY";
     const ACCESS_KEY_VALIDATE = "access_key_validate";
