@@ -1,6 +1,14 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
-dotenv.config();
+const envPaths = [
+  path.resolve('../../../.env'),
+  path.resolve('../../../.env.e2e'),
+];
+const envFiles = envPaths.filter((file) => fs.existsSync(file));
+dotenv.config({
+  override: true,
+  path: envFiles 
+});
 
 export default () => {
     console.log('Connecting to the database with', {
