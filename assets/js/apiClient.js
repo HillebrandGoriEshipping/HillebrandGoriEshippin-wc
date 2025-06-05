@@ -55,22 +55,6 @@ export default {
       return false;
     }
   },
-  async getFromProxy(url, urlParams) {
-    try {
-      return (await this.get(url, urlParams, null, true));
-    } catch (error) {
-      console.error("Error fetching data from proxy:", error);
-      return null;
-    }
-  },
-  async postProxy(url, urlParams, data) {
-    try {
-      return (await this.post(url, urlParams, data, null, true));
-    } catch (error) {
-      console.error("Error posting data to proxy:", error);
-      return null;
-    }
-  },
   /**
    * returns the URL with the query string generated from urlParams object
    * if the url already contains any url parameters, they'll be kept.

@@ -61,7 +61,7 @@ const PickupPointsMap = () => {
 
             setIsLoading(true);
             const shippingAddress = cartStore.getCustomerData().shippingAddress;
-            const pickupPointList = await apiClient.getFromProxy(
+            const pickupPointList = await apiClient.get(
                 '/pickup-points',
                 {
                     street: shippingAddress.address_1,
@@ -70,7 +70,9 @@ const PickupPointsMap = () => {
                     shipmentDate: dayjs(currentRate.pickupDate).format('DD/MM/YYYY'),
                     country: shippingAddress.country,
                     productCode: currentRate.pickupServiceId
-                }
+                },
+                {},
+                true
             );
 
             map.clearMarkers();
@@ -114,14 +116,16 @@ const PickupPointsMap = () => {
     const selectThisPickupPoint = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        await apiClient.postProxy(
+        await apiClient.post(
             '/order/set-current-pickup-point',
             {
                 orderId: checkoutStore.getOrderId()
             },
             {
                 pickupPoint: currentPickupPoint
-            }
+            },
+            {},
+            true
         );
         setIsLoading(false);
         closeModal(e);
