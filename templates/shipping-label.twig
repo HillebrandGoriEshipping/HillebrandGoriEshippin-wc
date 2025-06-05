@@ -21,7 +21,7 @@
                     {{ __('Estimated delivery: ') }} {{ metaData.deliveryDate }}
                 </div>
                 {% if metaData.doorDelivery is same as "" %}
-                    <div id="pickup-point-button" class="pickup-point-button" onclick="openModal(event)"                    >
+                    <div id="pickup-point-button" class="pickup-point-button" onclick="openModal(event)">
                         <span >{{ __('Choose your pickup point') }}</span>
                     </div>
                 {% endif %}
@@ -33,5 +33,3 @@
         {{ cost|raw }}
     </div>
 </div>
-
-{% include 'classic-pickup-modal.twig' %}

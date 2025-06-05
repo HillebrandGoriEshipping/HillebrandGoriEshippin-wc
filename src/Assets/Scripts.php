@@ -53,7 +53,15 @@ class Scripts
             true
         );
 
-        wp_enqueue_script(
+        wp_enqueue_script_module(
+            'hges-api-client-init',
+            HGeS_PLUGIN_URL . 'assets/js/apiClientInit.js',
+            ['hges-api-client'],
+            null,
+            ['in_footer' => true]
+        );
+
+        wp_enqueue_script_module(
             'hges-classic-pickup-map-handler',
             HGeS_PLUGIN_URL . 'assets/js/classicPickupMap.js',
             ['leaflet-map'],

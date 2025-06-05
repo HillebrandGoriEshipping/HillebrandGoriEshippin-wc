@@ -44,6 +44,7 @@ class App
         add_filter('woocommerce_shipping_methods', [ShippingMethod::class, 'register']);
         add_filter('woocommerce_package_rates', [ClassicUiRender::class, 'sortShippingMethods'], 10, 2);
         add_filter('woocommerce_cart_shipping_method_full_label', [ClassicUiRender::class, 'renderLabel'], 10, 2);
+        add_filter('woocommerce_review_order_before_payment', [ClassicUiRender::class, 'renderClassicPickupModal'], 10, 1);
         add_filter('woocommerce_cart_shipping_packages', [ClassicUiRender::class, 'invalidateRatesCache'], 100);
         add_filter('woocommerce_checkout_fields', [ShippingAddressFields::class, 'filterClassicUiFields'], 10, 1);
     }
