@@ -10,6 +10,7 @@ use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
 use HGeS\WooCommerce\BottleShippingClass;
 use HGeS\WooCommerce\ClassicUiRender;
+use HGeS\WooCommerce\Order;
 use HGeS\WooCommerce\PickupPointsRender;
 use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\ShippingMethod;
@@ -47,6 +48,7 @@ class App
         add_filter('woocommerce_review_order_before_payment', [ClassicUiRender::class, 'renderClassicPickupModal'], 10, 1);
         add_filter('woocommerce_cart_shipping_packages', [ClassicUiRender::class, 'invalidateRatesCache'], 100);
         add_filter('woocommerce_checkout_fields', [ShippingAddressFields::class, 'filterClassicUiFields'], 10, 1);
+        add_action('woocommerce_checkout_create_order', [Order::class, 'setOrderPickupMeta'], 10, 2);
     }
 
     /**

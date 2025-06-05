@@ -93,9 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openModal(e) {
-    console.log('[DEBUG] openModal triggered');
-    console.log(modal);
-    
     modal.classList.remove('hidden');
 
     if (!mapInstance && mapContainer) {
@@ -119,22 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     spinner.classList.remove('hidden');
 
-    try {
-      await apiClient.postProxy('/order/set-current-pickup-point', {
-          orderId: window.orderId || 123
-      }, {
-          pickupPoint: currentPickupPoint
-      });
-
-      window.dispatchEvent(new CustomEvent('hges:pickup-points-selected', {
-          detail: { pickupPoint: currentPickupPoint }
-      }));
-      closeModal(e);
-    } catch (error) {
-      console.error('Erreur lors de la sélection du point relais :', error);
-    } finally {
-      spinner.classList.add('hidden');
-    }
+    const input = document.getElementById('hges-pickup-point-data');
+    input.value = JSON.stringify(currentPickupPoint);
+    closeModal(e);
   }
 
   // Bind closing and selecting
