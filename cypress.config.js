@@ -23,6 +23,7 @@ export default defineConfig({
       on('before:spec', (spec) => {
         const output = execSync('node ./scripts/resetDb.js --input-type=module').toString();
         console.log(output);
+        return output;
       });
 
       on('task', {
@@ -33,6 +34,7 @@ export default defineConfig({
         },
         setUiToClassic() {
           const output = execSync('node ./scripts/switchui.js classic').toString();
+          console.log(output);
           return output;
         }
       });
