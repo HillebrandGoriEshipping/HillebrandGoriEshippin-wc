@@ -27,7 +27,14 @@
                 {% endif %}
             {% endif %}
         </div>
+    {% if metaData.doorDelivery is same as "" %}
+        <div id="selected-pickup-point" class="selected-pickup-point hidden">
+            <strong>{{ __('Selected pickup point:') }}</strong>
+            <span id="selected-pickup-point-name"></span><span id="selected-pickup-point-address"></span>
+        </div>
+    {% endif %}
     </div>
+
 
     <div class="hges-shipping-price">
         {{ cost|raw }}

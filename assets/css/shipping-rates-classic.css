@@ -70,3 +70,18 @@ input[type="radio"]:checked + label .hges-shipping-method .pickup-point-button{
   background-color: hsla(0, 0%, 7%, 0.3);
   cursor: pointer;
 }
+
+#selected-pickup-point.hidden {
+  display: none;
+}
+
+#selected-pickup-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 1rem 0;
+}
+
+#selected-pickup-point-name {
+  margin-top: 1rem;
+}

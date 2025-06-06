@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const modal = document.getElementById('pickup-points-map-modal');
-  const mapContainer = document.getElementById('pickup-points-map');
-  const closeBtn = document.getElementById('close-pickup-map-modal');
-  const popupTemplate = document.getElementById('marker-popup-template');
-  const spinner = document.getElementById('pickup-points-spinner');
-  const listContainer = document.getElementById('pickup-points-list');
-  const selectBtn = document.getElementById('select-pickup-point');
+  const modal = document.querySelector('#pickup-points-map-modal');
+  const mapContainer = document.querySelector('#pickup-points-map');
+  const closeBtn = document.querySelector('#close-pickup-map-modal');
+  const popupTemplate = document.querySelector('#marker-popup-template');
+  const spinner = document.querySelector('#pickup-points-spinner');
+  const listContainer = document.querySelector('#pickup-points-list');
+  const selectBtn = document.querySelector('#select-pickup-point');
+  const selectedPointDiv = document.querySelector('#selected-pickup-point');
+  selectedPointDiv.classList.add('hidden');
+  const nameSpan = document.querySelector('#selected-pickup-point-name');
+  const addressSpan = document.querySelector('#selected-pickup-point-address');
 
   let mapInstance = null;
   let pickupPoints = [];
@@ -118,13 +122,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const input = document.getElementById('hges-pickup-point-data');
     input.value = JSON.stringify(currentPickupPoint);
+    
+    nameSpan.textContent = currentPickupPoint.name;
+    addressSpan.textContent = currentPickupPoint.addLine1 + ', ' + currentPickupPoint.city;
+    selectedPointDiv.classList.remove('hidden');
+    localStorage.setItem('hges_current_pickup_point', JSON.stringify(currentPickupPoint));
     closeModal(e);
   }
 
-  // Bind closing and selecting
   closeBtn?.addEventListener('click', closeModal);
   selectBtn?.addEventListener('click', selectPickupPoint);
 
-  // Permet l'appel via onclick
   window.openModal = openModal;
+});
+
+function showSavedPickupPoint() {
+    const saved = localStorage.getItem('hges_current_pickup_point');
+    if (!saved) return;
+
+    try {
+        const parsed = JSON.parse(saved);
+        const nameSpan = document.querySelector('#selected-pickup-point-name');
+        const container = document.querySelector('#selected-pickup-point');
+
+        if (nameSpan && container) {
+            nameSpan.textContent = parsed.name;
+            container.classList.remove('hidden');
+        }
+    } catch (err) {
+        console.warn('Erreur lecture point relais localStorage', err);
+    }
+}
+
+jQuery(document.body).on('updated_checkout', function () {
+  showSavedPickupPoint();
 });
