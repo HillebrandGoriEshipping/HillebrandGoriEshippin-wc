@@ -7,7 +7,7 @@ namespace HGeS\Utils\Enums;
  *
  * This class is used to define the global enums for the plugin.
  */
-class GlobalEnum {
+class GlobalEnum implements EnumInterface {
 
     const TRANSLATION_DOMAIN = 'HillebrandGorieShipping';
 
@@ -16,5 +16,18 @@ class GlobalEnum {
         return [
             self::TRANSLATION_DOMAIN,
         ];
+    }
+
+    public static function getConstraints(string $option): array | null
+    {
+        // No constraints defined for global enums
+        return null;
+    }
+
+
+    public static function getSanitizationType(string $option): string | null
+    {
+        // No specific sanitization types defined for options
+        return null;
     }
 }

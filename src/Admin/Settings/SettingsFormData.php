@@ -3,6 +3,7 @@
 namespace HGeS\Admin\Settings;
 
 use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Utils\Traits\Sanitizable;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use HGeS\Utils\Traits\Validable;
 
@@ -17,6 +18,11 @@ class SettingsFormData
      * This class must implement the loadValidatorMetadata method to define the validation rules.
      */
     use Validable;
+
+    /**
+     * This trait is used to add sanitization capabilities to a class.
+     */
+    use Sanitizable;
 
     /**
      * We need to explicitly define the properties here,
@@ -66,5 +72,10 @@ class SettingsFormData
                 $metadata->addPropertyConstraint($optionName, $constraint);
             }
         }
+    }
+
+    public function __get($name)
+    {
+        return $this->$name ?? null;
     }
 }

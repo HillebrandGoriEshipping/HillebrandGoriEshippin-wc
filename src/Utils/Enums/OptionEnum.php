@@ -9,7 +9,7 @@ use HGeS\Utils\ValidationConstraints\VatNumber;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
-class OptionEnum
+class OptionEnum implements EnumInterface
 {
     const HGES_ACCESS_KEY = "HGES_ACCESS_KEY";
     const ACCESS_KEY_VALIDATE = "access_key_validate";
@@ -105,5 +105,30 @@ class OptionEnum
         ];
 
         return $constraints[$option] ?? null;
+    }
+
+    public static function getSanitizationType(string $option): string | null
+    {
+        $sanitizationTypes = [
+            self::HGES_ACCESS_KEY => 'string',
+            self::ACCESS_KEY_VALIDATE => 'string',
+            self::HGES_MAPBOX_ACCESS_KEY => 'string',
+            self::mapbox_api_key_validate => 'string',
+            self::HGES_PREF_TRANSP => 'string',
+            self::HGES_TAX_RIGHTS => 'string',
+            self::HGES_VAT_NUMBER => 'string',
+            self::HGES_VAT_OSS => 'string',
+            self::HGES_EORI_NUMBER => 'string',
+            self::HGES_FDA_NUMBER => 'string',
+            self::HGES_ASSURANCE => 'string',
+            self::HGES_NBR_MIN => 'int',
+            self::HGES_PREP_TIME => 'int',
+            self::HGES_PREF_DEL => 'int',
+            self::HGES_MINHOUR => 'int',
+            self::HGES_CUTOFF => 'int',
+            self::HGES_WORKING_DAYS => 'int',
+        ];
+        
+        return $sanitizationTypes[$option] ?? null;
     }
 }
