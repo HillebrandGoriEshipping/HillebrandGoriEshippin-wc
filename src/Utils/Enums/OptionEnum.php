@@ -2,7 +2,12 @@
 
 namespace HGeS\Utils\Enums;
 
+use HGeS\Utils\Messages;
+use HGeS\Utils\ValidationConstraints\EoriNumber;
+use HGeS\Utils\ValidationConstraints\FdaNumber;
+use HGeS\Utils\ValidationConstraints\VatNumber;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 class OptionEnum
 {
@@ -59,43 +64,43 @@ class OptionEnum
     {
         $constraints = [
             self::HGES_PREF_TRANSP => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_TAX_RIGHTS => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_VAT_NUMBER => [
-                new NotBlank(),
+                new VatNumber(),
             ],
             self::HGES_VAT_OSS => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_EORI_NUMBER => [
-                new NotBlank(),
+                new EoriNumber(),
             ],
             self::HGES_FDA_NUMBER => [
-                new NotBlank(),
+                new FdaNumber(),
             ],
             self::HGES_ASSURANCE => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_NBR_MIN => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_PREP_TIME => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_PREF_DEL => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_MINHOUR => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_CUTOFF => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_WORKING_DAYS => [
-                new NotBlank(),
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
         ];
 

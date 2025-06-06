@@ -6,5 +6,11 @@
   "productMeta": {
     "settingsError": "The product settings are incorrect",
     "settingsSuccess": "The product settings are correct"
+  },
+  "settings": {
+    "notEmpty": "This field cannot be empty",
+    "vatNumberError": "VAT number is invalid! Please check the format.",
+    "eoriNumberError": "EORI number is invalid! Please check the format.",
+    "fdaNumberError": "FDA number format must be 11 digits."
   }
 }
