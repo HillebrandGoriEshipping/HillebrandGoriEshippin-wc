@@ -3,6 +3,13 @@ import utils from "./utils.js";
 const { __ } = window.wp.i18n;
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.querySelector("#configuration_form");
+  window.hges.validator.attachForm(
+    form,
+    'settings'
+  );
+
   // Select the API key validation button
   const validateKey = document.querySelector("#validate-api");
 

@@ -117,6 +117,7 @@ class Rate
                 $params['packages'] = $packageParam;
             }
         } catch (\Exception $th) {
+            \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
         }
 
@@ -175,6 +176,7 @@ class Rate
                 return $response['data'];
             }
         } catch (\Exception $e) {
+            \Sentry\captureException($e);
             throw $e;
         }
 

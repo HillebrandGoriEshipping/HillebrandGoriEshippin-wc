@@ -74,6 +74,9 @@ class SettingsController
                     }
                 } catch (\Throwable $th) {
                     update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
+
+                    \Sentry\captureException($e);
+                    throw $th;
                 }
             }
         }
