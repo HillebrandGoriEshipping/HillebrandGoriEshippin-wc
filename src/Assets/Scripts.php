@@ -45,6 +45,46 @@ class Scripts
             HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
+        wp_enqueue_script(
+            'leaflet-map',
+            HGeS_PLUGIN_URL . 'assets/js/classicLeafletMap.js',
+            [],
+            null,
+            true
+        );
+
+        wp_enqueue_script_module(
+            'hges-api-client-init',
+            HGeS_PLUGIN_URL . 'assets/js/apiClientInit.js',
+            ['hges-api-client'],
+            null,
+            ['in_footer' => true]
+        );
+
+        wp_enqueue_script(
+            'dayjs-lib',
+            'https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js',
+            [],
+            null,
+            true
+        );
+
+        wp_enqueue_script_module(
+            'hges-dayjs-init',
+            HGeS_PLUGIN_URL . '/js/dayJsInit.js',
+            ['dayjs-lib'],
+            null,
+            ['strategy' => 'defer', 'type' => 'module']
+        );
+
+        wp_enqueue_script_module(
+            'hges-classic-pickup-map-handler',
+            HGeS_PLUGIN_URL . 'assets/js/classicPickupMap.js',
+            ['leaflet-map'],
+            null,
+            true
+        );
+
         self::globalObjectInjection();
     }
 

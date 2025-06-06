@@ -1,0 +1,28 @@
+<div id="pickup-points-map-modal" class="modal hidden">
+    <div class="modal__content">
+        <div class="modal__load-mask hidden" id="pickup-points-spinner">
+            <div class="wc-block-components-spinner is-active"></div>
+        </div>
+
+        <button type="button" class="modal__close" id="close-pickup-map-modal">
+            <span class="modal__close-icon"/>x<span>
+        </button>
+
+        <div class="map-container" id="pickup-points-map"></div>
+
+        <div class="modal__side">
+            <div id="pickup-points-list"></div>
+            <div>
+                <button type="button" class="pickup-point__select-btn" id="select-pickup-point">{{ __('Select this pickup point') }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: none;" class="marker-popup" id="marker-popup-template">
+        <div class="marker-popup__title"></div>
+        <div class="marker-popup__address"></div>
+        <div class="marker-popup__distance"></div>
+    </div>
+</div>
+
+<input type="hidden" name="hges_pickup_point_data" id="hges-pickup-point-data" />

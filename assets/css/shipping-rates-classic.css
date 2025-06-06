@@ -37,6 +37,10 @@ input[type="radio"]:checked + label .hges-shipping-method {
   border: solid hsla(0, 0%, 7%, 0.11);
 }
 
+input[type="radio"]:checked + label .hges-shipping-method .pickup-point-button{
+  display:block;
+}
+
 .hges-shipping-method:hover {
   background-color: hsla(0, 0%, 7%, 0.11);
   cursor: pointer;
@@ -49,4 +53,35 @@ input[type="radio"]:checked + label .hges-shipping-method {
 .woocommerce-checkout-review-order-table h3 {
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+.pickup-point-button {
+  text-align: center;
+  border-radius: 8px;
+  color: #333;
+  font-weight: bold;
+  padding: 12px;
+  border: 2px solid hsla(0, 0%, 7%, 0.11);
+  display: none;
+}
+
+.pickup-point-button:hover {
+  color: hsla(0, 0%, 100%, 0.793);
+  background-color: hsla(0, 0%, 7%, 0.3);
+  cursor: pointer;
+}
+
+#selected-pickup-point.hidden {
+  display: none;
+}
+
+#selected-pickup-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem 1rem 0;
+}
+
+#selected-pickup-point-name {
+  margin-top: 1rem;
 }

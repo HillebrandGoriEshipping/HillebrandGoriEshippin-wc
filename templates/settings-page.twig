@@ -13,15 +13,6 @@
                     <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
                 </td>
             </tr>
-            <tr valign="top">
-                <td scope="row" class="titledesc">
-                    <label for="order_shipped">{{ __( 'Insert your MapBox API token')|escape }}</label>
-                </td>
-                <td>
-                    <input type="text" name="{{ hgesOptionName('HGES_MAPBOX_ACCESS_KEY') }}" id="api-input-mapbox" class="validable-field {{ options.mapbox_api_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_MAPBOX_ACCESS_KEY|default('') }}">
-                    <button type="button" class="button" id="validate-mapbox-api">{{ __( 'Test my Mapbox access token')|escape }}</button>
-                </td>
-            </tr>
         </table>
         <p id="alert-api-text">
             {{ __( 'Please validate the API access before saving the modifications')|escape }}

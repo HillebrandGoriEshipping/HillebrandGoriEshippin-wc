@@ -109,6 +109,17 @@ class ClassicUiRender
     }
 
     /**
+     * Renders the classic pickup modal using the Twig templating engine.
+     *
+     * @return void
+     */
+    public static function renderClassicPickupModal(): void
+    {
+        $twig = Twig::getTwig();
+        echo $twig->render('classic-pickup-modal.twig');
+    }
+
+    /**
      * Invalidates the rate cache for the given shipping packages.
      *
      * @param array $packages An array of shipping packages.
