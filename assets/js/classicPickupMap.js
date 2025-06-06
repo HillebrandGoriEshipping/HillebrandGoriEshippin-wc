@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
           street: shippingAddress.address_1,
           zipCode: shippingAddress.postcode,
           city: shippingAddress.city,
-          shipmentDate: "06/06/2025",//dayjs().format('DD/MM/YYYY'),
+          shipmentDate: dayjs().format('DD/MM/YYYY'),
           country: shippingAddress.country,
-          productCode: '86' // adapt this
+          productCode: '86'
       });
 
       const points = res || [];
