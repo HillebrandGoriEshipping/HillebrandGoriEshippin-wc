@@ -8,8 +8,6 @@ class OptionEnum
 {
     const HGES_ACCESS_KEY = "HGES_ACCESS_KEY";
     const ACCESS_KEY_VALIDATE = "access_key_validate";
-    const HGES_MAPBOX_ACCESS_KEY = "HGES_MAPBOX_ACCESS_KEY";
-    const mapbox_api_key_validate = "mapbox_api_key_validate";
     const HGES_PREF_TRANSP = "HGES_PREF_TRANSP";
     const HGES_TAX_RIGHTS = "HGES_TAX_RIGHTS";
     const HGES_VAT_NUMBER = "HGES_VAT_NUMBER";
@@ -38,8 +36,6 @@ class OptionEnum
         return [
             self::HGES_ACCESS_KEY,
             self::ACCESS_KEY_VALIDATE,
-            self::HGES_MAPBOX_ACCESS_KEY,
-            self::mapbox_api_key_validate,
             self::HGES_PREF_TRANSP,
             self::HGES_TAX_RIGHTS,
             self::HGES_VAT_NUMBER,

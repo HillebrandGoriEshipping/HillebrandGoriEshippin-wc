@@ -24,8 +24,6 @@ class SettingsFormData
      */
     private $HGES_ACCESS_KEY;
     private $access_key_validate;
-    private $HGES_MAPBOX_ACCESS_KEY;
-    private $mapbox_api_key_validate;
     private $HGES_PREF_TRANSP;
     private $HGES_TAX_RIGHTS;
     private $HGES_VAT_NUMBER;
