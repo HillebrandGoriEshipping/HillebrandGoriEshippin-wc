@@ -65,6 +65,13 @@ class Order
             return;
         }
 
+        $pickupPoint = array_map(
+            function ($value) {
+                return is_string($value) ? sanitize_text_field($value) : $value;
+            },
+            $pickupPoint
+        );
+
         $string_keys = ['id', 'name', 'addLine1', 'city', 'zipCode', 'country', 'distanceUnitOfMeasurement'];
         foreach ($string_keys as $key) {
             if (!is_string($pickupPoint[$key])) {
@@ -81,7 +88,7 @@ class Order
         }
 
         foreach ($pickupPoint as $key => $value) {
-            $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), sanitize_text_field((string) $value));
+            $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
         }
     }
 }
