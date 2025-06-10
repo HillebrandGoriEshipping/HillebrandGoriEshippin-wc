@@ -23,6 +23,8 @@
     "leaflet": "^1.9.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^24.0.0",
     "@wordpress/scripts": "^30.15.0",
     "cypress": "^14.3.3",
     "mysql2": "^3.14.1"

@@ -13,3 +13,9 @@ node_modules
 !/docs/guide
 
 /.phpdoc
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
