@@ -146,9 +146,40 @@ class Rate
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
         $params['nbBottles'] = $magnumQuantity + $standardQuantity;
 
+        $details = [];
+
+        foreach ($package['contents'] as $item) {
+            $productId = $item['product_id'];
+            $variationId = $item['variation_id'];
+
+            $product = wc_get_product($productId);
+            $unitPriceExTax = wc_get_price_excluding_tax($product);
+
+            $itemQuantity = get_post_meta($productId, ProductMetaEnum::NUMBER_OF_BOTTLE, true);
+            if ($item['variation_id'] !== 0) {
+                $itemQuantity = get_post_meta($variationId, '_variation_quantity', true);
+            }
+
+            if ($itemQuantity === '') {
+                $itemQuantity = $item['quantity'];
+            } else {
+                $itemQuantity = (int) $itemQuantity;
+            }
+
+            $details[] = [
+                'capacity' => get_post_meta($productId, ProductMetaEnum::CAPACITY, true),
+                'alcoholDegree' => get_post_meta($productId, ProductMetaEnum::ALCOHOL_PERCENTAGE, true),
+                'unitValue' => $unitPriceExTax,
+                'hsCode' => "1234.12.12", //TODO : retrieve real hs code dynamically
+                'quantity' => $itemQuantity * $item['quantity'],
+            ];
+        }
+
+        dump($details);
+
         $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
         foreach ($carrierList as $carrier) {
-            $params[$carrier] = 1;
+            $params[$carrier] = true;
         }
 
         return $params;
@@ -171,7 +202,7 @@ class Rate
                 return ['error' => 'No package sizes available for the given contents.'];
             }
 
-            $response = ApiClient::get('/shipment/get-rates', $urlParams);
+            $response = ApiClient::get('/v2/rates', $urlParams);
             if (isset($response['data']) && is_array($response['data'])) {
                 return $response['data'];
             }
@@ -194,14 +225,16 @@ class Rate
     public static function getShippingRates($package)
     {
         // do not attempt retrieving rates if current action is "add-to-cart"
-        if (!empty($_POST['add-to-cart']) 
+        if (
+            !empty($_POST['add-to-cart'])
             || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
         ) {
             trigger_error('HillebrandGori eShipping : Current action is "add-to-cart", returning empty rates array.', E_USER_NOTICE);
             return [];
         }
         // do not attempt retrieving rates if destination address is not set
-        if (empty($package['destination']['city'])
+        if (
+            empty($package['destination']['city'])
             || empty($package['destination']['postcode'])
         ) {
             trigger_error('HillebrandGori eShipping : Destination address is not set, returning empty rates array.', E_USER_NOTICE);
@@ -230,8 +263,6 @@ class Rate
         }
 
         foreach ($shippingRates as $rate) {
-
-
             $formattedShippingRates[] = [
                 'id' => $rate['service'],
                 'label' => $rate['service'],
