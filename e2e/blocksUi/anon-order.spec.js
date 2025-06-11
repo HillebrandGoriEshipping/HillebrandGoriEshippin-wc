@@ -116,10 +116,12 @@ test.describe('Block UI Order spec', () => {
             'shipping-hges-excise-number': '12345678901234',
         };
         await formFillById(page, inputValues);
-
-        // const placeOrderBtn = page.locator('button.wc-block-components-checkout-place-order-button');
-        // await expect(placeOrderBtn).toBeVisible();
-        // await placeOrderBtn.click();
-        // await checkOrderConfirmationContent(page, false);
+        const shippingAddressFieldset = page.locator('.wp-block-woocommerce-checkout-shipping-methods-block');
+        await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 'Chrono 13h');
+        const placeOrderBtn = page.locator('button.wc-block-components-checkout-place-order-button');
+        await expect(placeOrderBtn).toBeVisible();
+        await placeOrderBtn.click();
+        await expect(page).toHaveURL(/\/order-received/);
+        await checkOrderConfirmationContent(page, false);
     });
 });
