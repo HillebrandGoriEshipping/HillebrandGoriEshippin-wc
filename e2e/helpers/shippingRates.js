@@ -1,6 +1,7 @@
 import { expect } from "@playwright/test";
 
 export const selectRateInAccordion = async (page, parentLocator, headerTitle, method) => {
+    console.log('headerTitle', headerTitle);
     let methodName = method;
     if (typeof method === 'number') {
         const rateElements = await page.$$('.shipping-rates .rate-name span');

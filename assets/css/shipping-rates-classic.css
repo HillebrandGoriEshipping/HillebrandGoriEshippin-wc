@@ -62,7 +62,6 @@ input[type="radio"]:checked + label .hges-shipping-method .pickup-point-button{
   font-weight: bold;
   padding: 12px;
   border: 2px solid hsla(0, 0%, 7%, 0.11);
-  display: none;
 }
 
 .pickup-point-button:hover {
