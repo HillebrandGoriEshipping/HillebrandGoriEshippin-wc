@@ -9,7 +9,6 @@ use HGeS\Utils\Enums\ProductMetaEnum;
 
 class Rate
 {
-
     /**
      * Temp : Map of the pickup services (id => name)
      */
@@ -145,7 +144,7 @@ class Rate
         $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
         $params['nbBottles'] = $magnumQuantity + $standardQuantity;
-        $params['commodityValue'] = 150.5; //TODO : retrieve real commodity value dynamically
+        $params['commodityValue'] = 38; //TODO : retrieve real commodity value dynamically
 
         $details = [];
 
@@ -171,24 +170,21 @@ class Rate
                 'capacity' => get_post_meta($productId, ProductMetaEnum::CAPACITY, true),
                 'alcoholDegree' => get_post_meta($productId, ProductMetaEnum::ALCOHOL_PERCENTAGE, true),
                 'unitValue' => $unitPriceExTax,
-                'hsCode' => "1234.12.12", //TODO : retrieve real hs code dynamically
+                'hsCode' => "2204.21.78", //TODO : retrieve real hs code dynamically
                 'quantity' => $itemQuantity * $item['quantity'],
             ];
         }
-
-        dump($details);
 
         $params['details'] = $details;
 
         $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
         foreach ($carrierList as $carrier) {
-            $params[$carrier] = true;
+            $params[$carrier] = 1;
         }
 
-        $params['nonAlcoholic'] = false; //TODO : retrieve real non-alcoholic status dynamically
-        $params['documents'] = false; //TODO : retrieve real documents status dynamically
+        $params['nonAlcoholic'] = 0; //TODO : retrieve real non-alcoholic status dynamically
+        $params['documents'] = 0; //TODO : retrieve real documents status dynamically
 
-        dump($params);
         return $params;
     }
 
@@ -210,6 +206,7 @@ class Rate
             }
 
             $response = ApiClient::get('/v2/rates', $urlParams);
+
             if (isset($response['data']) && is_array($response['data'])) {
                 return $response['data'];
             }
@@ -261,11 +258,11 @@ class Rate
 
         if ($deliveryPref === 'home') {
             $shippingRates = array_filter($shippingRates, function ($rate) {
-                return $rate['doorDelivery'] === true;
+                return $rate['deliveryMode'] === "door";
             });
         } elseif ($deliveryPref === 'pickup_point') {
             $shippingRates = array_filter($shippingRates, function ($rate) {
-                return $rate['doorDelivery'] == false;
+                return $rate['deliveryMode'] == "pickup";
             });
         }
 
@@ -273,20 +270,20 @@ class Rate
             $formattedShippingRates[] = [
                 'id' => $rate['service'],
                 'label' => $rate['service'],
-                'cost' => $rate['price'],
+                'cost' => is_array($rate['shippingPrice']) ? $rate['shippingPrice']['amount'] : $rate['shippingPrice'],
                 'pickupDate' => $rate['pickupDate'],
-                'doorDelivery' => $rate['doorDelivery'],
-                'insurancePrice' => $rate['insurancePrice'],
+                'deliveryMode' => $rate['deliveryMode'],
+                'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                 'meta_data' => [
                     'deliveryDate' => $rate['deliveryDate'],
-                    'carrierName ' => $rate['name'],
-                    'insurancePrice' => $rate['insurancePrice'],
+                    'carrier' => $rate['carrier'],
+                    'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
-                    'doorDelivery' => $rate['doorDelivery']
+                    'deliveryMode' => $rate['deliveryMode']
                 ],
             ];
 
-            if (!$rate['doorDelivery']) {
+            if (!$rate['deliveryMode']) {
                 $formattedShippingRates['meta_data']['pickupServiceId'] = array_search($rate['service'], self::SERVICES_NAMES);
             }
         }

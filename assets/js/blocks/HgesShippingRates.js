@@ -86,10 +86,10 @@ const HgesShippingRates = (data) => {
   const otherRates = [];
 
   shippingRates.forEach((rate) => {
-    if (rate.doorDelivery === "1") {
+    if (rate.doorDelivery === "door") {
       rate.isPickup = false;
       doorDeliveryRates.push(rate);
-    } else if (rate.doorDelivery === "") {
+    } else if (rate.deliveryMode === "pickup") {
       rate.isPickup = true;
       pickupRates.push(rate);
     } else {

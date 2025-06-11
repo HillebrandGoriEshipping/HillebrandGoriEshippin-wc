@@ -23,17 +23,17 @@ class ClassicUiRender
         $pickupRates = [];
         $otherRates = [];
         foreach ($rates as $key => $rate) {
-            if (!isset($rate->get_meta_data()['doorDelivery'])) {
+            if (!isset($rate->get_meta_data()['deliveryMode'])) {
                 $otherRates[$key] = $rate;
                 if (count($otherRates) === 1) {
                     $otherRates[$key]->add_meta_data('firstOthersDelivery', true);
                 }
-            } else if ($rate->get_meta_data()['doorDelivery'] === '1') {
+            } else if ($rate->get_meta_data()['deliveryMode'] === 'door') {
                 $doorDeliveryRates[$key] = $rate;
                 if (count($doorDeliveryRates) === 1) {
                     $doorDeliveryRates[$key]->add_meta_data('firstDoorDelivery', true);
                 }
-            } else if ($rate->get_meta_data()['doorDelivery'] === '') {
+            } else if ($rate->get_meta_data()['deliveryMode'] === 'pickup') {
                 $pickupRates[$key] = $rate;
                 if (count($pickupRates) === 1) {
                     $pickupRates[$key]->add_meta_data('firstPickupDelivery', true);
@@ -74,7 +74,7 @@ class ClassicUiRender
             $assetsPath = HGeS_PLUGIN_URL . 'assets/img/seafreight.png';
         }
 
-        $metadata['doorDelivery'] = $metadata['doorDelivery'] ?? false;
+        $metadata['deliveryMode'] = $metadata['deliveryMode'] ?? false;
 
         $locale = get_user_locale();
         $dateFormatMapping = [
@@ -102,7 +102,7 @@ class ClassicUiRender
             'cost' => wc_price($rate->get_cost()),
             'metaData' => $metadata,
             'assetsPath' => $assetsPath,
-            'doorDelivery' => $metadata['doorDelivery'],
+            'deliveryMode' => $metadata['deliveryMode'],
         ]);
 
         return $labelHtml;
