@@ -17,8 +17,9 @@ test.describe('Block UI Cart spec', () => {
     await expect(page.locator('h1')).toContainText('Cart');
     await blocksFillDeliveryAddress(page);
 
-    await selectRateInAccordion(page, 'Door Delivery', 0);
-    await selectRateInAccordion(page, 'Other shipping method', 'Flat rate');
+    const cartShippingFieldset = await page.locator('.wc-block-components-totals-shipping__fieldset');
+    await selectRateInAccordion(page, cartShippingFieldset, 'Door Delivery', 0);
+    await selectRateInAccordion(page, cartShippingFieldset, 'Other shipping method', 'Flat rate');
 
     console.log('Anon Cart spec done');
   });
@@ -28,10 +29,10 @@ test.describe('Block UI Cart spec', () => {
     await expect(page.locator('h1')).toContainText('Cart');
     await blocksFillDeliveryAddress(page);
 
-
-    await selectRateInAccordion(page, 'Pickup points', 0);
+    const cartShippingFieldset = await page.locator('.wc-block-components-totals-shipping__fieldset');
+    await selectRateInAccordion(page, cartShippingFieldset, 'Pickup points', 0);
  
-    const selectedRate = page.locator('.rate-content.selected');
+    const selectedRate =  page.locator('.rate-content.selected');
     await expect(selectedRate.locator('div.pickup-point-button > button')).toHaveCount(0);
   });
 
@@ -46,7 +47,7 @@ test.describe('Block UI Cart spec', () => {
       await page.waitForTimeout(500);
     }
 
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(15000);
     await expect(page.locator('.wp-block-woocommerce-empty-cart-block')).toBeVisible();
   });
 });
