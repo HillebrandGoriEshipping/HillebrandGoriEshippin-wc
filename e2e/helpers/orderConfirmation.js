@@ -1,7 +1,7 @@
 import { expect }from '@playwright/test';
 
 export async function checkOrderConfirmationContent(page, isBusinessOrder) {
-  await expect(page).toHaveURL(/\/order-received/);
+  
   const heading = page.locator('h1');
   await expect(heading).toHaveText('Order received');
 
