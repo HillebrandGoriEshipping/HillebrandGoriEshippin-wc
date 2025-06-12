@@ -35,3 +35,16 @@ export const selectRateInAccordion = async (page, parentLocator, headerTitle, me
     await rate.click();
     return expect(rate).toHaveClass(/selected/);
 };
+
+export const selectRateByName = async (page, labelText) => {
+ 
+    const labelDiv = page.locator('.hges-shipping-label', { hasText: labelText }).first();
+    await expect(labelDiv).toBeVisible();
+    const label = labelDiv.locator('xpath=ancestor::label');
+    await expect(label).toBeVisible();
+    await label.click();
+
+    const forAttr = await label.getAttribute('for');
+    const input = page.locator(`#${forAttr}`);
+    return expect(input).toBeChecked();
+};
