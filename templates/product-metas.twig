@@ -106,8 +106,9 @@
         {% else %}
         <option value="">{{ __( 'Select an appellation') }}</option>
         {% endif %}
-
     </select>
+
+    <input type="hidden" name="_hs_code" id="_hs_code" value="{{ productMeta[hgesProductMeta('HS_CODE')] }}">
 </p>
 
 <div id="error-container"></div>

@@ -170,7 +170,7 @@ class Rate
                 'capacity' => get_post_meta($productId, ProductMetaEnum::CAPACITY, true),
                 'alcoholDegree' => get_post_meta($productId, ProductMetaEnum::ALCOHOL_PERCENTAGE, true),
                 'unitValue' => $unitPriceExTax,
-                'hsCode' => "2204.21.78", //TODO : retrieve real hs code dynamically
+                'hsCode' => get_post_meta($productId, ProductMetaEnum::HS_CODE, true),
                 'quantity' => $itemQuantity * $item['quantity'],
             ];
         }

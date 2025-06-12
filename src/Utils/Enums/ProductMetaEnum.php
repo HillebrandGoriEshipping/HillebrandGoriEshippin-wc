@@ -13,6 +13,7 @@ class ProductMetaEnum
     const VINTAGE_YEAR = "_vintage";
     const PRODUCING_COUNTRY = "_producing_country";
     const APPELLATION = "_appellation";
+    const HS_CODE = "_hs_code";
 
     const PRODUCT_META_GROUP = "HGeS_product_meta_group";
 
@@ -33,6 +34,7 @@ class ProductMetaEnum
             self::VINTAGE_YEAR,
             self::PRODUCING_COUNTRY,
             self::APPELLATION,
+            self::HS_CODE,
         ];
     }
 }

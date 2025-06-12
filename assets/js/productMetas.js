@@ -111,19 +111,22 @@ document.addEventListener("DOMContentLoaded", function () {
         color: currentColor,
       });
 
+      const hsCodeField = document.querySelector("#_hs_code");
+
       if (result === "") {
-        // Show an error message
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsError),
           errorContainer,
           "error"
         );
+        hsCodeField.value = "";
       } else {
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsSuccess),
           errorContainer,
           "success"
         );
+        hsCodeField.value = result; 
       }
     }
   }
