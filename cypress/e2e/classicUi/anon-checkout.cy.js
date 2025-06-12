@@ -25,9 +25,9 @@ describe('Classic UI Cart spec', () => {
     });
 
     
-    cy.contains('Chrono Relais 13H').should('be.visible');
-    cy.contains('Chrono Relais 13H').click();
-    cy.contains('Chrono Relais 13H').closest('label').invoke('attr', 'for').then((id) => {
+    cy.contains('DHL DOMESTIC EXPRESS').should('be.visible');
+    cy.contains('DHL DOMESTIC EXPRESS').click();
+    cy.contains('DHL DOMESTIC EXPRESS').closest('label').invoke('attr', 'for').then((id) => {
       cy.get(`#${id}`).should('be.checked');
     });
 
@@ -37,9 +37,9 @@ describe('Classic UI Cart spec', () => {
       cy.get(`#${id}`).should('be.checked');
     });
 
-    cy.contains('Chrono 13H').should('be.visible');
-    cy.contains('Chrono 13H').click();
-    cy.contains('Chrono 13H').closest('label').invoke('attr', 'for').then((id) => {
+    cy.contains('TNT 12:00 Express à domicile').should('be.visible');
+    cy.contains('TNT 12:00 Express à domicile').click();
+    cy.contains('TNT 12:00 Express à domicile').closest('label').invoke('attr', 'for').then((id) => {
       cy.get(`#${id}`).should('be.checked');
     });
   });
