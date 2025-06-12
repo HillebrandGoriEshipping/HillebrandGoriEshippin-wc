@@ -1,15 +1,12 @@
 import { test, expect } from '@playwright/test';
 import messages from '../../assets/js/config/messages.json';
+import adminLogin from '../helpers/adminLogin';
 
 test.describe('Api key validation spec', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/wp/wp-admin/admin.php?page=hillebrand-gori-eshipping');
-    await page.locator('#user_login').fill('hges');
-    const passwordInput = page.locator('#user_pass');
-    await passwordInput.waitFor();
-    await passwordInput.fill('hges');
-    await page.locator('#wp-submit').click();
+    await adminLogin(page);
   });
 
   test('Check api key validation success', async ({ page }) => {

@@ -5,7 +5,7 @@ import adminLogin from '../helpers/adminLogin';
 test.describe('Admin Product Meta spec', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/wp/wp-admin/post.php?post=39&action=edit');
-    adminLogin(page);
+    await adminLogin(page);
   });
 
   test('Check product meta form message success', async ({ page }) => {

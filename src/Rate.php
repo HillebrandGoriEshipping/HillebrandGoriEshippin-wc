@@ -13,7 +13,7 @@ class Rate
      * Temp : Map of the pickup services (id => name)
      */
     const SERVICES_NAMES = [
-        '1' => 'Chrono 13H',
+        '1' => 'DHL DOMESTIC EXPRESS',
         '16' => 'Chrono 18H',
         '44' => 'Chrono Classic (Pays CEE en voie routière)',
         '49' => 'Chrono Relais Europe',
@@ -245,7 +245,7 @@ class Rate
             trigger_error('HillebrandGori eShipping : Destination address is not set, returning empty rates array.', E_USER_NOTICE);
             return [];
         }
-        
+
         $shippingRates = self::getRatesFromApi($package);
 
         if (isset($shippingRates['error'])) {

@@ -5,7 +5,7 @@ test.describe('Admin Bottle shipping class spec', () => {
   
   test.beforeEach(async ({ page }) => {
     await page.goto('/wp/wp-admin/admin.php?page=wc-settings&tab=shipping&section=classes');
-    adminLogin(page);
+    await adminLogin(page);
   });
 
   test('Check bottle shipping class exists in shipping classes list', async ({ page }) => {

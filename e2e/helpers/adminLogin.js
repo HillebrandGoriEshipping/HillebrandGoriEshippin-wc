@@ -3,5 +3,6 @@ export default async function adminLogin(page) {
     const passwordInput = page.locator('#user_pass');
     await passwordInput.waitFor();
     await passwordInput.fill('hges');
-    await page.locator('#wp-submit').click();
+    await page.waitForTimeout(10000);
+    return page.locator('#wp-submit').click();
 }
