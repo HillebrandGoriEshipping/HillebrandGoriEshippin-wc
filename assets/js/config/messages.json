@@ -11,6 +11,8 @@
     "notEmpty": "This field cannot be empty",
     "vatNumberError": "VAT number is invalid! Please check the format.",
     "eoriNumberError": "EORI number is invalid! Please check the format.",
-    "fdaNumberError": "FDA number format must be 11 digits."
+    "fdaNumberError": "FDA number format must be 11 digits.",
+    "carrierCountError": "You must have at least one carrier configured.",
+    "workingDaysError": "You must have at least one working day configured."
   }
 }

@@ -15,6 +15,7 @@ Trait Sanitizable
                 'int' => intval($value),
                 'float' => floatval($value),
                 'email' => sanitize_email($value),
+                'array' => is_array($value) ? array_map('sanitize_text_field', $value) : [],
                 default => $value,
             };
         }

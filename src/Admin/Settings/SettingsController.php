@@ -60,10 +60,6 @@ class SettingsController
         }
 
         foreach (OptionEnum::getList() as $optionName) {
-            if (!isset($settingsFormData->$optionName)) {
-                continue;
-            }
-            update_option($optionName, $settingsFormData->$optionName);
             if ($optionName === "HGES_ACCESS_KEY") {
                 try {
                     $result = ApiClient::get('/package/get-sizes?nbBottles=1');
@@ -78,6 +74,11 @@ class SettingsController
                     \Sentry\captureException($e);
                     throw $th;
                 }
+            } else {
+                if (!$settingsFormData->$optionName) {
+                    continue;
+                }
+                update_option($optionName, $settingsFormData->$optionName);
             }
         }
 
