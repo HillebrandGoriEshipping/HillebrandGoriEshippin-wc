@@ -62,10 +62,10 @@ class ClassicUiRender
     public static function renderLabel(string $labelHtml, WC_Shipping_Rate $rate): string
     {
         $metadata = $rate->get_meta_data();
-        if (empty($metadata['carrierName'])) {
+        if (empty($metadata['carrier'])) {
             $assetsPath = null;
         } else {
-            $assetsPath = HGeS_PLUGIN_URL . 'assets/img/' . $metadata['carrierName'] . '.png';
+            $assetsPath = HGeS_PLUGIN_URL . 'assets/img/' . $metadata['carrier'] . '.png';
         }
 
         if ($rate->get_label() === 'Aérien') {
