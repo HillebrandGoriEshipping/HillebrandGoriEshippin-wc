@@ -148,7 +148,7 @@
         <tr valign="top">
             <th scope="row">{{ __( 'Carrier preference')|escape }}</th>
             <td>
-                <fieldset id="transport_pref" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}">
+                <fieldset id="transport_pref" name="transport_pref">
                     <div>
                         <input type="checkbox" id="fedex" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="fedex" {{ carrierChecked('fedex') }}>
                         <label for="fedex">FEDEX</label>
@@ -162,7 +162,7 @@
                         <label for="dhl">DHL</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="dhl" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="tnt" {{ carrierChecked('tnt') }}>
+                        <input type="checkbox" id="tnt" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="tnt" {{ carrierChecked('tnt') }}>
                         <label for="tnt">TNT</label>
                     </div>
                     <div>

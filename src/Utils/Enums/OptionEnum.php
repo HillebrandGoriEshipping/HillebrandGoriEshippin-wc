@@ -7,7 +7,7 @@ use HGeS\Utils\ValidationConstraints\EoriNumber;
 use HGeS\Utils\ValidationConstraints\FdaNumber;
 use HGeS\Utils\ValidationConstraints\VatNumber;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Count;
 
 class OptionEnum implements EnumInterface
 {
@@ -64,7 +64,7 @@ class OptionEnum implements EnumInterface
     {
         $constraints = [
             self::HGES_PREF_TRANSP => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings')['carrierCountError']]),
             ],
             self::HGES_TAX_RIGHTS => [
                 new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
@@ -100,7 +100,7 @@ class OptionEnum implements EnumInterface
                 new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_WORKING_DAYS => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings')['workingDaysError']]),
             ],
         ];
 
@@ -112,7 +112,7 @@ class OptionEnum implements EnumInterface
         $sanitizationTypes = [
             self::HGES_ACCESS_KEY => 'string',
             self::ACCESS_KEY_VALIDATE => 'string',
-            self::HGES_PREF_TRANSP => 'string',
+            self::HGES_PREF_TRANSP => 'array',
             self::HGES_TAX_RIGHTS => 'string',
             self::HGES_VAT_NUMBER => 'string',
             self::HGES_VAT_OSS => 'string',
@@ -121,10 +121,10 @@ class OptionEnum implements EnumInterface
             self::HGES_ASSURANCE => 'string',
             self::HGES_NBR_MIN => 'int',
             self::HGES_PREP_TIME => 'int',
-            self::HGES_PREF_DEL => 'int',
-            self::HGES_MINHOUR => 'int',
-            self::HGES_CUTOFF => 'int',
-            self::HGES_WORKING_DAYS => 'int',
+            self::HGES_PREF_DEL => 'string',
+            self::HGES_MINHOUR => 'string',
+            self::HGES_CUTOFF => 'string',
+            self::HGES_WORKING_DAYS => 'array',
         ];
 
         return $sanitizationTypes[$option] ?? null;
