@@ -13,7 +13,7 @@ class Rate
      * Temp : Map of the pickup services (id => name)
      */
     const SERVICES_NAMES = [
-        '1' => 'Chrono 13H',
+        '1' => 'DHL DOMESTIC EXPRESS',
         '16' => 'Chrono 18H',
         '44' => 'Chrono Classic (Pays CEE en voie routière)',
         '49' => 'Chrono Relais Europe',
@@ -228,6 +228,7 @@ class Rate
      */
     public static function getShippingRates($package)
     {
+
         // do not attempt retrieving rates if current action is "add-to-cart"
         if (
             !empty($_POST['add-to-cart'])
