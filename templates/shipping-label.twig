@@ -1,13 +1,13 @@
 {% if metaData.firstDoorDelivery %}
-    <h3>{{ __('Door Delivery') }}</h3>
+    <h5>{{ __('Door Delivery') }}</h5>
 {% elseif metaData.firstPickupDelivery %}
-   <h3>{{ __('Pickup Delivery') }}</h3>
+   <h5>{{ __('Pickup Delivery') }}</h5>
 {% elseif metaData.firstOthersDelivery %}
-   <h3>{{ __('Other Shipping Method') }}</h3>
+   <h5>{{ __('Other Shipping Method') }}</h5>
 {% endif %}
 <div class="hges-shipping-method" >
     <div class="hges-shipping-method-left">
-        {% if metaData.carrierName != null %}
+        {% if metaData.carrier != null %}
         <div class="hges-shipping-logo">
             <img src="{{ assetsPath }}" alt="Hillebrand Gori Eshipping" />
         </div>
@@ -20,14 +20,14 @@
                 <div class="hges-shipping-delivery">
                     {{ __('Estimated delivery: ') }} {{ metaData.deliveryDate }}
                 </div>
-                {% if metaData.doorDelivery is same as "" %}
+                {% if metaData.deliveryMode is same as "pickup" %}
                     <div id="pickup-point-button" class="pickup-point-button" onclick="openModal(event)">
                         <span >{{ __('Choose your pickup point') }}</span>
                     </div>
                 {% endif %}
             {% endif %}
         </div>
-    {% if metaData.doorDelivery is same as "" %}
+    {% if metaData.deliveryMode is same as "pickup" %}
         <div id="selected-pickup-point" class="selected-pickup-point hidden">
             <strong>{{ __('Selected pickup point:') }}</strong>
             <span id="selected-pickup-point-name"></span><span id="selected-pickup-point-address"></span>

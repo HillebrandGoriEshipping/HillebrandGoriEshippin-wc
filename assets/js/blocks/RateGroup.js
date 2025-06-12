@@ -28,11 +28,11 @@ const getRadioButtonId = (rate) => {
 //wc-blocks_render_blocks_frontend
 const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
   rates = rates.map((rate) => {
-    let logoUrl = window.hges.assetsUrl + "img/" + rate.carrierName + ".png";
-
-    if (rate.name == "Aérien") {
+    let logoUrl = window.hges.assetsUrl + "img/" + rate.carrier + ".png";
+    
+    if (rate.service == "Aérien") {
       logoUrl = window.hges.assetsUrl + "img/airfreight.png";
-    } else if (rate.name === "Maritime") {
+    } else if (rate.service === "Maritime") {
       logoUrl = window.hges.assetsUrl + "img/seafreight.png";
     }
     return {
@@ -40,7 +40,7 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
       logoUrl: logoUrl,
     };
   });
-
+  
   const openSelectPickupPointModal = (e) => {
     e.preventDefault();
     const label = e.currentTarget.closest("label");
@@ -59,7 +59,7 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
                 <div className="rate-logo">
                   <img
                     src={rate.logoUrl}
-                    alt={rate.name}
+                    alt={rate.carrier}
                     className="rate-logo-image"
                   />
                 </div>
@@ -71,7 +71,7 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
                   {hasLogo ? (
                     <img
                       src={rate.logoUrl}
-                      alt={rate.name}
+                      alt={rate.carrier}
                       className="rate-logo-image"
                     />
                   ) : (

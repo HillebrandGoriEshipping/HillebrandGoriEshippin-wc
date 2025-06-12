@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const listContainer = document.querySelector('#pickup-points-list');
   const selectBtn = document.querySelector('#select-pickup-point');
   const selectedPointDiv = document.querySelector('#selected-pickup-point');
-  selectedPointDiv.classList.add('hidden');
+  if (selectedPointDiv) {
+    selectedPointDiv.classList.add('hidden');
+  }
   const nameSpan = document.querySelector('#selected-pickup-point-name');
   const addressSpan = document.querySelector('#selected-pickup-point-address');
 

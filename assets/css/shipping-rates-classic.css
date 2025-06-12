@@ -14,6 +14,10 @@
   flex-direction: row;
 }
 
+.hges-shipping-label {
+  font-weight: bold;
+}
+
 .hges-shipping-logo {
   display: flex;
   flex-direction: column;
