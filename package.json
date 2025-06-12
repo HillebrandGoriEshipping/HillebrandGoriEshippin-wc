@@ -9,8 +9,6 @@
   "scripts": {
     "watch": "npx wp-scripts start orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
     "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
-    "cypress-open": "cypress open",
-    "cypress-run": "node ./cypress/run-tests.mjs",
     "ui-mode-classic": "node ./scripts/switchui.js classic",
     "ui-mode-blocks": "node ./scripts/switchui.js blocks"
   },
@@ -26,7 +24,6 @@
     "@playwright/test": "^1.52.0",
     "@types/node": "^24.0.0",
     "@wordpress/scripts": "^30.15.0",
-    "cypress": "^14.3.3",
     "mysql2": "^3.14.1"
   }
 }
