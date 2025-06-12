@@ -92,7 +92,7 @@ class ProductMeta
      *
      * @return void
      */
-    public static function  saveProductFields(int $post_id): void
+    public static function saveProductFields(int $post_id): void
     {
         // TODO: add a sanitizer
         foreach (ProductMetaEnum::getList() as $meta) {
