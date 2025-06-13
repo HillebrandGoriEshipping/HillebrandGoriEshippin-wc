@@ -19,7 +19,7 @@
             {{ __( 'Please validate the API access before saving the modifications')|escape }}
         </p>
         {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
-        {{ function('wp_nonce_field', 'save_settings', 'settings_nonce')|raw }}
+        {{ function('wp_nonce_field', 'save_hges_api_key', 'settings_nonce')|raw }}
     </form>
 </div>
 

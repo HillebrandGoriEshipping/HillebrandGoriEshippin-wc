@@ -43,6 +43,10 @@ class SettingsController
 
     public static function saveApiKey(): void
     {
+        if (wp_verify_nonce($_POST['settings_nonce'], 'save_hges_api_key') !== 1) {
+            throw new \Exception('Nonce verification failed');
+        }
+
         $accessKey = sanitize_text_field($_POST['HGES_ACCESS_KEY']);
 
         try {
