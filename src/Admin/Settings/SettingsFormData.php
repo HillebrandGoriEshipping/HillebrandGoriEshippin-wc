@@ -28,7 +28,6 @@ class SettingsFormData
      * We need to explicitly define the properties here,
      * otherwise they won't be recognized by the Symfony Validator
      */
-    private $HGES_ACCESS_KEY;
     private $access_key_validate;
     private $HGES_PREF_TRANSP;
     private $HGES_TAX_RIGHTS;

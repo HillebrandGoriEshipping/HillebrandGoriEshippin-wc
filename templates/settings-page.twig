@@ -140,6 +140,7 @@
                         <label for="sunday">{{ __( 'Sunday') }}</label>
                     </div>
                 </fieldset>
+                 {% include('form-error-message.twig') with {'error': errors.HGES_WORKING_DAYS} %}
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ __( 'Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.')|escape }}</span>
                 </div>
@@ -171,6 +172,7 @@
                         <label for="chronopost">CHRONOPOST</label>
                     </div>
                 </fieldset>
+                {% include('form-error-message.twig') with {'error': errors.HGES_PREF_TRANSP} %}
             </td>
         </tr>
         <!-- MINHOUR & CUTOFF -->

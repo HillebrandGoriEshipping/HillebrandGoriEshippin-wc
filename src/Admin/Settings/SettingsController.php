@@ -94,7 +94,7 @@ class SettingsController
         }
 
         foreach (OptionEnum::getList() as $optionName) {
-            if ($optionName === "HGES_ACCESS_KEY" && !$settingsFormData->$optionName) {
+            if ($optionName === "HGES_ACCESS_KEY" || !$settingsFormData->$optionName) {
                 continue;
             }
             update_option($optionName, $settingsFormData->$optionName);
