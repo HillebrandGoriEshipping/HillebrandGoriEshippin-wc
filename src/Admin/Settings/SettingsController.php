@@ -24,7 +24,11 @@ class SettingsController
             $options[$option] = get_option($option);
         }
 
-        $address = Address::fromApi();
+        try {
+            $address = Address::fromApi();
+        } catch (\Throwable $e) {
+            $address = [null];
+        }
 
         // Utiliser Twig pour rendre la page
         $twig = Twig::getTwig();
@@ -35,6 +39,32 @@ class SettingsController
             'address' => $address[0],
             'errors' => FormSessionMessages::getMessages('error'),
         ]);
+    }
+
+    public static function saveApiKey(): void
+    {
+        $accessKey = sanitize_text_field($_POST['HGES_ACCESS_KEY']);
+
+        try {
+            $result = ApiClient::get(
+                '/package/get-sizes?nbBottles=1',
+                [],
+                [
+                    'X-AUTH-TOKEN' => $accessKey,
+                ],
+                false
+            );
+            if ($result['status'] === 200) {
+                update_option(OptionEnum::ACCESS_KEY_VALIDATE, 1);
+                update_option(OptionEnum::HGES_ACCESS_KEY, $accessKey);
+            } else {
+                update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
+            }
+        } catch (\Throwable $th) {
+            update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
+            FormSessionMessages::setMessages('error', ["HGES_ACCESS_KEY" => "Invalid API key. Please check your access key and try again."]);
+        }
+        wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
     }
 
     /**
@@ -60,26 +90,10 @@ class SettingsController
         }
 
         foreach (OptionEnum::getList() as $optionName) {
-            if ($optionName === "HGES_ACCESS_KEY") {
-                try {
-                    $result = ApiClient::get('/package/get-sizes?nbBottles=1');
-                    if ($result['status'] === 200) {
-                        update_option(OptionEnum::ACCESS_KEY_VALIDATE, 1);
-                    } else {
-                        update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
-                    }
-                } catch (\Throwable $th) {
-                    update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
-
-                    \Sentry\captureException($e);
-                    throw $th;
-                }
-            } else {
-                if (!$settingsFormData->$optionName) {
-                    continue;
-                }
-                update_option($optionName, $settingsFormData->$optionName);
+            if ($optionName === "HGES_ACCESS_KEY" && !$settingsFormData->$optionName) {
+                continue;
             }
+            update_option($optionName, $settingsFormData->$optionName);
         }
 
         wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));

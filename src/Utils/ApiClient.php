@@ -29,12 +29,15 @@ class ApiClient
      * @return array The response from the API
      * @throws \Exception If the request fails
      */
-    public static function get(string $route, array $urlParams = [], bool $useToken = true): array
+    public static function get(string $route, array $urlParams = [], array $headers = [], bool $useToken = true): array
     {
-        $headers = [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
-        ];
+        $headers = array_merge(
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            $headers
+        );
 
         if ($useToken) {
             $token = get_option('HGES_ACCESS_KEY');
