@@ -91,5 +91,14 @@ class App
             SettingsController::saveSettings();
             exit;
         }
+
+        if (
+            isset($_GET['action'])
+            && $_GET['action'] === 'hges_save_api_key'
+            &&  $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            SettingsController::saveApiKey();
+            exit;
+        }
     }
 }

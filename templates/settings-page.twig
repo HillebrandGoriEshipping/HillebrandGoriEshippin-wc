@@ -1,7 +1,7 @@
 <h1>{{ title }}</h1>
 <div id="HGES-connect">
     <h3>{{ __( 'Please fill the information below in order to be able to use the plugin')|escape }}</h3>
-    <form method="post" action="" id="apikey-settings-form">
+    <form method="post" action="?action=hges_save_api_key" id="apikey-settings-form">
         <h2>{{ __( 'Key settings') }}</h2>
         <table class="form-table states">
             <tr valign="top">
@@ -10,6 +10,7 @@
                 </td>
                 <td>
                     <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
+                     {% include('form-error-message.twig') with {'error': errors.HGES_ACCESS_KEY} %}
                     <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
                 </td>
             </tr>
@@ -18,11 +19,11 @@
             {{ __( 'Please validate the API access before saving the modifications')|escape }}
         </p>
         {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
-        {{ function('wp_nonce_field', 'save_settings', 'settings_nonce')|raw }}
+        {{ function('wp_nonce_field', 'save_hges_api_key', 'settings_nonce')|raw }}
     </form>
 </div>
 
-{% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %}
+{% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and address is not null %}
 <div id="HGES-settings">
     <h2>{{ __( 'Hillebrand Gori eShipping shipping settings')|escape }}</h2>
     <h3>{{ __( 'Address used to calculate shipping charges')|escape }}</h3>
@@ -139,6 +140,7 @@
                         <label for="sunday">{{ __( 'Sunday') }}</label>
                     </div>
                 </fieldset>
+                 {% include('form-error-message.twig') with {'error': errors.HGES_WORKING_DAYS} %}
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ __( 'Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.')|escape }}</span>
                 </div>
@@ -170,6 +172,7 @@
                         <label for="chronopost">CHRONOPOST</label>
                     </div>
                 </fieldset>
+                {% include('form-error-message.twig') with {'error': errors.HGES_PREF_TRANSP} %}
             </td>
         </tr>
         <!-- MINHOUR & CUTOFF -->
