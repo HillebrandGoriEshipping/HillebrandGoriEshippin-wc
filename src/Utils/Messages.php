@@ -20,7 +20,7 @@ class Messages
      */
     public static function getMessage(string $messageKey): array | string
     {
-        $jsonFilePath = HGES_PLUGIN_DIR . '/assets/js/config/messages.json';
+        $jsonFilePath = HGES_MESSAGES_JSON_PATH;
 
         $jsonContent = file_get_contents($jsonFilePath);
         if ($jsonContent === false) {
@@ -49,7 +49,7 @@ class Messages
      */
     public static function getMessageList(): array
     {
-        $jsonFilePath = HGES_PLUGIN_DIR . '/assets/js/config/messages.json';
+        $jsonFilePath = HGES_MESSAGES_JSON_PATH;
 
         $jsonContent = file_get_contents($jsonFilePath);
         if ($jsonContent === false) {
