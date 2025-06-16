@@ -19,5 +19,6 @@ use HGeS\App;
 
 define('HGeS_PLUGIN_DIR', __DIR__);
 define('HGeS_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('HGES_PLUGIN_CONFIG_PATH', HGeS_PLUGIN_DIR . '/assets/js/config/config.json');
 App::run();
 

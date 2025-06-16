@@ -14,7 +14,7 @@ class ApiClient
      */
     public static function getApiUrl(): string
     {
-        $configRaw = file_get_contents(HGeS_PLUGIN_DIR . '/assets/js/config/config.json');
+        $configRaw = file_get_contents(HGES_PLUGIN_CONFIG_PATH);
         $config = json_decode($configRaw, true);
         if (isset($config['apiUrl'])) {
             return $config['apiUrl'];
