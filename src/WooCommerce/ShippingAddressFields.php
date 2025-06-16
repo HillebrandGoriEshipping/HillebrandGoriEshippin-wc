@@ -183,7 +183,7 @@ class ShippingAddressFields {
      * 
      * @param \WC_Order $order
      */
-    public static function onOrderCreate($order, $data): void
+    public static function onOrderCreate(\WC_Order $order, array $data): void
     {
         if (empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']])
             && empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']])
@@ -225,13 +225,13 @@ class ShippingAddressFields {
      * @param \WC_Order $order
      * @return string
      */
-    public static function renderOrderConfirmationAddress(string $address, array $rawAddress = null, Order | null $order): void
+    public static function renderOrderConfirmationAddress(string $address, array $rawAddress = null, ?WC_Order $order = null): void
     {
         $address = self::getRenderedOrderConfirmationAddress($address, null, $order);
         echo $address;
     }
 
-    public static function getRenderedOrderConfirmationAddress(string $address, array $rawAddress = null, Order $order): string
+    public static function getRenderedOrderConfirmationAddress(string $address, array $rawAddress = null, ?WC_Order $order = null): string
     {
         if ('store-api' === $order->get_created_via() || is_admin()) {
             return $address;
@@ -241,7 +241,7 @@ class ShippingAddressFields {
         return $address;
     }
 
-    public static function renderCompanyBlock($order): void
+    public static function renderCompanyBlock(\WC_Order $order): void
     {
         if ('store-api' === $order->get_created_via() ) {
             return;
@@ -250,7 +250,7 @@ class ShippingAddressFields {
         echo $companyBlock;
     }
 
-    public static function getRenderedCompanyBlock(Order $order): string
+    public static function getRenderedCompanyBlock(WC_Order $order): string
     {
         $data = [
             'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),

@@ -60,7 +60,7 @@ class OptionEnum implements EnumInterface
     /**
      * Return the constraints for a given option
      */
-    public static function getConstraints($option): array | null
+    public static function getConstraints(string $option): ?array
     {
         $constraints = [
             self::HGES_PREF_TRANSP => [
@@ -107,7 +107,7 @@ class OptionEnum implements EnumInterface
         return $constraints[$option] ?? null;
     }
 
-    public static function getSanitizationType(string $option): string | null
+    public static function getSanitizationType(string $option): ?string
     {
         $sanitizationTypes = [
             self::HGES_ACCESS_KEY => 'string',

@@ -73,8 +73,12 @@ class SettingsFormData
         }
     }
 
-    public function __get($name)
+    public function __get($name): ?string
     {
-        return $this->$name ?? null;
+        if (!property_exists($this, $name)) {
+            return null;
+        }
+        
+        return $this->$name;
     }
 }

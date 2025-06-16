@@ -18,14 +18,14 @@ class GlobalEnum implements EnumInterface {
         ];
     }
 
-    public static function getConstraints(string $option): array | null
+    public static function getConstraints(string $option): ?array
     {
         // No constraints defined for global enums
         return null;
     }
 
 
-    public static function getSanitizationType(string $option): string | null
+    public static function getSanitizationType(string $option): ?string
     {
         // No specific sanitization types defined for options
         return null;

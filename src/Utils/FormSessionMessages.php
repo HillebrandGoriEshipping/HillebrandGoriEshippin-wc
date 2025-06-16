@@ -64,6 +64,6 @@ class FormSessionMessages
         }
 
         unset($_SESSION['form-messages']);
-        return $messages;
+        return [];
     }
 }

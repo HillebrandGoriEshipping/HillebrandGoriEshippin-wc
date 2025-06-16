@@ -56,7 +56,7 @@ class ShippingMethod extends \WC_Shipping_Method
      * @return void
      * @see https://woocommerce.github.io/code-reference/classes/WC-Shipping-Method.html#method_calculate_shipping
      */
-    public function calculate_shipping($package = [])
+    public function calculate_shipping(array $package = [])
     {
         try {
            $rates = Rate::getShippingRates($package);

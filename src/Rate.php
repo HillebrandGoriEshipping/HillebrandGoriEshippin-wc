@@ -30,7 +30,7 @@ class Rate
      *
      * @throws \Exception If an error occurs while fetching package sizes from the API.
      */
-    public static function prepareUrlParams($package)
+    public static function prepareUrlParams(array $package): array
     {
         $expAddress = Address::fromApi();
 
@@ -197,7 +197,7 @@ class Rate
      *
      * @throws \Exception If an unexpected error occurs during the API call.
      */
-    public static function getRatesFromApi($package)
+    public static function getRatesFromApi(array $package): array
     {
         try {
             $urlParams = self::prepareUrlParams($package);
@@ -226,7 +226,7 @@ class Rate
      * @return array An array of formatted shipping rates
      * 
      */
-    public static function getShippingRates($package)
+    public static function getShippingRates(array $package): array
     {
 
         // do not attempt retrieving rates if current action is "add-to-cart"
