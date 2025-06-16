@@ -11,6 +11,7 @@ use HGeS\Utils\Twig;
 class SettingsController
 {
     const SETTING_PAGE_TITLE = 'Hillebrand Gori eShipping Settings';
+    const SETTING_PAGE_URL = 'admin.php?page=hillebrand-gori-eshipping';
 
     /**
      * Render the settings page
@@ -68,7 +69,7 @@ class SettingsController
             update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
             FormSessionMessages::setMessages('error', ["HGES_ACCESS_KEY" => "Invalid API key. Please check your access key and try again."]);
         }
-        wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
+        wp_redirect(admin_url(self::SETTING_PAGE_URL));
     }
 
     /**
@@ -89,7 +90,7 @@ class SettingsController
 
         if ($errors) {
             FormSessionMessages::setMessages('error', $errors);
-            wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
+            wp_redirect(admin_url(self::SETTING_PAGE_URL));
             return;
         }
 
@@ -100,6 +101,6 @@ class SettingsController
             update_option($optionName, $settingsFormData->$optionName);
         }
 
-        wp_redirect(admin_url('admin.php?page=hillebrand-gori-eshipping'));
+        wp_redirect(admin_url(self::SETTING_PAGE_URL));
     }
 }
