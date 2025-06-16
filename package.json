@@ -10,7 +10,9 @@
     "watch": "npx wp-scripts start orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
     "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
     "ui-mode-classic": "node ./scripts/switchui.js classic",
-    "ui-mode-blocks": "node ./scripts/switchui.js blocks"
+    "ui-mode-blocks": "node ./scripts/switchui.js blocks",
+    "playwright-run": "npx playwright test --config=tests/playwright.config.js",
+    "playwright-open": "npm playwright-run --ui"
   },
   "author": "",
   "license": "ISC",
