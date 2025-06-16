@@ -2,7 +2,7 @@
 
 namespace HGeS\Utils\Enums;
 
-class ProductMetaEnum
+class ProductMetaEnum implements EnumInterface
 {
     const NUMBER_OF_BOTTLE = "_number_of_bottle";
     const SIZE_OF_BOTTLE = "_size_of_bottle";
@@ -36,5 +36,15 @@ class ProductMetaEnum
             self::APPELLATION,
             self::HS_CODE,
         ];
+    }
+
+    public static function getConstraints(string $option): ?array
+    {
+        return null;
+    }
+
+    public static function getSanitizationType(string $option): ?string
+    {
+        return null;
     }
 }
