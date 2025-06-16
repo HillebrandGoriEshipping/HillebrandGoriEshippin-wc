@@ -48,7 +48,7 @@ class SettingsController
             throw new \Exception('Nonce verification failed');
         }
 
-        $accessKey = sanitize_text_field($_POST['HGES_ACCESS_KEY']);
+        $accessKey = sanitize_text_field($_POST[OptionEnum::HGES_ACCESS_KEY]);
 
         try {
             $result = ApiClient::get(
@@ -67,7 +67,7 @@ class SettingsController
             }
         } catch (\Throwable $th) {
             update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
-            FormSessionMessages::setMessages('error', ["HGES_ACCESS_KEY" => "Invalid API key. Please check your access key and try again."]);
+            FormSessionMessages::setMessages('error', [OptionEnum::HGES_ACCESS_KEY => "Invalid API key. Please check your access key and try again."]);
         }
         wp_redirect(admin_url(self::SETTING_PAGE_URL));
     }
@@ -95,7 +95,7 @@ class SettingsController
         }
 
         foreach (OptionEnum::getList() as $optionName) {
-            if ($optionName === "HGES_ACCESS_KEY" || !$settingsFormData->$optionName) {
+            if ($optionName === OptionEnum::HGES_ACCESS_KEY || !$settingsFormData->$optionName) {
                 continue;
             }
             update_option($optionName, $settingsFormData->$optionName);
