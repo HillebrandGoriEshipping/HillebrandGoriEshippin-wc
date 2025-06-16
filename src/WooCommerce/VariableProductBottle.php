@@ -10,6 +10,15 @@ class VariableProductBottle extends \WC_Product_Variable
     const PRODUCT_TYPE_LABEL = 'Variable Bottle Product';
 
     /**
+     * Initializes the admin hooks and filters for the custom product type.
+     */
+    public static function initAdmin(): void
+    {
+        add_filter('product_type_selector', [self::class, 'addToSelect']);
+        add_filter('woocommerce_data_stores', [self::class, 'createDataStore'], 10, 1);
+    }
+
+    /**
      * Returns the product type.
      *
      * @return string The product type constant defined by PRODUCT_TYPE.

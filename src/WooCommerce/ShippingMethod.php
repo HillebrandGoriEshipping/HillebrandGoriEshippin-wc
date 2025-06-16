@@ -37,6 +37,14 @@ class ShippingMethod extends \WC_Shipping_Method
     }
 
     /**
+     * Initialize the shipping method
+     */
+    public static function init(): void
+    {
+        add_filter('woocommerce_shipping_methods', [self::class, 'register']);
+    }
+
+    /**
      * Register the shipping method with WooCommerce
      * 
      * @param array $methods

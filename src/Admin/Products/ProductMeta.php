@@ -10,6 +10,19 @@ use HGeS\WooCommerce\VariableProductBottle;
 
 class ProductMeta
 {
+    /**
+     * Initializes the admin hooks and filters for product meta management.
+     */
+    public static function initAdmin(): void
+    {
+        add_filter('woocommerce_product_data_tabs', [self::class, 'customTab']);
+        add_action('woocommerce_product_data_panels', [self::class, 'displayProductFields']);
+        add_action('woocommerce_process_product_meta', [self::class, 'saveProductFields']);
+        add_action('woocommerce_product_after_variable_attributes', [self::class, 'displayVariableProductField'], 10, 3);
+        add_action('woocommerce_save_product_variation', [self::class, 'saveVariableProductField'], 10, 2);
+        add_filter('woocommerce_product_class', [self::class, 'getClassNameByProductType'], 10, 2);
+        add_filter('woocommerce_product_data_tabs', [self::class, 'getGeneralTabInCustomTypes']);
+    }
 
     /**
      * Adds a custom tab to the WooCommerce product data tabs.

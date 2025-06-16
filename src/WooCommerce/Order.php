@@ -14,6 +14,14 @@ class Order
     const PICKUP_POINT_META_KEY = 'hges_pickup_point';
 
     /**
+     * Initialize the order hooks and filters
+     */
+    public static function init(): void
+    {
+        add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
+    }
+
+    /**
      * Update the selected pickup point for the given order
      * 
      * @param int $orderId the ID for the woocommerce order to update

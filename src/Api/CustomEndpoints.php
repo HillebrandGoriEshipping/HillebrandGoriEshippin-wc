@@ -11,6 +11,14 @@ class CustomEndpoints
     const NAMESPACE  = 'hges/v1';
 
     /**
+     * Initialize the custom endpoints
+     */
+    public static function init(): void
+    {
+        add_action('rest_api_init', [self::class, 'register']);
+    }
+
+    /**
      * Register the custom endpoints
      *
      * @return void

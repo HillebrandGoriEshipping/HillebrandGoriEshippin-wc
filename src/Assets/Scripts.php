@@ -10,6 +10,22 @@ use HGeS\Utils\Messages;
 class Scripts
 {
     /**
+     * Initializes the scripts for the frontend
+     */
+    public static function init(): void
+    {
+        add_action('wp_enqueue_scripts', [self::class, 'enqueue']);
+    }
+
+    /**
+     * Initializes the scripts for the admin area
+     */
+    public static function initAdmin(): void
+    {
+        add_action('admin_enqueue_scripts', [self::class, 'enqueueAdmin']);
+    }
+
+    /**
      * Enqueue the scripts for the frontend
      *
      * @return void

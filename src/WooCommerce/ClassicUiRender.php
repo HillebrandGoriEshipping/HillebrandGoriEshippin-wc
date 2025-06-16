@@ -8,6 +8,14 @@ use WC_Shipping_Rate;
 class ClassicUiRender
 {
 
+    public static function init(): void
+    {
+        add_filter('woocommerce_package_rates', [self::class, 'sortShippingMethods'], 10, 2);
+        add_filter('woocommerce_cart_shipping_method_full_label', [self::class, 'renderLabel'], 10, 2);
+        add_filter('woocommerce_review_order_before_payment', [self::class, 'renderClassicPickupModal'], 10, 1);
+        add_filter('woocommerce_cart_shipping_packages', [self::class, 'invalidateRatesCache'], 100);
+    }
+
     /**
      * Sorts shipping methods into three categories: door delivery, pickup, and others.
      * Adds metadata to the first shipping method in each category to sort them in the Twig template.
