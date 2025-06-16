@@ -2,6 +2,7 @@
 
 namespace HGeS\Utils;
 
+use HGeS\Utils\Enums\OptionEnum;
 use Symfony\Component\HttpClient\HttpClient;
 
 class ApiClient
@@ -40,7 +41,7 @@ class ApiClient
         );
 
         if ($useToken) {
-            $token = get_option('HGES_ACCESS_KEY');
+            $token = get_option(OptionEnum::HGES_ACCESS_KEY);
             if ($token) {
                 $headers['X-AUTH-TOKEN'] = $token;
             }
