@@ -13,6 +13,14 @@ use HGeS\WooCommerce\Order;
 class PickupPointsRender
 {
     /**
+     * Initializes the hooks and filters for rendering pickup points.
+     */
+    public static function init(): void
+    {
+        add_filter('woocommerce_order_get_formatted_shipping_address', [self::class, 'renderOrderConfirmation'], 10, 3);
+    }
+
+    /**
      * Render the pickup points in the order confirmation page.
      *
      * @param array $pickupPoints

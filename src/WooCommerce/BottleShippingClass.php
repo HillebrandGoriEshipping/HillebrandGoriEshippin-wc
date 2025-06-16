@@ -10,6 +10,13 @@ namespace HGeS\WooCommerce;
  */
 class BottleShippingClass
 {
+    /**
+     * Initializes the shipping class
+     */
+    public static function initAdmin(): void
+    {
+        add_action('init', [self::class, 'create']);
+    }
 
     /**
      * Creates a custom WooCommerce product shipping class named "Bottle" if it does not already exist.

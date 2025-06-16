@@ -89,6 +89,23 @@ class ShippingAddressFields {
     const SHIPPING_COMPANY_NAME_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'];
     const SHIPPING_EXCISE_NUMBER_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id'];
 
+    /**
+     * Initializes the class by registering the hooks and filters
+     */
+    public static function init(): void
+    {
+        add_action('woocommerce_blocks_loaded', [self::class, 'register']);
+        add_action('woocommerce_checkout_create_order', [self::class, 'onOrderCreate'], 10, 2);
+        add_filter('woocommerce_order_get_formatted_shipping_address', [self::class, 'getRenderedOrderConfirmationAddress'], 9, 3);
+        add_filter('woocommerce_checkout_fields', [self::class, 'filterClassicUiFields'], 10, 1);
+    }
+
+    public static function initAdmin(): void
+    {
+                add_filter('woocommerce_admin_order_data_after_shipping_address', [self::class, 'renderCompanyBlock'], 10, 3);
+
+    }
+
 
     /**
      * Controls the custom field registration

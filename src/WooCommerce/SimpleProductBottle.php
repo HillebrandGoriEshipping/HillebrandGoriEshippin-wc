@@ -8,6 +8,14 @@ class SimpleProductBottle extends \WC_Product
 {
     const PRODUCT_TYPE = 'bottle-simple';
     const PRODUCT_TYPE_LABEL = 'Simple Bottle Product';
+    
+    /**
+     * Initializes the admin hooks and filters for the custom product type.
+     */
+    public static function initAdmin(): void
+    {
+        add_filter('product_type_selector', [self::class, 'addToSelect']);
+    }
 
     /**
      * Returns the product type.

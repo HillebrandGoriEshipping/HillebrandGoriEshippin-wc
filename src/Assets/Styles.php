@@ -3,7 +3,23 @@
 namespace HGeS\Assets;
 
 class Styles
-{
+{   
+    /**
+     * Initializes the styles for the frontend
+     */
+    public static function init(): void
+    {
+        add_action('wp_enqueue_scripts', [self::class, 'enqueue']);
+    }
+
+    /**
+     * Initializes the styles for the admin area
+     */
+    public static function initAdmin(): void
+    {
+        add_action('admin_enqueue_scripts', [self::class, 'enqueueAdmin']);
+    }
+
     /**
      * Enqueue the styles for the frontend
      *

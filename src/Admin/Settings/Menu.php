@@ -4,7 +4,15 @@ namespace HGeS\Admin\Settings;
 
 
 class Menu
-{   
+{
+    /**
+     * Initialize the settings menu for the admin area
+     */
+    public static function initAdmin(): void
+    {
+        add_action('admin_menu', [self::class, 'addSettingsMenu']);
+    }
+
     /** 
      * Add the settings menu to the WooCommerce menu
      * 
