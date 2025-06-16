@@ -64,7 +64,11 @@ class App
         ProductMeta::initAdmin();
         Router::initAdmin();
         ShippingAddressFields::initAdmin();
-        SimpleProductBottle::initAdmin();
-        VariableProductBottle::initAdmin();
+
+        // some initAdmin() calls must wait for WC to be fully loaded
+        add_action('init', function() {
+            SimpleProductBottle::initAdmin();
+            VariableProductBottle::initAdmin();
+        });
     }
 }
