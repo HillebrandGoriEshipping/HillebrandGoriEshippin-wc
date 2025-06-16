@@ -94,7 +94,7 @@ class Rate
         }
 
         try {
-            $packageList = ApiClient::get('/package/get-sizes?nbBottles=' . $standardQuantity . '&nbMagnums=' . $magnumQuantity);
+            $packageList = ApiClient::get('/package/get-sizes', ['nbBottles' => $standardQuantity, 'nbMagnums' => $magnumQuantity]);
             $packageParam = [];
 
             if (empty($packageList['data']['packages'])) {

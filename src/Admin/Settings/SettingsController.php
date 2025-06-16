@@ -51,8 +51,8 @@ class SettingsController
 
         try {
             $result = ApiClient::get(
-                '/package/get-sizes?nbBottles=1',
-                [],
+                '/package/get-sizes',
+                ['nbBottles' => 1],
                 [
                     'X-AUTH-TOKEN' => $accessKey,
                 ],
