@@ -3,5 +3,5 @@ import runSqlDump from './runSqlDump.js';
 import path from 'path';
 
 export default async function update() {
-  await runSqlDump(path.resolve('./cypress/fixtures/db/set-blocks-ui.sql'));
+  await runSqlDump(path.resolve('./scripts/set-classic-ui.sql'));
 }
