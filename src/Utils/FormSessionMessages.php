@@ -9,6 +9,9 @@ namespace HGeS\Utils;
  */
 class FormSessionMessages
 {
+
+    const SESSION_KEY = 'hges_form_messages';
+
     /**
      * add a single message to the session
      * 
@@ -21,7 +24,7 @@ class FormSessionMessages
         if (!session_id()) {
             session_start();
         }
-        $_SESSION['form-messages'][$type][$key] = $message;
+        $_SESSION[self::SESSION_KEY][$type][$key] = $message;
     }
     
     /**
@@ -54,16 +57,16 @@ class FormSessionMessages
         }
 
         if ($type !== null) {
-            if (isset($_SESSION['form-messages'][$type])) {
-                $messages = $_SESSION['form-messages'][$type];
-                unset($_SESSION['form-messages'][$type]);
+            if (isset($_SESSION[self::SESSION_KEY][$type])) {
+                $messages = $_SESSION[self::SESSION_KEY][$type];
+                unset($_SESSION[self::SESSION_KEY][$type]);
                 return $messages;
             } else {
                 return [];
             }
         }
 
-        unset($_SESSION['form-messages']);
+        unset($_SESSION[self::SESSION_KEY]);
         return [];
     }
 }
