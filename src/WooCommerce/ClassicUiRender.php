@@ -65,13 +65,13 @@ class ClassicUiRender
         if (empty($metadata['carrier'])) {
             $assetsPath = null;
         } else {
-            $assetsPath = HGeS_PLUGIN_URL . 'assets/img/' . $metadata['carrier'] . '.png';
+            $assetsPath = HGES_PLUGIN_URL . 'assets/img/' . $metadata['carrier'] . '.png';
         }
 
         if ($rate->get_label() === 'Aérien') {
-            $assetsPath = HGeS_PLUGIN_URL . 'assets/img/airfreight.png';
+            $assetsPath = HGES_PLUGIN_URL . 'assets/img/airfreight.png';
         } else if ($rate->get_label() === 'Maritime') {
-            $assetsPath = HGeS_PLUGIN_URL . 'assets/img/seafreight.png';
+            $assetsPath = HGES_PLUGIN_URL . 'assets/img/seafreight.png';
         }
 
         $metadata['deliveryMode'] = $metadata['deliveryMode'] ?? false;

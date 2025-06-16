@@ -18,7 +18,7 @@ class Scripts
     {
         wp_enqueue_script(
             'hges-shipping-rates-fill',
-            HGeS_PLUGIN_URL . 'dist/shippingRatesFill.js',
+            HGES_PLUGIN_URL . 'dist/shippingRatesFill.js',
             ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
@@ -26,7 +26,7 @@ class Scripts
 
         wp_enqueue_script(
             'hges-order-recap-fill',
-            HGeS_PLUGIN_URL . 'dist/orderRecapFill.js',
+            HGES_PLUGIN_URL . 'dist/orderRecapFill.js',
             ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
@@ -34,7 +34,7 @@ class Scripts
 
         wp_enqueue_script_module(
             'hges-api-client',
-            HGeS_PLUGIN_URL . 'assets/js/apiClient.js',
+            HGES_PLUGIN_URL . 'assets/js/apiClient.js',
             [],
             null,
             ['in_footer' => true]
@@ -42,12 +42,12 @@ class Scripts
 
         wp_enqueue_script(
             'hges-global-object-injection',
-            HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
+            HGES_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
         wp_enqueue_script(
             'leaflet-map',
-            HGeS_PLUGIN_URL . 'assets/js/classicLeafletMap.js',
+            HGES_PLUGIN_URL . 'assets/js/classicLeafletMap.js',
             [],
             null,
             true
@@ -55,7 +55,7 @@ class Scripts
 
         wp_enqueue_script_module(
             'hges-api-client-init',
-            HGeS_PLUGIN_URL . 'assets/js/apiClientInit.js',
+            HGES_PLUGIN_URL . 'assets/js/apiClientInit.js',
             ['hges-api-client'],
             null,
             ['in_footer' => true]
@@ -71,7 +71,7 @@ class Scripts
 
         wp_enqueue_script_module(
             'hges-dayjs-init',
-            HGeS_PLUGIN_URL . '/js/dayJsInit.js',
+            HGES_PLUGIN_URL . '/js/dayJsInit.js',
             ['dayjs-lib'],
             null,
             ['strategy' => 'defer', 'type' => 'module']
@@ -79,7 +79,7 @@ class Scripts
 
         wp_enqueue_script_module(
             'hges-classic-pickup-map-handler',
-            HGeS_PLUGIN_URL . 'assets/js/classicPickupMap.js',
+            HGES_PLUGIN_URL . 'assets/js/classicPickupMap.js',
             ['leaflet-map'],
             null,
             true
@@ -98,12 +98,12 @@ class Scripts
         if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
             wp_enqueue_script_module(
                 'hges-settings-page-script',
-                HGeS_PLUGIN_URL . 'assets/js/settingsPage.js'
+                HGES_PLUGIN_URL . 'assets/js/settingsPage.js'
             );
 
             wp_enqueue_script_module(
                 'hges-validator',
-                HGeS_PLUGIN_URL . 'assets/js/validator.js',
+                HGES_PLUGIN_URL . 'assets/js/validator.js',
                 ['hges-settings-page-script'],
             );
         }
@@ -113,7 +113,7 @@ class Scripts
         if ($screen && $screen->post_type === 'product' && $screen->base === 'post') {
             wp_enqueue_script_module(
                 'hges-product-metas',
-                HGeS_PLUGIN_URL . 'assets/js/productMetas.js',
+                HGES_PLUGIN_URL . 'assets/js/productMetas.js',
                 ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
                 false,
                 ['in_footer' => true]
@@ -122,7 +122,7 @@ class Scripts
 
         wp_enqueue_script(
             'hges-global-object-injection',
-            HGeS_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
+            HGES_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
         self::globalObjectInjection(true);
@@ -138,7 +138,7 @@ class Scripts
     {
         
         $frontendJsGlobalObject = [
-            'assetsUrl' => HGeS_PLUGIN_URL . 'assets/',
+            'assetsUrl' => HGES_PLUGIN_URL . 'assets/',
             'messages' => Messages::getMessageList(),
             'variableProductTypes' => [
                 VariableProductBottle::PRODUCT_TYPE,

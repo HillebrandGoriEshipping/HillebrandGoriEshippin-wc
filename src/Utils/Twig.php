@@ -14,7 +14,7 @@ class Twig
     public static function getTwig()
     {
         if (!self::$twig) {
-            $loader = new FilesystemLoader(HGeS_PLUGIN_DIR . '/templates');
+            $loader = new FilesystemLoader(HGES_PLUGIN_DIR . '/templates');
             self::$twig = new Environment($loader, [
                 'cache' => false,
                 'debug' => $_ENV['WP_DEBUG'] ?? true,
