@@ -41,8 +41,12 @@ class App
         CustomEndpoints::init();
         PickupPointsRender::init();
         ShippingAddressFields::init();
-        ShippingMethod::init();
         Order::init();
+        
+        // some init() calls must wait for WC to be fully loaded
+        add_action('init', function() {
+            ShippingMethod::init();
+        });
     }
 
     /**
