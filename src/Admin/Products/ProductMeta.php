@@ -5,8 +5,8 @@ namespace HGeS\Admin\Products;
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Enums\GlobalEnum;
-use HGeS\WooCommerce\SimpleProductBottle;
-use HGeS\WooCommerce\VariableProductBottle;
+use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
+use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 
 class ProductMeta
 {
@@ -87,7 +87,7 @@ class ProductMeta
     {
         $parent_product = wc_get_product($variation->post_parent);
 
-        if ($parent_product && $parent_product->is_type(VariableProductBottle::PRODUCT_TYPE)) {
+        if ($parent_product && $parent_product->is_type(VariableBottleProduct::PRODUCT_TYPE)) {
             $twig = Twig::getTwig();
             $value = get_post_meta($variation->ID, '_variation_quantity', true);
 
@@ -144,10 +144,10 @@ class ProductMeta
     public static function getClassNameByProductType(string $classname, string $product_type): string
     {
         switch ($product_type) {
-            case SimpleProductBottle::PRODUCT_TYPE:
-                return SimpleProductBottle::class;
-            case VariableProductBottle::PRODUCT_TYPE:
-                return VariableProductBottle::class;
+            case SimpleBottleProduct::PRODUCT_TYPE:
+                return SimpleBottleProduct::class;
+            case VariableBottleProduct::PRODUCT_TYPE:
+                return VariableBottleProduct::class;
             default:
                 return $classname;
         }
@@ -163,7 +163,7 @@ class ProductMeta
     {
         foreach ($tabs as $key => &$tab) {
             if ($key === 'variations') {
-                $tab['class'][] = 'show_if_' . VariableProductBottle::PRODUCT_TYPE;
+                $tab['class'][] = 'show_if_' . VariableBottleProduct::PRODUCT_TYPE;
             }
             if (isset($tab['class']) && in_array('show_if_simple', $tab['class'])) {
                 $tab['class'][] = 'show_if_bottle-simple';

@@ -1,21 +1,20 @@
 <?php
 
-namespace HGeS\WooCommerce;
+namespace HGeS\WooCommerce\ProductType;
 
 use HGeS\Utils\Enums\GlobalEnum;
 
-class VariableProductBottle extends \WC_Product_Variable
+class SimpleBottleProduct extends \WC_Product
 {
-    const PRODUCT_TYPE = 'bottle-variable';
-    const PRODUCT_TYPE_LABEL = 'Variable Bottle Product';
-
+    const PRODUCT_TYPE = 'bottle-simple';
+    const PRODUCT_TYPE_LABEL = 'Simple Bottle Product';
+    
     /**
      * Initializes the admin hooks and filters for the custom product type.
      */
     public static function initAdmin(): void
     {
         add_filter('product_type_selector', [self::class, 'addToSelect']);
-        add_filter('woocommerce_data_stores', [self::class, 'createDataStore'], 10, 1);
     }
 
     /**
@@ -38,17 +37,5 @@ class VariableProductBottle extends \WC_Product_Variable
     {
         $types[self::PRODUCT_TYPE] = __(self::PRODUCT_TYPE_LABEL, GlobalEnum::TRANSLATION_DOMAIN);
         return $types;
-    }
-
-    /**
-     * Adds or overrides the data store class for variable product bottles in the WooCommerce data store registry.
-     *
-     * @param array $stores Existing array of WooCommerce product data stores.
-     * @return array Modified array including the data store for variable product bottles.
-     */
-    public static function createDataStore($stores)
-    {
-        $stores['product-' . VariableProductBottle::PRODUCT_TYPE] = 'WC_Product_Variable_Data_Store_CPT';
-        return $stores;
     }
 }

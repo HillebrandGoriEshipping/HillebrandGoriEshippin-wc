@@ -11,8 +11,8 @@ use HGeS\WooCommerce\BottleShippingClass;
 use HGeS\WooCommerce\ClassicUiRender;
 use HGeS\WooCommerce\PickupPointsRender;
 use HGeS\WooCommerce\ShippingAddressFields;
-use HGeS\WooCommerce\SimpleProductBottle;
-use HGeS\WooCommerce\VariableProductBottle;
+use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
+use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\WooCommerce\Model\Order;
 use HGeS\WooCommerce\Model\ShippingMethod;
 
@@ -67,8 +67,8 @@ class App
 
         // some initAdmin() calls must wait for WC to be fully loaded
         add_action('init', function() {
-            SimpleProductBottle::initAdmin();
-            VariableProductBottle::initAdmin();
+            SimpleBottleProduct::initAdmin();
+            VariableBottleProduct::initAdmin();
         });
     }
 }

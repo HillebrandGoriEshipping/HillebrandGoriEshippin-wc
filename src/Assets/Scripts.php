@@ -2,8 +2,8 @@
 
 namespace HGeS\Assets;
 
-use HGeS\WooCommerce\SimpleProductBottle;
-use HGeS\WooCommerce\VariableProductBottle;
+use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
+use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
 
@@ -157,10 +157,10 @@ class Scripts
             'assetsUrl' => HGES_PLUGIN_URL . 'assets/',
             'messages' => Messages::getMessageList(),
             'variableProductTypes' => [
-                VariableProductBottle::PRODUCT_TYPE,
+                VariableBottleProduct::PRODUCT_TYPE,
             ],
             'pricableProductTypes' => [
-                SimpleProductBottle::PRODUCT_TYPE,
+                SimpleBottleProduct::PRODUCT_TYPE,
             ],
         ];
 
