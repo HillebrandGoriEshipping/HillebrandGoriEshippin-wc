@@ -7,14 +7,14 @@ use HGeS\Admin\Products\ProductMeta;
 use HGeS\Api\CustomEndpoints;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
-use HGeS\WooCommerce\BottleShippingClass;
 use HGeS\WooCommerce\ClassicUiRender;
 use HGeS\WooCommerce\PickupPointsRender;
 use HGeS\WooCommerce\ShippingAddressFields;
-use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
-use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\WooCommerce\Model\Order;
 use HGeS\WooCommerce\Model\ShippingMethod;
+use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
+use HGeS\WooCommerce\ProductType\VariableBottleProduct;
+use HGeS\WooCommerce\ShippingClass\BottleShippingClass;
 
 /**
  * Plugin entry class
