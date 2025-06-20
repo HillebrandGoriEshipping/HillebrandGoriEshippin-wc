@@ -2,8 +2,8 @@
 
 namespace HGeS;
 
+use HGeS\Admin\Menu;
 use HGeS\Admin\Products\ProductMeta;
-use HGeS\Admin\Settings\Menu;
 use HGeS\Api\CustomEndpoints;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;

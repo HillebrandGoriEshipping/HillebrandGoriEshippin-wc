@@ -1,7 +1,8 @@
 <?php
 
-namespace HGeS\Admin\Settings;
+namespace HGeS\Admin;
 
+use HGeS\Admin\Settings\SettingsController;
 
 class Menu
 {
