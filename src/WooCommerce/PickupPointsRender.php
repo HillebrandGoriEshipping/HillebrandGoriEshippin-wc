@@ -4,7 +4,7 @@ namespace HGeS\WooCommerce;
 
 use Automattic\WooCommerce\Admin\Overrides\Order as WooCommerceOrder;
 use HGeS\Utils\Twig;
-use HGeS\WooCommerce\Order;
+use HGeS\WooCommerce\Model\Order;
 /**
  * Class PickupPointsRender
  * 
