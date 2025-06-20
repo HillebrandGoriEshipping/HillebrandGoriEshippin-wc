@@ -1,6 +1,8 @@
 <?php
 
-namespace HGeS\Utils;
+namespace HGeS\WooCommerce;
+
+use HGeS\Utils\ApiClient;
 
 /**
  * Address Model

@@ -3,9 +3,9 @@
 namespace HGeS;
 
 use HGeS\Utils\ApiClient;
-use HGeS\Utils\Address;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
+use HGeS\WooCommerce\Address;
 
 class Rate
 {

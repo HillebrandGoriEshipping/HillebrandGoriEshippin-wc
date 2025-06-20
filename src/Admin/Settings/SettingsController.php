@@ -3,11 +3,11 @@
 namespace HGeS\Admin\Settings;
 
 use HGeS\Form\SettingsFormData;
-use HGeS\Utils\Address;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\FormSessionMessages;
 use HGeS\Utils\Twig;
+use HGeS\WooCommerce\Address;
 
 class SettingsController
 {
