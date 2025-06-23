@@ -1,6 +1,6 @@
 <?php
 
-namespace HGeS\Utils\ValidationConstraints;
+namespace HGeS\Form\ValidationConstraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

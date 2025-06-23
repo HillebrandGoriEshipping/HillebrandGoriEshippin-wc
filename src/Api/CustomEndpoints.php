@@ -3,7 +3,7 @@
 namespace HGeS\Api;
 
 use HGeS\Utils\ApiClient;
-use HGeS\WooCommerce\Order;
+use HGeS\WooCommerce\Model\Order;
 
 class CustomEndpoints
 {

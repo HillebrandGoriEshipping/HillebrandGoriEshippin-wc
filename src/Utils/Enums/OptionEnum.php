@@ -2,10 +2,10 @@
 
 namespace HGeS\Utils\Enums;
 
+use HGeS\Form\ValidationConstraints\VatNumber;
+use HGeS\Form\ValidationConstraints\EoriNumber;
+use HGeS\Form\ValidationConstraints\FdaNumber;
 use HGeS\Utils\Messages;
-use HGeS\Utils\ValidationConstraints\EoriNumber;
-use HGeS\Utils\ValidationConstraints\FdaNumber;
-use HGeS\Utils\ValidationConstraints\VatNumber;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Count;
 

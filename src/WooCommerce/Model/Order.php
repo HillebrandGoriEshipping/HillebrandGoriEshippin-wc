@@ -1,6 +1,6 @@
 <?php
 
-namespace HGeS\WooCommerce;
+namespace HGeS\WooCommerce\Model;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders

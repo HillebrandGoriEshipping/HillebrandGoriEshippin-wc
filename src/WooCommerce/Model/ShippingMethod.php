@@ -1,6 +1,6 @@
 <?php
 
-namespace HGeS\WooCommerce;
+namespace HGeS\WooCommerce\Model;
 
 use HGeS\Rate;
 

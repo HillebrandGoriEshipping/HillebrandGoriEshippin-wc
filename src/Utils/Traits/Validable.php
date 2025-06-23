@@ -25,7 +25,6 @@ trait Validable
             ->getValidator();
 
         $errors = self::formatErrors($validator->validate($this));
-        error_log(print_r($errors, true));
         return $errors;
     }
 

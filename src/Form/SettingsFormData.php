@@ -1,6 +1,6 @@
 <?php
 
-namespace HGeS\Admin\Settings;
+namespace HGeS\Form;
 
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Traits\Sanitizable;
@@ -11,7 +11,7 @@ use HGeS\Utils\Traits\Validable;
  * This class is used to define the data structure for the settings form, 
  * enables the use of Symfony Validator.
  */
-class SettingsFormData
+class SettingsFormData extends AbstractFormData
 {
     /**
      * This trait is used to add validation capabilities to a class.
@@ -28,20 +28,20 @@ class SettingsFormData
      * We need to explicitly define the properties here,
      * otherwise they won't be recognized by the Symfony Validator
      */
-    private $access_key_validate;
-    private $HGES_PREF_TRANSP;
-    private $HGES_TAX_RIGHTS;
-    private $HGES_VAT_NUMBER;
-    private $HGES_VAT_OSS;
-    private $HGES_EORI_NUMBER;
-    private $HGES_FDA_NUMBER;
-    private $HGES_ASSURANCE;
-    private $HGES_NBR_MIN;
-    private $HGES_PREP_TIME;
-    private $HGES_PREF_DEL;
-    private $HGES_MINHOUR;
-    private $HGES_CUTOFF;
-    private $HGES_WORKING_DAYS;
+    protected $access_key_validate;
+    protected $HGES_PREF_TRANSP;
+    protected $HGES_TAX_RIGHTS;
+    protected $HGES_VAT_NUMBER;
+    protected $HGES_VAT_OSS;
+    protected $HGES_EORI_NUMBER;
+    protected $HGES_FDA_NUMBER;
+    protected $HGES_ASSURANCE;
+    protected $HGES_NBR_MIN;
+    protected $HGES_PREP_TIME;
+    protected $HGES_PREF_DEL;
+    protected $HGES_MINHOUR;
+    protected $HGES_CUTOFF;
+    protected $HGES_WORKING_DAYS;
 
     /**
      * The class properties are dynamically created based on the OptionEnum class
@@ -71,14 +71,5 @@ class SettingsFormData
                 $metadata->addPropertyConstraint($optionName, $constraint);
             }
         }
-    }
-
-    public function __get($name): ?string
-    {
-        if (!property_exists($this, $name)) {
-            return null;
-        }
-        
-        return $this->$name;
     }
 }
