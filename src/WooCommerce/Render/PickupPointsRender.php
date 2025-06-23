@@ -1,6 +1,6 @@
 <?php
 
-namespace HGeS\WooCommerce;
+namespace HGeS\WooCommerce\Render;
 
 use Automattic\WooCommerce\Admin\Overrides\Order as WooCommerceOrder;
 use HGeS\Utils\Twig;

@@ -1,6 +1,6 @@
 <?php
 
-namespace HGeS\WooCommerce;
+namespace HGeS\WooCommerce\Render;
 
 use HGeS\Utils\Twig;
 use WC_Shipping_Rate;
