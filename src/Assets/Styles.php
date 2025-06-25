@@ -76,5 +76,21 @@ class Styles
                 null
             );
         }
+
+        if (!empty($_GET['page']) && $_GET['page'] === 'wc-orders' && !empty($_GET['action'] && $_GET['action'] === 'edit')) {
+            wp_enqueue_style(
+                'hges-modal-style',
+                HGES_PLUGIN_URL . 'assets/css/modal.css',
+                [],
+                null
+            );
+
+            wp_enqueue_style(
+                'hges-shipping-rates-classic-style',
+                HGES_PLUGIN_URL . 'assets/css/shipping-rates-classic.css',
+                [],
+                null
+            );
+        }
     }
 }

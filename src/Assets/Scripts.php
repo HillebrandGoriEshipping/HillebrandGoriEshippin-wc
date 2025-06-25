@@ -132,6 +132,14 @@ class Scripts
                 false,
                 ['in_footer' => true]
             );
+
+            wp_enqueue_script_module(
+                'hges-api-client',
+                HGES_PLUGIN_URL . 'assets/js/apiClient.js',
+                [],
+                null,
+                ['in_footer' => true]
+            );
         }
 
         $screen = get_current_screen();

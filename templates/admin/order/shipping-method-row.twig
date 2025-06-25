@@ -1,5 +1,14 @@
 <div class="error-message {% if stillAvailable %}hidden{% endif %}" >{{ errorMessage }}</div>
 <div class="shipping-rate-estimated-delivery">Estimated delivery date : {{ shippingRate.deliveryDate }}</div>
 <div class="shipping-rate-pickup-date">Pickup date : {{ shippingRate.pickupDate }}</div>
-<button type="button">{{ __('Edit shipping option') }}</button>
-    
+<button type="button" id="hges-change-shipping-rate-button">{{ __('Change shipping option') }}</button>
+
+<div id="hges-shipping-rate-modal" class="modal hidden">
+    <div class="modal__content">
+        <span class="modal__close">&times;</span>
+        <div class="shipping-rate-list">
+            
+            
+        </div>
+    </div>
+</div>
