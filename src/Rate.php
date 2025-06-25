@@ -280,7 +280,8 @@ class Rate
                     'carrier' => $rate['carrier'],
                     'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
-                    'deliveryMode' => $rate['deliveryMode']
+                    'deliveryMode' => $rate['deliveryMode'],
+                    'checksum' => $rate['checksum'],
                 ],
             ];
 
