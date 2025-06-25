@@ -49,7 +49,7 @@ class ShippingMethodRow {
             'stillAvailable' => $shippingMethodStillAvailable,
             'shippingRate' => $shippingRate ?? null,
         ];
-        dump($shippingRate);
+        
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
 
         echo '<div style="display: none">';
