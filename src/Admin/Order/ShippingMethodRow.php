@@ -2,6 +2,9 @@
 
 namespace HGeS\Admin\Order;
 
+use HGeS\Rate;
+use HGeS\Utils\Messages;
+use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\ShippingMethod;
 
 class ShippingMethodRow {
@@ -26,8 +29,29 @@ class ShippingMethodRow {
         ) {
             return;
         }
-        echo '<div class="error-message">THIS SHIPPING METHOD IS NOT AVAILABLE ANYMORE.</div>';
-        echo '<button type="button">Edit shipping options</button>';
+        $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
+            return $meta->key === 'checksum';
+        });
+        $shippingRateChecksum = $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
+        
+        $shippingMethodStillAvailable = false;
+        if ($shippingRateChecksum) {
+            $shippingRate = Rate::getByChecksum($shippingRateChecksum);
+            if ($shippingRate) {
+                $shippingMethodStillAvailable = true;
+            }
+        } else {
+            $shippingMethodStillAvailable = false;
+        }
+
+        $templateData = [
+            'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
+            'stillAvailable' => $shippingMethodStillAvailable,
+            'shippingRate' => $shippingRate ?? null,
+        ];
+        dump($shippingRate);
+        echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
+
         echo '<div style="display: none">';
     }
 

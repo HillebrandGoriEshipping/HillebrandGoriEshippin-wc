@@ -1,0 +1,5 @@
+<div class="error-message {% if stillAvailable %}hidden{% endif %}" >{{ errorMessage }}</div>
+<div class="shipping-rate-estimated-delivery">Estimated delivery date : {{ shippingRate.deliveryDate }}</div>
+<div class="shipping-rate-pickup-date">Pickup date : {{ shippingRate.pickupDate }}</div>
+<button type="button">{{ __('Edit shipping option') }}</button>
+    
