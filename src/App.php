@@ -3,6 +3,7 @@
 namespace HGeS;
 
 use HGeS\Admin\Menu;
+use HGeS\Admin\Order\ShippingMethodRow;
 use HGeS\Admin\Products\ProductMeta;
 use HGeS\Api\CustomEndpoints;
 use HGeS\Assets\Scripts;
@@ -64,6 +65,7 @@ class App
         ProductMeta::initAdmin();
         Router::initAdmin();
         ShippingAddressFields::initAdmin();
+        ShippingMethodRow::initAdmin();
 
         // some initAdmin() calls must wait for WC to be fully loaded
         add_action('init', function() {

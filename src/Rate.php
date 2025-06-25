@@ -280,7 +280,8 @@ class Rate
                     'carrier' => $rate['carrier'],
                     'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
-                    'deliveryMode' => $rate['deliveryMode']
+                    'deliveryMode' => $rate['deliveryMode'],
+                    'checksum' => $rate['checksum'],
                 ],
             ];
 
@@ -290,5 +291,19 @@ class Rate
         }
 
         return $formattedShippingRates;
+    }
+
+    /**
+     * Retrieves a shipping rate by its checksum.
+     */
+    public static function getByChecksum(string $checksum): ?array
+    {
+        $shippingRate = ApiClient::get("/v2/rates/$checksum");
+
+        if (isset($shippingRates['error'])) {
+            return null;
+        }
+
+        return $shippingRate['data'];
     }
 }
