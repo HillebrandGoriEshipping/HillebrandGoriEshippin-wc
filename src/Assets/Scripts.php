@@ -124,7 +124,10 @@ class Scripts
             );
         }
 
-        if (!empty($_GET['page']) && $_GET['page'] === 'wc-orders' && !empty($_GET['action'] && $_GET['action'] === 'edit')) {
+        if (
+            !empty($_GET['page']) && $_GET['page'] === 'wc-orders'
+            && !empty($_GET['action']) && $_GET['action'] === 'edit'
+        ) {
             wp_enqueue_script_module(
                 'hges-order-edit-script',
                 HGES_PLUGIN_URL . 'assets/js/orderEditPage.js',
