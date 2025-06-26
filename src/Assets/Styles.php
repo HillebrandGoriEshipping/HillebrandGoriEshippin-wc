@@ -77,7 +77,10 @@ class Styles
             );
         }
 
-        if (!empty($_GET['page']) && $_GET['page'] === 'wc-orders' && !empty($_GET['action'] && $_GET['action'] === 'edit')) {
+        if (
+            !empty($_GET['page']) && $_GET['page'] === 'wc-orders' 
+            && !empty($_GET['action']) && $_GET['action'] === 'edit'
+        ) {
             wp_enqueue_style(
                 'hges-modal-style',
                 HGES_PLUGIN_URL . 'assets/css/modal.css',
