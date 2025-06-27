@@ -42,6 +42,20 @@ export default {
       throw new Error("Error in API Client : " + e.message);
     }
   },
+  async patch(url, urlParams, data, headers, isProxy) {
+    url = this.appendUrlParams(url, urlParams, isProxy);
+    headers = this.prepareHeaders(headers);
+    const method = "PATCH";
+    const body = JSON.stringify(data);
+
+    try {
+      const response = await fetch(url, { method, body, headers });
+
+      return response.json();
+    } catch (e) {
+      throw new Error("Error in API Client : " + e.message);
+    }
+  },
   async validateApiKey(apiKey) {
     try {
       const response = await this.get(

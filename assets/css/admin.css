@@ -77,3 +77,9 @@ table {
   display: inline-block;
   width: 5rem;
 }
+
+#hges-shipping-rate-modal .modal__content .modal__header .modal__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}

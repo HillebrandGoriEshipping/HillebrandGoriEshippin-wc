@@ -2,6 +2,8 @@
 
 namespace HGeS\WooCommerce\Model;
 
+use HGeS\Rate;
+
 /**
  * This class exposes methods to interact with the WooCommerce orders
  */
@@ -98,5 +100,36 @@ class Order
         foreach ($pickupPoint as $key => $value) {
             $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
         }
+    }
+
+    public static function updateSelectedShippingRate(int $orderId,int $orderShippingItemId, string $shippingRateChecksum): ?array
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return null;
+        }
+
+        $item = $order->get_item($orderShippingItemId);
+        $rate = Rate::getByChecksum($shippingRateChecksum);
+        if (!$item || !$rate) {
+            throw new \Exception("Order item or shipping rate not found.");
+        }
+        $item->set_props([
+            "name" => $rate['service'],
+            "method_title" => $rate['service'],
+            "method_id" => "hges_shipping",
+            "instance_id" => "8",
+            "total" => $rate['shippingPrice']['amount'],
+            "total_tax" => "0",
+            "taxes" => ["total" => []],
+            "tax_status" => "taxable",
+        ]);
+
+        $item->get_data_store()->update($item);
+        $item->save();
+
+        $order->calculate_totals();
+
+        return $rate;
     }
 }

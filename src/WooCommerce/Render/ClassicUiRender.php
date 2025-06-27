@@ -71,15 +71,15 @@ class ClassicUiRender
     {
         $metadata = $rate->get_meta_data();
         if (empty($metadata['carrier'])) {
-            $assetsPath = null;
+            $imagePath = null;
         } else {
-            $assetsPath = HGES_PLUGIN_URL . 'assets/img/' . $metadata['carrier'] . '.png';
+            $imagePath = HGES_PLUGIN_URL . 'assets/img/' . $metadata['carrier'] . '.png';
         }
 
         if ($rate->get_label() === 'Aérien') {
-            $assetsPath = HGES_PLUGIN_URL . 'assets/img/airfreight.png';
+            $imagePath = HGES_PLUGIN_URL . 'assets/img/airfreight.png';
         } else if ($rate->get_label() === 'Maritime') {
-            $assetsPath = HGES_PLUGIN_URL . 'assets/img/seafreight.png';
+            $imagePath = HGES_PLUGIN_URL . 'assets/img/seafreight.png';
         }
 
         $metadata['deliveryMode'] = $metadata['deliveryMode'] ?? false;
@@ -109,7 +109,7 @@ class ClassicUiRender
             'label' => $rate->get_label(),
             'cost' => wc_price($rate->get_cost()),
             'metaData' => $metadata,
-            'assetsPath' => $assetsPath,
+            'imagePath' => $imagePath,
             'deliveryMode' => $metadata['deliveryMode'],
         ]);
 
