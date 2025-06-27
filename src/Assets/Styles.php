@@ -68,14 +68,12 @@ class Styles
      */
     public static function enqueueAdmin(): void
     {
-        if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
-            wp_enqueue_style(
-                'hges-admin-style',
-                HGES_PLUGIN_URL . 'assets/css/admin.css',
-                [],
-                null
-            );
-        }
+        wp_enqueue_style(
+            'hges-admin-style',
+            HGES_PLUGIN_URL . 'assets/css/admin.css',
+            [],
+            null
+        );
 
         if (
             !empty($_GET['page']) && $_GET['page'] === 'wc-orders' 

@@ -18,13 +18,30 @@
 
 .modal .modal__content {
     display: flex;
-    gap: 1rem;
-    position: relative;
+    flex-direction: column;
     background-color: #fefefe;
+    position: relative;
     padding: 1rem;
-    width: 100%;
     height: 100%;
+    width: 100%;
 }
+
+.modal .modal__content .modal__header {
+    padding: 1rem;
+}
+
+.modal .modal__content .modal__header .modal__title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+
+.modal .modal__content .modal__body {
+    display: flex;
+    gap: 1rem;
+}
+
 
 .modal .modal__side {
     margin-top: 3rem;

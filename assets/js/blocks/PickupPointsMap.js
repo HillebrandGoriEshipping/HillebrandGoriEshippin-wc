@@ -144,29 +144,31 @@ const PickupPointsMap = () => {
                     {/* hges object is injected from the Assets\Scripts class */}
                     <SVG src={hges.assetsUrl + 'img/close.svg'} className="modal__close-icon" />
                 </button>
-                <div ref={mapContainerRef} className="map-container" id="pickup-points-map"></div>
-                <div className="modal__side">
-                    <div id="pickup-points-list">
-                        {pickupPoints && pickupPoints.map((pickupPoint, index) => (
-                            <div className="pickup-point" key={index}>
-                                <div className="pickup-point__title">
-                                    <a
-                                        href="#"
-                                        onClick={onItemClick}
-                                        data-pickup-point={JSON.stringify(pickupPoint)}
-                                    >
-                                        {pickupPoint.name}
-                                    </a>
+                <div className="modal__body">
+                    <div ref={mapContainerRef} className="map-container" id="pickup-points-map"></div>
+                    <div className="modal__side">
+                        <div id="pickup-points-list">
+                            {pickupPoints && pickupPoints.map((pickupPoint, index) => (
+                                <div className="pickup-point" key={index}>
+                                    <div className="pickup-point__title">
+                                        <a
+                                            href="#"
+                                            onClick={onItemClick}
+                                            data-pickup-point={JSON.stringify(pickupPoint)}
+                                        >
+                                            {pickupPoint.name}
+                                        </a>
+                                    </div>
+                                    <div className="pickup-point__address">
+                                        {pickupPoint.address_1}
+                                    </div>
+                                    <div className="pickup-point__distance">{pickupPoint.distance}m</div>
                                 </div>
-                                <div className="pickup-point__address">
-                                    {pickupPoint.address_1}
-                                </div>
-                                <div className="pickup-point__distance">{pickupPoint.distance}m</div>
-                            </div>
-                        ))}
-                    </div>
-                    <div>
-                        <button className="pickup-point__select-btn" data-pickup-point-id={1} onClick={selectThisPickupPoint}>Select this pickup point</button>
+                            ))}
+                        </div>
+                        <div>
+                            <button className="pickup-point__select-btn" data-pickup-point-id={1} onClick={selectThisPickupPoint}>Select this pickup point</button>
+                        </div>
                     </div>
                 </div>
             </div>
