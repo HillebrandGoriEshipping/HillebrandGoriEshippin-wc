@@ -44,6 +44,12 @@ class CustomEndpoints
             'callback' => [self::class, 'getShippingRatesForOrderHtml'],
             'permission_callback' => '__return_true',
         ]);
+
+        register_rest_route(self::NAMESPACE, '/order/set-shipping-rate', [
+            'methods' => 'PATCH',
+            'callback' => [self::class, 'setOrderShippingRate'],
+            'permission_callback' => '__return_true',
+        ]);
     }
 
     /**
@@ -156,6 +162,32 @@ class CustomEndpoints
         } else {
             $response->set_data([
                 'error' => 'Unable to retrieve shipping rates, orderId is expected in the query params.',
+            ]);
+            $response->set_status(400);
+        }
+        return $response;
+    }
+
+    public static function setOrderShippingRate(\WP_REST_Request $request): \WP_REST_Response
+    {
+        $response = new \WP_REST_Response();
+        $bodyParams = $request->get_json_params();
+        $queryParams = $request->get_query_params();
+
+        if (!empty($bodyParams['shippingRateChecksum']) && !empty($queryParams['orderId']) && !empty($queryParams['orderShippingItemId'])) {
+            $rate = Order::updateSelectedShippingRate(
+                intval($queryParams['orderId']),
+                intval($queryParams['orderShippingItemId']),
+                $bodyParams['shippingRateChecksum']
+            );
+            $response->set_data([
+                'success' => true,
+                'shippingRate' => $rate
+            ]);
+            $response->set_status(200);
+        } else {
+            $response->set_data([
+                'error' => 'Unable to update shipping method, orderId and orderShippingItemId are expected in the query params and shippingRateChecksum json object is expected in the json body.',
             ]);
             $response->set_status(400);
         }
