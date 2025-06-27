@@ -5,7 +5,7 @@
 {% elseif metaData.firstOthersDelivery %}
    <h5>{{ __('Other Shipping Method') }}</h5>
 {% endif %}
-<div class="hges-shipping-method" >
+<div class="hges-shipping-method" id="shipping-rate-{{ metaData.checksum }}" data-checksum="{{ metaData.checksum }}">
     <div class="hges-shipping-method-left">
         {% if metaData.carrier != null %}
         <div class="hges-shipping-logo">
