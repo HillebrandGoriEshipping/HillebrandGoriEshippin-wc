@@ -36,7 +36,8 @@
   margin-right: 1rem;
 }
 
-input[type="radio"]:checked + label .hges-shipping-method {
+input[type="radio"]:checked + label .hges-shipping-method,
+.hges-shipping-method.selected {
   background-color: #90ee9081;
   border: solid hsla(0, 0%, 7%, 0.11);
 }

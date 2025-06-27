@@ -40,6 +40,8 @@
 .modal .modal__content .modal__body {
     display: flex;
     gap: 1rem;
+    overflow-y: auto;
+    height: 80%;
 }
 
 

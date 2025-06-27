@@ -108,7 +108,7 @@ class Order
         if (!$order) {
             return null;
         }
-        
+
         $item = $order->get_item($orderShippingItemId);
         $rate = Rate::getByChecksum($shippingRateChecksum);
         if (!$item || !$rate) {
@@ -127,6 +127,8 @@ class Order
 
         $item->get_data_store()->update($item);
         $item->save();
+
+        $order->calculate_totals();
 
         return $rate;
     }

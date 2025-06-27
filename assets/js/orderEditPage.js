@@ -3,16 +3,23 @@ import apiClient from './apiClient.js';
 const orderEditPage = {
     changeShippingRateButton: null,
     closeShippingRateModalButton: null,
+    updateShippingRateButton: null,
     currentEditingItemId: null,
+    selectedShippingRateChecksum: null,
     init() {
         this.changeShippingRateButton = document.querySelector('#hges-change-shipping-rate-button');
         this.closeShippingRateModalButton = document.querySelector('#hges-shipping-rate-modal .modal__close');
+        this.updateShippingRateButton = document.querySelector('#hges-close-shipping-rate-modal-button');
+
         if (this.changeShippingRateButton) {
             this.changeShippingRateButton.addEventListener('click', this.openShippingRateModal.bind(this));
         }
         if (this.closeShippingRateModalButton) {
             this.closeShippingRateModalButton.addEventListener('click', this.closeShippingRateModal.bind(this));
         }
+        if (this.updateShippingRateButton) {
+            this.updateShippingRateButton.addEventListener('click', this.updateShippingRate.bind(this));
+        }  
     },
     async openShippingRateModal(e) {
         this.currentEditingItemId = e.currentTarget.dataset.itemId;
@@ -36,20 +43,26 @@ const orderEditPage = {
         }
     },
     async onShippingRateSelected(event) {
-        const shippingRateChecksum = event.target.dataset.checksum;
-        if (shippingRateChecksum) {
-            console.log('Selected shipping rate checksum:', shippingRateChecksum);
-            const selectedRate = await apiClient.patch('/order/set-shipping-rate', {
+        document.querySelectorAll('#hges-shipping-rate-modal .shipping-rate-list .hges-shipping-method').forEach((rateElement) => {
+            rateElement.classList.remove('selected');
+        });
+        event.currentTarget.classList.add('selected');
+        this.selectedShippingRateChecksum = event.target.dataset.checksum;
+    },
+    async updateShippingRate() {
+        if (this.selectedShippingRateChecksum) {
+            console.log('Selected shipping rate checksum:', this.selectedShippingRateChecksum);
+            this.selectedRate = await apiClient.patch('/order/set-shipping-rate', {
                 orderId: new URLSearchParams(window.location.search).get('id'),
                 orderShippingItemId: this.currentEditingItemId,
             }, {
-                shippingRateChecksum: shippingRateChecksum
+                shippingRateChecksum: this.selectedShippingRateChecksum
             },
                 {},
                 true
             );
-            console.log(selectedRate);
-            this.closeShippingRateModal();
+
+            window.location.reload();
         }
     }
 };
