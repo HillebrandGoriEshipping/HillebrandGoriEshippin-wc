@@ -22,7 +22,7 @@ class ShippingMethodRow {
      * Displays the shipping method edition button
      * triggered by the 'woocommerce_before_order_itemmeta' action
      */
-    public static function beforeOrderItemMeta($item_id, $item, $order = null) {
+    public static function beforeOrderItemMeta(int $item_id, \WC_Order_Item $item, ?\WC_Product $product = null) {
         if (
             get_class($item) !== 'WC_Order_Item_Shipping' 
             || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
