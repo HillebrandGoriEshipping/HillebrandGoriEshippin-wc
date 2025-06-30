@@ -49,12 +49,7 @@ class ShippingMethodRow {
         
         $shippingMethodStillAvailable = false;
         if ($shippingRateChecksum) {
-            $shippingRate = Rate::getByChecksum($shippingRateChecksum);
-            if ($shippingRate) {
-                $shippingMethodStillAvailable = true;
-            }
-        } else {
-            $shippingMethodStillAvailable = false;
+           $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
         }
 
         

@@ -3,6 +3,7 @@
 namespace HGeS\WooCommerce\Model;
 
 use HGeS\Rate;
+use HGeS\Utils\Messages;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -21,6 +22,7 @@ class Order
     public static function init(): void
     {
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
+        add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
     }
 
     /**
@@ -131,5 +133,46 @@ class Order
         $order->calculate_totals();
 
         return $rate;
+    }
+
+    public static function checkShippingBeforeStatusUpdate(int $orderId, string $newStatus): bool
+    {
+        if ($newStatus !== 'processing') {
+            return true;
+        }   
+        $shippingRateChecksum = self::getShippingRateChecksum($orderId);
+        $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum.'45645');
+        if (!$shippingMethodStillAvailable) {
+            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
+            $url = add_query_arg( 'error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
+            wp_redirect($url);
+            exit;
+        }
+        return $shippingMethodStillAvailable;
+    } 
+
+    /**
+     * Get the shipping rate checksum for a specific order and shipping item.
+     * 
+     * @param int $orderId The ID of the order.
+     * @return string|null The shipping rate checksum if found, otherwise null.
+     */
+    public static function getShippingRateChecksum(int $orderId): ?string
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return null;
+        }
+
+        $item = $order->get_item(ShippingMethod::METHOD_ID);
+        if (!$item || get_class($item) !== 'WC_Order_Item_Shipping' || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID) {
+            return null;
+        }
+
+        $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
+            return $meta->key === 'checksum';
+        });
+
+        return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
     }
 }
