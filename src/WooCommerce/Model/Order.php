@@ -137,7 +137,7 @@ class Order
 
     public static function checkShippingBeforeStatusUpdate(int $orderId, string $newStatus): bool
     {
-        if ($newStatus !== 'processing') {
+        if ($newStatus !== 'processing' && $newStatus !== 'completed') {
             return true;
         }   
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
