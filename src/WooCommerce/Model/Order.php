@@ -141,7 +141,7 @@ class Order
             return true;
         }   
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
-        $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum.'45645');
+        $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
         if (!$shippingMethodStillAvailable) {
             \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
             $url = add_query_arg( 'error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
