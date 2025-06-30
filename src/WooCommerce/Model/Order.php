@@ -163,12 +163,10 @@ class Order
         if (!$order) {
             return null;
         }
-
-        $item = $order->get_item(ShippingMethod::METHOD_ID);
+        $item = array_pop($order->get_items('shipping'));
         if (!$item || get_class($item) !== 'WC_Order_Item_Shipping' || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID) {
             return null;
         }
-
         $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
             return $meta->key === 'checksum';
         });

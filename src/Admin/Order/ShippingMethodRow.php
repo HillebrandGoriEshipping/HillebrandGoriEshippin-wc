@@ -34,7 +34,6 @@ class ShippingMethodRow {
      */
     public static function beforeOrderItemMeta(int $item_id, \WC_Order_Item $item, ?\WC_Product $product = null): void
     {
-       
         if (
             get_class($item) !== 'WC_Order_Item_Shipping' 
             || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
@@ -42,17 +41,10 @@ class ShippingMethodRow {
             return;
         }
 
-        $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
-            return $meta->key === 'checksum';
-        });
-        $shippingRateChecksum = $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
-        
-        $shippingMethodStillAvailable = false;
-        if ($shippingRateChecksum) {
-           $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
-        }
-
-        
+        $orderId = $item->get_data()['order_id'];
+        $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
+        $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
+  
         $templateData = [
             'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
             'stillAvailable' => $shippingMethodStillAvailable,
