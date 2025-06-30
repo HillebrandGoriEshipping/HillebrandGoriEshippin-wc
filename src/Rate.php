@@ -144,7 +144,6 @@ class Rate
         $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
         $params['nbBottles'] = $magnumQuantity + $standardQuantity;
-        $params['commodityValue'] = 38; //TODO : retrieve real commodity value dynamically
 
         $details = [];
 
@@ -181,9 +180,6 @@ class Rate
         foreach ($carrierList as $carrier) {
             $params[$carrier] = 1;
         }
-
-        $params['nonAlcoholic'] = 0; //TODO : retrieve real non-alcoholic status dynamically
-        $params['documents'] = 0; //TODO : retrieve real documents status dynamically
 
         return $params;
     }
