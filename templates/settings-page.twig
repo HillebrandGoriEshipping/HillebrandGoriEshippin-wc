@@ -30,31 +30,31 @@
     <p>{{ __( 'Contact our support if you need to edit those informations')|escape }}</p>
     <table class="form-table states" id="address-table">
         <tr valign="top">
-            <th scope="row">{{ __( 'Address')|escape }}:</th>
+            <th scope="row">{{ __( 'Address')|escape }}</th>
             <td>
                 <label for="Adresse">{{ address.addressName }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ __( 'Company')|escape }}:</th>
+            <th scope="row">{{ __( 'Company')|escape }}</th>
             <td>
                 <label for="Adresse">{{ address.company }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ __( 'Contact')|escape }}:</th>
+            <th scope="row">{{ __( 'Contact')|escape }}</th>
             <td>
                 <label for="Adresse">{{ address.contact }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ __( 'Phone')|escape }}:</th>
+            <th scope="row">{{ __( 'Phone')|escape }}</th>
             <td>
                 <label for="Adresse">{{ address.telephone }}</label>
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ __( 'Address')|escape }}:</th>
+            <th scope="row">{{ __( 'Address')|escape }}</th>
             <td>
                 <label for="Adresse">{{ address.address }}</label>
                 {% if address.addressComplement != '' %}
@@ -66,7 +66,7 @@
             </td>
         </tr>
         <tr valign="top">
-            <th scope="row">{{ __( 'City')|escape }}:</th>
+            <th scope="row">{{ __( 'City')|escape }}</th>
             <td>
                 <label for="Adresse">{{ address.city }}</label>
             </td>
@@ -79,9 +79,34 @@
     {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group2')|raw }}
     {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group2')|raw }}
     <table class="form-table states">
+
+        <!-- PACKAGING AVAILABLE -->
+        <tr valign="top">
+            <th scope="row">{{ __( 'Packaging available')|escape }}</th>
+            <td>
+                <div>
+                    <p>{{ __( 'The capacities of the packaging you may use for your shipments. Separate the values with a comma.') }}</p>
+                    <p>{{ __( 'Example: 1, 3, 6, 12')|escape }}</p>
+                </div>
+                <div>
+                    <input type="text" name="{{ hgesOptionName('HGES_PACKAGING_BOTTLE') }}" value="{{ options.HGES_PACKAGING_BOTTLE|default('1,2,3,6,12') }}" placeholder="{{ __( 'Bottle')|escape }}">
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ __('Enter the capacities of the bottle packaging you may use')|escape }}</span>
+                    </div>
+                </div>
+                <div>
+                    <input type="text" name="{{ hgesOptionName('HGES_PACKAGING_MAGNUM') }}" value="{{ options.HGES_PACKAGING_MAGNUM|default('1,2,3,6') }}" placeholder="{{ __( 'Magnum')|escape }}">
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ __('Enter the capacities of the magnum packaging you may use')|escape }}</span>
+                    </div>
+                </div>
+                {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_BOTTLE} %}
+                {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_MAGNUM} %}
+            </td>
+        </tr>   
         <!-- MINIMUM NUMBER OF BOTTLES -->
         <tr valign="top">
-            <th scope="row">{{ __( 'Minimum number of bottles')|escape }}:</th>
+            <th scope="row">{{ __( 'Minimum number of bottles')|escape }}</th>
             <td>
                 <input 
                     type="number" 
@@ -97,7 +122,7 @@
         </tr>
         <!-- PREPARATION TIME -->
         <tr valign="top">
-            <th scope="row">{{ __( 'Preparation time')|escape }}:</th>
+            <th scope="row">{{ __( 'Preparation time')|escape }}</th>
             <td>
                 <input type="number" min="1" name="{{ hgesOptionName('HGES_PREP_TIME') }}" value="{{ options.HGES_PREP_TIME|default('') }}">
                 {% include('form-error-message.twig') with {'error': errors.HGES_PREP_TIME} %}
@@ -177,7 +202,7 @@
         </tr>
         <!-- MINHOUR & CUTOFF -->
         <tr valign="top">
-            <th scope="row">{{ __( 'Min hour & Cutoff')|escape }}:</th>
+            <th scope="row">{{ __( 'Min hour & Cutoff')|escape }}</th>
             <td>
                 <div>
                     <label class="time-field-label" for="minhour">{{ __( 'Min hour')|escape }}:</label>
@@ -200,7 +225,7 @@
         </tr>
         <!-- DELIVERY PREFERENCE -->
         <tr valign="top">
-            <th scope="row">{{ __( 'Delivery preference') }} :</th>
+            <th scope="row">{{ __( 'Delivery preference') }} </th>
             <td>
                 <select id="form_trans" name="{{ hgesOptionName('HGES_PREF_DEL') }}" class="form-control">
                     <option value="both" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'both', 'both') }}>
@@ -213,7 +238,7 @@
         </tr>
         <!-- DUTIES & TAX -->
         <tr valign="top">
-            <th scope="row">{{ __( 'Duties and taxes at destination') }} :</th>
+            <th scope="row">{{ __( 'Duties and taxes at destination') }} </th>
             <td>
                 <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control">
                     {% if options.HGES_TAX_RIGHTS %}  
@@ -237,7 +262,7 @@
         <table class="form-table states">
             <!-- VAT NUMBER -->
             <tr valign="top">
-                <th scope="row">{{ __( 'VAT number')|escape }} :</th>
+                <th scope="row">{{ __( 'VAT number')|escape }} </th>
                 <td>
                     <input 
                         type="text" 
@@ -269,7 +294,7 @@
 
             <!-- EORI NUMBER -->
             <tr valign="top">
-                <th scope="row">{{ __( 'EORI number') }} :</th>
+                <th scope="row">{{ __( 'EORI number') }} </th>
                 <td>
                     <input 
                         type="text" 
@@ -285,7 +310,7 @@
             </tr>
             <!-- FDA NUMBER -->
             <tr valign="top">
-                <th scope="row">{{ __( 'FDA number') }} :</th>
+                <th scope="row">{{ __( 'FDA number') }} </th>
                 <td>
                     <input 
                         type="text" 

@@ -26,6 +26,8 @@ class OptionEnum implements EnumInterface
     const HGES_MINHOUR = "HGES_MINHOUR";
     const HGES_CUTOFF = "HGES_CUTOFF";
     const HGES_WORKING_DAYS = "HGES_WORKING_DAYS";
+    const HGES_PACKAGING_BOTTLE = "HGES_PACKAGING_BOTTLE";
+    const HGES_PACKAGING_MAGNUM = "HGES_PACKAGING_MAGNUM";
 
 
     // WP setting group name
@@ -54,6 +56,8 @@ class OptionEnum implements EnumInterface
             self::HGES_MINHOUR,
             self::HGES_CUTOFF,
             self::HGES_WORKING_DAYS,
+            self::HGES_PACKAGING_BOTTLE,
+            self::HGES_PACKAGING_MAGNUM,
         ];
     }
 
