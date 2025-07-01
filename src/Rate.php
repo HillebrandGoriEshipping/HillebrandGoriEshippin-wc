@@ -144,7 +144,6 @@ class Rate
         $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
         $params['nbBottles'] = $magnumQuantity + $standardQuantity;
-        $params['commodityValue'] = 38; //TODO : retrieve real commodity value dynamically
 
         $details = [];
 
@@ -178,12 +177,7 @@ class Rate
         $params['details'] = $details;
 
         $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
-        foreach ($carrierList as $carrier) {
-            $params[$carrier] = 1;
-        }
-
-        $params['nonAlcoholic'] = 0; //TODO : retrieve real non-alcoholic status dynamically
-        $params['documents'] = 0; //TODO : retrieve real documents status dynamically
+        $params['preferredCarrier'] = $carrierList;
 
         return $params;
     }
@@ -305,5 +299,25 @@ class Rate
         }
 
         return $shippingRate['data'];
+    }
+
+    /**
+     * Checks if a shipping rate is still available by its checksum.
+     * 
+     * @param string $shippingRateChecksum The checksum of the shipping rate to check.
+     * @return bool Returns true if the shipping rate is still available, false otherwise.
+     */
+    public static function isStillAvailable(?string $shippingRateChecksum = null): bool
+    {
+        if (empty($shippingRateChecksum)) {
+            return false;
+        }
+
+        try {
+            $shippingRate = self::getByChecksum($shippingRateChecksum);
+            return !empty($shippingRate);
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }
