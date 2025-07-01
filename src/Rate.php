@@ -177,9 +177,7 @@ class Rate
         $params['details'] = $details;
 
         $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
-        foreach ($carrierList as $carrier) {
-            $params[$carrier] = 1;
-        }
+        $params['preferredCarrier'] = $carrierList;
 
         return $params;
     }
