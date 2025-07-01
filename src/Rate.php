@@ -302,4 +302,24 @@ class Rate
 
         return $shippingRate['data'];
     }
+
+    /**
+     * Checks if a shipping rate is still available by its checksum.
+     * 
+     * @param string $shippingRateChecksum The checksum of the shipping rate to check.
+     * @return bool Returns true if the shipping rate is still available, false otherwise.
+     */
+    public static function isStillAvailable(?string $shippingRateChecksum = null): bool
+    {
+        if (empty($shippingRateChecksum)) {
+            return false;
+        }
+
+        try {
+            $shippingRate = self::getByChecksum($shippingRateChecksum);
+            return !empty($shippingRate);
+        } catch (\Throwable $e) {
+            return false;
+        }
+    }
 }
