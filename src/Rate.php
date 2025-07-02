@@ -35,14 +35,14 @@ class Rate
         $expAddress = Address::fromApi();
 
         $params = [
-            'expAddress' => [
+            'from' => [
                 'addressType' => 'company',
                 'zipCode' => $expAddress[0]['zipCode'],
                 'city' => $expAddress[0]['city'],
                 'country' => $expAddress[0]['country']['countryAlpha2'],
 
             ],
-            'destAddress' => [
+            'to' => [
                 'addressType' => 'individual',
                 'zipCode' => $package['destination']['postcode'],
                 'city' => $package['destination']['city'],
@@ -51,11 +51,11 @@ class Rate
         ];
 
         if (!empty($expAddress[0]['stateCode'])) {
-            $params['expAddress']['state'] = $expAddress[0]['stateCode'];
+            $params['from']['state'] = $expAddress[0]['stateCode'];
         }
 
         if (!empty($package['destination']['state'])) {
-            $params['destAddress']['state'] = $package['destination']['state'];
+            $params['to']['state'] = $package['destination']['state'];
         }
 
         $standardQuantity = 0;
@@ -262,17 +262,25 @@ class Rate
         }
 
         foreach ($shippingRates as $rate) {
+            if (!empty($rate['prices'])) {
+                $totalPrice = array_reduce($rate['prices'], function ($carry, $price) {
+                    if (empty($price['amountAllIn'])) {
+                        return $carry; // Skip if amountAllIn is not set
+                    }
+                    //TODO: handle the case where the insurance is activated
+                    return $carry + $price['amountAllIn'];
+                }, 0);
+            }
+
             $formattedShippingRates[] = [
                 'id' => $rate['service'],
                 'label' => $rate['service'],
-                'cost' => is_array($rate['shippingPrice']) ? $rate['shippingPrice']['amount'] : $rate['shippingPrice'],
+                'cost' => $totalPrice,
                 'pickupDate' => $rate['pickupDate'],
                 'deliveryMode' => $rate['deliveryMode'],
-                'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                 'meta_data' => [
                     'deliveryDate' => $rate['deliveryDate'],
                     'carrier' => $rate['carrier'],
-                    'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
                     'deliveryMode' => $rate['deliveryMode'],
                     'checksum' => $rate['checksum'],
