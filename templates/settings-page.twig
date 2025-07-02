@@ -84,22 +84,34 @@
         <tr valign="top">
             <th scope="row">{{ __( 'Packaging available')|escape }}</th>
             <td>
-                <div>
-                    <p>{{ __( 'The capacities of the packaging you may use for your shipments. Separate the values with a comma.') }}</p>
-                    <p>{{ __( 'Example: 1, 3, 6, 12')|escape }}</p>
-                </div>
-                <div>
-                    <input type="text" name="{{ hgesOptionName('HGES_PACKAGING_BOTTLE') }}" value="{{ options.HGES_PACKAGING_BOTTLE|default('1,2,3,6,12') }}" placeholder="{{ __( 'Bottle')|escape }}">
-                    <div class="tooltip">?
-                        <span class="tooltiptext">{{ __('Enter the capacities of the bottle packaging you may use')|escape }}</span>
-                    </div>
-                </div>
-                <div>
-                    <input type="text" name="{{ hgesOptionName('HGES_PACKAGING_MAGNUM') }}" value="{{ options.HGES_PACKAGING_MAGNUM|default('1,2,3,6') }}" placeholder="{{ __( 'Magnum')|escape }}">
-                    <div class="tooltip">?
-                        <span class="tooltiptext">{{ __('Enter the capacities of the magnum packaging you may use')|escape }}</span>
-                    </div>
-                </div>
+                <h3>{{ __( 'For bottles')|escape }}</h3>
+                <ul>
+                    {% for packagingOption in existingPackagingOptions.bottle %}
+                    <li>
+                        <input 
+                            type="checkbox" 
+                            id="{{ packagingOption.id }}" 
+                            name="{{ hgesOptionName('HGES_PACKAGING_BOTTLE') }}[]" 
+                            value="{{ packagingOption.id }}" 
+                            
+                        >
+                        <label for="{{ packagingOption.id }}">{{ packagingOption.name }}</label>
+                    {% endfor %}
+                </ul>
+                <h3>{{ __( 'For magnums')|escape }}</h3>
+                <ul>
+                    {% for packagingOption in existingPackagingOptions.magnum %}
+                    <li>
+                        <input 
+                            type="checkbox" 
+                            id="{{ packagingOption.id }}" 
+                            name="{{ hgesOptionName('HGES_PACKAGING_BOTTLE') }}[]" 
+                            value="{{ packagingOption.id }}" 
+                            
+                        >
+                        <label for="{{ packagingOption.id }}">{{ packagingOption.name }}</label>
+                    {% endfor %}
+                </ul>
                 {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_BOTTLE} %}
                 {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_MAGNUM} %}
             </td>

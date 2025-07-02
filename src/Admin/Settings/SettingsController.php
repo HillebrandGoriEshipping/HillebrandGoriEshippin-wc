@@ -32,7 +32,15 @@ class SettingsController
             $address = [null];
         }
 
-        // Utiliser Twig pour rendre la page
+        $existingPackagingOptions = ApiClient::get('/packages');
+        $existingPackagingOptionsBottle = array_filter($existingPackagingOptions, function($packagingOption) {
+            return $packagingOption['containerType'] === 'bottle';
+        });
+
+        $existingPackagingOptionsMagnum = array_filter($existingPackagingOptions, function($packagingOption) {
+            return $packagingOption['containerType'] === 'magnum';
+        });
+        
         $twig = Twig::getTwig();
 
         echo $twig->render('settings-page.twig', [
@@ -40,6 +48,10 @@ class SettingsController
             'options' => $options,
             'address' => $address[0],
             'errors' => FormSessionMessages::getMessages('error'),
+            'existingPackagingOptions' => [
+                'bottle' => $existingPackagingOptionsBottle,
+                'magnum' => $existingPackagingOptionsMagnum,
+            ],
         ]);
     }
 
