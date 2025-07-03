@@ -213,6 +213,12 @@ class Rate
         return [];
     }
 
+    /**
+     * Checks if the retrieval of shipping rates is allowed based business logic conditions
+     * 
+     * @param array $package An associative array containing package details required to check if rate retrieval is allowed.
+     * @return bool Returns true if rate retrieval is allowed, false otherwise.
+     */
     public static function isRateRetrievalAllowed(array $package): bool
     {
         $allowed = true;
