@@ -2,6 +2,7 @@
 
 namespace HGeS;
 
+use HGeS\Admin\Products\ProductMeta;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
@@ -212,6 +213,41 @@ class Rate
         return [];
     }
 
+    public static function isRateRetrievalAllowed(array $package): bool
+    {
+        $allowed = true;
+
+        // do not attempt retrieving rates if current action is "add-to-cart"
+        if (
+            !empty($_POST['add-to-cart'])
+            || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
+        ) {
+            $allowed = false;
+        }
+        // do not attempt retrieving rates if destination address is not set
+        if (
+            empty($package['destination']['city'])
+            || empty($package['destination']['postcode'])
+        ) {
+            $allowed = false;
+        }
+
+        // do not attempt retrieving rates if any product in the package does not have the mandatory meta
+        $mandatoryFields = [
+            ProductMetaEnum::HS_CODE,
+        ];
+        
+        foreach ($package['contents'] as $item) {
+            foreach ($mandatoryFields as $field) {
+                if (empty(get_post_meta($item['product_id'], $field, true))) {
+                    $allowed = false;
+                }
+            }
+        }
+
+        return $allowed;
+    }
+
     /**
      * Retrieves and formats shipping rates for a given package.
      *
@@ -223,20 +259,7 @@ class Rate
     public static function getShippingRates(array $package): array
     {
 
-        // do not attempt retrieving rates if current action is "add-to-cart"
-        if (
-            !empty($_POST['add-to-cart'])
-            || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
-        ) {
-            trigger_error('HillebrandGori eShipping : Current action is "add-to-cart", returning empty rates array.', E_USER_NOTICE);
-            return [];
-        }
-        // do not attempt retrieving rates if destination address is not set
-        if (
-            empty($package['destination']['city'])
-            || empty($package['destination']['postcode'])
-        ) {
-            trigger_error('HillebrandGori eShipping : Destination address is not set, returning empty rates array.', E_USER_NOTICE);
+        if (!self::isRateRetrievalAllowed($package)) {
             return [];
         }
 
