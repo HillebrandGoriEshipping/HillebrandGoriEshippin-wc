@@ -32,7 +32,7 @@ class SettingsController
             $address = [null];
         }
 
-        $existingPackagingOptions = ApiClient::get('/packages');
+        $existingPackagingOptions = ApiClient::get('/v2/packages')['data'];
         $existingPackagingOptionsBottle = array_filter($existingPackagingOptions, function($packagingOption) {
             return $packagingOption['containerType'] === 'bottle';
         });
