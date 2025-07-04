@@ -294,16 +294,13 @@ class Rate
             });
         }
 
-        dump($shippingRates);
-
         foreach ($shippingRates as $rate) {
-
             if (!empty($rate['prices'])) {
                 $totalPrice = array_reduce($rate['prices'], function ($carry, $price) {
                     if (empty($price['amountAllIn'])) {
                         return $carry; // Skip if amountAllIn is not set
                     }
-                    //TODO: handle the case where the insurance is not activated
+                    //TODO: Be sure to stick with the last API version
                     if (get_option(OptionEnum::HGES_INSURANCE) == "no" && $price['label'] === 'Insurance price') {
                         // Skip insurance price if insurance is not activated
                         return $carry;
