@@ -152,6 +152,14 @@ class Scripts
                 null,
                 ['in_footer' => true]
             );
+
+            wp_enqueue_script(
+                'hges-api-client-init',
+                'https://unpkg.com/filepond@^4/dist/filepond.js',
+                [],
+                null,
+                ['in_footer' => true]
+            );
         }
 
         $screen = get_current_screen();

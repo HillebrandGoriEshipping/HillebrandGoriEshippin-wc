@@ -43,5 +43,22 @@ class Router {
             SettingsController::saveApiKey();
             exit;
         }
+
+        if (isset($_GET['action'])
+            && $_GET['action'] === 'hges_upload_documents'
+            &&  $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/content/uploads/tmp/';
+            mkdir($baseDir, 0777, true);
+            foreach($_FILES as $file) {
+                $filename = $baseDir . uniqid().$file['name'][0];
+                $write = file_put_contents(
+                    $filename,
+                    file_get_contents($file['tmp_name'][0])
+                );
+                var_dump($write);
+            }
+            exit;
+        }
     }
 }

@@ -7,6 +7,14 @@ const orderEditPage = {
     currentEditingItemId: null,
     selectedShippingRateChecksum: null,
     init() {
+
+        document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
+            FilePond.create(fileInput, {
+                allowMultiple: true,
+                server: '?action=hges_upload_documents',
+            });
+        });
+
         this.changeShippingRateButton = document.querySelector('#hges-change-shipping-rate-button');
         this.closeShippingRateModalButton = document.querySelector('#hges-shipping-rate-modal .modal__close');
         this.updateShippingRateButton = document.querySelector('#hges-close-shipping-rate-modal-button');

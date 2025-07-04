@@ -74,18 +74,23 @@ class Styles
             [],
             null
         );
+        wp_enqueue_style(
+            'hges-modal-style',
+            HGES_PLUGIN_URL . 'assets/css/modal.css',
+            [],
+            null
+        );
 
         if (
             !empty($_GET['page']) && $_GET['page'] === 'wc-orders' 
             && !empty($_GET['action']) && $_GET['action'] === 'edit'
         ) {
             wp_enqueue_style(
-                'hges-modal-style',
-                HGES_PLUGIN_URL . 'assets/css/modal.css',
+                'hges-filepond-style',
+                'https://unpkg.com/filepond@^4/dist/filepond.css',
                 [],
                 null
             );
-
             wp_enqueue_style(
                 'hges-shipping-rates-classic-style',
                 HGES_PLUGIN_URL . 'assets/css/shipping-rates-classic.css',
