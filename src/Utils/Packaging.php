@@ -27,7 +27,7 @@ class Packaging
         ];
     }
 
-    public static function calculatePackagingPossibilities(array $products): array
+    public static function calculatePackagingPossibilities(mixed $products): array
     {
         $packagingAvailable = self::getAvailablePackagingOptions();
         usort($packagingAvailable[self::PACKAGING_BOTTLE], function($a, $b) {
@@ -43,9 +43,9 @@ class Packaging
         foreach ([self::PACKAGING_BOTTLE, self::PACKAGING_MAGNUM] as $packagingType) {
 
             $nbItems = array_reduce($products, function($carry, $item) use ($packagingType) {
-                $bottleType = get_post_meta($item->get_product_id(), ProductMetaEnum::SIZE_OF_BOTTLE, true);
+                $bottleType = get_post_meta($item['product_id'], ProductMetaEnum::SIZE_OF_BOTTLE, true);
                 if( $bottleType === $packagingType) {
-                    return $carry + $item->get_quantity();
+                    return $carry + $item['quantity'];
                 } else {
                     return $carry;                    
                 }
@@ -54,13 +54,15 @@ class Packaging
             $packages[$packagingType] = [];
             $delta = 0;
             while  ($nbItems > 0) {
-                echo "$nbItems\n";
                 self::makePackaging($packages[$packagingType], $packagingAvailable[$packagingType], $nbItems, $delta);
                 $delta++;
             }
         }
 
-        echo(json_encode($packages));exit;
+        return [
+            self::PACKAGING_BOTTLE => $packages[self::PACKAGING_BOTTLE] ?? [],
+            self::PACKAGING_MAGNUM => $packages[self::PACKAGING_MAGNUM] ?? [],
+        ];
     }
 
     /**
