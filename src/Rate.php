@@ -293,7 +293,7 @@ class Rate
                 return $rate['deliveryMode'] == "pickup";
             });
         }
-        dump($shippingRates);
+
         foreach ($shippingRates as $rate) {
             if (!empty($rate['prices'])) {
                 $totalPrice = array_reduce($rate['prices'], function ($carry, $price) {
