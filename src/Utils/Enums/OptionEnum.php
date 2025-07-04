@@ -19,7 +19,7 @@ class OptionEnum implements EnumInterface
     const HGES_VAT_OSS = "HGES_VAT_OSS";
     const HGES_EORI_NUMBER = "HGES_EORI_NUMBER";
     const HGES_FDA_NUMBER = "HGES_FDA_NUMBER";
-    const HGES_ASSURANCE = "HGES_ASSURANCE";
+    const HGES_INSURANCE = "HGES_INSURANCE";
     const HGES_NBR_MIN = "HGES_NBR_MIN";
     const HGES_PREP_TIME = "HGES_PREP_TIME";
     const HGES_PREF_DEL = "HGES_PREF_DEL";
@@ -47,7 +47,7 @@ class OptionEnum implements EnumInterface
             self::HGES_VAT_OSS,
             self::HGES_EORI_NUMBER,
             self::HGES_FDA_NUMBER,
-            self::HGES_ASSURANCE,
+            self::HGES_INSURANCE,
             self::HGES_NBR_MIN,
             self::HGES_PREP_TIME,
             self::HGES_PREF_DEL,
@@ -81,7 +81,7 @@ class OptionEnum implements EnumInterface
             self::HGES_FDA_NUMBER => [
                 new FdaNumber(),
             ],
-            self::HGES_ASSURANCE => [
+            self::HGES_INSURANCE => [
                 new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
             self::HGES_NBR_MIN => [
@@ -118,7 +118,7 @@ class OptionEnum implements EnumInterface
             self::HGES_VAT_OSS => 'string',
             self::HGES_EORI_NUMBER => 'string',
             self::HGES_FDA_NUMBER => 'string',
-            self::HGES_ASSURANCE => 'string',
+            self::HGES_INSURANCE => 'string',
             self::HGES_NBR_MIN => 'int',
             self::HGES_PREP_TIME => 'int',
             self::HGES_PREF_DEL => 'string',
