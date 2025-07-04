@@ -306,9 +306,9 @@
             <tr valign="top">
                 <th scope="row">{{ __( 'Activate insurance:') }}</th>
                 <td>
-                    <select name="{{ hgesOptionName('HGES_ASSURANCE') }}">
-                        <option value="no" {{ optionSelected(hgesOptionName('HGES_ASSURANCE'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
-                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_ASSURANCE'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
+                    <select name="{{ hgesOptionName('HGES_INSURANCE') }}">
+                        <option value="no" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
                     </select>
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ __( 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)') }}</span>

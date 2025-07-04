@@ -35,7 +35,7 @@ class SettingsFormData extends AbstractFormData
     protected $HGES_VAT_OSS;
     protected $HGES_EORI_NUMBER;
     protected $HGES_FDA_NUMBER;
-    protected $HGES_ASSURANCE;
+    protected $HGES_INSURANCE;
     protected $HGES_NBR_MIN;
     protected $HGES_PREP_TIME;
     protected $HGES_PREF_DEL;
