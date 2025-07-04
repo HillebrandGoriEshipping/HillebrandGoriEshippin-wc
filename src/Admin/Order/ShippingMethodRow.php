@@ -53,6 +53,7 @@ class ShippingMethodRow {
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
+        echo Twig::getTwig()->render('admin/order/documents-uploader.twig', []);
 
         echo '<div style="display: none">';
     }

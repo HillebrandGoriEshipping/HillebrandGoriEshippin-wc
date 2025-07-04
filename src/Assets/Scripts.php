@@ -111,6 +111,15 @@ class Scripts
      */
     public static function enqueueAdmin(): void
     {
+
+        wp_enqueue_script(
+            'hges-modal',
+            HGES_PLUGIN_URL . 'assets/js/modal.js',
+            [],
+            null,
+            ['in_footer' => true]
+        );
+
         if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
             wp_enqueue_script_module(
                 'hges-settings-page-script',
