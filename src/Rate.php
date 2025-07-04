@@ -2,6 +2,7 @@
 
 namespace HGeS;
 
+use HGeS\Admin\Products\ProductMeta;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
@@ -35,14 +36,14 @@ class Rate
         $expAddress = Address::fromApi();
 
         $params = [
-            'expAddress' => [
+            'from' => [
                 'addressType' => 'company',
                 'zipCode' => $expAddress[0]['zipCode'],
                 'city' => $expAddress[0]['city'],
                 'country' => $expAddress[0]['country']['countryAlpha2'],
 
             ],
-            'destAddress' => [
+            'to' => [
                 'addressType' => 'individual',
                 'zipCode' => $package['destination']['postcode'],
                 'city' => $package['destination']['city'],
@@ -51,11 +52,11 @@ class Rate
         ];
 
         if (!empty($expAddress[0]['stateCode'])) {
-            $params['expAddress']['state'] = $expAddress[0]['stateCode'];
+            $params['from']['state'] = $expAddress[0]['stateCode'];
         }
 
         if (!empty($package['destination']['state'])) {
-            $params['destAddress']['state'] = $package['destination']['state'];
+            $params['to']['state'] = $package['destination']['state'];
         }
 
         $standardQuantity = 0;
@@ -213,6 +214,51 @@ class Rate
     }
 
     /**
+     * Checks if the retrieval of shipping rates is allowed based business logic conditions
+     * 
+     * @param array $package An associative array containing package details required to check if rate retrieval is allowed.
+     * @return bool Returns true if rate retrieval is allowed, false otherwise.
+     */
+    public static function isRateRetrievalAllowed(array $package): bool
+    {
+        $allowed = true;
+        $debug = [];
+
+        // do not attempt retrieving rates if current action is "add-to-cart"
+        if (
+            !empty($_POST['add-to-cart'])
+            || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
+        ) {
+            $allowed = false;
+            $debug[] = 'Rate retrieval not allowed for add-to-cart action.';
+        }
+        // do not attempt retrieving rates if destination address is not set
+        if (
+            empty($package['destination']['city'])
+            || empty($package['destination']['postcode'])
+        ) {
+            $allowed = false;
+            $debug[] = 'Rate retrieval not allowed: destination address is not set.';
+        }
+
+        // do not attempt retrieving rates if any product in the package does not have the mandatory meta
+        $mandatoryFields = [
+            ProductMetaEnum::HS_CODE,
+        ];
+        
+        foreach ($package['contents'] as $item) {
+            foreach ($mandatoryFields as $field) {
+                if (empty(get_post_meta($item['product_id'], $field, true))) {
+                    $allowed = false;
+                    $debug[] = "Rate retrieval not allowed: product ID {$item['product_id']} is missing mandatory field '$field'.";
+                }
+            }
+        }
+        error_log('Rate retrieval debug info: ' . implode(', ', $debug));
+        return $allowed;
+    }
+
+    /**
      * Retrieves and formats shipping rates for a given package.
      *
      * @param array $package An associative array containing package details required to fetch shipping rates (e.g., dimensions, weight, destination).
@@ -223,20 +269,7 @@ class Rate
     public static function getShippingRates(array $package): array
     {
 
-        // do not attempt retrieving rates if current action is "add-to-cart"
-        if (
-            !empty($_POST['add-to-cart'])
-            || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
-        ) {
-            trigger_error('HillebrandGori eShipping : Current action is "add-to-cart", returning empty rates array.', E_USER_NOTICE);
-            return [];
-        }
-        // do not attempt retrieving rates if destination address is not set
-        if (
-            empty($package['destination']['city'])
-            || empty($package['destination']['postcode'])
-        ) {
-            trigger_error('HillebrandGori eShipping : Destination address is not set, returning empty rates array.', E_USER_NOTICE);
+        if (!self::isRateRetrievalAllowed($package)) {
             return [];
         }
 
@@ -262,17 +295,25 @@ class Rate
         }
 
         foreach ($shippingRates as $rate) {
+            if (!empty($rate['prices'])) {
+                $totalPrice = array_reduce($rate['prices'], function ($carry, $price) {
+                    if (empty($price['amountAllIn'])) {
+                        return $carry; // Skip if amountAllIn is not set
+                    }
+                    //TODO: handle the case where the insurance is activated
+                    return $carry + $price['amountAllIn'];
+                }, 0);
+            }
+
             $formattedShippingRates[] = [
                 'id' => $rate['service'],
                 'label' => $rate['service'],
-                'cost' => is_array($rate['shippingPrice']) ? $rate['shippingPrice']['amount'] : $rate['shippingPrice'],
+                'cost' => $totalPrice,
                 'pickupDate' => $rate['pickupDate'],
                 'deliveryMode' => $rate['deliveryMode'],
-                'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                 'meta_data' => [
                     'deliveryDate' => $rate['deliveryDate'],
                     'carrier' => $rate['carrier'],
-                    'insurancePrice' => is_array($rate['insurancePrice']) ? $rate['insurancePrice']['amount'] : $rate['insurancePrice'],
                     'pickupDate' => $rate['pickupDate'],
                     'deliveryMode' => $rate['deliveryMode'],
                     'checksum' => $rate['checksum'],
