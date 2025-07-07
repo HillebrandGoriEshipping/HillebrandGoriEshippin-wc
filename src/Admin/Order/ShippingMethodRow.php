@@ -53,7 +53,27 @@ class ShippingMethodRow {
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
-        echo Twig::getTwig()->render('admin/order/documents-uploader.twig', []);
+
+
+        $uploaderTemplateData = [
+            'requiredDocuments' => [
+                [
+                    'type' => 'cola_waiver',
+                    'label' => __('COLA Waiver', 'hges'),
+                ],
+                [
+                    'type' => 'cola_waiver_signed',
+                    'label' => __('Signed COLA Waiver', 'hges'),
+                ],
+                [
+                    'type' => 'insurance',
+                    'label' => __('Insurance', 'hges'),
+                ],
+            ],
+            'orderId' => $orderId
+        ];
+
+        echo Twig::getTwig()->render('admin/order/documents-uploader.twig', $uploaderTemplateData);
 
         echo '<div style="display: none">';
     }

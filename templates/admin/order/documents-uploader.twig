@@ -6,7 +6,12 @@
         </div>
         <div class="modal-body">
             <form id="documents-uploader-form" method="post" enctype="multipart/form-data">
-                <input type="file" name="documents[]" class="filepond-file-input" id="documents-input" multiple>
+            {% for requiredDocument in requiredDocuments %}
+            <div class="filepond-file-label">
+                <label for="documents-input-{{ requiredDocument.type }}">{{ requiredDocument.label }}</label>
+            </div>
+            <input type="file" name="documents" class="filepond-file-input" id="documents-input-{{ requiredDocument.type }}" multiple>
+            {% endfor %}
             </form>
         </div>
         <div class="modal-footer">

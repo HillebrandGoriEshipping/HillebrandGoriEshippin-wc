@@ -49,12 +49,14 @@ class Router {
             &&  $_SERVER['REQUEST_METHOD'] === 'POST'
         ) {
             $baseDir = $_SERVER['DOCUMENT_ROOT'] . '/content/uploads/tmp/';
-            mkdir($baseDir, 0777, true);
-            foreach($_FILES as $file) {
-                $filename = $baseDir . uniqid().$file['name'][0];
+            if (!is_dir($baseDir)) {
+                mkdir($baseDir, 0777, true);
+            }
+            foreach($_FILES as $key => $file) {
+                $filename = $baseDir . uniqid().$file['name'];
                 $write = file_put_contents(
                     $filename,
-                    file_get_contents($file['tmp_name'][0])
+                    file_get_contents($file['tmp_name'])
                 );
                 var_dump($write);
             }

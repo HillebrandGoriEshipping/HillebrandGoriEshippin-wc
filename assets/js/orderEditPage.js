@@ -12,6 +12,13 @@ const orderEditPage = {
             FilePond.create(fileInput, {
                 allowMultiple: true,
                 server: '?action=hges_upload_documents',
+                onprocessfile: (error, file) => {
+                    if (error) {
+                        this.fileUploadedError(error, file);
+                    } else {
+                        this.fileUploadedSuccess(file);
+                    }
+                }
             });
         });
 
@@ -72,6 +79,12 @@ const orderEditPage = {
 
             window.location.reload();
         }
+    },
+    fileUploadedError(error, file) {
+        console.error('File upload error:', error, file);
+    },
+    fileUploadedSuccess(file) {
+        console.log('File uploaded successfully:', file);
     }
 };
 
