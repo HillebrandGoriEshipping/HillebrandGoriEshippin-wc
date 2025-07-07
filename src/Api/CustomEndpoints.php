@@ -4,6 +4,7 @@ namespace HGeS\Api;
 
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
+use HGeS\Utils\Packaging;
 use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
 
@@ -48,6 +49,12 @@ class CustomEndpoints
         register_rest_route(self::NAMESPACE, '/order/set-shipping-rate', [
             'methods' => 'PATCH',
             'callback' => [self::class, 'setOrderShippingRate'],
+            'permission_callback' => '__return_true',
+        ]);
+
+        register_rest_route(self::NAMESPACE, '/packaging-possibilities', [
+            'methods' => 'GET',
+            'callback' => [self::class, 'getPackagingPossibilities'],
             'permission_callback' => '__return_true',
         ]);
     }
@@ -191,6 +198,46 @@ class CustomEndpoints
             ]);
             $response->set_status(400);
         }
+        return $response;
+    }
+
+
+    public static function getPackagingPossibilities(\WP_Rest_Request $request): \WP_REST_Response
+    {
+        $response = new \WP_REST_Response();
+        $queryParams = $request->get_query_params();
+        if (!empty($queryParams['orderId'])) {
+            $order = wc_get_order($queryParams['orderId'] ?? 0);
+            if (!$order) {
+                $response->set_data([
+                    'error' => 'Order not found.',
+                ]);
+                $response->set_status(404);
+                return $response;
+            }
+
+            $products = $order->get_items();
+
+            if (is_array($products)) {
+                $packagingPossibilities = Packaging::calculatePackagingPossibilities($products);
+                $response->set_data([
+                    'success' => true,
+                    'packagingPossibilities' => $packagingPossibilities
+                ]);
+                $response->set_status(200);
+            } else {
+                $response->set_data([
+                    'error' => 'Invalid products data format.',
+                ]);
+                $response->set_status(400);
+            }
+        } else {
+            $response->set_data([
+                'error' => 'Products data is required.',
+            ]);
+            $response->set_status(400);
+        }
+
         return $response;
     }
 }

@@ -6,6 +6,7 @@ use HGeS\Admin\Products\ProductMeta;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
+use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
 
 class Rate
@@ -95,27 +96,27 @@ class Rate
         }
 
         try {
-            $packageList = ApiClient::get('/package/get-sizes', ['nbBottles' => $standardQuantity, 'nbMagnums' => $magnumQuantity]);
+
+            $packageList = Packaging::calculatePackagingPossibilities($package['contents']);
+            
             $packageParam = [];
 
-            if (empty($packageList['data']['packages'])) {
+            if (empty($packageList)) {
                 return [];
             }
-
-            foreach ($packageList['data']['packages'][0] as $packageData) {
-                foreach ($packageData as $choice) {
+            foreach ($packageList as $packageType) {
+                foreach ($packageType as $p) {
                     $packageParam[] = [
-                        'nbBottles' => $choice['nbBottles'] ?? 0,
-                        'nbMagnums' => $choice['nbMagnums'] ?? 0,
-                        'nb' => $choice['nbPackages'],
-                        'width' => $choice['sizes']['width'],
-                        'height' => $choice['sizes']['height'],
-                        'length' => $choice['sizes']['length'],
-                        'weight' => $containsSparkling ? $choice['sizes']['weightSparkling'] : $choice['sizes']['weightStill'],
+                        'nb' => $p['itemNumber'],
+                        'width' => $p['width'],
+                        'height' => $p['height'],
+                        'length' => $p['length'],
+                        'weight' => $p['weight'][$containsSparkling ? 'sparkling' : 'still'],
                     ];
                 }
-                $params['packages'] = $packageParam;
             }
+            $params['packages'] = $packageParam;
+
         } catch (\Exception $th) {
             \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
