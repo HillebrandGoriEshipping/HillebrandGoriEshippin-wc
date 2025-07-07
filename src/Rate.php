@@ -301,10 +301,10 @@ class Rate
                         return $carry; // Skip if amountAllIn is not set
                     }
 
-                    if (get_option(OptionEnum::HGES_INSURANCE) == "no" && $price['key'] === 'insurance_price') {
-                        // Skip insurance price if insurance is not activated
-                        return $carry;
-                    }
+                    // if (get_option(OptionEnum::HGES_INSURANCE) == "no" && $price['key'] === 'insurance_price') {
+                    //     // Skip insurance price if insurance is not activated
+                    //     return $carry;
+                    // }
                     return $carry + $price['amountAllIn'];
                 }, 0);
             }

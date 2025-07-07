@@ -2,8 +2,12 @@
 
 namespace HGeS\WooCommerce\Model;
 
+use HGeS\Admin\Products\ProductMeta;
 use HGeS\Rate;
+use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
+use HGeS\WooCommerce\Address;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -104,7 +108,7 @@ class Order
         }
     }
 
-    public static function updateSelectedShippingRate(int $orderId,int $orderShippingItemId, string $shippingRateChecksum): ?array
+    public static function updateSelectedShippingRate(int $orderId, int $orderShippingItemId, string $shippingRateChecksum): ?array
     {
         $order = wc_get_order($orderId);
         if (!$order) {
@@ -139,17 +143,20 @@ class Order
     {
         if ($newStatus !== 'processing' && $newStatus !== 'completed') {
             return true;
-        }   
+        }
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
         $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
         if (!$shippingMethodStillAvailable) {
             \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
-            $url = add_query_arg( 'error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
+            $url = add_query_arg('error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
             wp_redirect($url);
             exit;
         }
+
+        self::createShipment($orderId, $shippingRateChecksum);
+
         return $shippingMethodStillAvailable;
-    } 
+    }
 
     /**
      * Get the shipping rate checksum for a specific order and shipping item.
@@ -172,5 +179,104 @@ class Order
         });
 
         return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
+    }
+
+    public static function createShipment(int $orderId, string $shippingRateChecksum): void
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return;
+        }
+
+        $totalNbrOfStandardBottle = 0;
+        $totalNbrOfMagnumBottle = 0;
+
+        foreach ($order->get_items() as $item_id => $item) {
+            $productId = $item->get_product_id();
+
+            $nbrOfBottle = get_post_meta($productId, ProductMetaEnum::NUMBER_OF_BOTTLE, true);
+            $bottleSize = get_post_meta($productId, ProductMetaEnum::SIZE_OF_BOTTLE, true);
+
+            if ($bottleSize === 'magnum') {
+                $totalNbrOfMagnumBottle += $nbrOfBottle * $item->get_quantity();
+            } else {
+                $totalNbrOfStandardBottle += $nbrOfBottle * $item->get_quantity();
+            }
+        }
+
+        $totalNbrOfBottle = $totalNbrOfStandardBottle + $totalNbrOfMagnumBottle;
+
+        //get expeditor address
+        $senderAddress = Address::fromApi();
+        if (!$senderAddress) {
+            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['senderAddressNotFound']);
+            return;
+        }
+        $senderAddress = $senderAddress[0];
+
+        $expAddress = [
+            "addressType" => $senderAddress['clientType'],
+            "company" => $senderAddress['company'] ?? 'Hillebrand Gori', // dynamize
+            "contact" => $senderAddress['firstname'] . ' ' . $senderAddress['lastname'],
+            "telephone" => $senderAddress['telephone'] ?? '',
+            "address" => $senderAddress['address'],
+            "zipCode" => $senderAddress['zipCode'],
+            "city" => $senderAddress['city'],
+            "country" => $senderAddress['country']['countryAlpha2'],
+            "vatNumber" => get_option(OptionEnum::HGES_VAT_NUMBER) ?? '',
+        ];
+
+        //get shipping address
+        $shippingAddress = $order->get_address('shipping');
+
+        $destAddress = [
+            "addressType" => "individual", //dynamize
+            "company" => "none", // dynamize
+            "contact" => $shippingAddress['first_name'] . ' ' . $shippingAddress['last_name'],
+            "telephone" => $shippingAddress['phone'] ?? '',
+            "address" => $shippingAddress['address_1'] . ' ' . $shippingAddress['address_2'],
+            "zipCode" => $shippingAddress['postcode'],
+            "city" => $shippingAddress['city'],
+            "country" => $shippingAddress['country'],
+            "email" => $shippingAddress['email'] ?? '',
+        ];
+
+        $packages = [];
+
+        $rate = Rate::getByChecksum($shippingRateChecksum);
+        $carrier = [
+            "pickupDate" => $rate['pickupDate'],
+            "name" => $rate['carrier'],
+            "service" => $rate['service'],
+            "serviceCode" => $rate['serviceCode'],
+            "price" => $rate['shippingPrice']['amount'],
+            "currency" => $rate['shippingPrice']['currency'],
+            "local" => $rate['local'] ?? null,
+            "cutoff" => $rate['cutoff'],
+            "pickupTime" => $rate['pickupTime'],
+            "deliveryDate" => $rate['deliveryDate'],
+            "deliveryTime" => $rate['deliveryTime'],
+            "pickupAccessDelay" => $rate['pickupAccessDelay'] ?? 0,
+            "saturdayDelivery" => $rate['saturdayDelivery'] ?? null,
+            "guaranteedDelay" => $rate['guaranteedDelay'] ?? 0
+        ];
+
+        $minHour = get_option(OptionEnum::HGES_MINHOUR) . ':00';
+        $cutOff = get_option(OptionEnum::HGES_CUTOFF) . ':00';
+        $totalValue = $order->get_subtotal();
+
+        $params = [
+            "expAddress" => $expAddress,
+            "destAddress" => $destAddress,
+            "packages" => $packages,
+            "carrier" => $carrier,
+            "minHour" => $minHour,
+            "cutOff" => $cutOff,
+            "totalValue" => $totalValue,
+        ];
+
+        dump($params);
+        dump($rate);
+        die;
     }
 }
