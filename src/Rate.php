@@ -246,7 +246,7 @@ class Rate
         $mandatoryFields = [
             ProductMetaEnum::HS_CODE,
         ];
-        
+
         foreach ($package['contents'] as $item) {
             foreach ($mandatoryFields as $field) {
                 if (empty(get_post_meta($item['product_id'], $field, true))) {
@@ -301,7 +301,11 @@ class Rate
                     if (empty($price['amountAllIn'])) {
                         return $carry; // Skip if amountAllIn is not set
                     }
-                    //TODO: handle the case where the insurance is activated
+
+                    if (get_option(OptionEnum::HGES_INSURANCE) == "no" && $price['key'] === 'insurance_price') {
+                        // Skip insurance price if insurance is not activated
+                        return $carry;
+                    }
                     return $carry + $price['amountAllIn'];
                 }, 0);
             }
