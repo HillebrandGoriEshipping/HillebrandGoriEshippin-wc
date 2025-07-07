@@ -222,6 +222,7 @@ class Rate
     public static function isRateRetrievalAllowed(array $package): bool
     {
         $allowed = true;
+        $debug = [];
 
         // do not attempt retrieving rates if current action is "add-to-cart"
         if (
@@ -229,6 +230,7 @@ class Rate
             || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
         ) {
             $allowed = false;
+            $debug[] = 'Rate retrieval not allowed for add-to-cart action.';
         }
         // do not attempt retrieving rates if destination address is not set
         if (
@@ -236,21 +238,23 @@ class Rate
             || empty($package['destination']['postcode'])
         ) {
             $allowed = false;
+            $debug[] = 'Rate retrieval not allowed: destination address is not set.';
         }
 
         // do not attempt retrieving rates if any product in the package does not have the mandatory meta
         $mandatoryFields = [
             ProductMetaEnum::HS_CODE,
         ];
-        
+
         foreach ($package['contents'] as $item) {
             foreach ($mandatoryFields as $field) {
                 if (empty(get_post_meta($item['product_id'], $field, true))) {
                     $allowed = false;
+                    $debug[] = "Rate retrieval not allowed: product ID {$item['product_id']} is missing mandatory field '$field'.";
                 }
             }
         }
-
+        error_log('Rate retrieval debug info: ' . implode(', ', $debug));
         return $allowed;
     }
 
@@ -296,7 +300,11 @@ class Rate
                     if (empty($price['amountAllIn'])) {
                         return $carry; // Skip if amountAllIn is not set
                     }
-                    //TODO: handle the case where the insurance is activated
+
+                    if (get_option(OptionEnum::HGES_INSURANCE) == "no" && $price['key'] === 'insurance_price') {
+                        // Skip insurance price if insurance is not activated
+                        return $carry;
+                    }
                     return $carry + $price['amountAllIn'];
                 }, 0);
             }
