@@ -34,7 +34,7 @@ const orderEditPage = {
         }
         if (this.updateShippingRateButton) {
             this.updateShippingRateButton.addEventListener('click', this.updateShippingRate.bind(this));
-        }  
+        }
     },
     async openShippingRateModal(e) {
         this.currentEditingItemId = e.currentTarget.dataset.itemId;
@@ -83,8 +83,21 @@ const orderEditPage = {
     fileUploadedError(error, file) {
         console.error('File upload error:', error, file);
     },
-    fileUploadedSuccess(file) {
-        console.log('File uploaded successfully:', file);
+    async fileUploadedSuccess(file) {
+        try {
+            await jQuery.ajax('/wp/wp-admin/admin-ajax.php?action=hges_update_order_documents', {
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    orderId: new URLSearchParams(window.location.search).get('id'),
+                    documents: [file],
+                }),
+            });
+            console.log('Documents updated', response);
+        } catch (error) {
+            console.error('Documents update failed', response);
+        }
     }
 };
 

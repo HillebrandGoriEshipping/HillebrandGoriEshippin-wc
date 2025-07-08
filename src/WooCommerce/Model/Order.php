@@ -173,4 +173,37 @@ class Order
 
         return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
     }
+
+    /**
+     * Update the documents for a specific order.
+     */
+    public static function updateDocuments()
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $orderId = isset($data['orderId']) ? intval($data['orderId']) : 0;
+        $documents = isset($data['documents']) ? $data['documents'] : null;
+        $order = wc_get_order($orderId);
+        if (!$order || !$documents) {
+            wp_send_json_error(['message' => 'Invalid order ID or documents data.'], 400);
+            return;
+        }
+
+        if (!empty($documents)) {
+            $order->update_meta_data('hges_documents', $documents);
+            $order->save_meta_data();
+            $response = [
+                'success' => true,
+                'message' => 'Documents updated successfully.',
+                'documents' => $documents,
+            ];
+        } else {
+            $response = [
+                'success' => false,
+                'message' => 'No documents provided or documents are empty.',
+            ];
+        }
+
+        echo json_encode($response);
+        exit;
+    }
 }
