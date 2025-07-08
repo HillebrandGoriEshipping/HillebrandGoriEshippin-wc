@@ -1,6 +1,6 @@
 <div id="documents-uploader-modal" class="modal hidden">
     <div class="modal__content">
-        <span class="modal__close">&times;</span>
+        <span class="modal__close" role="close">&times;</span>
         <div class="modal-header">
             <h2 class="modal-title">{{ 'Upload documents' }}</h2>
         </div>
@@ -15,6 +15,7 @@
             </form>
         </div>
         <div class="modal-footer">
+            <button type="button" role="close" class="button button--primary" id="documents-uploader-submit">{{ __('Close') }}</button>
         </div>
     </div>
 </div>

@@ -10,10 +10,10 @@ const modalManager = {
                 button.addEventListener('click', () => this.openModal(modal));
             });
 
-            const closeButton = modal.querySelector('.modal__close');
-            if (closeButton) {
+            const closeButtons = modal.querySelectorAll('[role="close"]');
+            closeButtons.forEach(closeButton => {
                 closeButton.addEventListener('click', () => this.closeModal(modal));
-            }
+            });
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     this.closeModal(modal);
