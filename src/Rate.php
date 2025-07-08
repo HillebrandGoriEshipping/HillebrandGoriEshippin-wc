@@ -2,7 +2,6 @@
 
 namespace HGeS;
 
-use HGeS\Admin\Products\ProductMeta;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
@@ -224,10 +223,10 @@ class Rate
     {
         $allowed = true;
         $debug = [];
-
+        
         // do not attempt retrieving rates if current action is "add-to-cart"
         if (
-            !empty($_POST['add-to-cart'])
+            !empty($_GET['add-to-cart'])
             || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
         ) {
             $allowed = false;
@@ -255,7 +254,11 @@ class Rate
                 }
             }
         }
-        error_log('Rate retrieval debug info: ' . implode(', ', $debug));
+
+        if ($debug) {
+            error_log('Rate retrieval debug info: ' . implode(', ', $debug));
+        }
+
         return $allowed;
     }
 
