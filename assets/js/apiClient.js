@@ -56,6 +56,30 @@ export default {
       throw new Error("Error in API Client : " + e.message);
     }
   },
+  async upload(url, urlParams, file, headers, isProxy) {
+    url = this.appendUrlParams(url, urlParams, isProxy);
+
+    if (!headers) {
+      headers = {};
+    }
+    headers["Content-Type"] = "multipart/form-data";
+    headers = this.prepareHeaders(headers);
+    const method = "POST";
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const response = await fetch(url, { method, body: formData, headers });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status} - ${errorText}`);
+      }
+
+      return response.json();
+    } catch (e) {
+      throw new Error("Error in API Client : " + e.message);
+    }
+  },
   async validateApiKey(apiKey) {
     try {
       const response = await this.get(
@@ -114,7 +138,7 @@ export default {
 
     const defaultHeaders = {
       "X-Auth-Token": hges.apiKey || "",
-      "Content-Type": "application/json",
+      "Content-Type": headers["Content-Type"] || "application/json",
     };
 
     for (const key in defaultHeaders) {
