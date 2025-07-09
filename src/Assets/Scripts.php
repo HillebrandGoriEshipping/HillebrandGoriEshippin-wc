@@ -2,6 +2,7 @@
 
 namespace HGeS\Assets;
 
+use HGeS\Utils\ApiClient;
 use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
 use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\Utils\Enums\OptionEnum;
@@ -200,6 +201,8 @@ class Scripts
             'pricableProductTypes' => [
                 SimpleBottleProduct::PRODUCT_TYPE,
             ],
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'apiUrl' => ApiClient::getApiUrl(),
         ];
 
         if ($admin) {
