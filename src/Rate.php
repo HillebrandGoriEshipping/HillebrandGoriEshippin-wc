@@ -98,7 +98,7 @@ class Rate
         try {
 
             $packageList = Packaging::calculatePackagingPossibilities($package['contents']);
-            
+
             $packageParam = [];
 
             if (empty($packageList)) {
@@ -116,7 +116,6 @@ class Rate
                 }
             }
             $params['packages'] = $packageParam;
-
         } catch (\Exception $th) {
             \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
@@ -173,6 +172,7 @@ class Rate
                 'unitValue' => $unitPriceExTax,
                 'hsCode' => get_post_meta($productId, ProductMetaEnum::HS_CODE, true),
                 'quantity' => $itemQuantity * $item['quantity'],
+                'currency' => 'EUR',
             ];
         }
 
@@ -227,7 +227,7 @@ class Rate
 
         // do not attempt retrieving rates if current action is "add-to-cart"
         if (
-            !empty($_POST['add-to-cart'])
+            !empty($_GET['add-to-cart'])
             || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
         ) {
             $allowed = false;

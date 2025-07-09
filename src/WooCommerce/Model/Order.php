@@ -2,11 +2,12 @@
 
 namespace HGeS\WooCommerce\Model;
 
-use HGeS\Admin\Products\ProductMeta;
 use HGeS\Rate;
+use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
+use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
 
 /**
@@ -233,24 +234,51 @@ class Order
             "addressType" => "individual", //dynamize
             "company" => "none", // dynamize
             "contact" => $shippingAddress['first_name'] . ' ' . $shippingAddress['last_name'],
-            "telephone" => $shippingAddress['phone'] ?? '',
+            "telephone" => $order->get_billing_phone() ?? '',
             "address" => $shippingAddress['address_1'] . ' ' . $shippingAddress['address_2'],
             "zipCode" => $shippingAddress['postcode'],
             "city" => $shippingAddress['city'],
             "country" => $shippingAddress['country'],
-            "email" => $shippingAddress['email'] ?? '',
+            "email" => $order->get_billing_email() ?? '',
         ];
 
-        $packages = [];
+        $rawPackages = Packaging::calculatePackagingPossibilities($order->get_items());
+
+        $packageGroups = [];
+
+        foreach (['bottle', 'magnum'] as $type) {
+            foreach ($rawPackages[$type] as $pack) {
+                $key = implode('-', [
+                    $pack['weight']['still'], // ou 'sparkling'
+                    $pack['width'],
+                    $pack['height'],
+                    $pack['length']
+                ]);
+
+                if (!isset($packageGroups[$key])) {
+                    $packageGroups[$key] = [
+                        'nb' => 1,
+                        'weight' => $pack['weight']['still'],
+                        'width' => $pack['width'],
+                        'height' => $pack['height'],
+                        'length' => $pack['length'],
+                    ];
+                } else {
+                    $packageGroups[$key]['nb']++;
+                }
+            }
+        }
+
+        $packages = array_values($packageGroups);
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
+
         $carrier = [
             "pickupDate" => $rate['pickupDate'],
             "name" => $rate['carrier'],
             "service" => $rate['service'],
-            "serviceCode" => $rate['serviceCode'],
-            "price" => $rate['shippingPrice']['amount'],
-            "currency" => $rate['shippingPrice']['currency'],
+            "price" => 25.00, //TODO: $rate['prices']['shippingPrice']['amountAllIn'],
+            "currency" => $rate['prices']['shippingPrice']['currency'],
             "local" => $rate['local'] ?? null,
             "cutoff" => $rate['cutoff'],
             "pickupTime" => $rate['pickupTime'],
@@ -270,13 +298,19 @@ class Order
             "destAddress" => $destAddress,
             "packages" => $packages,
             "carrier" => $carrier,
+            "nbBottles" => $totalNbrOfStandardBottle,
+            "nbMagnum" => $totalNbrOfMagnumBottle,
             "minHour" => $minHour,
-            "cutOff" => $cutOff,
+            "cutoff" => $cutOff,
             "totalValue" => $totalValue,
+            "wineType" => "wine",
         ];
 
-        dump($params);
-        dump($rate);
-        die;
+        try {
+            // $response = ApiClient::post('/shipment/create', $params);
+            $response = ApiClient::post('/v2/shipments', ["checksum" => $shippingRateChecksum]);
+        } catch (\Exception $e) {
+            echo 'Erreur API : ' . $e->getMessage();
+        }
     }
 }
