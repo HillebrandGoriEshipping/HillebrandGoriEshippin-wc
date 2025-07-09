@@ -56,17 +56,21 @@ export default {
       throw new Error("Error in API Client : " + e.message);
     }
   },
-  async upload(url, urlParams, file, headers, isProxy) {
+  async upload(url, urlParams, data, headers, isProxy) {
     url = this.appendUrlParams(url, urlParams, isProxy);
 
     if (!headers) {
       headers = {};
     }
-    headers["Content-Type"] = "multipart/form-data";
+
     headers = this.prepareHeaders(headers);
+    delete(headers["Content-Type"]);
     const method = "POST";
     const formData = new FormData();
-    formData.append("file", file);
+
+    formData.append("type", data.type);
+    formData.append("fileUpload", data.file);
+
     try {
       const response = await fetch(url, { method, body: formData, headers });
 

@@ -6,13 +6,33 @@ const orderEditPage = {
     updateShippingRateButton: null,
     currentEditingItemId: null,
     selectedShippingRateChecksum: null,
+    currentDocuments: [],
     init() {
 
         document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
+            const fileType = fileInput.dataset.fileType;
             FilePond.create(fileInput, {
                 allowMultiple: true,
-                server: '?action=hges_upload_documents',
+                server: {
+                    process: async (fieldName, file, metadata, load, error, progress, abort) => {
+                        
+                        const response = await apiClient.upload(window.hges.apiUrl + '/v2/attachments/upload', {}, {file, type: fileType});
+                        if (response.error) {
+                            error(response.error);
+                        }
+                        if (response.file) {
+                            load(response.file);
+                        }
+                        if (response.progress) {
+                            progress(response.progress);
+                        }
+                        console.log('File uploaded:', response);
+                        load(response.id);
+                        return response;
+                    }
+                },
                 onprocessfile: (error, file) => {
+                    console.log('File processed:', file);
                     if (error) {
                         this.fileUploadedError(error, file);
                     } else {
@@ -84,19 +104,26 @@ const orderEditPage = {
         console.error('File upload error:', error, file);
     },
     async fileUploadedSuccess(file) {
+        this.currentDocuments.push({
+            id: file.serverId,
+            name: file.filename,
+            url: file.serverUrl,
+            type: file.fileType,
+        });
         try {
-            await jQuery.ajax('/wp/wp-admin/admin-ajax.php?action=hges_update_order_documents', {
-                method: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                data: JSON.stringify({
+            const response = await apiClient.post(
+                window.hges.ajaxUrl, 
+                {
+                    action: 'hges_update_order_documents',
+                },
+                {
                     orderId: new URLSearchParams(window.location.search).get('id'),
-                    documents: [file],
-                }),
-            });
+                    documents: this.currentDocuments,
+                },
+            );
             console.log('Documents updated', response);
         } catch (error) {
-            console.error('Documents update failed', response);
+            console.error('Documents update failed', error);
         }
     }
 };
