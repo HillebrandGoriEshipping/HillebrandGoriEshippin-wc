@@ -8,11 +8,11 @@ const orderEditPage = {
     selectedShippingRateChecksum: null,
     currentDocuments: [],
     init() {
-
+        this.loadDocumentList();
         document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
             const fileType = fileInput.dataset.fileType;
             FilePond.create(fileInput, {
-                allowMultiple: true,
+                allowMultiple: false,
                 server: {
                     process: async (fieldName, file, metadata, load, error, progress, abort) => {
                         
@@ -20,19 +20,27 @@ const orderEditPage = {
                         if (response.error) {
                             error(response.error);
                         }
-                        if (response.file) {
-                            load(response.file);
-                        }
                         if (response.progress) {
                             progress(response.progress);
                         }
                         console.log('File uploaded:', response);
                         load(response.id);
-                        return response;
+
+                        return {
+                            abort: () => {
+                                // This function is entered if the user has tapped the cancel button
+                                request.abort();
+
+                                // Let FilePond know the request has been cancelled
+                                abort();
+                            },
+                        };
                     }
                 },
                 onprocessfile: (error, file) => {
                     console.log('File processed:', file);
+                    console.log('metadata:', file.getMetadata());
+                    
                     if (error) {
                         this.fileUploadedError(error, file);
                     } else {
@@ -44,7 +52,7 @@ const orderEditPage = {
 
         this.changeShippingRateButton = document.querySelector('#hges-change-shipping-rate-button');
         this.closeShippingRateModalButton = document.querySelector('#hges-shipping-rate-modal .modal__close');
-        this.updateShippingRateButton = document.querySelector('#hges-close-shipping-rate-modal-button');
+        this.updateShippingRateButton = document.querySelector('#hges-update-shipping-rate-modal-button');
 
         if (this.changeShippingRateButton) {
             this.changeShippingRateButton.addEventListener('click', this.openShippingRateModal.bind(this));
@@ -56,6 +64,7 @@ const orderEditPage = {
             this.updateShippingRateButton.addEventListener('click', this.updateShippingRate.bind(this));
         }
     },
+    
     async openShippingRateModal(e) {
         this.currentEditingItemId = e.currentTarget.dataset.itemId;
         console.log('Opening shipping rate modal for order ID:', this.currentEditingItemId);
@@ -82,33 +91,37 @@ const orderEditPage = {
             rateElement.classList.remove('selected');
         });
         event.currentTarget.classList.add('selected');
-        this.selectedShippingRateChecksum = event.target.dataset.checksum;
+        this.selectedShippingRateChecksum = event.currentTarget.dataset.checksum;
     },
     async updateShippingRate() {
         if (this.selectedShippingRateChecksum) {
-            console.log('Selected shipping rate checksum:', this.selectedShippingRateChecksum);
-            this.selectedRate = await apiClient.patch('/order/set-shipping-rate', {
-                orderId: new URLSearchParams(window.location.search).get('id'),
-                orderShippingItemId: this.currentEditingItemId,
-            }, {
-                shippingRateChecksum: this.selectedShippingRateChecksum
-            },
+            this.selectedRate = await apiClient.patch(
+                '/order/set-shipping-rate', 
+                {
+                    orderId: new URLSearchParams(window.location.search).get('id'),
+                    orderShippingItemId: this.currentEditingItemId,
+                }, 
+                {
+                    shippingRateChecksum: this.selectedShippingRateChecksum
+                },
                 {},
                 true
             );
-
-            window.location.reload();
+            
+            // window.location.reload();
         }
     },
     fileUploadedError(error, file) {
         console.error('File upload error:', error, file);
     },
     async fileUploadedSuccess(file) {
+        console.log('File uploaded successfully:', file);
         this.currentDocuments.push({
             id: file.serverId,
             name: file.filename,
             url: file.serverUrl,
-            type: file.fileType,
+            mimeType: file.fileType,
+            type: file.type,
         });
         try {
             const response = await apiClient.post(
@@ -124,6 +137,19 @@ const orderEditPage = {
             console.log('Documents updated', response);
         } catch (error) {
             console.error('Documents update failed', error);
+        }
+    },
+    async loadDocumentList() {
+        const orderId = new URLSearchParams(window.location.search).get('id');
+        try {
+            const documents = await apiClient.get(
+                window.hges.ajaxUrl, 
+                { action: 'hges_get_documents_list', orderId }
+            );
+            this.currentDocuments = documents || [];
+            console.log('Documents loaded:', this.currentDocuments);
+        } catch (error) {
+            console.error('Failed to load documents:', error);
         }
     }
 };

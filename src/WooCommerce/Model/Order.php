@@ -117,7 +117,11 @@ class Order
             throw new \Exception("Order item or shipping rate not found.");
         }
         $item->set_props([
-            "name" => $rate['service'],
+            "name" => $rate['service']
+        ]);
+
+        $metaData = [
+            "checksum" => $shippingRateChecksum,
             "method_title" => $rate['service'],
             "method_id" => "hges_shipping",
             "instance_id" => "8",
@@ -125,13 +129,15 @@ class Order
             "total_tax" => "0",
             "taxes" => ["total" => []],
             "tax_status" => "taxable",
-        ]);
+        ];
 
-        $item->get_data_store()->update($item);
+        foreach ($metaData as $key => $value) {
+            $item->update_meta_data($key, $value);
+        }
+        $item->apply_changes($item);
         $item->save();
 
         $order->calculate_totals();
-
         return $rate;
     }
 
@@ -176,8 +182,10 @@ class Order
 
     /**
      * Update the documents for a specific order.
+     * 
+     * @param array $data The POST body containing the order ID and documents.
      */
-    public static function updateDocuments()
+    public static function updateDocuments(array $data): void
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $orderId = isset($data['orderId']) ? intval($data['orderId']) : 0;
@@ -204,6 +212,27 @@ class Order
         }
 
         echo json_encode($response);
+        exit;
+    }
+
+    /**
+     * Get the list of documents for a specific order.
+     */
+    public static function getDocumentsList(): array
+    {
+        $orderId = isset($_GET['orderId']) ? intval($_GET['orderId']) : 0;
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            wp_send_json_error(['message' => 'Invalid order ID.'], 400);
+            return [];
+        }
+
+        $documents = $order->get_meta('hges_documents', true);
+        if (empty($documents)) {
+            return [];
+        }
+
+        echo json_encode($documents);
         exit;
     }
 }
