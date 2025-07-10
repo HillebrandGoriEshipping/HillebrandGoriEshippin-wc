@@ -172,6 +172,7 @@ class Rate
                 'unitValue' => $unitPriceExTax,
                 'hsCode' => get_post_meta($productId, ProductMetaEnum::HS_CODE, true),
                 'quantity' => $itemQuantity * $item['quantity'],
+                'currency' => get_woocommerce_currency(),
             ];
         }
 
