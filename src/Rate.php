@@ -33,16 +33,34 @@ class Rate
      */
     public static function prepareUrlParams(array $package): array
     {
-        $expAddress = Address::getFavoriteAddress();
-
-        $params = [
-            'from' => ['addressId' => $expAddress['id']],
-            'to' => [
-                'addressType' => 'individual',
+        $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
+        if ($currentOrder) {
+            $toAddress = [
+                'category' => 'individual',
+                'firstname' => $currentOrder->get_shipping_first_name(),
+                'lastname' => $currentOrder->get_shipping_last_name(),
+                'company' => $currentOrder->get_shipping_company(),
+                'address' => $currentOrder->get_shipping_address_1(),
+                'state' => $currentOrder->get_shipping_state(),
+                'telephone' => $currentOrder->get_billing_phone(),
+                'zipCode' => $currentOrder->get_shipping_postcode(),
+                'city' => $currentOrder->get_shipping_city(),
+                'country' => $currentOrder->get_shipping_country(),
+                'email' => $currentOrder->get_billing_email(),
+            ];
+        } else {
+            $toAddress = [
+                'category' => 'individual',
                 'zipCode' => $package['destination']['postcode'],
                 'city' => $package['destination']['city'],
                 'country' => $package['destination']['country'],
-            ],
+            ];
+        }
+
+        $expAddress = Address::getFavoriteAddress();
+        $params = [
+            'from' => ['addressId' => $expAddress['id']],
+            'to' => $toAddress,
         ];
 
         if (empty($params['from']['state'])) {
