@@ -52,6 +52,15 @@ class Router {
             SettingsController::saveApiKey();
             exit;
         }
+
+        if (
+            isset($_GET['action'])
+            && $_GET['action'] === 'hges_save_favorite_address'
+            &&  $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            SettingsController::saveFavoriteAddress();
+            exit;
+        }
     }
 
     public static function ajaxRouter(): void

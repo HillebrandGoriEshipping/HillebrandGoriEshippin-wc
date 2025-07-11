@@ -26,10 +26,15 @@ class SettingsController
             $options[$option] = get_option($option);
         }
 
+        $favoriteAddress = Address::getFavoriteAddress();
+        if (empty($favoriteAddress)) {
+            $favoriteAddress = null;
+        }
+
         try {
-            $address = Address::fromApi();
+            $allAddresses = Address::allFromApi();
         } catch (\Throwable $e) {
-            $address = [null];
+            $allAddresses = [];
         }
 
         $existingPackagingOptions = ApiClient::get('/v2/packages')['data'];
@@ -41,12 +46,11 @@ class SettingsController
             return $packagingOption['containerType'] === 'magnum';
         });
         
-        $twig = Twig::getTwig();
-
-        echo $twig->render('settings-page.twig', [
+        echo Twig::getTwig()->render('admin/settings-page.twig', [
             'title' => __(self::SETTING_PAGE_TITLE),
             'options' => $options,
-            'address' => $address[0],
+            'favoriteAddress' => $favoriteAddress,
+            'allAddresses' => $allAddresses,
             'errors' => FormSessionMessages::getMessages('error'),
             'existingPackagingOptions' => [
                 'bottle' => $existingPackagingOptionsBottle,
@@ -82,6 +86,32 @@ class SettingsController
             update_option(OptionEnum::ACCESS_KEY_VALIDATE, 0);
             FormSessionMessages::setMessages('error', [OptionEnum::HGES_ACCESS_KEY => "Invalid API key. Please check your access key and try again."]);
         }
+        wp_redirect(admin_url(self::SETTING_PAGE_URL));
+    }
+
+    /**
+     * Handle the favorite address form submission
+     * 
+     * @throws \Exception
+     * @return void
+     */
+    public static function saveFavoriteAddress(): void
+    {
+        if (wp_verify_nonce($_POST['settings_nonce'], 'save_favorite_address') !== 1) {
+            throw new \Exception('Nonce verification failed');
+        }
+
+        $favoriteAddressId = sanitize_text_field($_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID]);
+        $favoriteAddress = Address::singleFromApi($favoriteAddressId);
+        
+        if (empty($favoriteAddress)) {
+            FormSessionMessages::setMessages('error', [OptionEnum::HGES_FAVORITE_ADDRESS_ID => "Invalid address ID. Please select a valid address."]);
+            wp_redirect(admin_url(self::SETTING_PAGE_URL));
+            return;
+        }
+
+        update_option(OptionEnum::HGES_FAVORITE_ADDRESS_ID, $favoriteAddressId);
+        FormSessionMessages::setMessages('success', ["Favorite address updated successfully."]);
         wp_redirect(admin_url(self::SETTING_PAGE_URL));
     }
 
