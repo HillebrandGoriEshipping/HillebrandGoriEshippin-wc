@@ -8,6 +8,7 @@ use HGeS\Form\ValidationConstraints\FdaNumber;
 use HGeS\Utils\Messages;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Type;
 
 class OptionEnum implements EnumInterface
 {
@@ -28,6 +29,7 @@ class OptionEnum implements EnumInterface
     const HGES_WORKING_DAYS = "HGES_WORKING_DAYS";
     const HGES_PACKAGING_BOTTLE = "HGES_PACKAGING_BOTTLE";
     const HGES_PACKAGING_MAGNUM = "HGES_PACKAGING_MAGNUM";
+    const HGES_FAVORITE_ADDRESS_ID = "HGES_FAVORITE_ADDRESS_ID";
 
 
     // WP setting group name
@@ -106,6 +108,10 @@ class OptionEnum implements EnumInterface
             self::HGES_WORKING_DAYS => [
                 new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings')['workingDaysError']]),
             ],
+            self::HGES_PACKAGING_BOTTLE => [
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new Type(['type' => 'integer', 'message' => Messages::getMessage('settings')['integerError']]),
+            ],
         ];
 
         return $constraints[$option] ?? null;
@@ -129,6 +135,7 @@ class OptionEnum implements EnumInterface
             self::HGES_MINHOUR => 'string',
             self::HGES_CUTOFF => 'string',
             self::HGES_WORKING_DAYS => 'array',
+            self::HGES_PACKAGING_BOTTLE => 'int',
         ];
 
         return $sanitizationTypes[$option] ?? null;
