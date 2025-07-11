@@ -12,7 +12,10 @@ use HGeS\WooCommerce\Model\Order;
  */
 class Router {
     
-    public const AJAX_ACTIONS = ['hges_update_order_documents'];
+    public const AJAX_ACTIONS = [
+        'hges_get_documents_list',
+        'hges_update_order_documents'
+    ];
 
     /**
      * Initialize the router for plugin specific actions
@@ -54,9 +57,16 @@ class Router {
     public static function ajaxRouter(): void
     {
         if (isset($_GET['action']) && in_array($_GET['action'], self::AJAX_ACTIONS)) {
+
+            // retrieve POST body
+            $data = json_decode(file_get_contents('php://input'), true);
+
             switch ($_GET['action']) {
                 case 'hges_update_order_documents':
-                    Order::updateDocuments();
+                    Order::updateDocuments($data);
+                    break;
+                case 'hges_get_documents_list':
+                    $documents = Order::getDocumentsList();
                     break;
                 default:
                     wp_send_json_error(['message' => 'Invalid action']);
