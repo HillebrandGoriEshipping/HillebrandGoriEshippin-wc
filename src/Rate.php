@@ -34,16 +34,10 @@ class Rate
      */
     public static function prepareUrlParams(array $package): array
     {
-        $expAddress = Address::fromApi();
+        $expAddress = Address::getFavoriteAddress();
 
         $params = [
-            'from' => [
-                'addressType' => 'company',
-                'zipCode' => $expAddress[0]['zipCode'],
-                'city' => $expAddress[0]['city'],
-                'country' => $expAddress[0]['country']['countryAlpha2'],
-
-            ],
+            'from' => ['addressId' => $expAddress['id']],
             'to' => [
                 'addressType' => 'individual',
                 'zipCode' => $package['destination']['postcode'],
@@ -52,13 +46,16 @@ class Rate
             ],
         ];
 
-        if (!empty($expAddress[0]['stateCode'])) {
-            $params['from']['state'] = $expAddress[0]['stateCode'];
+        if (empty($params['from']['state'])) {
+            unset($params['from']['state']);
         }
 
         if (!empty($package['destination']['state'])) {
             $params['to']['state'] = $package['destination']['state'];
+        } else {
+            unset($params['to']['state']);
         }
+        
 
         $standardQuantity = 0;
         $magnumQuantity = 0;

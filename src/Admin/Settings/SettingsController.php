@@ -26,15 +26,9 @@ class SettingsController
             $options[$option] = get_option($option);
         }
 
-        try {
-            $favoriteAddressId = get_option(OptionEnum::HGES_FAVORITE_ADDRESS_ID);
-            if (!$favoriteAddressId) {
-                $favoriteAddress = [null];
-            } else {
-                $favoriteAddress = Address::singleFromApi($favoriteAddressId);
-            }
-        } catch (\Throwable $e) {
-            $favoriteAddress = [null];
+        $favoriteAddress = Address::getFavoriteAddress();
+        if (empty($favoriteAddress)) {
+            $favoriteAddress = null;
         }
 
         try {
