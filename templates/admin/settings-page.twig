@@ -23,7 +23,37 @@
     </form>
 </div>
 
-{% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and address is not null %}
+<div id="HGES-address">
+    <h2>{{ __( 'Address settings')|escape }}</h2>
+    <p>{{ __( 'Select the address used to calculate shipping charges')|escape }}</p>
+    <form method="post" action="?action=hges_save_favorite_address" id="address-settings-form">
+        <table class="form-table states">
+            <tr valign="top">
+                <td scope="row" class="titledesc">
+                    <label for="favorite_address">{{ __( 'Favorite address')|escape }}</label>
+                </td>
+                <td>
+                    <select name="{{ hgesOptionName('HGES_FAVORITE_ADDRESS_ID') }}" id="favorite_address">
+                        {% if allAddresses is not empty %}
+                            <option value="" disabled selected>{{ __('Select your address')|escape }}</option>
+                            {% for address in allAddresses %}
+                                <option value="{{ address.id }}" {{ optionSelected(hgesOptionName('HGES_FAVORITE_ADDRESS_ID'), address.id, '') }}>
+                                    {{ address.addressName }} - {{ address.company }} - {{ address.contact }}
+                                </option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="" disabled>{{ __('No addresses available')|escape }}</option>
+                        {% endif %}
+                    </select>
+                    {% include('form-error-message.twig') with {'error': errors.HGES_FAVORITE_ADDRESS_ID} %}
+                </td>
+            </tr>
+        </table>
+        {{ function('submit_button', 'Save', 'primary', 'submitaddress')|raw }}
+        {{ function('wp_nonce_field', 'save_favorite_address', 'settings_nonce')|raw }}
+    </form>
+</div>
+{% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and favoriteAddress is not null %}
 <div id="HGES-settings">
     <h2>{{ __( 'Hillebrand Gori eShipping shipping settings')|escape }}</h2>
     <h3>{{ __( 'Address used to calculate shipping charges')|escape }}</h3>
@@ -32,43 +62,43 @@
         <tr valign="top">
             <th scope="row">{{ __( 'Address')|escape }}</th>
             <td>
-                <label for="Adresse">{{ address.addressName }}</label>
+                <label for="Adresse">{{ favoriteAddress.label }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ __( 'Company')|escape }}</th>
             <td>
-                <label for="Adresse">{{ address.company }}</label>
+                <label for="Adresse">{{ favoriteAddress.company }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ __( 'Contact')|escape }}</th>
             <td>
-                <label for="Adresse">{{ address.contact }}</label>
+                <label for="Adresse">{{ favoriteAddress.contact }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ __( 'Phone')|escape }}</th>
             <td>
-                <label for="Adresse">{{ address.telephone }}</label>
+                <label for="Adresse">{{ favoriteAddress.telephone }}</label>
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ __( 'Address')|escape }}</th>
             <td>
-                <label for="Adresse">{{ address.address }}</label>
-                {% if address.addressComplement != '' %}
-                    <label for="Adresse">{{ address.addressComplement }}</label>
+                <label for="Adresse">{{ favoriteAddress.address }}</label>
+                {% if favoriteAddress.addressComplement != '' %}
+                    <label for="Adresse">{{ favoriteAddress.addressComplement }}</label>
                 {% endif %}
-                {% if address.addressComplement2 != '' %}
-                    <label for="Adresse">{{ address.addressComplement2 }}</label>
+                {% if favoriteAddress.addressComplement2 != '' %}
+                    <label for="Adresse">{{ favoriteAddress.addressComplement2 }}</label>
                 {% endif %}
             </td>
         </tr>
         <tr valign="top">
             <th scope="row">{{ __( 'City')|escape }}</th>
             <td>
-                <label for="Adresse">{{ address.city }}</label>
+                <label for="Adresse">{{ favoriteAddress.city }}</label>
             </td>
         </tr>
     </table>
