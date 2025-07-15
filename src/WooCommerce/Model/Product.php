@@ -3,6 +3,7 @@
 namespace HGeS\WooCommerce\Model;
 
 use HGeS\Utils\Enums\ProductMetaEnum;
+use HGeS\Utils\Messages;
 
 class Product
 {
@@ -32,10 +33,10 @@ class Product
         }
 
         $requiredFields = [
-            ProductMetaEnum::HS_CODE => __('Valid appellation', 'hges'),
-            ProductMetaEnum::CAPACITY => __('Capacity', 'hges'),
-            ProductMetaEnum::ALCOHOL_PERCENTAGE => __('Alcohol Percentage', 'hges'),
-            ProductMetaEnum::COLOR => __('Color', 'hges'),
+            ProductMetaEnum::HS_CODE => __('Valid appellation'),
+            ProductMetaEnum::CAPACITY => __('Capacity'),
+            ProductMetaEnum::ALCOHOL_PERCENTAGE => __('Alcohol Percentage'),
+            ProductMetaEnum::COLOR => __('Color'),
         ];
 
         $missing = [];
@@ -80,7 +81,7 @@ class Product
             $fieldsList = !empty($fields) ? implode(', ', $fields) : 'certains champs requis';
 
             echo '<div class="notice notice-error is-dismissible">';
-            echo '<p>' . __('Impossible to publish this product. Please correct or fill the missing fields', 'hges') . ': <strong>' . esc_html($fieldsList) . '</strong>.</p>';
+            echo '<p>' . Messages::getMessage('productMeta')['missingMetaFields'] . ': <strong>' . esc_html($fieldsList) . '</strong>.</p>';
             echo '</div>';
         }
     }

@@ -106,6 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function togglePublishButton() {
     if (!hsCodeField || !publishButton) return;
 
+      removeCustomPublishError();
+
     // Block the button if the product is not a bottle type
     if (!isBottleProduct()) {
       publishButton.disabled = false;
@@ -117,10 +119,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (hsCodeField.value.trim() === "") {
       publishButton.disabled = true;
       publishButton.classList.add("button-disabled");
-      publishButton.title = __(
-        "You need to provide valid product settings before publishing or updating.",
-        "hges"
-      );
+      showCustomPublishError(__(
+        hges.messages.productMeta.preventPublish,
+      ));
     } else {
       publishButton.disabled = false;
       publishButton.classList.remove("button-disabled");
@@ -178,4 +179,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function showCustomPublishError(message) {
+    let existingNotice = document.querySelector("#hges-custom-notice");
+
+    if (!existingNotice) {
+      const notice = document.createElement("div");
+      notice.id = "hges-custom-notice";
+      notice.className = "notice notice-error";
+      notice.style.marginTop = "20px";
+      notice.innerHTML = `<p><strong>${message}</strong></p>`;
+
+      const publishBox = document.querySelector("#submitdiv");
+      if (publishBox) {
+        const button = publishBox.querySelector("#publish");
+        button.parentNode.insertBefore(notice, button);
+      }
+    }
+  }
+
+  function removeCustomPublishError() {
+    const existingNotice = document.querySelector("#hges-custom-notice");
+    if (existingNotice) {
+      existingNotice.remove();
+    }
+  }
 });
