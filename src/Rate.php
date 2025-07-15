@@ -35,8 +35,9 @@ class Rate
     {
         $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
         if ($currentOrder) {
+            $currentOrderShippingAddressCategory = $currentOrder->get_meta(ShippingAddressField::WC_ORDER_META_PREFIX_SHIPPING . IS_COMPANY_CHECKBOX_OPTIONS['key']) ? 'company' : 'individual';
             $toAddress = [
-                'category' => 'individual',
+                'category' => $currentOrderShippingAddressCategory,
                 'firstname' => $currentOrder->get_shipping_first_name(),
                 'lastname' => $currentOrder->get_shipping_last_name(),
                 'company' => $currentOrder->get_shipping_company(),
