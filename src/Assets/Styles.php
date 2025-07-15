@@ -97,6 +97,12 @@ class Styles
                 [],
                 null
             );
+            wp_enqueue_style(
+                'hges-order-page-style',
+                HGES_PLUGIN_URL . 'assets/css/order-page.css',
+                ['hges-shipping-rates-classic-style'],
+                null
+            );
         }
     }
 }

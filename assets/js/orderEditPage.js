@@ -1,4 +1,5 @@
 import apiClient from './apiClient.js';
+const __ = wp.i18n.__;
 
 const orderEditPage = {
     changeShippingRateButton: null,
@@ -14,6 +15,8 @@ const orderEditPage = {
             const fileLabel = fileInput.dataset.fileLabel || 'Attachment';
             FilePond.create(fileInput, {
                 allowMultiple: false,
+                credits: false,
+                labelIdle: __('Click or drop a file to upload'),
                 server: {
                     process: async (fieldName, file, metadata, load, error, progress, abort) => {
                         

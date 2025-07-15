@@ -60,7 +60,7 @@ class ShippingMethodRow {
         } else {
             $remainingAttachments = [];
         }
-        
+
         $templateData = [
             'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
             'stillAvailable' => $shippingMethodStillAvailable,
@@ -71,26 +71,6 @@ class ShippingMethodRow {
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
-       
-        $uploaderTemplateData = [
-            'requiredAttachments' => [
-                [
-                    'type' => 'cola_waiver',
-                    'label' => __('COLA Waiver', 'hges'),
-                ],
-                [
-                    'type' => 'cola_waiver_signed',
-                    'label' => __('Signed COLA Waiver', 'hges'),
-                ],
-                [
-                    'type' => 'insurance',
-                    'label' => __('Insurance', 'hges'),
-                ],
-            ],
-            'orderId' => $orderId
-        ];
-        echo Twig::getTwig()->render('admin/order/attachments-uploader.twig', $uploaderTemplateData);
-
         echo '<div style="display: none">';
     }
 

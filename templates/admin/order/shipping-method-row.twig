@@ -2,7 +2,6 @@
 <div class="shipping-rate-estimated-delivery">Estimated delivery date : {{ shippingRate.deliveryDate }}</div>
 <div class="shipping-rate-pickup-date">Pickup date : {{ shippingRate.pickupDate }}</div>
 <button type="button" id="hges-change-shipping-rate-button" data-item-id="{{ itemId }}">{{ __('Change shipping option') }}</button>
-<button type="button" id="hges-uploads-attachments-button" for="attachments-uploader-modal">{{ __('Upload required attachments') }}</button>
 {% if shippingRate.requiredAttachments|length > 0 %}
 <div>
     <h3>{{ __('Required attachments') }}</h3>
@@ -10,10 +9,18 @@
         <p>{{ attachments|length }}/{{ shippingRate.requiredAttachments|length }}</p>
         <ul class="attchments-preview">
             {% for attachment in attachments %}
-                <li><span class="marker-green dashicons dashicons-yes-alt"></span> {{ attachment.label }}</li>
+                <li>
+                    <span class="marker-green dashicons dashicons-yes-alt"></span>
+                    {{ attachment.label }}
+                    <input type="file" data-file-label="{{ attachment.label }}" data-file-type="{{ attachment.type }}" name="fileUpload" class="filepond-file-input" id="attachments-input-{{ attachment.type }}">
+                </li>
             {% endfor %}
             {% for remainingAttachment in remainingAttachments %}
-                <li><span class="marker-red dashicons dashicons-marker"></span> {{ remainingAttachment.label }}</li>
+                <li>
+                    <span class="marker-red dashicons dashicons-marker"></span> 
+                    {{ remainingAttachment.label }}
+                    <input type="file" data-file-label="{{ remainingAttachment.label }}" data-file-type="{{ remainingAttachment.type }}" name="fileUpload" class="filepond-file-input" id="attachments-input-{{ remainingAttachment.type }}">
+                </li>
             {% endfor %}
         </ul>
     </div>
