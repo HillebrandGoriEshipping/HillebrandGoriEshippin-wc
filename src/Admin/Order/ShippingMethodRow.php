@@ -44,7 +44,7 @@ class ShippingMethodRow {
         $orderId = $item->get_data()['order_id'];
         $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
         $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
-        $attachments = Order::getAttachmentsList($orderId);
+        $attachments = Order::getAttachmentList($orderId);
         
         try {
             $shippingRate = Rate::getByChecksum($shippingRateChecksum);
