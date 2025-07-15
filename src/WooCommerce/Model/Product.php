@@ -12,8 +12,13 @@ class Product
         add_action('admin_notices', [self::class, 'maybeDisplayAdminError']);
     }
 
-    protected static bool $isMetaInvalid = false;
-
+    /**
+     * Validates product data before saving to ensure required custom meta fields are present for specific product types.
+     *
+     * @param array $data    The product data to be saved.
+     * @param array $postarr The original post data array.
+     * @return array         The potentially modified product data.
+     */
     public static function validateBeforeSave(array $data, array $postarr): array
     {
         if ($data['post_type'] !== 'product') {
@@ -42,10 +47,8 @@ class Product
         }
 
         if (!empty($missing)) {
-            // Annule la publication en repassant en brouillon
             $data['post_status'] = 'draft';
 
-            // Ajoute un indicateur dans l’URL pour afficher l’erreur ensuite
             add_filter('redirect_post_location', function ($location) use ($missing) {
                 return add_query_arg([
                     'hges_error' => 'missing_meta',
@@ -57,10 +60,15 @@ class Product
         return $data;
     }
 
+    /**
+     * Displays an admin error notice in the WordPress dashboard if required product meta fields are missing.
+     *
+     * @return void
+     */
     public static function maybeDisplayAdminError(): void
     {
         if (isset($_GET['hges_error']) && $_GET['hges_error'] === 'missing_meta') {
-            // Supprime les messages WordPress par défaut (comme "Product updated")
+
             if (isset($_GET['message'])) {
                 unset($_GET['message']);
             }
