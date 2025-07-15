@@ -44,6 +44,7 @@ class ShippingMethodRow {
         $orderId = $item->get_data()['order_id'];
         $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
         $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
+        $attachments = Order::getAttachmentsList($orderId);
         
         try {
             $shippingRate = Rate::getByChecksum($shippingRateChecksum);
@@ -55,13 +56,14 @@ class ShippingMethodRow {
             'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
             'stillAvailable' => $shippingMethodStillAvailable,
             'shippingRate' => $shippingRate ?? null,
+            'attachments' => $attachments,
             'itemId' => $item_id,
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
        
         $uploaderTemplateData = [
-            'requiredDocuments' => [
+            'requiredAttachments' => [
                 [
                     'type' => 'cola_waiver',
                     'label' => __('COLA Waiver', 'hges'),
@@ -77,7 +79,7 @@ class ShippingMethodRow {
             ],
             'orderId' => $orderId
         ];
-        echo Twig::getTwig()->render('admin/order/documents-uploader.twig', $uploaderTemplateData);
+        echo Twig::getTwig()->render('admin/order/attachments-uploader.twig', $uploaderTemplateData);
 
         echo '<div style="display: none">';
     }

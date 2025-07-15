@@ -2,7 +2,13 @@
 <div class="shipping-rate-estimated-delivery">Estimated delivery date : {{ shippingRate.deliveryDate }}</div>
 <div class="shipping-rate-pickup-date">Pickup date : {{ shippingRate.pickupDate }}</div>
 <button type="button" id="hges-change-shipping-rate-button" data-item-id="{{ itemId }}">{{ __('Change shipping option') }}</button>
-<button type="button" id="hges-uploads-documents-button" for="documents-uploader-modal">{{ __('Upload required documents') }}</button>
+<button type="button" id="hges-uploads-attachments-button" for="attachments-uploader-modal">{{ __('Upload required attachments') }}</button>
+<div>
+    <h3>{{ __('Required attachments') }}</h3>
+    <div>
+        <meter class="attachments-progress-bar" value="0" max="100"></meter>
+    </div>
+</div>
 
 <div id="hges-shipping-rate-modal" class="modal hidden">
     <div class="modal__content">

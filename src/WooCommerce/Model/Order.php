@@ -3,6 +3,7 @@
 namespace HGeS\WooCommerce\Model;
 
 use HGeS\Rate;
+use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
 
 /**
@@ -15,6 +16,11 @@ class Order
      * The pickup point meta key used in database
      */
     const PICKUP_POINT_META_KEY = 'hges_pickup_point';
+
+    /** 
+     * The attachments meta key used in database
+     */
+    const ATTACHMENTS_META_KEY = 'hges_attachments';
 
     /**
      * Initialize the order hooks and filters
@@ -190,33 +196,33 @@ class Order
     }
 
     /**
-     * Update the documents for a specific order.
+     * Update the attachments for a specific order.
      * 
-     * @param array $data The POST body containing the order ID and documents.
+     * @param array $data The POST body containing the order ID and attachments.
      */
-    public static function updateDocuments(array $data): void
+    public static function updateAttachments(array $data): void
     {
         $data = json_decode(file_get_contents('php://input'), true);
         $orderId = isset($data['orderId']) ? intval($data['orderId']) : 0;
-        $documents = isset($data['documents']) ? $data['documents'] : null;
+        $attachments = isset($data['attachments']) ? $data['attachments'] : null;
         $order = wc_get_order($orderId);
-        if (!$order || !$documents) {
-            wp_send_json_error(['message' => 'Invalid order ID or documents data.'], 400);
+        if (!$order || !$attachments) {
+            wp_send_json_error(['message' => 'Invalid order ID or attachments data.'], 400);
             return;
         }
 
-        if (!empty($documents)) {
-            $order->update_meta_data('hges_documents', $documents);
+        if (!empty($attachments)) {
+            $order->update_meta_data(Order::ATTACHMENTS_META_KEY, $attachments);
             $order->save_meta_data();
             $response = [
                 'success' => true,
-                'message' => 'Documents updated successfully.',
-                'documents' => $documents,
+                'message' => 'Attachments updated successfully.',
+                'attachments' => $attachments,
             ];
         } else {
             $response = [
                 'success' => false,
-                'message' => 'No documents provided or documents are empty.',
+                'message' => 'No attachments provided or attachments are empty.',
             ];
         }
 
@@ -225,9 +231,9 @@ class Order
     }
 
     /**
-     * Get the list of documents for a specific order.
+     * Get the list of attachments for a specific order.
      */
-    public static function getDocumentsList(): array
+    public static function getAttachmentsList(): array
     {
         $orderId = isset($_GET['orderId']) ? intval($_GET['orderId']) : 0;
         $order = wc_get_order($orderId);
@@ -236,12 +242,12 @@ class Order
             return [];
         }
 
-        $documents = $order->get_meta('hges_documents', true);
-        if (empty($documents)) {
+        $attachments = $order->get_meta(self::ATTACHMENTS_META_KEY, true);
+        if (empty($attachments)) {
             return [];
         }
 
-        echo json_encode($documents);
+        echo json_encode($attachments);
         exit;
     }
 }

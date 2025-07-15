@@ -6,9 +6,9 @@ const orderEditPage = {
     updateShippingRateButton: null,
     currentEditingItemId: null,
     selectedShippingRateChecksum: null,
-    currentDocuments: [],
+    currentAttachments: [],
     init() {
-        this.loadDocumentList();
+        this.loadAttachmentList();
         document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
             const fileType = fileInput.dataset.fileType;
             FilePond.create(fileInput, {
@@ -116,7 +116,7 @@ const orderEditPage = {
     },
     async fileUploadedSuccess(file) {
         console.log('File uploaded successfully:', file);
-        this.currentDocuments.push({
+        this.currentAttachments.push({
             id: file.serverId,
             name: file.filename,
             url: file.serverUrl,
@@ -127,29 +127,29 @@ const orderEditPage = {
             const response = await apiClient.post(
                 window.hges.ajaxUrl, 
                 {
-                    action: 'hges_update_order_documents',
+                    action: 'hges_update_order_attachments',
                 },
                 {
                     orderId: new URLSearchParams(window.location.search).get('id'),
-                    documents: this.currentDocuments,
+                    attachments: this.currentAttachments,
                 },
             );
-            console.log('Documents updated', response);
+            console.log('Attachments updated', response);
         } catch (error) {
-            console.error('Documents update failed', error);
+            console.error('Attachments update failed', error);
         }
     },
-    async loadDocumentList() {
+    async loadAttachmentList() {
         const orderId = new URLSearchParams(window.location.search).get('id');
         try {
-            const documents = await apiClient.get(
+            const attachments = await apiClient.get(
                 window.hges.ajaxUrl, 
-                { action: 'hges_get_documents_list', orderId }
+                { action: 'hges_get_attachments_list', orderId }
             );
-            this.currentDocuments = documents || [];
-            console.log('Documents loaded:', this.currentDocuments);
+            this.currentAttachments = attachments || [];
+            console.log('Attachments loaded:', this.currentAttachments);
         } catch (error) {
-            console.error('Failed to load documents:', error);
+            console.error('Failed to load attachments:', error);
         }
     }
 };

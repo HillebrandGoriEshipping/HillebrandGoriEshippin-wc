@@ -13,8 +13,8 @@ use HGeS\WooCommerce\Model\Order;
 class Router {
     
     public const AJAX_ACTIONS = [
-        'hges_get_documents_list',
-        'hges_update_order_documents'
+        'hges_get_attachments_list',
+        'hges_update_order_attachments'
     ];
 
     /**
@@ -71,11 +71,11 @@ class Router {
             $data = json_decode(file_get_contents('php://input'), true);
 
             switch ($_GET['action']) {
-                case 'hges_update_order_documents':
-                    Order::updateDocuments($data);
+                case 'hges_update_order_attachments':
+                    Order::updateAttachments($data);
                     break;
-                case 'hges_get_documents_list':
-                    $documents = Order::getDocumentsList();
+                case 'hges_get_attachments_list':
+                    $attachments = Order::getAttachmentsList();
                     break;
                 default:
                     wp_send_json_error(['message' => 'Invalid action']);
