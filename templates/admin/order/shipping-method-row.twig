@@ -3,12 +3,15 @@
 <div class="shipping-rate-pickup-date">Pickup date : {{ shippingRate.pickupDate }}</div>
 <button type="button" id="hges-change-shipping-rate-button" data-item-id="{{ itemId }}">{{ __('Change shipping option') }}</button>
 <button type="button" id="hges-uploads-attachments-button" for="attachments-uploader-modal">{{ __('Upload required attachments') }}</button>
+{% if shippingRate.requiredAttachments|length > 0 %}
 <div>
     <h3>{{ __('Required attachments') }}</h3>
     <div>
-        <meter class="attachments-progress-bar" value="{{ attachments.length }}" max="{{ shippingRate.requiredAttachments.length }}"></meter>
+        <p>{{ attachments|length }}/{{ shippingRate.requiredAttachments|length }}</p>
+        <meter class="attachments-progress-bar" value="{{ attachments|length }}" max="{{ shippingRate.requiredAttachments|length }}"></meter>
     </div>
 </div>
+{% endif %}
 
 <div id="hges-shipping-rate-modal" class="modal hidden">
     <div class="modal__content">
