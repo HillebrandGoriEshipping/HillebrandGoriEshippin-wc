@@ -8,70 +8,72 @@ class Product
 {
     public static function initAdmin(): void
     {
-        add_action('save_post_product', [self::class, 'validateProductMeta'], 10, 3);
-        add_filter('redirect_post_location', [self::class, 'addErrorQueryArg'], 99, 2);
-        add_action('admin_notices', [self::class, 'showAdminError']);
+        add_filter('wp_insert_post_data', [self::class, 'validateBeforeSave'], 10, 2);
+        add_action('admin_notices', [self::class, 'maybeDisplayAdminError']);
     }
 
     protected static bool $isMetaInvalid = false;
 
-    public static function validateProductMeta(int $postId, \WP_Post $post, bool $update): void
+    public static function validateBeforeSave(array $data, array $postarr): array
     {
-        static $running = false;
-
-        if ($running) {
-            return;
-        }
-
-        $running = true;
-
-        if (wp_is_post_revision($postId)) {
-            $running = false;
-            return;
+        if ($data['post_type'] !== 'product') {
+            return $data;
         }
 
         $productType = $_POST['product-type'] ?? '';
+
         if (!in_array($productType, ['bottle-simple', 'bottle-variable'], true)) {
-            return;
+            return $data;
         }
 
-        // Check if metas are already set
-        $hsCode = sanitize_text_field($_POST[ProductMetaEnum::HS_CODE] ?? '');
-        $capacity = sanitize_text_field($_POST[ProductMetaEnum::CAPACITY] ?? '');
-        $alcohol = sanitize_text_field($_POST[ProductMetaEnum::ALCOHOL_PERCENTAGE] ?? '');
-        $color = sanitize_text_field($_POST[ProductMetaEnum::COLOR] ?? '');
+        $requiredFields = [
+            ProductMetaEnum::HS_CODE => __('Valid appellation', 'hges'),
+            ProductMetaEnum::CAPACITY => __('Capacity', 'hges'),
+            ProductMetaEnum::ALCOHOL_PERCENTAGE => __('Alcohol Percentage', 'hges'),
+            ProductMetaEnum::COLOR => __('Color', 'hges'),
+        ];
 
-        if (empty($hsCode) || empty($capacity) || empty($alcohol) || empty($color)) {
-            self::$isMetaInvalid = true;
+        $missing = [];
 
-            wp_update_post([
-                'ID' => $postId,
-                'post_status' => 'draft',
-            ]);
-
-            delete_post_meta($postId, '_hs_code');
+        foreach ($requiredFields as $key => $label) {
+            if (empty($_POST[$key])) {
+                $missing[] = $label;
+            }
         }
 
-        $running = false;
+        if (!empty($missing)) {
+            // Annule la publication en repassant en brouillon
+            $data['post_status'] = 'draft';
+
+            // Ajoute un indicateur dans l’URL pour afficher l’erreur ensuite
+            add_filter('redirect_post_location', function ($location) use ($missing) {
+                return add_query_arg([
+                    'hges_error' => 'missing_meta',
+                    'hges_missing_fields' => implode(',', $missing),
+                ], $location);
+            });
+        }
+
+        return $data;
     }
 
-    public static function addErrorQueryArg(string $location, int $postId): string
+    public static function maybeDisplayAdminError(): void
     {
-        if (self::$isMetaInvalid) {
-            return add_query_arg('hges_error', 'missing_meta', $location);
+        if (isset($_GET['hges_error']) && $_GET['hges_error'] === 'missing_meta') {
+            // Supprime les messages WordPress par défaut (comme "Product updated")
+            if (isset($_GET['message'])) {
+                unset($_GET['message']);
+            }
+
+            $fields = isset($_GET['hges_missing_fields'])
+                ? explode(',', sanitize_text_field($_GET['hges_missing_fields']))
+                : [];
+
+            $fieldsList = !empty($fields) ? implode(', ', $fields) : 'certains champs requis';
+
+            echo '<div class="notice notice-error is-dismissible">';
+            echo '<p>' . __('Impossible to publish this product. Please correct or fill the missing fields', 'hges') . ': <strong>' . esc_html($fieldsList) . '</strong>.</p>';
+            echo '</div>';
         }
-
-        return $location;
-    }
-
-    public static function showAdminError(): void
-    {
-        if (!isset($_GET['hges_error']) || $_GET['hges_error'] !== 'missing_meta') {
-            return;
-        }
-
-        echo '<div class="notice notice-error is-dismissible"><p>';
-        echo esc_html__('You must complete all bottle settings before publishing the product.', 'hges');
-        echo '</p></div>';
     }
 }
