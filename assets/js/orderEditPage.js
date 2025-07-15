@@ -35,7 +35,7 @@ const orderEditPage = {
                                 abort();
                             },
                         };
-                    }
+                    },
                 },
                 onprocessfile: (error, file) => {
                     console.log('File processed:', file);

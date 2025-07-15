@@ -44,7 +44,13 @@ class ShippingMethodRow {
         $orderId = $item->get_data()['order_id'];
         $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
         $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
-  
+        
+        try {
+            $shippingRate = Rate::getByChecksum($shippingRateChecksum);
+        } catch (\Exception $e) {
+            $shippingRate = null;
+        }
+
         $templateData = [
             'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
             'stillAvailable' => $shippingMethodStillAvailable,
@@ -53,32 +59,25 @@ class ShippingMethodRow {
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
-
-        // $selectedRate = Rate::getByChecksum($shippingRateChecksum);
-        $selectedRate = false;
-        if ($selectedRate) {
-            dd($selectedRate);
-            $uploaderTemplateData = [
-                'requiredDocuments' => [
-                    [
-                        'type' => 'cola_waiver',
-                        'label' => __('COLA Waiver', 'hges'),
-                    ],
-                    [
-                        'type' => 'cola_waiver_signed',
-                        'label' => __('Signed COLA Waiver', 'hges'),
-                    ],
-                    [
-                        'type' => 'insurance',
-                        'label' => __('Insurance', 'hges'),
-                    ],
+       
+        $uploaderTemplateData = [
+            'requiredDocuments' => [
+                [
+                    'type' => 'cola_waiver',
+                    'label' => __('COLA Waiver', 'hges'),
                 ],
-                'orderId' => $orderId
-            ];
-            echo Twig::getTwig()->render('admin/order/documents-uploader.twig', $uploaderTemplateData);
-        }
-        
-
+                [
+                    'type' => 'cola_waiver_signed',
+                    'label' => __('Signed COLA Waiver', 'hges'),
+                ],
+                [
+                    'type' => 'insurance',
+                    'label' => __('Insurance', 'hges'),
+                ],
+            ],
+            'orderId' => $orderId
+        ];
+        echo Twig::getTwig()->render('admin/order/documents-uploader.twig', $uploaderTemplateData);
 
         echo '<div style="display: none">';
     }

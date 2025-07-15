@@ -114,8 +114,14 @@ class Order
         $item = $order->get_item($orderShippingItemId);
 
         $formerShippingRateChecksum = self::getShippingRateChecksum($orderId);
+        try {
+            $formerShippingRate = Rate::getByChecksum($formerShippingRateChecksum);
+        } catch (\Exception $e) {
+            $formerShippingRate = null;
+        }
+
         $rate = Rate::getByChecksum($newShippingRateChecksum);
-        if (!$item || !$rate) {
+        if (!$rate) {
             throw new \Exception("Order item or shipping rate not found.");
         }
         $item->set_props([
@@ -130,7 +136,7 @@ class Order
             "checksum" => $newShippingRateChecksum,
             "method_title" => $rate['service'],
             "method_id" => "hges_shipping",
-            "customer_selected_rate" => Rate::getByChecksum($formerShippingRateChecksum),
+            "customer_selected_rate" => $formerShippingRate ?? $item->get_data(),
         ];
 
         foreach ($metaData as $key => $value) {
