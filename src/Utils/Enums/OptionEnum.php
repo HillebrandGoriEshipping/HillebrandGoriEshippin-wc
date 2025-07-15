@@ -110,7 +110,9 @@ class OptionEnum implements EnumInterface
             ],
             self::HGES_PACKAGING_BOTTLE => [
                 new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
-                new Type(['type' => 'integer', 'message' => Messages::getMessage('settings')['integerError']]),
+            ],
+            self::HGES_PACKAGING_MAGNUM => [
+                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
         ];
 
@@ -135,7 +137,8 @@ class OptionEnum implements EnumInterface
             self::HGES_MINHOUR => 'string',
             self::HGES_CUTOFF => 'string',
             self::HGES_WORKING_DAYS => 'array',
-            self::HGES_PACKAGING_BOTTLE => 'int',
+            self::HGES_PACKAGING_BOTTLE => 'array',
+            self::HGES_PACKAGING_MAGNUM => 'array',
         ];
 
         return $sanitizationTypes[$option] ?? null;
