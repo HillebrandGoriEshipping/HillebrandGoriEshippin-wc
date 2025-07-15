@@ -8,8 +8,8 @@ const orderEditPage = {
     currentEditingItemId: null,
     selectedShippingRateChecksum: null,
     currentAttachments: [],
-    init() {
-        this.loadAttachmentList();
+    async init() {
+        await this.loadAttachmentList();
         document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
             const fileType = fileInput.dataset.fileType;
             const fileLabel = fileInput.dataset.fileLabel || 'Attachment';
@@ -19,16 +19,16 @@ const orderEditPage = {
                 labelIdle: __('Click or drop a file to upload'),
                 server: {
                     process: async (fieldName, file, metadata, load, error, progress, abort) => {
-                        
                         const response = await apiClient.upload(window.hges.apiUrl + '/v2/attachments/upload', {}, {file, type: fileType});
                         if (response.error) {
                             error(response.error);
                         }
                         if (response.progress) {
                             progress(response.progress);
-                        }
+                        } else {
+                            load(response.id);
 
-                        load(response.id);
+                        }
                         return {
                             abort: () => {
                                 request.abort();
