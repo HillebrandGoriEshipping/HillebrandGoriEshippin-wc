@@ -10,7 +10,7 @@
             <div class="filepond-file-label">
                 <label for="attachments-input-{{ requiredAttachment.type }}">{{ requiredAttachment.label }}</label>
             </div>
-            <input type="file" data-file-type="{{ requiredAttachment.type }}" name="fileUpload" class="filepond-file-input" id="attachments-input-{{ requiredAttachment.type }}">
+            <input type="file" data-file-label="{{ requiredAttachment.label }}" data-file-type="{{ requiredAttachment.type }}" name="fileUpload" class="filepond-file-input" id="attachments-input-{{ requiredAttachment.type }}">
             {% endfor %}
             </form>
         </div>

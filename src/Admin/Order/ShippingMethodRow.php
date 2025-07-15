@@ -52,11 +52,21 @@ class ShippingMethodRow {
             $shippingRate = null;
         }
 
+        if ($shippingRate) {
+            $remainingAttachments = array_filter($shippingRate['requiredAttachments'] ?? [], function ($requiredAttachment) use ($attachments) {
+                $requiredAttachmentType = $requiredAttachment['type'] ?? '';
+                return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
+            });
+        } else {
+            $remainingAttachments = [];
+        }
+        
         $templateData = [
             'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
             'stillAvailable' => $shippingMethodStillAvailable,
             'shippingRate' => $shippingRate ?? null,
             'attachments' => $attachments,
+            'remainingAttachments' => $remainingAttachments,
             'itemId' => $item_id,
         ];
 

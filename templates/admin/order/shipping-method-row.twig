@@ -8,7 +8,14 @@
     <h3>{{ __('Required attachments') }}</h3>
     <div>
         <p>{{ attachments|length }}/{{ shippingRate.requiredAttachments|length }}</p>
-        <meter class="attachments-progress-bar" value="{{ attachments|length }}" max="{{ shippingRate.requiredAttachments|length }}"></meter>
+        <ul class="attchments-preview">
+            {% for attachment in attachments %}
+                <li><span class="marker-green dashicons dashicons-yes-alt"></span> {{ attachment.label }}</li>
+            {% endfor %}
+            {% for remainingAttachment in remainingAttachments %}
+                <li><span class="marker-red dashicons dashicons-marker"></span> {{ remainingAttachment.label }}</li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 {% endif %}

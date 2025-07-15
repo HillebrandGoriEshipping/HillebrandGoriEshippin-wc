@@ -11,6 +11,7 @@ const orderEditPage = {
         this.loadAttachmentList();
         document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
             const fileType = fileInput.dataset.fileType;
+            const fileLabel = fileInput.dataset.fileLabel || 'Attachment';
             FilePond.create(fileInput, {
                 allowMultiple: false,
                 server: {
@@ -23,24 +24,19 @@ const orderEditPage = {
                         if (response.progress) {
                             progress(response.progress);
                         }
-                        console.log('File uploaded:', response);
-                        load(response.id);
 
+                        load(response.id);
                         return {
                             abort: () => {
-                                // This function is entered if the user has tapped the cancel button
                                 request.abort();
-
-                                // Let FilePond know the request has been cancelled
                                 abort();
                             },
                         };
                     },
                 },
                 onprocessfile: (error, file) => {
-                    console.log('File processed:', file);
-                    console.log('metadata:', file.getMetadata());
-                    
+                    file.setMetadata('fileType', fileType);
+                    file.setMetadata('label', fileLabel);
                     if (error) {
                         this.fileUploadedError(error, file);
                     } else {
@@ -67,7 +63,6 @@ const orderEditPage = {
     
     async openShippingRateModal(e) {
         this.currentEditingItemId = e.currentTarget.dataset.itemId;
-        console.log('Opening shipping rate modal for order ID:', this.currentEditingItemId);
 
         const modal = document.querySelector('#hges-shipping-rate-modal');
         if (modal) {
@@ -115,13 +110,17 @@ const orderEditPage = {
         console.error('File upload error:', error, file);
     },
     async fileUploadedSuccess(file) {
-        console.log('File uploaded successfully:', file);
+        if (this.currentAttachments.some(attachment => attachment.type === file.getMetadata('fileType'))) {
+            this.currentAttachments = this.currentAttachments.filter(attachment => attachment.type !== file.getMetadata('fileType'));
+        }
+
         this.currentAttachments.push({
             id: file.serverId,
             name: file.filename,
             url: file.serverUrl,
             mimeType: file.fileType,
-            type: file.type,
+            type: file.getMetadata('fileType'),
+            label: file.getMetadata('label')
         });
         try {
             const response = await apiClient.post(

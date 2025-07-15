@@ -51,10 +51,17 @@ class Rate
             ];
         } else {
             $toAddress = [
-                'category' => 'individual',
-                'zipCode' => $package['destination']['postcode'],
-                'city' => $package['destination']['city'],
-                'country' => $package['destination']['country'],
+                'firstname' => 'John',
+                'lastname' => 'Doe',
+                'address' => '123 Main St',
+                'state' => 'DC',
+                'category' => 'company',
+                'company' => 'Example Company',
+                'zipCode' => '20500',
+                'city' => 'Washington',
+                'country' => 'US',
+                'email' => 'dummy@test.com',
+                'telephone' => '1234567890',
             ];
         }
 

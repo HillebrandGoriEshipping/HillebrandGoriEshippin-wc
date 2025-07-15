@@ -83,3 +83,11 @@ table {
   font-weight: 600;
   margin: 0;
 }
+
+.marker-green {
+  color: green;
+}
+
+.marker-red {
+  color: red;
+}
