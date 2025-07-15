@@ -5,7 +5,9 @@
   },
   "productMeta": {
     "settingsError": "The product settings are incorrect",
-    "settingsSuccess": "The product settings are correct"
+    "settingsSuccess": "The product settings are correct",
+    "missingMetaFields": "Impossible to publish this product. Please correct or fill the missing fields",
+    "preventPublish": "You need to provide valid product settings before publishing or updating."
   },
   "settings": {
     "notEmpty": "This field cannot be empty",

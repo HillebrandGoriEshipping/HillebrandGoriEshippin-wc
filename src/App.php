@@ -10,6 +10,7 @@ use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
 use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\Model\Order;
+use HGeS\WooCommerce\Model\Product;
 use HGeS\WooCommerce\Model\ShippingMethod;
 use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
 use HGeS\WooCommerce\ProductType\VariableBottleProduct;
@@ -43,9 +44,9 @@ class App
         PickupPointsRender::init();
         ShippingAddressFields::init();
         Order::init();
-        
+
         // some init() calls must wait for WC to be fully loaded
-        add_action('init', function() {
+        add_action('init', function () {
             ShippingMethod::init();
         });
     }
@@ -62,13 +63,14 @@ class App
 
         BottleShippingClass::initAdmin();
         Menu::initAdmin();
+        Product::initAdmin();
         ProductMeta::initAdmin();
         Router::initAdmin();
         ShippingAddressFields::initAdmin();
         ShippingMethodRow::initAdmin();
 
         // some initAdmin() calls must wait for WC to be fully loaded
-        add_action('init', function() {
+        add_action('init', function () {
             SimpleBottleProduct::initAdmin();
             VariableBottleProduct::initAdmin();
         });

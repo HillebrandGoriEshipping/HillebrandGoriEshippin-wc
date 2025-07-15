@@ -91,6 +91,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function isBottleProduct() {
+    const productTypeSelect = document.querySelector("#product-type");
+    if (!productTypeSelect) return false;
+
+    const bottleTypes = ["bottle-simple", "bottle-variable"];
+    return bottleTypes.includes(productTypeSelect.value);
+  }
+
+  const publishButton = document.querySelector("#publish");
+  const hsCodeField = document.querySelector("#_hs_code");
+  const selectType = document.querySelector("#product-type");
+
+  function togglePublishButton() {
+    if (!hsCodeField || !publishButton) return;
+
+      removeCustomPublishError();
+
+    // Block the button if the product is not a bottle type
+    if (!isBottleProduct()) {
+      publishButton.disabled = false;
+      publishButton.classList.remove("button-disabled");
+      publishButton.removeAttribute("title");
+      return;
+    }
+
+    if (hsCodeField.value.trim() === "") {
+      publishButton.disabled = true;
+      publishButton.classList.add("button-disabled");
+      showCustomPublishError(__(
+        hges.messages.productMeta.preventPublish,
+      ));
+    } else {
+      publishButton.disabled = false;
+      publishButton.classList.remove("button-disabled");
+      publishButton.removeAttribute("title");
+    }
+  }
+
+  // Block publish/update button if HS code is empty
+  togglePublishButton();
+
+  // Check every time the HS code field changes
+  hsCodeField.addEventListener("change", togglePublishButton);
+  selectType.addEventListener("change", togglePublishButton);
+
   async function checkHsCode() {
     const currentCapacity = capacityField.value;
     const currentAlcoholPercentage = alcoholPercentageField.value;
@@ -126,8 +171,36 @@ document.addEventListener("DOMContentLoaded", function () {
           errorContainer,
           "success"
         );
-        hsCodeField.value = result; 
+        hsCodeField.value = result;
       }
+
+      // Recheck button state
+      togglePublishButton();
+    }
+  }
+
+  function showCustomPublishError(message) {
+    let existingNotice = document.querySelector("#hges-custom-notice");
+
+    if (!existingNotice) {
+      const notice = document.createElement("div");
+      notice.id = "hges-custom-notice";
+      notice.className = "notice notice-error";
+      notice.style.marginTop = "20px";
+      notice.innerHTML = `<p><strong>${message}</strong></p>`;
+
+      const publishBox = document.querySelector("#submitdiv");
+      if (publishBox) {
+        const button = publishBox.querySelector("#publish");
+        button.parentNode.insertBefore(notice, button);
+      }
+    }
+  }
+
+  function removeCustomPublishError() {
+    const existingNotice = document.querySelector("#hges-custom-notice");
+    if (existingNotice) {
+      existingNotice.remove();
     }
   }
 });
