@@ -7,6 +7,7 @@ use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
+use HGeS\WooCommerce\ShippingAddressFields;
 
 class Rate
 {
@@ -35,7 +36,7 @@ class Rate
     {
         $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
         if ($currentOrder) {
-            $currentOrderShippingAddressCategory = $currentOrder->get_meta(ShippingAddressField::WC_ORDER_META_PREFIX_SHIPPING . IS_COMPANY_CHECKBOX_OPTIONS['key']) ? 'company' : 'individual';
+            $currentOrderShippingAddressCategory = $currentOrder->get_meta(ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::IS_COMPANY_CHECKBOX_OPTIONS['key']) ? 'company' : 'individual';
             $toAddress = [
                 'category' => $currentOrderShippingAddressCategory,
                 'firstname' => $currentOrder->get_shipping_first_name(),
