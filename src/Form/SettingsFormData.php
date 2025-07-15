@@ -42,6 +42,7 @@ class SettingsFormData extends AbstractFormData
     protected $HGES_MINHOUR;
     protected $HGES_CUTOFF;
     protected $HGES_WORKING_DAYS;
+    protected $HGES_PACKAGING_BOTTLE;
 
     /**
      * The class properties are dynamically created based on the OptionEnum class
