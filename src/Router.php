@@ -75,7 +75,7 @@ class Router {
                     Order::updateAttachments($data);
                     break;
                 case 'hges_get_attachments_list':
-                    $attachments = Order::getAttachmentsList();
+                    $attachments = Order::getAttachmentsListJson();
                     break;
                 default:
                     wp_send_json_error(['message' => 'Invalid action']);

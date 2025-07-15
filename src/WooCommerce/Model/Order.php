@@ -231,14 +231,32 @@ class Order
     }
 
     /**
-     * Get the list of attachments for a specific order.
+     * Get the list of attachments for a specific order in JSON format.
      */
-    public static function getAttachmentsList(): array
+    public static function getAttachmentsListJson(): array
     {
         $orderId = isset($_GET['orderId']) ? intval($_GET['orderId']) : 0;
+        if (!$orderId) {
+            wp_send_json_error(['message' => 'Invalid order ID.'], 400);
+            return [];
+        }
+        $attachments = self::getAttachmentsList($orderId);
+        if (empty($attachments)) {
+            wp_send_json_error(['message' => 'No attachments found for this order.'], 404);
+            return [];
+        }
+
+        echo json_encode($attachments);
+        exit;
+    }
+
+    /**
+     * Get the list of attachments for a specific order.
+     */
+    public static function getAttachmentsList(int $orderId): array
+    {
         $order = wc_get_order($orderId);
         if (!$order) {
-            wp_send_json_error(['message' => 'Invalid order ID.'], 400);
             return [];
         }
 
@@ -247,7 +265,6 @@ class Order
             return [];
         }
 
-        echo json_encode($attachments);
-        exit;
+        return $attachments;
     }
 }
