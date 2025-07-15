@@ -106,7 +106,7 @@ const orderEditPage = {
                 true
             );
             
-            // window.location.reload();
+            window.location.reload();
         }
     },
     fileUploadedError(error, file) {
