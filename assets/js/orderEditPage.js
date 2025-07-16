@@ -125,6 +125,12 @@ const orderEditPage = {
             type: file.getMetadata('fileType'),
             label: file.getMetadata('label')
         });
+
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.remove('marker-red');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.remove('dashicons-marker');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.add('marker-green');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.add('dashicons-yes-alt');
+
         try {
             const response = await apiClient.post(
                 window.hges.ajaxUrl, 

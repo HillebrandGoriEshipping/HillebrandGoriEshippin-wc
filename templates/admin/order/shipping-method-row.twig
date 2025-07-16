@@ -10,7 +10,7 @@
         <ul class="attchments-preview">
             {% for attachment in attachments %}
                 <li>
-                    <span class="marker-green dashicons dashicons-yes-alt"></span>
+                    <span class="marker-green dashicons dashicons-yes-alt" id="attachments-marker-{{ attachment.type }}"></span>
                     {{ attachment.label }}
                     <input 
                         type="file"
@@ -24,7 +24,7 @@
             {% endfor %}
             {% for remainingAttachment in remainingAttachments %}
                 <li>
-                    <span class="marker-red dashicons dashicons-marker"></span> 
+                    <span class="marker-red dashicons dashicons-marker" id="attachments-marker-{{ remainingAttachment.type }}"></span> 
                     {{ remainingAttachment.label }}
                     <input 
                         type="file" 
