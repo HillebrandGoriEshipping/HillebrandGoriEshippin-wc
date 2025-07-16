@@ -29,6 +29,7 @@ class Order
     {
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
+        add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
     }
 
     /**
@@ -156,6 +157,14 @@ class Order
         return $rate;
     }
 
+    /**
+     * Check if the shipping method is still available before updating the order status.
+     * triggered by the 'woocommerce_order_edit_status' action.
+     * 
+     * @param int $orderId The ID of the order.
+     * @param string $newStatus The new status to which the order is being updated.
+     * @return bool True if the shipping method is still available, false otherwise.
+     */
     public static function checkShippingBeforeStatusUpdate(int $orderId, string $newStatus): bool
     {
         if ($newStatus !== 'processing' && $newStatus !== 'completed') {
@@ -170,7 +179,51 @@ class Order
             exit;
         }
         return $shippingMethodStillAvailable;
-    } 
+    }
+
+    /**
+     * Check if the required attachments are present before updating the order status.
+     * triggered by the 'woocommerce_order_edit_status' action.
+     * 
+     * @param int $orderId The ID of the order.
+     * @param string $newStatus The new status to which the order is being updated.
+     * @return bool True if all required attachments are present, false otherwise.
+     */
+    public static function checkAttachmentsBeforeStatusUpdate(int $orderId, string $newStatus): bool
+    {
+        if ($newStatus !== 'processing' && $newStatus !== 'completed') {
+            return true;
+        }
+        
+        $currentShippingRate = Rate::getByChecksum(self::getShippingRateChecksum($orderId));
+        
+        if (!$currentShippingRate) {
+            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
+            $url = add_query_arg('error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
+            wp_redirect($url);
+            exit;
+        }
+        
+        $attachmentsRequired = $currentShippingRate['requiredAttachments'] ?? false;
+        if (empty($attachmentsRequired)) {
+            return true;
+        }
+        
+        $attachments = self::getAttachmentList($orderId);
+        $missingAttachments = array_filter($currentShippingRate['requiredAttachments'] ?? [], function ($requiredAttachment) use ($attachments) {
+            $requiredAttachmentType = $requiredAttachment['type'] ?? '';
+            return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
+        });
+
+        if(count($missingAttachments)) {
+            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['attachmentsMissing']);
+            $url = add_query_arg( 'error', Messages::getMessage('orderAdmin')['attachmentsMissing'], wp_get_referer());
+            wp_redirect($url);
+            exit;
+        }
+        
+        return true;
+    }
 
     /**
      * Get the shipping rate checksum for a specific order and shipping item.
