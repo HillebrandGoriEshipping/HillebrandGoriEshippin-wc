@@ -142,7 +142,6 @@ const orderEditPage = {
                     attachments: this.currentAttachments,
                 },
             );
-            console.log('Attachments updated', response);
         } catch (error) {
             console.error('Attachments update failed', error);
         }
@@ -155,7 +154,6 @@ const orderEditPage = {
                 { action: 'hges_get_attachments_list', orderId }
             );
             this.currentAttachments = attachments || [];
-            console.log('Attachments loaded:', this.currentAttachments);
         } catch (error) {
             console.error('Failed to load attachments:', error);
         }
