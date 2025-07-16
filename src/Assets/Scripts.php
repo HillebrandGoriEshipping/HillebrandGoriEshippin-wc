@@ -2,6 +2,7 @@
 
 namespace HGeS\Assets;
 
+use HGeS\Utils\ApiClient;
 use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
 use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\Utils\Enums\OptionEnum;
@@ -111,6 +112,15 @@ class Scripts
      */
     public static function enqueueAdmin(): void
     {
+
+        wp_enqueue_script(
+            'hges-modal',
+            HGES_PLUGIN_URL . 'assets/js/modal.js',
+            [],
+            null,
+            ['in_footer' => true]
+        );
+
         if (!empty($_GET['page']) && $_GET['page'] === 'hillebrand-gori-eshipping') {
             wp_enqueue_script_module(
                 'hges-settings-page-script',
@@ -139,6 +149,14 @@ class Scripts
             wp_enqueue_script_module(
                 'hges-api-client',
                 HGES_PLUGIN_URL . 'assets/js/apiClient.js',
+                [],
+                null,
+                ['in_footer' => true]
+            );
+
+            wp_enqueue_script(
+                'hges-api-client-init',
+                'https://unpkg.com/filepond@^4/dist/filepond.js',
                 [],
                 null,
                 ['in_footer' => true]
@@ -183,6 +201,8 @@ class Scripts
             'pricableProductTypes' => [
                 SimpleBottleProduct::PRODUCT_TYPE,
             ],
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'apiUrl' => ApiClient::getApiUrl(),
         ];
 
         if ($admin) {

@@ -1,4 +1,5 @@
 import apiClient from './apiClient.js';
+const __ = wp.i18n.__;
 
 const orderEditPage = {
     changeShippingRateButton: null,
@@ -6,10 +7,51 @@ const orderEditPage = {
     updateShippingRateButton: null,
     currentEditingItemId: null,
     selectedShippingRateChecksum: null,
-    init() {
+    currentAttachments: [],
+    async init() {
+        await this.loadAttachmentList();
+        document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
+            const fileType = fileInput.dataset.fileType;
+            const fileLabel = fileInput.dataset.fileLabel || 'Attachment';
+            FilePond.create(fileInput, {
+                allowMultiple: false,
+                credits: false,
+                labelIdle: __('Click or drop a file to upload'),
+                server: {
+                    process: async (fieldName, file, metadata, load, error, progress, abort) => {
+                        const response = await apiClient.upload(window.hges.apiUrl + '/v2/attachments/upload', {}, {file, type: fileType});
+                        if (response.error) {
+                            error(response.error);
+                        }
+                        if (response.progress) {
+                            progress(response.progress);
+                        } else {
+                            load(response.id);
+
+                        }
+                        return {
+                            abort: () => {
+                                request.abort();
+                                abort();
+                            },
+                        };
+                    },
+                },
+                onprocessfile: (error, file) => {
+                    file.setMetadata('fileType', fileType);
+                    file.setMetadata('label', fileLabel);
+                    if (error) {
+                        this.fileUploadedError(error, file);
+                    } else {
+                        this.fileUploadedSuccess(file);
+                    }
+                }
+            });
+        });
+
         this.changeShippingRateButton = document.querySelector('#hges-change-shipping-rate-button');
         this.closeShippingRateModalButton = document.querySelector('#hges-shipping-rate-modal .modal__close');
-        this.updateShippingRateButton = document.querySelector('#hges-close-shipping-rate-modal-button');
+        this.updateShippingRateButton = document.querySelector('#hges-update-shipping-rate-modal-button');
 
         if (this.changeShippingRateButton) {
             this.changeShippingRateButton.addEventListener('click', this.openShippingRateModal.bind(this));
@@ -19,11 +61,11 @@ const orderEditPage = {
         }
         if (this.updateShippingRateButton) {
             this.updateShippingRateButton.addEventListener('click', this.updateShippingRate.bind(this));
-        }  
+        }
     },
+    
     async openShippingRateModal(e) {
         this.currentEditingItemId = e.currentTarget.dataset.itemId;
-        console.log('Opening shipping rate modal for order ID:', this.currentEditingItemId);
 
         const modal = document.querySelector('#hges-shipping-rate-modal');
         if (modal) {
@@ -47,22 +89,73 @@ const orderEditPage = {
             rateElement.classList.remove('selected');
         });
         event.currentTarget.classList.add('selected');
-        this.selectedShippingRateChecksum = event.target.dataset.checksum;
+        this.selectedShippingRateChecksum = event.currentTarget.dataset.checksum;
     },
     async updateShippingRate() {
         if (this.selectedShippingRateChecksum) {
-            console.log('Selected shipping rate checksum:', this.selectedShippingRateChecksum);
-            this.selectedRate = await apiClient.patch('/order/set-shipping-rate', {
-                orderId: new URLSearchParams(window.location.search).get('id'),
-                orderShippingItemId: this.currentEditingItemId,
-            }, {
-                shippingRateChecksum: this.selectedShippingRateChecksum
-            },
+            this.selectedRate = await apiClient.patch(
+                '/order/set-shipping-rate', 
+                {
+                    orderId: new URLSearchParams(window.location.search).get('id'),
+                    orderShippingItemId: this.currentEditingItemId,
+                }, 
+                {
+                    shippingRateChecksum: this.selectedShippingRateChecksum
+                },
                 {},
                 true
             );
-
+            
             window.location.reload();
+        }
+    },
+    fileUploadedError(error, file) {
+        console.error('File upload error:', error, file);
+    },
+    async fileUploadedSuccess(file) {
+        if (this.currentAttachments.some(attachment => attachment.type === file.getMetadata('fileType'))) {
+            this.currentAttachments = this.currentAttachments.filter(attachment => attachment.type !== file.getMetadata('fileType'));
+        }
+
+        this.currentAttachments.push({
+            id: file.serverId,
+            name: file.filename,
+            url: file.serverUrl,
+            mimeType: file.fileType,
+            type: file.getMetadata('fileType'),
+            label: file.getMetadata('label')
+        });
+
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.remove('marker-red');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.remove('dashicons-marker');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.add('marker-green');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.add('dashicons-yes-alt');
+
+        try {
+            const response = await apiClient.post(
+                window.hges.ajaxUrl, 
+                {
+                    action: 'hges_update_order_attachments',
+                },
+                {
+                    orderId: new URLSearchParams(window.location.search).get('id'),
+                    attachments: this.currentAttachments,
+                },
+            );
+        } catch (error) {
+            console.error('Attachments update failed', error);
+        }
+    },
+    async loadAttachmentList() {
+        const orderId = new URLSearchParams(window.location.search).get('id');
+        try {
+            const attachments = await apiClient.get(
+                window.hges.ajaxUrl, 
+                { action: 'hges_get_attachments_list', orderId }
+            );
+            this.currentAttachments = attachments || [];
+        } catch (error) {
+            console.error('Failed to load attachments:', error);
         }
     }
 };

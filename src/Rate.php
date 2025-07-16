@@ -7,6 +7,7 @@ use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
+use HGeS\WooCommerce\ShippingAddressFields;
 
 class Rate
 {
@@ -35,8 +36,9 @@ class Rate
     {
         $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
         if ($currentOrder) {
+            $currentOrderShippingAddressCategory = $currentOrder->get_meta(ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::IS_COMPANY_CHECKBOX_OPTIONS['key']) ? 'company' : 'individual';
             $toAddress = [
-                'category' => 'individual',
+                'category' => $currentOrderShippingAddressCategory,
                 'firstname' => $currentOrder->get_shipping_first_name(),
                 'lastname' => $currentOrder->get_shipping_last_name(),
                 'company' => $currentOrder->get_shipping_company(),
@@ -239,10 +241,10 @@ class Rate
     {
         $allowed = true;
         $debug = [];
-
+        
         // do not attempt retrieving rates if current action is "add-to-cart"
         if (
-            !empty($_POST['add-to-cart'])
+            !empty($_GET['add-to-cart'])
             || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
         ) {
             $allowed = false;
@@ -270,7 +272,11 @@ class Rate
                 }
             }
         }
-        error_log('Rate retrieval debug info: ' . implode(', ', $debug));
+
+        if ($debug) {
+            error_log('Rate retrieval debug info: ' . implode(', ', $debug));
+        }
+
         return $allowed;
     }
 
