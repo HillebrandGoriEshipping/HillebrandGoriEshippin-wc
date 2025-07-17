@@ -9,7 +9,6 @@ const orderEditPage = {
     selectedShippingRateChecksum: null,
     currentAttachments: [],
     async init() {
-        await this.loadAttachmentList();
         document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
             const fileType = fileInput.dataset.fileType;
             const fileLabel = fileInput.dataset.fileLabel || 'Attachment';
@@ -146,18 +145,6 @@ const orderEditPage = {
             console.error('Attachments update failed', error);
         }
     },
-    async loadAttachmentList() {
-        const orderId = new URLSearchParams(window.location.search).get('id');
-        try {
-            const attachments = await apiClient.get(
-                window.hges.ajaxUrl, 
-                { action: 'hges_get_attachments_list', orderId }
-            );
-            this.currentAttachments = attachments || [];
-        } catch (error) {
-            console.error('Failed to load attachments:', error);
-        }
-    }
 };
 
 document.addEventListener('DOMContentLoaded', orderEditPage.init.bind(orderEditPage));

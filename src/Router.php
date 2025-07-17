@@ -12,9 +12,11 @@ use HGeS\WooCommerce\Model\Order;
  */
 class Router {
     
-    public const AJAX_ACTIONS = [
-        'hges_get_attachments_list',
+    public const ACTIONS = [
         'hges_update_order_attachments'
+    ];
+
+    public const ACTIONS_ADMIN = [
     ];
 
     /**
@@ -23,7 +25,7 @@ class Router {
     public static function initAdmin(): void
     {
         add_action('admin_init', [self::class, 'router']);
-        foreach (self::AJAX_ACTIONS as $action) {
+        foreach (self::ACTIONS as $action) {
             add_action('wp_ajax_' . $action, [self::class, 'ajaxRouter']);
         }
     }
@@ -65,7 +67,7 @@ class Router {
 
     public static function ajaxRouter(): void
     {
-        if (isset($_GET['action']) && in_array($_GET['action'], self::AJAX_ACTIONS)) {
+        if (isset($_GET['action']) && in_array($_GET['action'], self::ACTIONS)) {
 
             // retrieve POST body
             $data = json_decode(file_get_contents('php://input'), true);
@@ -73,9 +75,6 @@ class Router {
             switch ($_GET['action']) {
                 case 'hges_update_order_attachments':
                     Order::updateAttachments($data);
-                    break;
-                case 'hges_get_attachments_list':
-                    Order::getAttachmentListJson();
                     break;
                 default:
                     wp_send_json_error(['message' => 'Invalid action']);
