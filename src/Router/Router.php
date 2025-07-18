@@ -63,7 +63,7 @@ class Router {
     {
         foreach ($this->ajaxRoutes as $action => $route) {
             $baseActionString = $route->isAdmin() ? 'wp_ajax_nopriv_' : 'wp_ajax_';
-            add_action($baseActionString . $action, [self::class, 'ajaxRouter']);
+            add_action($baseActionString . $action, [$this, 'ajaxRouter']);
         }
     }
 
@@ -114,13 +114,13 @@ class Router {
     {
         if (
             !isset($_GET['action'])
-            || !isset($this->routes[$_GET['action']])
+            || !isset($this->ajaxRoutes[$_GET['action']])
             || $this->ajaxRoutes[$_GET['action'] instanceof Route] === false
             || $this->ajaxRoutes[$_GET['action']]->getHttpMethod() !== $_SERVER['REQUEST_METHOD']
         ) {
             self::errorNotFound();
         }
-        
+
         $currentRoute = $this->ajaxRoutes[$_GET['action']];
         
         $postData = [];

@@ -69,13 +69,6 @@ class Rate
             unset($params['from']['state']);
         }
 
-        if (!empty($package['destination']['state'])) {
-            $params['to']['state'] = $package['destination']['state'];
-        } else {
-            unset($params['to']['state']);
-        }
-        
-
         $standardQuantity = 0;
         $magnumQuantity = 0;
         $containsSparkling = false;

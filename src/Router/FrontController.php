@@ -2,8 +2,10 @@
 
 namespace HGeS\Router;
 
+use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Packaging;
+use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
 
 class FrontController
@@ -70,12 +72,12 @@ class FrontController
      * @param \WP_REST_Request $request
      * @return \WP_REST_Response
      */
-    public static function getShippingRatesForOrderHtml(\WP_REST_Request $request): \WP_REST_Response
+    public static function getShippingRatesForOrderHtml(array $postData): void
     {
-        $response = new \WP_REST_Response();
-        $queryParams = $request->get_query_params();
-        if (!empty($queryParams['orderId'])) {
-            $order = wc_get_order($queryParams['orderId']);
+        $orderId = filter_input(INPUT_GET, 'orderId', FILTER_VALIDATE_INT);
+
+        if (!empty($orderId)) {
+            $order = wc_get_order($orderId);
             $rates = Rate::getShippingRates([
                 'destination' => [
                     'city' => $order->shipping_city,
@@ -110,18 +112,16 @@ class FrontController
                 ]);
             }
 
-            $response->set_data([
+            self::renderJson([
                 'success' => true,
                 'shippingRatesHtml' => $html
             ]);
-            $response->set_status(200);
         } else {
-            $response->set_data([
+            http_response_code(400);
+            self::renderJson([
                 'error' => 'Unable to retrieve shipping rates, orderId is expected in the query params.',
             ]);
-            $response->set_status(400);
         }
-        return $response;
     }
 
     public static function setOrderShippingRate(\WP_REST_Request $request): \WP_REST_Response
@@ -187,5 +187,12 @@ class FrontController
         }
 
         return $response;
+    }
+
+    public static function renderJson($data): void
+    {
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
     }
 }
