@@ -10,6 +10,16 @@ use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 
 class ProductMeta
 {
+
+    /**
+     * Initializes the admin hooks and filters for product meta management.
+     */
+    public static function init(): void
+    {
+        add_filter('woocommerce_product_class', [self::class, 'getClassNameByProductType'], 10, 2);
+    }
+
+
     /**
      * Initializes the admin hooks and filters for product meta management.
      */
