@@ -8,6 +8,7 @@ use HGeS\Admin\Products\ProductMeta;
 use HGeS\Api\CustomEndpoints;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
+use HGeS\Router\Router;
 use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\WooCommerce\Model\Order;
 use HGeS\WooCommerce\Model\Product;
@@ -26,12 +27,28 @@ use HGeS\WooCommerce\ShippingClass\BottleShippingClass;
 class App
 {
     /**
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * App constructor.
+     */
+    public function __construct()
+    {
+        $this->router = new Router();
+    }
+
+    /**
      * Run the plugin
      *
      * @return void
      */
-    public static function run(): void
+    public function run(): void
     {
+
+        $this->router->init();
+
         if (is_admin()) {
             self::runAdmin();
         }
@@ -49,6 +66,7 @@ class App
         add_action('init', function () {
             ShippingMethod::init();
         });
+        
     }
 
     /**
@@ -56,8 +74,11 @@ class App
      *
      * @return void
      */
-    public static function runAdmin(): void
+    public function runAdmin(): void
     {
+
+        $this->router->initAdmin();
+
         Scripts::initAdmin();
         Styles::initAdmin();
 
@@ -65,7 +86,6 @@ class App
         Menu::initAdmin();
         Product::initAdmin();
         ProductMeta::initAdmin();
-        Router::initAdmin();
         ShippingAddressFields::initAdmin();
         ShippingMethodRow::initAdmin();
 
@@ -74,5 +94,6 @@ class App
             SimpleBottleProduct::initAdmin();
             VariableBottleProduct::initAdmin();
         });
+
     }
 }

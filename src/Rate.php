@@ -188,6 +188,7 @@ class Rate
                 'alcoholDegree' => get_post_meta($productId, ProductMetaEnum::ALCOHOL_PERCENTAGE, true),
                 'unitValue' => $unitPriceExTax,
                 'hsCode' => get_post_meta($productId, ProductMetaEnum::HS_CODE, true),
+                'designation' => 'Okay',
                 'quantity' => $itemQuantity * $item['quantity'],
                 'currency' => get_woocommerce_currency(),
             ];
