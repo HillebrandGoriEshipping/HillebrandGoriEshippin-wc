@@ -22,6 +22,7 @@ class SimpleBottleProduct extends \WC_Product
     {
         add_filter('product_type_selector', [self::class, 'addToSelect']);
         add_filter('woocommerce_data_stores', [self::class, 'createDataStore'], 10, 1);
+        add_filter('woocommerce_data_stores', [self::class, 'createDataStore'], 10, 1);
     }
 
     /**
@@ -44,6 +45,18 @@ class SimpleBottleProduct extends \WC_Product
     {
         $types[self::PRODUCT_TYPE] = __(self::PRODUCT_TYPE_LABEL, GlobalEnum::TRANSLATION_DOMAIN);
         return $types;
+    }
+
+    /**
+     * Adds or overrides the data store class for simple product bottles in the WooCommerce data store registry.
+     *
+     * @param array $stores Existing array of WooCommerce product data stores.
+     * @return array Modified array including the data store for simple product bottles.
+     */
+    public static function createDataStore($stores)
+    {
+        $stores['product-' . self::PRODUCT_TYPE] = 'WC_Product_Data_Store_CPT';
+        return $stores;
     }
 
     /**
