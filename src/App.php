@@ -65,6 +65,7 @@ class App
         add_action('init', function () {
             ShippingMethod::init();
             VariableBottleProduct::init();
+            SimpleBottleProduct::init();
         });
         
     }
