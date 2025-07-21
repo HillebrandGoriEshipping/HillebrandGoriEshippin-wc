@@ -92,10 +92,10 @@ const orderEditPage = {
     },
     async updateShippingRate() {
         if (this.selectedShippingRateChecksum) {
-            this.selectedRate = await apiClient.patch(
+            this.selectedRate = await apiClient.post(
                 window.hges.ajaxUrl, 
                 {
-                    action: 'hges_update_order_shipping_rate',
+                    action: 'hges_set_order_shipping_rate',
                     orderId: new URLSearchParams(window.location.search).get('id'),
                     orderShippingItemId: this.currentEditingItemId,
                 }, 
@@ -104,7 +104,7 @@ const orderEditPage = {
                 },
             );
             
-            window.location.reload();
+            // window.location.reload();
         }
     },
     fileUploadedError(error, file) {

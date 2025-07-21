@@ -5,7 +5,6 @@ namespace HGeS;
 use HGeS\Admin\Menu;
 use HGeS\Admin\Order\ShippingMethodRow;
 use HGeS\Admin\Products\ProductMeta;
-use HGeS\Api\CustomEndpoints;
 use HGeS\Assets\Scripts;
 use HGeS\Assets\Styles;
 use HGeS\Router\Router;
@@ -57,7 +56,6 @@ class App
         Styles::init();
 
         ClassicUiRender::init();
-        CustomEndpoints::init();
         PickupPointsRender::init();
         ShippingAddressFields::init();
         Order::init();

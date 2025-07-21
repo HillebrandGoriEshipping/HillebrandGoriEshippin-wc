@@ -44,7 +44,8 @@ class FrontController
     /**
      * Update the given order selected pickup point
      *
-     * 
+     * @param array $data
+     * @return void
      */
     public static function setCurrentPickupPoint(array $data): void
     {
@@ -68,8 +69,8 @@ class FrontController
     /**
      * Retrieve the shipping rates for the given order
      *
-     * @param \WP_REST_Request $request
-     * @return \WP_REST_Response
+     * @param array $postData
+     * @return void
      */
     public static function getShippingRatesForOrderHtml(array $postData): void
     {
@@ -123,30 +124,30 @@ class FrontController
         }
     }
 
-    public static function setOrderShippingRate(\WP_REST_Request $request): \WP_REST_Response
+    public static function setOrderShippingRate(array $data): void
     {
-        $response = new \WP_REST_Response();
-        $bodyParams = $request->get_json_params();
-        $queryParams = $request->get_query_params();
+        $response = [];
+        $bodyParams = $data;
+        $urlParams = array_map(function ($param) {
+            return htmlspecialchars(strip_tags($param));
+        }, $_GET);
 
-        if (!empty($bodyParams['shippingRateChecksum']) && !empty($queryParams['orderId']) && !empty($queryParams['orderShippingItemId'])) {
+        if (!empty($bodyParams['shippingRateChecksum']) && !empty($urlParams['orderId']) && !empty($urlParams['orderShippingItemId'])) {
             $rate = Order::updateSelectedShippingRate(
-                intval($queryParams['orderId']),
-                intval($queryParams['orderShippingItemId']),
+                intval($urlParams['orderId']),
+                intval($urlParams['orderShippingItemId']),
                 $bodyParams['shippingRateChecksum']
             );
-            $response->set_data([
-                'success' => true,
-                'shippingRate' => $rate
-            ]);
-            $response->set_status(200);
+            $response['success'] = true;
+            $response['shippingRate'] = $rate;
         } else {
-            $response->set_data([
-                'error' => 'Unable to update shipping method, orderId and orderShippingItemId are expected in the query params and shippingRateChecksum json object is expected in the json body.',
-            ]);
-            $response->set_status(400);
+            $response['error'] = 'Unable to update shipping method, orderId and orderShippingItemId are expected in the query params and shippingRateChecksum json object is expected in the json body.';
+            
+            http_response_code(400);
+            self::renderJson($response);
+            return;
         }
-        return $response;
+        self::renderJson($response);
     }
 
     public static function getPackagingPossibilities(\WP_Rest_Request $request): \WP_REST_Response

@@ -132,7 +132,7 @@ class Order
             throw new \Exception("Order item or shipping rate not found.");
         }
         $item->set_props([
-            "name" => $rate['service'],
+            "name" => $rate['serviceName'],
             "total" => $rate['shippingPrice']['amount'],
             "total_tax" => "0",
             "taxes" => ["total" => []],
@@ -141,7 +141,7 @@ class Order
 
         $metaData = [
             "checksum" => $newShippingRateChecksum,
-            "method_title" => $rate['service'],
+            "method_title" => $rate['serviceName'],
             "method_id" => "hges_shipping",
             "customer_selected_rate" => $formerShippingRate ?? $item->get_data(),
         ];

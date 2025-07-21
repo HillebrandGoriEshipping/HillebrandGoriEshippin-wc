@@ -36,7 +36,7 @@ class Router {
                 'getShippingRatesForOrderHtml'
             ),
             'hges_set_order_shipping_rate' => new Route(
-                'PATCH',
+                'POST',
                 FrontController::class,
                 'setOrderShippingRate',
                 true
@@ -62,7 +62,15 @@ class Router {
     public function init(): void
     {
         foreach ($this->ajaxRoutes as $action => $route) {
-            $baseActionString = $route->isAdmin() ? 'wp_ajax_nopriv_' : 'wp_ajax_';
+            $baseActionString = 'wp_ajax_';
+            add_action($baseActionString . $action, [$this, 'ajaxRouter']);
+        }
+
+        $openRoutes = array_filter($this->ajaxRoutes, function ($route) {
+            return !$route->isAdmin();
+        });
+        foreach ($openRoutes as $action => $route) {
+            $baseActionString = 'wp_ajax_nopriv_';
             add_action($baseActionString . $action, [$this, 'ajaxRouter']);
         }
     }
@@ -127,7 +135,7 @@ class Router {
         if (in_array($currentRoute->getHttpMethod() , ['POST', 'PATCH', 'PUT'])) {
             $postData = json_decode(file_get_contents('php://input'), true);
         }
-
+// var_dump($currentRoute);exit;
         $class = $currentRoute->getClass();
         $actionMethod = $currentRoute->getActionMethod();
         $class::$actionMethod($postData);
