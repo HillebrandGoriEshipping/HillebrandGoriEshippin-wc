@@ -13,13 +13,12 @@ class FrontController
     /**
      * Get the pickup points
      *
-     * @param \WP_REST_Request $request
-     * @return \WP_REST_Response
+     * @param array $data
+     * @return void
      */
     public static function getPickupPoints($data): void
     {
         $urlParams = array_map(function ($param) {
-            // sanitize the input to prevent XSS attacks
             return htmlspecialchars(strip_tags($param));
         }, $_GET);
         
@@ -40,35 +39,30 @@ class FrontController
             'success' => true,
             'data' => $pickupPointsRequest['data'],
         ]);
-
-        return;
     }
 
     /**
      * Update the given order selected pickup point
      *
-     * @param \WP_REST_Request $request
-     * @return \WP_REST_Response
+     * 
      */
-    public static function setCurrentPickupPoint(\WP_REST_Request $request): \WP_REST_Response
-    { 
-        $response = new \WP_REST_Response();
-
-        $bodyParams = $request->get_json_params();
-        $queryParams = $request->get_query_params();
-        if (!empty($bodyParams['pickupPoint']) && !empty($queryParams['orderId'])) {
-            Order::setPickupPoint($queryParams['orderId'], $bodyParams['pickupPoint']);
-            $response->set_data([
-                'success' => true
-            ]);
-            $response->set_status(200);
+    public static function setCurrentPickupPoint(array $data): void
+    {
+        $response = [];
+        $bodyParams = $data;
+        $urlParams = array_map(function ($param) {
+            return htmlspecialchars(strip_tags($param));
+        }, $_GET);
+        if (!empty($bodyParams['pickupPoint']) && !empty($urlParams['orderId'])) {
+            Order::setPickupPoint($urlParams['orderId'], $bodyParams['pickupPoint']);
+            $response['success'] = true;
+            http_response_code(200);
         } else {
-            $response->set_data([
-                'error' => 'Unable to update pickup point, orderId is expected in the query params and pickupPoint json object is expected in the json body.',
-            ]);
-            $response->set_status(400);
+            $response['error'] = 'Unable to update pickup point, orderId is expected in the query params and pickupPoint json object is expected in the json body.';
+            http_response_code(400);
         }
-        return $response;
+        
+        self::renderJson($response);
     }
 
     /**

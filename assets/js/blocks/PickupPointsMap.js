@@ -117,8 +117,9 @@ const PickupPointsMap = () => {
         e.preventDefault();
         setIsLoading(true);
         await apiClient.post(
-            '/order/set-current-pickup-point',
+            window.hges.ajaxUrl,
             {
+                action: 'hges_set_current_pickup_point',
                 orderId: checkoutStore.getOrderId()
             },
             {
