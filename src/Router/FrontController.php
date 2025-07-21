@@ -150,43 +150,36 @@ class FrontController
         self::renderJson($response);
     }
 
-    public static function getPackagingPossibilities(\WP_Rest_Request $request): \WP_REST_Response
+    public static function getPackagingPossibilities($data): void
     {
-        $response = new \WP_REST_Response();
-        $queryParams = $request->get_query_params();
-        if (!empty($queryParams['orderId'])) {
-            $order = wc_get_order($queryParams['orderId'] ?? 0);
+        $response = [];
+        $urlParams = array_map(function ($param) {
+            return htmlspecialchars(strip_tags($param));
+        }, $_GET);
+
+        if (!empty($urlParams['orderId'])) {
+            $order = wc_get_order($urlParams['orderId'] ?? 0);
             if (!$order) {
-                $response->set_data([
-                    'error' => 'Order not found.',
-                ]);
-                $response->set_status(404);
-                return $response;
+                Router::errorNotFound();
+                return;
             }
 
             $products = $order->get_items();
 
             if (is_array($products)) {
                 $packagingPossibilities = Packaging::calculatePackagingPossibilities($products);
-                $response->set_data([
-                    'success' => true,
-                    'packagingPossibilities' => $packagingPossibilities
-                ]);
-                $response->set_status(200);
+                $response['success'] = true;
+                $response['packagingPossibilities'] = $packagingPossibilities;
             } else {
-                $response->set_data([
-                    'error' => 'Invalid products data format.',
-                ]);
-                $response->set_status(400);
+                $response['error'] = 'Invalid products data format.';
+                http_response_code(400);
             }
         } else {
-            $response->set_data([
-                'error' => 'Products data is required.',
-            ]);
-            $response->set_status(400);
+            $response['error'] = 'Products data is required.';
+            http_response_code(400);
         }
 
-        return $response;
+        self::renderJson($response);
     }
 
     public static function renderJson($data): void
