@@ -43,19 +43,24 @@ class Rate
                 'lastname' => $currentOrder->get_shipping_last_name(),
                 'company' => $currentOrder->get_shipping_company(),
                 'address' => $currentOrder->get_shipping_address_1(),
-                'state' => $currentOrder->get_shipping_state(),
                 'telephone' => $currentOrder->get_billing_phone(),
                 'zipCode' => $currentOrder->get_shipping_postcode(),
                 'city' => $currentOrder->get_shipping_city(),
                 'country' => $currentOrder->get_shipping_country(),
                 'email' => $currentOrder->get_billing_email(),
             ];
+            if ($currentOrder->get_shipping_state()) {
+                $toAddress['state'] = $currentOrder->get_shipping_state();
+            }
         } else {
             $toAddress = [
                 'category' => 'individual',
                 'zipCode' => $package['destination']['postcode'],
                 'city' => $package['destination']['city'],
                 'country' => $package['destination']['country'],
+
+                'telephone' => '0123456789',
+                'address' => '3 rue de la Paix',
             ];
         }
 
@@ -68,13 +73,6 @@ class Rate
         if (empty($params['from']['state'])) {
             unset($params['from']['state']);
         }
-
-        if (!empty($package['destination']['state'])) {
-            $params['to']['state'] = $package['destination']['state'];
-        } else {
-            unset($params['to']['state']);
-        }
-        
 
         $standardQuantity = 0;
         $magnumQuantity = 0;
@@ -188,6 +186,7 @@ class Rate
                 'alcoholDegree' => get_post_meta($productId, ProductMetaEnum::ALCOHOL_PERCENTAGE, true),
                 'unitValue' => $unitPriceExTax,
                 'hsCode' => get_post_meta($productId, ProductMetaEnum::HS_CODE, true),
+                'designation' => 'Okay',
                 'quantity' => $itemQuantity * $item['quantity'],
                 'currency' => get_woocommerce_currency(),
             ];
@@ -332,8 +331,8 @@ class Rate
             }
 
             $formattedShippingRates[] = [
-                'id' => $rate['service'],
-                'label' => $rate['service'],
+                'id' => $rate['serviceName'],
+                'label' => $rate['serviceName'],
                 'cost' => $totalPrice,
                 'pickupDate' => $rate['pickupDate'],
                 'deliveryMode' => $rate['deliveryMode'],

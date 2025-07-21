@@ -9,7 +9,6 @@ const orderEditPage = {
     selectedShippingRateChecksum: null,
     currentAttachments: [],
     async init() {
-        await this.loadAttachmentList();
         document.querySelectorAll('.filepond-file-input').forEach((fileInput) => {
             const fileType = fileInput.dataset.fileType;
             const fileLabel = fileInput.dataset.fileLabel || 'Attachment';
@@ -71,7 +70,7 @@ const orderEditPage = {
         if (modal) {
             modal.classList.remove('hidden');
             const currentUrlParams = new URLSearchParams(window.location.search);
-            const response = await apiClient.get('/shipping-rates', { orderId: currentUrlParams.get('id') }, {}, true);
+            const response = await apiClient.get(window.hges.ajaxUrl, { orderId: currentUrlParams.get('id'), action: 'hges_get_shipping_rates_for_order_html' });
             document.querySelector('#hges-shipping-rate-modal .shipping-rate-list').innerHTML = response.shippingRatesHtml;
             document.querySelectorAll('#hges-shipping-rate-modal .shipping-rate-list .hges-shipping-method').forEach((rateElement) => {
                 rateElement.addEventListener('click', this.onShippingRateSelected.bind(this));
@@ -93,17 +92,16 @@ const orderEditPage = {
     },
     async updateShippingRate() {
         if (this.selectedShippingRateChecksum) {
-            this.selectedRate = await apiClient.patch(
-                '/order/set-shipping-rate', 
+            this.selectedRate = await apiClient.post(
+                window.hges.ajaxUrl, 
                 {
+                    action: 'hges_set_order_shipping_rate',
                     orderId: new URLSearchParams(window.location.search).get('id'),
                     orderShippingItemId: this.currentEditingItemId,
                 }, 
                 {
                     shippingRateChecksum: this.selectedShippingRateChecksum
                 },
-                {},
-                true
             );
             
             window.location.reload();
@@ -146,18 +144,6 @@ const orderEditPage = {
             console.error('Attachments update failed', error);
         }
     },
-    async loadAttachmentList() {
-        const orderId = new URLSearchParams(window.location.search).get('id');
-        try {
-            const attachments = await apiClient.get(
-                window.hges.ajaxUrl, 
-                { action: 'hges_get_attachments_list', orderId }
-            );
-            this.currentAttachments = attachments || [];
-        } catch (error) {
-            console.error('Failed to load attachments:', error);
-        }
-    }
 };
 
 document.addEventListener('DOMContentLoaded', orderEditPage.init.bind(orderEditPage));
