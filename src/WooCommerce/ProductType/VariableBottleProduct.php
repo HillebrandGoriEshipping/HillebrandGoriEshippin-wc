@@ -11,12 +11,7 @@ class VariableBottleProduct extends \WC_Product_Variable
 
     public static function init(): void
     {
-        add_action('woocommerce_add_to_cart_handler_' . self::PRODUCT_TYPE, function () {
-            $product_id = $_REQUEST['product_id'] ?? 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-            $was_added_to_cart = self::add_to_cart_handler_variable($product_id);
-
-            return $product_id;
-        });
+        add_action('woocommerce_add_to_cart_handler_' . self::PRODUCT_TYPE, [self::class, 'add_to_cart_handler_variable'], 10, 0);
         add_action('woocommerce_' . self::PRODUCT_TYPE . '_add_to_cart', 'woocommerce_variable_add_to_cart', 30);
         add_filter('woocommerce_data_stores', [self::class, 'createDataStore'], 10, 1);
     }
@@ -27,8 +22,12 @@ class VariableBottleProduct extends \WC_Product_Variable
      * @param int $product_id The ID of the product being added to the cart.
      * @return bool True if the product was successfully added, false otherwise.
      */
-    public static function add_to_cart_handler_variable($product_id)
+    public static function add_to_cart_handler_variable()
     {
+        if (! isset($_REQUEST['product_id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            return false;
+        }
+        $product_id = $_REQUEST['product_id'];
         $variation_id = empty($_REQUEST['variation_id']) ? '' : absint(wp_unslash($_REQUEST['variation_id']));  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $quantity     = empty($_REQUEST['quantity']) ? 1 : wc_stock_amount(wp_unslash($_REQUEST['quantity']));  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $variations   = array();
@@ -104,7 +103,7 @@ class VariableBottleProduct extends \WC_Product_Variable
      */
     public static function createDataStore($stores)
     {
-        $stores['product-' . VariableBottleProduct::PRODUCT_TYPE] = 'WC_Product_Variable_Data_Store_CPT';
+        $stores['product-' . self::PRODUCT_TYPE] = 'WC_Product_Variable_Data_Store_CPT';
         return $stores;
     }
 }
