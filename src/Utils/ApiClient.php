@@ -53,7 +53,7 @@ class ApiClient
         if (!empty($urlParams)) {
             $url .= '?' . urldecode(http_build_query($urlParams));
         }
-
+    
         $response = $client->request(
             'GET',
             $url,

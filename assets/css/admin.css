@@ -83,3 +83,20 @@ table {
   font-weight: 600;
   margin: 0;
 }
+
+.marker-green {
+  color: green;
+}
+
+.marker-red {
+  color: red;
+}
+
+.filepond--drop-label.filepond--drop-label label  {
+  font-size: 0.8rem;
+}
+
+.filepond-file-input {
+  width: 100%;
+  max-width: 350px;
+}

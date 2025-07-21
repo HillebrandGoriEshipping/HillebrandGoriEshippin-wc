@@ -2,12 +2,12 @@
 
 namespace HGeS;
 
-use HGeS\Admin\Products\ProductMeta;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
+use HGeS\WooCommerce\ShippingAddressFields;
 
 class Rate
 {
@@ -34,30 +34,44 @@ class Rate
      */
     public static function prepareUrlParams(array $package): array
     {
-        $expAddress = Address::fromApi();
-
-        $params = [
-            'from' => [
-                'addressType' => 'company',
-                'zipCode' => $expAddress[0]['zipCode'],
-                'city' => $expAddress[0]['city'],
-                'country' => $expAddress[0]['country']['countryAlpha2'],
-
-            ],
-            'to' => [
-                'addressType' => 'individual',
+        $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
+        if ($currentOrder) {
+            $currentOrderShippingAddressCategory = $currentOrder->get_meta(ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::IS_COMPANY_CHECKBOX_OPTIONS['key']) ? 'company' : 'individual';
+            $toAddress = [
+                'category' => $currentOrderShippingAddressCategory,
+                'firstname' => $currentOrder->get_shipping_first_name(),
+                'lastname' => $currentOrder->get_shipping_last_name(),
+                'company' => $currentOrder->get_shipping_company(),
+                'address' => $currentOrder->get_shipping_address_1(),
+                'telephone' => $currentOrder->get_billing_phone(),
+                'zipCode' => $currentOrder->get_shipping_postcode(),
+                'city' => $currentOrder->get_shipping_city(),
+                'country' => $currentOrder->get_shipping_country(),
+                'email' => $currentOrder->get_billing_email(),
+            ];
+            if ($currentOrder->get_shipping_state()) {
+                $toAddress['state'] = $currentOrder->get_shipping_state();
+            }
+        } else {
+            $toAddress = [
+                'category' => 'individual',
                 'zipCode' => $package['destination']['postcode'],
                 'city' => $package['destination']['city'],
                 'country' => $package['destination']['country'],
-            ],
-        ];
 
-        if (!empty($expAddress[0]['stateCode'])) {
-            $params['from']['state'] = $expAddress[0]['stateCode'];
+                'telephone' => '0123456789',
+                'address' => '3 rue de la Paix',
+            ];
         }
 
-        if (!empty($package['destination']['state'])) {
-            $params['to']['state'] = $package['destination']['state'];
+        $expAddress = Address::getFavoriteAddress();
+        $params = [
+            'from' => ['addressId' => $expAddress['id']],
+            'to' => $toAddress,
+        ];
+
+        if (empty($params['from']['state'])) {
+            unset($params['from']['state']);
         }
 
         $standardQuantity = 0;
@@ -171,8 +185,9 @@ class Rate
                 'alcoholDegree' => get_post_meta($productId, ProductMetaEnum::ALCOHOL_PERCENTAGE, true),
                 'unitValue' => $unitPriceExTax,
                 'hsCode' => get_post_meta($productId, ProductMetaEnum::HS_CODE, true),
+                'designation' => 'Okay',
                 'quantity' => $itemQuantity * $item['quantity'],
-                'currency' => 'EUR',
+                'currency' => get_woocommerce_currency(),
             ];
         }
 
@@ -255,7 +270,11 @@ class Rate
                 }
             }
         }
-        error_log('Rate retrieval debug info: ' . implode(', ', $debug));
+
+        if ($debug) {
+            error_log('Rate retrieval debug info: ' . implode(', ', $debug));
+        }
+
         return $allowed;
     }
 
@@ -311,8 +330,8 @@ class Rate
             }
 
             $formattedShippingRates[] = [
-                'id' => $rate['service'],
-                'label' => $rate['service'],
+                'id' => $rate['serviceName'],
+                'label' => $rate['serviceName'],
                 'cost' => $totalPrice,
                 'pickupDate' => $rate['pickupDate'],
                 'deliveryMode' => $rate['deliveryMode'],

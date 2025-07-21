@@ -74,7 +74,9 @@ class ShippingMethod extends \WC_Shipping_Method
         } catch (\Exception $e) {
             error_log('Error calculating shipping: ' . $e->getMessage());
             \Sentry\captureException($e);
-            throw new \Exception('Error calculating shipping: ' . $e->getMessage());
-        }
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                throw new \Exception('Error calculating shipping: ' . $e->getMessage());
+            }
+        } 
     }
 }

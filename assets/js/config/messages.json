@@ -5,7 +5,9 @@
   },
   "productMeta": {
     "settingsError": "The product settings are incorrect",
-    "settingsSuccess": "The product settings are correct"
+    "settingsSuccess": "The product settings are correct",
+    "missingMetaFields": "Impossible to publish this product. Please correct or fill the missing fields",
+    "preventPublish": "You need to provide valid product settings before publishing or updating."
   },
   "settings": {
     "notEmpty": "This field cannot be empty",
@@ -13,9 +15,11 @@
     "eoriNumberError": "EORI number is invalid! Please check the format.",
     "fdaNumberError": "FDA number format must be 11 digits.",
     "carrierCountError": "You must have at least one carrier configured.",
-    "workingDaysError": "You must have at least one working day configured."
+    "workingDaysError": "You must have at least one working day configured.",
+    "integerError": "This field must be an integer"
   },
   "orderAdmin": {
-    "shippingRateNotAvailable": "The selected shipping option is not available anymore !"
+    "shippingRateNotAvailable": "The selected shipping option is not available anymore !",
+    "attachmentsMissing": "Attachments are missing for this order. Please ensure all required documents are uploaded before proceeding."
   }
 }

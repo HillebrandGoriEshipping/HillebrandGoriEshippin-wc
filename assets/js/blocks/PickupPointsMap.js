@@ -61,9 +61,10 @@ const PickupPointsMap = () => {
 
             setIsLoading(true);
             const shippingAddress = cartStore.getCustomerData().shippingAddress;
-            const pickupPointList = await apiClient.get(
-                '/pickup-points',
+            const pickupPointListRequest = await apiClient.get(
+                window.hges.ajaxUrl,
                 {
+                    action: 'hges_get_pickup_points',
                     street: shippingAddress.address_1,
                     zipCode: shippingAddress.postcode,
                     city: shippingAddress.city,
@@ -71,11 +72,10 @@ const PickupPointsMap = () => {
                     country: shippingAddress.country,
                     productCode: currentRate.pickupServiceId
                 },
-                {},
-                true
             );
 
             map.clearMarkers();
+            const pickupPointList = pickupPointListRequest.data;
             pickupPointList.forEach(pickupPoint => {
                 const options = { ...pickupPoint };
                 markerPopupTemplate.current.querySelector('.marker-popup__title').innerHTML = pickupPoint.name;
@@ -117,8 +117,9 @@ const PickupPointsMap = () => {
         e.preventDefault();
         setIsLoading(true);
         await apiClient.post(
-            '/order/set-current-pickup-point',
+            window.hges.ajaxUrl,
             {
+                action: 'hges_set_current_pickup_point',
                 orderId: checkoutStore.getOrderId()
             },
             {
