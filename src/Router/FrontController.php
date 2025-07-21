@@ -126,6 +126,7 @@ class FrontController
 
     public static function setOrderShippingRate(array $data): void
     {
+        self::checkUserCanEditOrders();
         $response = [];
         $bodyParams = $data;
         $urlParams = array_map(function ($param) {
@@ -152,6 +153,7 @@ class FrontController
 
     public static function getPackagingPossibilities($data): void
     {
+        self::checkUserCanEditOrders();
         $response = [];
         $urlParams = array_map(function ($param) {
             return htmlspecialchars(strip_tags($param));
@@ -187,5 +189,14 @@ class FrontController
         header('Content-Type: application/json');
         echo json_encode($data);
         exit;
+    }
+
+    public static function checkUserCanEditOrders(): void
+    {
+        if (!current_user_can( 'edit_shop_orders' )) {
+            http_response_code(403);
+            self::renderJson(['error' => 'Forbidden']);
+            return;
+        }
     }
 }

@@ -104,7 +104,7 @@ const orderEditPage = {
                 },
             );
             
-            // window.location.reload();
+            window.location.reload();
         }
     },
     fileUploadedError(error, file) {
