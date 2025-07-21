@@ -6,7 +6,6 @@ use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
-use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
