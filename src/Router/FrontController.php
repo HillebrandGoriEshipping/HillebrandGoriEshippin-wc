@@ -16,27 +16,32 @@ class FrontController
      * @param \WP_REST_Request $request
      * @return \WP_REST_Response
      */
-    public static function getPickupPoints(\WP_REST_Request $request): \WP_REST_Response
+    public static function getPickupPoints($data): void
     {
-        $urlParams = $request->get_query_params();
+        $urlParams = array_map(function ($param) {
+            // sanitize the input to prevent XSS attacks
+            return htmlspecialchars(strip_tags($param));
+        }, $_GET);
+        
         $pickupPointsRequest = ApiClient::get(
-            '/relay/get-chronopost-relay-points',
+            '/relay/get-access-points',
             $urlParams,
         );
-        $response = new \WP_REST_Response();
 
         if ($pickupPointsRequest['status'] !== 200) {
-            $response->set_data([
+            self::renderJson([
                 'error' => 'Unable to fetch pickup points',
             ]);
-            $response->set_status($pickupPointsRequest['status']);
-            return $response;
+            http_response_code($pickupPointsRequest['status']);
+            return;
         }
 
-        $response->set_data($pickupPointsRequest['data']);
+        self::renderJson([
+            'success' => true,
+            'data' => $pickupPointsRequest['data'],
+        ]);
 
-        $response->set_status(200);
-        return $response;
+        return;
     }
 
     /**
