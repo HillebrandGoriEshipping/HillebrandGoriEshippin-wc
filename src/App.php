@@ -61,10 +61,12 @@ class App
         PickupPointsRender::init();
         ShippingAddressFields::init();
         Order::init();
+        ProductMeta::init();
 
         // some init() calls must wait for WC to be fully loaded
         add_action('init', function () {
             ShippingMethod::init();
+            VariableBottleProduct::init();
         });
         
     }
