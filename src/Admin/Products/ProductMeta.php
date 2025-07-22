@@ -5,6 +5,7 @@ namespace HGeS\Admin\Products;
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Enums\GlobalEnum;
+use HGeS\Utils\HSCodeHelper;
 use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
 use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 
@@ -32,6 +33,7 @@ class ProductMeta
         add_action('woocommerce_save_product_variation', [self::class, 'saveVariableProductField'], 10, 2);
         add_filter('woocommerce_product_class', [self::class, 'getClassNameByProductType'], 10, 2);
         add_filter('woocommerce_product_data_tabs', [self::class, 'getGeneralTabInCustomTypes']);
+        add_action('woocommerce_product_options_shipping', [self::class, 'addShippingFields']);
     }
 
     /**
@@ -180,5 +182,23 @@ class ProductMeta
             }
         }
         return $tabs;
+    }
+
+    /**
+     * Adds custom shipping fields to the product options in WooCommerce.
+     *
+     * @return void
+     */
+    public static function addShippingFields(): void
+    {
+        $twig = Twig::getTwig();
+        $data = [
+            'product_hs_code' => get_post_meta(get_the_ID(), ProductMetaEnum::HS_CODE, true),
+            'product_appellation' => get_post_meta(get_the_ID(), ProductMetaEnum::APPELLATION, true),
+        ];
+        $isWine = HSCodeHelper::isWine($data['product_hs_code']);
+        $data['fieldsDisabled'] = $isWine ? 'disabled' : '';
+
+        echo $twig->render('admin/product/product-meta-shipping.twig', $data);
     }
 }
