@@ -1,6 +1,15 @@
 <div class="error-message {% if stillAvailable %}hidden{% endif %}" >{{ errorMessage }}</div>
-<div class="shipping-rate-estimated-delivery">Estimated delivery date : {{ shippingRate.deliveryDate }}</div>
-<div class="shipping-rate-pickup-date">Pickup date : {{ shippingRate.pickupDate }}</div>
+<div class="shipping-rate-row">
+    <div class="shipping-rate-price">{{ shippingRate.price }}</div>
+    {% if shippingRate.meta_data.priceDelta is defined %}
+        <div class="shipping-rate-price-delta">
+            <span class="marker-red dashicons dashicons-warning"></span>
+            {{ __('Price change:') }} {% if shippingRate.meta_data.priceDelta > 0 %}+{% endif %}{{ shippingRate.meta_data.priceDelta }}
+        </div>
+    {% endif %}
+</div>
+<div class="shipping-rate-estimated-delivery">{{ __('Estimated delivery date :') }} {{ shippingRate.deliveryDate }}</div>
+<div class="shipping-rate-pickup-date">{{ __('Pickup date :') }} {{ shippingRate.pickupDate }}</div>
 <button type="button" id="hges-change-shipping-rate-button" data-item-id="{{ itemId }}">{{ __('Change shipping option') }}</button>
 {% if shippingRate.requiredAttachments|length > 0 %}
 <div>

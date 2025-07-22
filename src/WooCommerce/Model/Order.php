@@ -2,9 +2,11 @@
 
 namespace HGeS\WooCommerce\Model;
 
+use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
+use HGeS\Utils\RateHelper;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -111,8 +113,12 @@ class Order
         }
     }
 
-    public static function updateSelectedShippingRate(int $orderId,int $orderShippingItemId, string $newShippingRateChecksum): ?array
+    public static function updateSelectedShippingRate(int $orderId,int $orderShippingItemId, string $newShippingRateChecksum): ?RateDto
     {
+        if (!$orderId || !$orderShippingItemId || !$newShippingRateChecksum) {
+            throw new \Exception("Invalid order ID, shipping item ID, or shipping rate checksum.");
+        }
+
         $order = wc_get_order($orderId);
         if (!$order) {
             return null;
@@ -132,19 +138,24 @@ class Order
             throw new \Exception("Order item or shipping rate not found.");
         }
         $item->set_props([
-            "name" => $rate['serviceName'],
-            "total" => $rate['shippingPrice']['amount'],
+            "name" => $rate->getServiceName(),
+            "total" => RateHelper::calculateTotal($rate),
             "total_tax" => "0",
             "taxes" => ["total" => []],
             "tax_status" => "taxable",
         ]);
 
+        
         $metaData = [
             "checksum" => $newShippingRateChecksum,
-            "method_title" => $rate['serviceName'],
-            "method_id" => "hges_shipping",
-            "customer_selected_rate" => $formerShippingRate ?? $item->get_data(),
+            "method_title" => $rate->getServiceName(),
+            "method_id" => ShippingMethod::METHOD_ID,
         ];
+
+        $customerSelectedRateExists = $item->meta_exists('customer_selected_rate');
+        if (!$customerSelectedRateExists) {
+            $metaData['customer_selected_rate'] = $formerShippingRate;
+        }
 
         foreach ($metaData as $key => $value) {
             $item->update_meta_data($key, $value);
@@ -245,6 +256,28 @@ class Order
             return $meta->key === 'checksum';
         });
 
+        return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
+    }
+
+    public static function getInitialSelectedRate($orderId): ?RateDto
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return null;
+        }
+        $item = array_pop($order->get_items('shipping'));
+
+        if (!$item 
+            || get_class($item) !== 'WC_Order_Item_Shipping'
+            || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
+        ) {
+            return null;
+        }
+
+        $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
+            return $meta->key === 'customer_selected_rate';
+        });
+        
         return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
     }
 

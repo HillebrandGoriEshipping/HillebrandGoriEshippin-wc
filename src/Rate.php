@@ -349,7 +349,7 @@ class Rate
     /**
      * Retrieves a shipping rate by its checksum.
      */
-    public static function getByChecksum(string $checksum): ?array
+    public static function getByChecksum(string $checksum): ?RateDto
     {
         $shippingRate = ApiClient::get("/v2/rates/$checksum");
 
@@ -357,7 +357,24 @@ class Rate
             return null;
         }
 
-        return $shippingRate['data'];
+        $rateArray = $shippingRate['data'] ?? null;
+        $rateDto = new RateDto();
+        if ($rateArray) {
+            $rateDto->setChecksum($rateArray['checksum']);
+            $rateDto->setServiceName($rateArray['serviceName']);
+            $rateDto->setPrices($rateArray['prices']);
+            $rateDto->setCarrier($rateArray['carrier']);
+            $rateDto->setServiceCode($rateArray['serviceCode']);
+            $rateDto->setPickupDate($rateArray['pickupDate']);
+            $rateDto->setDeliveryMode($rateArray['deliveryMode']);
+            $rateDto->setDeliveryDate($rateArray['deliveryDate']);
+            $rateDto->setRequiredAttachments($rateArray['requiredAttachments'] ?? []);
+            $rateDto->setCoast($rateArray['coast'] ?? null);
+            $rateDto->setFirstPickupDelivery($rateArray['firstPickupDelivery'] ?? null);
+        }
+
+        return $rateDto;
+
     }
 
     /**
