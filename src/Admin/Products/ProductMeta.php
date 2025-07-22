@@ -119,7 +119,6 @@ class ProductMeta
      */
     public static function saveProductFields(int $post_id): void
     {
-        // TODO: add a sanitizer
         foreach (ProductMetaEnum::getList() as $meta) {
             if (isset($_POST[$meta])) {
                 update_post_meta($post_id, $meta, $_POST[$meta]);
@@ -193,11 +192,11 @@ class ProductMeta
     {
         $twig = Twig::getTwig();
         $data = [
-            'product_hs_code' => get_post_meta(get_the_ID(), ProductMetaEnum::HS_CODE, true),
-            'product_appellation' => get_post_meta(get_the_ID(), ProductMetaEnum::APPELLATION, true),
+            'productHsCode' => get_post_meta(get_the_ID(), ProductMetaEnum::HS_CODE, true),
+            'productAppellation' => get_post_meta(get_the_ID(), ProductMetaEnum::APPELLATION, true),
         ];
-        $isWine = HSCodeHelper::isWine($data['product_hs_code']);
-        $data['fieldsDisabled'] = $isWine ? 'disabled' : '';
+        $isWine = HSCodeHelper::isWine($data['productHsCode']);
+        $data['isWine'] = $isWine;
 
         echo $twig->render('admin/product/product-meta-shipping.twig', $data);
     }

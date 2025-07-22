@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const alcoholPercentageField = document.querySelector("#_alcohol_percentage");
   const colorField = document.querySelector("#_color");
   const target = document.querySelector("#product_attributes");
+  const publishButton = document.querySelector("#publish");
+  const hsCodeField = document.querySelector("#_hs_code");
+  const selectType = document.querySelector("#product-type");
   
   loadAppellationInSelect();
 
@@ -100,9 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return bottleTypes.includes(productTypeSelect.value);
   }
 
-  const publishButton = document.querySelector("#publish");
-  const hsCodeField = document.querySelector("#_hs_code");
-  const selectType = document.querySelector("#product-type");
 
   function togglePublishButton() {
     if (!hsCodeField || !publishButton) return;
