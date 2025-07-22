@@ -13,16 +13,15 @@ use HGeS\Utils\RateHelper;
  */
 class Order
 {
-
     /**
      * The pickup point meta key used in database
      */
-    const PICKUP_POINT_META_KEY = 'hges_pickup_point';
+    public const PICKUP_POINT_META_KEY = 'hges_pickup_point';
 
-    /** 
+    /**
      * The attachments meta key used in database
      */
-    const ATTACHMENTS_META_KEY = 'hges_attachments';
+    public const ATTACHMENTS_META_KEY = 'hges_attachments';
 
     /**
      * Initialize the order hooks and filters
@@ -36,10 +35,10 @@ class Order
 
     /**
      * Update the selected pickup point for the given order
-     * 
+     *
      * @param int $orderId the ID for the woocommerce order to update
      * @param array $pickupPoint the associative array describing the pickup point
-     * 
+     *
      * @return void
      */
     public static function setPickupPoint(int $orderId, array $pickupPoint): void
@@ -113,8 +112,11 @@ class Order
         }
     }
 
-    public static function updateSelectedShippingRate(int $orderId,int $orderShippingItemId, string $newShippingRateChecksum): ?RateDto
-    {
+    public static function updateSelectedShippingRate(
+        int $orderId,
+        int $orderShippingItemId,
+        string $newShippingRateChecksum
+    ): ?RateDto {
         if (!$orderId || !$orderShippingItemId || !$newShippingRateChecksum) {
             throw new \Exception("Invalid order ID, shipping item ID, or shipping rate checksum.");
         }
@@ -145,7 +147,7 @@ class Order
             "tax_status" => "taxable",
         ]);
 
-        
+
         $metaData = [
             "checksum" => $newShippingRateChecksum,
             "method_title" => $rate->getServiceName(),
@@ -171,7 +173,7 @@ class Order
     /**
      * Check if the shipping method is still available before updating the order status.
      * triggered by the 'woocommerce_order_edit_status' action.
-     * 
+     *
      * @param int $orderId The ID of the order.
      * @param string $newStatus The new status to which the order is being updated.
      * @return bool True if the shipping method is still available, false otherwise.
@@ -180,12 +182,12 @@ class Order
     {
         if ($newStatus !== 'processing' && $newStatus !== 'completed') {
             return true;
-        }   
+        }
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
         $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
         if (!$shippingMethodStillAvailable) {
             \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
-            $url = add_query_arg( 'error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
+            $url = add_query_arg('error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
             wp_redirect($url);
             exit;
         }
@@ -195,7 +197,7 @@ class Order
     /**
      * Check if the required attachments are present before updating the order status.
      * triggered by the 'woocommerce_order_edit_status' action.
-     * 
+     *
      * @param int $orderId The ID of the order.
      * @param string $newStatus The new status to which the order is being updated.
      * @return bool True if all required attachments are present, false otherwise.
@@ -205,40 +207,40 @@ class Order
         if ($newStatus !== 'processing' && $newStatus !== 'completed') {
             return true;
         }
-        
+
         $currentShippingRate = Rate::getByChecksum(self::getShippingRateChecksum($orderId));
-        
+
         if (!$currentShippingRate) {
             \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
             $url = add_query_arg('error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
             wp_redirect($url);
             exit;
         }
-        
+
         $attachmentsRequired = $currentShippingRate['requiredAttachments'] ?? false;
         if (empty($attachmentsRequired)) {
             return true;
         }
-        
+
         $attachments = self::getAttachmentList($orderId);
         $missingAttachments = array_filter($currentShippingRate['requiredAttachments'] ?? [], function ($requiredAttachment) use ($attachments) {
             $requiredAttachmentType = $requiredAttachment['type'] ?? '';
             return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
         });
 
-        if(count($missingAttachments)) {
+        if (count($missingAttachments)) {
             \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['attachmentsMissing']);
-            $url = add_query_arg( 'error', Messages::getMessage('orderAdmin')['attachmentsMissing'], wp_get_referer());
+            $url = add_query_arg('error', Messages::getMessage('orderAdmin')['attachmentsMissing'], wp_get_referer());
             wp_redirect($url);
             exit;
         }
-        
+
         return true;
     }
 
     /**
      * Get the shipping rate checksum for a specific order and shipping item.
-     * 
+     *
      * @param int $orderId The ID of the order.
      * @return string|null The shipping rate checksum if found, otherwise null.
      */
@@ -267,7 +269,7 @@ class Order
         }
         $item = array_pop($order->get_items('shipping'));
 
-        if (!$item 
+        if (!$item
             || get_class($item) !== 'WC_Order_Item_Shipping'
             || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
         ) {
@@ -277,13 +279,13 @@ class Order
         $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
             return $meta->key === 'customer_selected_rate';
         });
-        
+
         return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
     }
 
     /**
      * Update the attachments for a specific order.
-     * 
+     *
      * @param array $data The POST body containing the order ID and attachments.
      */
     public static function updateAttachments(array $data): void
