@@ -58,16 +58,4 @@ class SimpleBottleProduct extends \WC_Product
         $stores['product-' . self::PRODUCT_TYPE] = 'WC_Product_Data_Store_CPT';
         return $stores;
     }
-
-    /**
-     * Adds or overrides the data store class for simple product bottles in the WooCommerce data store registry.
-     *
-     * @param array $stores Existing array of WooCommerce product data stores.
-     * @return array Modified array including the data store for simple product bottles.
-     */
-    public static function createDataStore($stores)
-    {
-        $stores['product-' . self::PRODUCT_TYPE] = 'WC_Product_Data_Store_CPT';
-        return $stores;
-    }
 }
