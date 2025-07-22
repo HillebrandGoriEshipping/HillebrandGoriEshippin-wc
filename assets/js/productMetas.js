@@ -3,11 +3,12 @@ import utils from "./utils.js";
 const { __ } = window.wp.i18n;
 
 document.addEventListener("DOMContentLoaded", function () {
-  const countrySelect = document.getElementById("_producing_country");
-  const appellationSelect = document.getElementById("_appellation");
-  const capacityField = document.getElementById("_capacity");
-  const alcoholPercentageField = document.getElementById("_alcohol_percentage");
-  const colorField = document.getElementById("_color");
+  const countrySelect = document.querySelector("#_producing_country");
+  const appellationSelect = document.querySelector("#appellation-select-field");
+  const appellationField = document.querySelector("#_appellation");
+  const capacityField = document.querySelector("#_capacity");
+  const alcoholPercentageField = document.querySelector("#_alcohol_percentage");
+  const colorField = document.querySelector("#_color");
   const target = document.querySelector("#product_attributes");
   
   loadAppellationInSelect();
@@ -149,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
       currentAlcoholPercentage &&
       currentColor
     ) {
-      const result = await apiClient.get("/get-hscode", {
+      const hsCode = await apiClient.get("/get-hscode", {
         appellationName: selectedAppellation,
         capacity: currentCapacity,
         alcoholDegree: currentAlcoholPercentage,
@@ -158,20 +159,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const hsCodeField = document.querySelector("#_hs_code");
 
-      if (result === "") {
+      if (hsCode) {
+        utils.showAdminNotice(
+          __(hges.messages.productMeta.settingsSuccess),
+          errorContainer,
+          "success"
+        );
+        hsCodeField.value = hsCode;
+        appellationField.value = selectedAppellation;
+      } else {
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsError),
           errorContainer,
           "error"
         );
         hsCodeField.value = "";
-      } else {
-        utils.showAdminNotice(
-          __(hges.messages.productMeta.settingsSuccess),
-          errorContainer,
-          "success"
-        );
-        hsCodeField.value = result;
       }
 
       // Recheck button state
