@@ -12,8 +12,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const target = document.querySelector("#product_attributes");
   const publishButton = document.querySelector("#publish");
   const hsCodeField = document.querySelector("#_hs_code");
-  const selectType = document.querySelector("#product-type");
-  
+  const productTypeSelect = document.querySelector("#product-type");
+  const drinkTypeSelect = document.querySelector("#_type");
+  const wineFields = document.querySelectorAll(".wine-form-field input, .wine-form-field select, .wine-form-field textarea");
+
   loadAppellationInSelect();
 
   hges.pricableProductTypes.forEach((productType) => {
@@ -104,38 +106,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  function togglePublishButton() {
-    if (!hsCodeField || !publishButton) return;
-
-      removeCustomPublishError();
-
-    // Block the button if the product is not a bottle type
-    if (!isBottleProduct()) {
-      publishButton.disabled = false;
-      publishButton.classList.remove("button-disabled");
-      publishButton.removeAttribute("title");
+  function evalProductPublishable() {
+    if (!hsCodeField || !publishButton) {
       return;
     }
 
-    if (hsCodeField.value.trim() === "") {
-      publishButton.disabled = true;
-      publishButton.classList.add("button-disabled");
-      showCustomPublishError(__(
-        hges.messages.productMeta.preventPublish,
-      ));
-    } else {
-      publishButton.disabled = false;
-      publishButton.classList.remove("button-disabled");
-      publishButton.removeAttribute("title");
+    removeCustomPublishError();
+
+    if (!isBottleProduct()) {
+      setPublishButtonEnabled(false);
+      return;
     }
+
+    setPublishButtonEnabled(hsCodeField.value.trim() !== "");
   }
 
   // Block publish/update button if HS code is empty
-  togglePublishButton();
+  evalProductPublishable();
 
   // Check every time the HS code field changes
-  hsCodeField.addEventListener("change", togglePublishButton);
-  selectType.addEventListener("change", togglePublishButton);
+  hsCodeField.addEventListener("change", evalProductPublishable);
+  productTypeSelect.addEventListener("change", evalProductPublishable);
+
+  drinkTypeSelect.addEventListener("change", evalWineFormEnabled);
+
+  function evalWineFormEnabled() {
+    const isWineProduct = (['still', 'sparkling']).includes(drinkTypeSelect.value);
+    wineFields.forEach((field) => {
+      if (isWineProduct) {
+        field.removeAttribute("disabled");
+      } else {
+        field.setAttribute("disabled", "disabled");
+      }
+    });
+  }
 
   async function checkHsCode() {
     const currentCapacity = capacityField.value;
@@ -177,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Recheck button state
-      togglePublishButton();
+      evalProductPublishable();
     }
   }
 
@@ -205,4 +209,19 @@ document.addEventListener("DOMContentLoaded", function () {
       existingNotice.remove();
     }
   }
+
+  function setPublishButtonEnabled(enabled) {
+    if (publishButton) {
+      if (!enabled) {
+        publishButton.disabled = true;
+        publishButton.classList.add("button-disabled");
+        showCustomPublishError(__(hges.messages.productMeta.preventPublish));
+      } else {
+        publishButton.disabled = false;
+        publishButton.classList.remove("button-disabled");
+        publishButton.removeAttribute("title");
+      }
+    }
+  }
 });
+  
