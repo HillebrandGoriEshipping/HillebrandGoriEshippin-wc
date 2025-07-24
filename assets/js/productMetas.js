@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const productTypeSelect = document.querySelector("#product-type");
   const drinkTypeSelect = document.querySelector("#_type");
   const wineFields = document.querySelectorAll(".wine-form-field input, .wine-form-field select, .wine-form-field textarea");
-
   loadAppellationInSelect();
 
   hges.pricableProductTypes.forEach((productType) => {
@@ -78,12 +77,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const appellations = result;
         const currentValue =
           appellationSelect.dataset.savedValue || appellationSelect.value;
-        // Clear the existing options
         appellationSelect.innerHTML = "";
-        // Populate the appellation select with new options
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = __("Select an appellation");
+        appellationSelect.appendChild(defaultOption);
+        
         appellations.forEach((appellation) => {
           const option = document.createElement("option");
-          // encode the appelation value to be URL safe
           option.value = appellation;
           option.textContent = appellation;
           if (appellation === currentValue) {
@@ -91,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           appellationSelect.appendChild(option);
         });
-        // Enable the appellation select
+
         appellationSelect.disabled = false;
       }
     }
@@ -121,8 +123,8 @@ document.addEventListener("DOMContentLoaded", function () {
     setPublishButtonEnabled(hsCodeField.value.trim() !== "");
   }
 
-  // Block publish/update button if HS code is empty
   evalProductPublishable();
+  evalWineFormEnabled();
 
   // Check every time the HS code field changes
   hsCodeField.addEventListener("change", evalProductPublishable);
@@ -134,11 +136,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const isWineProduct = (['still', 'sparkling']).includes(drinkTypeSelect.value);
     wineFields.forEach((field) => {
       if (isWineProduct) {
+        setAppellationFieldsEnabled(false);
         field.removeAttribute("disabled");
       } else {
+        setAppellationFieldsEnabled(true);
         field.setAttribute("disabled", "disabled");
       }
     });
+  }
+
+  function setAppellationFieldsEnabled(enabled) {
+    if (enabled) {
+      appellationField.closest(".form-field").style.display = "block";
+      hsCodeField.closest(".form-field").style.display = "block";
+    } else {
+      appellationField.closest(".form-field").style.display = "none";
+      hsCodeField.closest(".form-field").style.display = "none";
+    }
   }
 
   async function checkHsCode() {

@@ -190,6 +190,10 @@ class ProductMeta
      */
     public static function addShippingFields(): void
     {
+        if (in_array(wc_get_product(get_the_ID())->get_type(), [SimpleBottleProduct::PRODUCT_TYPE, VariableBottleProduct::PRODUCT_TYPE])) {
+            return;
+        }
+
         $twig = Twig::getTwig();
         $data = [
             'productHsCode' => get_post_meta(get_the_ID(), ProductMetaEnum::HS_CODE, true),

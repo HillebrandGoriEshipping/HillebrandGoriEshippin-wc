@@ -1,10 +1,7 @@
-{% if isWine %}
-	<input type="hidden" name="{{ hgesProductMeta('HS_CODE') }}" id="{{ hgesProductMeta('HS_CODE') }}" value="{{ productHsCode }}" />
-	<input type="hidden" name="{{ hgesProductMeta('APPELLATION') }}" id="{{ hgesProductMeta('APPELLATION') }}" value="{{ productAppellation }}" />
 
-{% else %}
 
-<div class="options_group">
+<div class="options_group hges_shipping_fieldset">
+
 	<p class="form-field shipping_class_field">
 		<label for="{{ hgesProductMeta('HS_CODE') }}">HS Code</label>
 			<input type="text" class="short" name="{{ hgesProductMeta('HS_CODE') }}" id="{{ hgesProductMeta('HS_CODE') }}" value="{{ productHsCode }}" placeholder="Enter HS Code" />
@@ -17,4 +14,3 @@
 	</p>
 </div>
         
-{% endif %}

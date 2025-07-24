@@ -85,22 +85,34 @@
         />
     </p>
 
-   <p class="form-field wine-form-field">
-    <label for="{{ hgesProductMeta('PRODUCING_COUNTRY') }}">{{ __('Producing country') }}</label>
-    <select id="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" name="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" class="short">
-        {% for code, country in producingCountries %}
-            <option value="{{ code }}" {{ code == productMeta[hgesProductMeta('PRODUCING_COUNTRY')] ? 'selected' : '' }}>
-                {{ country }}
-            </option>
-        {% endfor %}
-    </select>
-</p>
+    <p class="form-field wine-form-field">
+        <label for="{{ hgesProductMeta('PRODUCING_COUNTRY') }}">{{ __('Producing country') }}</label>
+        <select id="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" name="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" class="short">
+            {% for code, country in producingCountries %}
+                <option value="{{ code }}" {{ code == productMeta[hgesProductMeta('PRODUCING_COUNTRY')] ? 'selected' : '' }}>
+                    {{ country }}
+                </option>
+            {% endfor %}
+        </select>
+    </p>
 
-<p class="form-field wine-form-field">
-    <label for="appellation-select-field">{{ __('Appellation') }}</label>
-    <select id="appellation-select-field" data-saved-value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" class="short"></select>
-</p>
+    <p class="form-field wine-form-field">
+        <label for="appellation-select-field">{{ __('Appellation') }}</label>
+        <select id="appellation-select-field" data-saved-value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" class="short"></select>
+    </p>
 
-<div id="error-container"></div>
+    <p class="form-field">
+        <textarea name="{{ hgesProductMeta('APPELLATION') }}" id="{{ hgesProductMeta('APPELLATION') }}" />{{ productMeta[hgesProductMeta('APPELLATION')] }}</textarea>
+    </p>
+
+    <p class="form-field">
+        <label for="appellation-select-field">{{ __('HS Code') }}</label>
+        <input type="text" name="{{ hgesProductMeta('HS_CODE') }}" id="{{ hgesProductMeta('HS_CODE') }}" value="{{ productMeta[hgesProductMeta('HS_CODE')] }}" class="short"/>
+    </p>
+
+    
+    
+
+    <div id="error-container"></div>
 
 </div>
