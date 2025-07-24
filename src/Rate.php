@@ -164,7 +164,7 @@ class Rate
                 'currency' => get_woocommerce_currency(),
             ];
 
-            if (get_post_meta($productId, ProductMetaEnum::TYPE, true) === 'still' || get_post_meta($productId, ProductMetaEnum::TYPE, true) === 'sparkling') {
+            if (get_post_meta($productId, ProductMetaEnum::TYPE, true) === ProductMetaEnum::STILL || get_post_meta($productId, ProductMetaEnum::TYPE, true) === ProductMetaEnum::SPARKLING) {
                 $details[count($details) - 1]['vintage'] = get_post_meta($productId, ProductMetaEnum::VINTAGE_YEAR, true);
                 $details[count($details) - 1]['color'] = get_post_meta($productId, ProductMetaEnum::COLOR, true);
             }
