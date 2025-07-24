@@ -110,9 +110,10 @@ class Order
             return;
         }
 
-        foreach ($pickupPoint as $key => $value) {
-            $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
-        }
+        // foreach ($pickupPoint as $key => $value) {
+        //     $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
+        // }
+        $order->update_meta_data(self::PICKUP_POINT_META_KEY, $pickupPoint);
     }
 
     public static function updateSelectedShippingRate(int $orderId, int $orderShippingItemId, string $newShippingRateChecksum): ?array
@@ -244,6 +245,7 @@ class Order
         if (!$order) {
             return null;
         }
+
         $item = array_pop($order->get_items('shipping'));
         if (!$item || get_class($item) !== 'WC_Order_Item_Shipping' || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID) {
             return null;
@@ -262,128 +264,51 @@ class Order
             return;
         }
 
-        $totalNbrOfStandardBottle = 0;
-        $totalNbrOfMagnumBottle = 0;
-
-        foreach ($order->get_items() as $item_id => $item) {
-            $productId = $item->get_product_id();
-
-            $nbrOfBottle = get_post_meta($productId, ProductMetaEnum::NUMBER_OF_BOTTLE, true);
-            $bottleSize = get_post_meta($productId, ProductMetaEnum::SIZE_OF_BOTTLE, true);
-
-            if ($bottleSize === 'magnum') {
-                $totalNbrOfMagnumBottle += $nbrOfBottle * $item->get_quantity();
-            } else {
-                $totalNbrOfStandardBottle += $nbrOfBottle * $item->get_quantity();
-            }
-        }
-
-        $totalNbrOfBottle = $totalNbrOfStandardBottle + $totalNbrOfMagnumBottle;
-
-        //get expeditor address
-        $senderAddress = Address::fromApi();
-        if (!$senderAddress) {
-            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['senderAddressNotFound']);
-            return;
-        }
-        $senderAddress = $senderAddress[0];
-
-        $expAddress = [
-            "addressType" => $senderAddress['clientType'],
-            "company" => $senderAddress['company'] ?? 'Hillebrand Gori', // dynamize
-            "contact" => $senderAddress['firstname'] . ' ' . $senderAddress['lastname'],
-            "telephone" => $senderAddress['telephone'] ?? '',
-            "address" => $senderAddress['address'],
-            "zipCode" => $senderAddress['zipCode'],
-            "city" => $senderAddress['city'],
-            "country" => $senderAddress['country']['countryAlpha2'],
-            "vatNumber" => get_option(OptionEnum::HGES_VAT_NUMBER) ?? '',
-        ];
-
         //get shipping address
         $shippingAddress = $order->get_address('shipping');
 
         $destAddress = [
-            "addressType" => "individual", //dynamize
-            "company" => "none", // dynamize
-            "contact" => $shippingAddress['first_name'] . ' ' . $shippingAddress['last_name'],
+            "category" => "individual", //dynamize
+            "firstname" => $shippingAddress['first_name'] ?? '',
+            "lastname" => $shippingAddress['last_name'] ?? '',
+            "email" => $order->get_billing_email() ?? '',
             "telephone" => $order->get_billing_phone() ?? '',
             "address" => $shippingAddress['address_1'] . ' ' . $shippingAddress['address_2'],
+            "country" => $shippingAddress['country'],
             "zipCode" => $shippingAddress['postcode'],
             "city" => $shippingAddress['city'],
-            "country" => $shippingAddress['country'],
-            "email" => $order->get_billing_email() ?? '',
         ];
-
-        $rawPackages = Packaging::calculatePackagingPossibilities($order->get_items());
-
-        $packageGroups = [];
-
-        foreach (['bottle', 'magnum'] as $type) {
-            foreach ($rawPackages[$type] as $pack) {
-                $key = implode('-', [
-                    $pack['weight']['still'], // ou 'sparkling'
-                    $pack['width'],
-                    $pack['height'],
-                    $pack['length']
-                ]);
-
-                if (!isset($packageGroups[$key])) {
-                    $packageGroups[$key] = [
-                        'nb' => 1,
-                        'weight' => $pack['weight']['still'],
-                        'width' => $pack['width'],
-                        'height' => $pack['height'],
-                        'length' => $pack['length'],
-                    ];
-                } else {
-                    $packageGroups[$key]['nb']++;
-                }
-            }
-        }
-
-        $packages = array_values($packageGroups);
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
 
-        $carrier = [
-            "pickupDate" => $rate['pickupDate'],
-            "name" => $rate['carrier'],
-            "service" => $rate['service'],
-            "price" => 25.00, //TODO: $rate['prices']['shippingPrice']['amountAllIn'],
-            "currency" => $rate['prices']['shippingPrice']['currency'],
-            "local" => $rate['local'] ?? null,
-            "cutoff" => $rate['cutoff'],
-            "pickupTime" => $rate['pickupTime'],
-            "deliveryDate" => $rate['deliveryDate'],
-            "deliveryTime" => $rate['deliveryTime'],
-            "pickupAccessDelay" => $rate['pickupAccessDelay'] ?? 0,
-            "saturdayDelivery" => $rate['saturdayDelivery'] ?? null,
-            "guaranteedDelay" => $rate['guaranteedDelay'] ?? 0
-        ];
+        $prices = $rate['prices'];
 
-        $minHour = get_option(OptionEnum::HGES_MINHOUR) . ':00';
-        $cutOff = get_option(OptionEnum::HGES_CUTOFF) . ':00';
-        $totalValue = $order->get_subtotal();
+        $optionalPrices = [];
+        foreach ($prices as $key => $price) {
+            if ($key !== 'shippingPrice' && (!isset($price['required']) || $price['required'] === false)) {
+                $optionalPrices[] = $price['key'];
+            }
+        }
 
         $params = [
-            "expAddress" => $expAddress,
-            "destAddress" => $destAddress,
-            "packages" => $packages,
-            "carrier" => $carrier,
-            "nbBottles" => $totalNbrOfStandardBottle,
-            "nbMagnum" => $totalNbrOfMagnumBottle,
-            "minHour" => $minHour,
-            "cutoff" => $cutOff,
-            "totalValue" => $totalValue,
-            "wineType" => "wine",
+            "checksum" => $rate['checksum'],
+            "to" => $destAddress,
+            "optionalPrices" => $optionalPrices
         ];
 
+        $pickupPoint = $order->get_meta(self::PICKUP_POINT_META_KEY, true);
+
+        if (is_array($pickupPoint) && !empty($pickupPoint)) {
+            $params['pickupPoint'] = $pickupPoint;
+        }
+
         try {
-            // $response = ApiClient::post('/shipment/create', $params);
-            $response = ApiClient::post('/v2/shipments', ["checksum" => $shippingRateChecksum]);
+            error_log('Payload envoyé : ' . json_encode($params, JSON_PRETTY_PRINT));
+            $response = ApiClient::post('/v2/shipments', $params);
+            error_log('🟢 Réponse API : ' . print_r($response, true));
         } catch (\Exception $e) {
-            echo 'Erreur API : ' . $e->getMessage();
+            error_log('❌ Erreur API createShipment: ' . $e->getMessage());
+            error_log('❌ Trace : ' . $e->getTraceAsString());
         }
     }
 

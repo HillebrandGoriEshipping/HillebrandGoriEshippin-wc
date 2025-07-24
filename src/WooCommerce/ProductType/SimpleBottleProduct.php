@@ -22,7 +22,6 @@ class SimpleBottleProduct extends \WC_Product
     {
         add_filter('product_type_selector', [self::class, 'addToSelect']);
         add_filter('woocommerce_data_stores', [self::class, 'createDataStore'], 10, 1);
-        add_filter('woocommerce_data_stores', [self::class, 'createDataStore'], 10, 1);
     }
 
     /**

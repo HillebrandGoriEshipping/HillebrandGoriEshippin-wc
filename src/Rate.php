@@ -35,6 +35,7 @@ class Rate
     public static function prepareUrlParams(array $package): array
     {
         $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
+        //TODO: currentOrder is not always set, especially when called from the cart page => $to is not valid
         if ($currentOrder) {
             $currentOrderShippingAddressCategory = $currentOrder->get_meta(ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::IS_COMPANY_CHECKBOX_OPTIONS['key']) ? 'company' : 'individual';
             $toAddress = [
@@ -58,13 +59,15 @@ class Rate
                 'zipCode' => $package['destination']['postcode'],
                 'city' => $package['destination']['city'],
                 'country' => $package['destination']['country'],
-
+                'firstname' => 'Test',
+                'lastname' => 'Testname',
                 'telephone' => '0123456789',
                 'address' => '3 rue de la Paix',
             ];
         }
 
         $expAddress = Address::getFavoriteAddress();
+
         $params = [
             'from' => ['addressId' => $expAddress['id']],
             'to' => $toAddress,
@@ -174,7 +177,7 @@ class Rate
 
         $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
         $params['preferredCarrier'] = $carrierList;
-
+        // dump($params); // Debugging line, can be removed later
         return $params;
     }
 
