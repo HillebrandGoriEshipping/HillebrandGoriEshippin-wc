@@ -2,72 +2,108 @@ import apiClient from "./apiClient.js";
 import utils from "./utils.js";
 const { __ } = window.wp.i18n;
 
-document.addEventListener("DOMContentLoaded", function () {
-  const countrySelect = document.querySelector("#_producing_country");
-  const appellationSelect = document.querySelector("#appellation-select-field");
-  const appellationField = document.querySelector("#_appellation");
-  const capacityField = document.querySelector("#_capacity");
-  const alcoholPercentageField = document.querySelector("#_alcohol_percentage");
-  const colorField = document.querySelector("#_color");
-  const target = document.querySelector("#product_attributes");
-  const publishButton = document.querySelector("#publish");
-  const hsCodeField = document.querySelector("#_hs_code");
-  const productTypeSelect = document.querySelector("#product-type");
-  const drinkTypeSelect = document.querySelector("#_type");
-  const wineFields = document.querySelectorAll(".wine-form-field input, .wine-form-field select, .wine-form-field textarea");
-  loadAppellationInSelect();
+const productMetaModule = {
+  alcoholPercentageField: null,
+  appellationField: null,
+  appellationSelect: null,
+  capacityField: null,
+  colorField: null,
+  countrySelect: null,
+  drinkTypeSelect: null,
+  existingNotice: null,
+  hsCodeField: null,
+  productTypeSelect: null,
+  publishButton: null,
+  tabs: null,
+  target: null,
+  variationCheckbox: null,
+  wineFields: null,
+  init() {
+    this.countrySelect = document.querySelector("#_producing_country");
+    this.appellationSelect = document.querySelector("#appellation-select-field");
+    this.appellationField = document.querySelector("#_appellation");
+    this.capacityField = document.querySelector("#_capacity");
+    this.alcoholPercentageField = document.querySelector("#_alcohol_percentage");
+    this.colorField = document.querySelector("#_color");
+    this.target = document.querySelector("#product_attributes");
+    this.publishButton = document.querySelector("#publish");
+    this.hsCodeField = document.querySelector("#_hs_code");
+    this.productTypeSelect = document.querySelector("#product-type");
+    this.drinkTypeSelect = document.querySelector("#_type");
+    this.wineFields = document.querySelectorAll(".wine-form-field input, .wine-form-field select, .wine-form-field textarea");
+    this.productTypeSelect = document.querySelector("#product-type");
+    this.tabs = document.querySelectorAll(".attribute_tab");
+    this.existingNotice = document.querySelector("#hges-custom-notice");
+    this.variationCheckbox = document.querySelectorAll(".enable_variation");
+    this.initEventListeners();
 
-  hges.pricableProductTypes.forEach((productType) => {
-    document.querySelector('.options_group.pricing').classList.add('show_if_' + productType);
-  });
-  
-  const mutationObserver = new MutationObserver((mutationsList, observer) => {
-    for (const mutation of mutationsList) {
-      if (mutation.type === "childList" || mutation.type === "attributes") {
-        evalUseInVariationCheckboxDisplay();
-      }
-    }
-  });
-
-  const tabs = document.querySelectorAll(".attribute_tab");
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", function () {
-      evalUseInVariationCheckboxDisplay();
+    hges.pricableProductTypes.forEach((productType) => {
+      document.querySelector('.options_group.pricing').classList.add('show_if_' + productType);
     });
-  });
 
-  mutationObserver.observe(target, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["class", "style"]
-  });
+    this.evalProductPublishable();
+    this.evalWineFormEnabled();
+    this.loadAppellationInSelect();
+  },
+  initEventListeners() {
+    if (this.countrySelect) {
+      this.countrySelect.addEventListener("change", this.loadAppellationInSelect.bind(this));
+    }
 
-  countrySelect.addEventListener("change", function () {
-    loadAppellationInSelect();
-  });
+    if (this.appellationSelect) {
+      console.log("appellationSelect", this.appellationSelect);
+      this.appellationSelect.addEventListener("change", this.checkHsCode.bind(this));
+    }
 
-  appellationSelect.addEventListener("change", function () {
-    checkHsCode();
-  });
+    if (this.hsCodeField && this.productTypeSelect) {
+      this.hsCodeField.addEventListener("change", this.evalProductPublishable.bind(this));
+      this.productTypeSelect.addEventListener("change", this.evalProductPublishable.bind(this));
+    }
 
-  function evalUseInVariationCheckboxDisplay() {
-    const productTypeSelect = document.getElementById("product-type");
-    const variationCheckbox = document.querySelectorAll(".enable_variation");
+    if (this.drinkTypeSelect) {
+      this.drinkTypeSelect.addEventListener("change", this.evalWineFormEnabled.bind(this));
+    }
 
-    if (hges.variableProductTypes.indexOf(productTypeSelect.value) > -1) {
+    this.evalUseInVariationCheckboxDisplay();
+
+    const mutationObserver = new MutationObserver((mutationsList, observer) => {
+      for (const mutation of mutationsList) {
+        if (mutation.type === "childList" || mutation.type === "attributes") {
+          this.evalUseInVariationCheckboxDisplay();
+        }
+      }
+    });
+
+    mutationObserver.observe(this.target, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class", "style"]
+    });
+
+    this.tabs.forEach((tab) => {
+      tab.addEventListener("click", function () {
+        this.evalUseInVariationCheckboxDisplay();
+      }.bind(this));
+    });
+  },
+  evalUseInVariationCheckboxDisplay() {
+    if (hges.variableProductTypes.includes(this.productTypeSelect.value)) {
       setTimeout(() => {
-        for (const checkbox of variationCheckbox) {
+        for (const checkbox of this.variationCheckbox) {
           checkbox.style.display = "block";
           checkbox.querySelector('input').checked = true;
         }
       }, 500);
+    } else {
+      for (const checkbox of this.variationCheckbox) {
+        checkbox.style.display = "none";
+        checkbox.querySelector('input').checked = false;
+      }
     }
-  }
-
-  async function loadAppellationInSelect() {
-    const selectedCountry = countrySelect.value;
+  },
+  async loadAppellationInSelect() {
+    const selectedCountry = this.countrySelect.value;
     if (selectedCountry) {
       const result = await apiClient.get("/get-appellations", {
         producingCountry: selectedCountry,
@@ -75,15 +111,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (result) {
         const appellations = result;
-        const currentValue =
-          appellationSelect.dataset.savedValue || appellationSelect.value;
-        appellationSelect.innerHTML = "";
+        const currentValue = this.appellationSelect.dataset.savedValue || this.appellationSelect.value;
+        this.appellationSelect.innerHTML = "";
 
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
         defaultOption.textContent = __("Select an appellation");
-        appellationSelect.appendChild(defaultOption);
-        
+        this.appellationSelect.appendChild(defaultOption);
+
         appellations.forEach((appellation) => {
           const option = document.createElement("option");
           option.value = appellation;
@@ -91,75 +126,59 @@ document.addEventListener("DOMContentLoaded", function () {
           if (appellation === currentValue) {
             option.selected = true;
           }
-          appellationSelect.appendChild(option);
+          this.appellationSelect.appendChild(option);
         });
 
-        appellationSelect.disabled = false;
+        this.appellationSelect.disabled = false;
       }
     }
-  }
-
-  function isBottleProduct() {
-    const productTypeSelect = document.querySelector("#product-type");
-    if (!productTypeSelect) return false;
+  },
+  isBottleProduct() {
+    if (!this.productTypeSelect) return false;
 
     const bottleTypes = ["bottle-simple", "bottle-variable"];
-    return bottleTypes.includes(productTypeSelect.value);
-  }
-
-
-  function evalProductPublishable() {
-    if (!hsCodeField || !publishButton) {
+    return bottleTypes.includes(this.productTypeSelect.value);
+  },
+  evalProductPublishable() {
+    if (!this.hsCodeField || !this.publishButton) {
       return;
     }
 
-    removeCustomPublishError();
+    this.removeCustomPublishError();
 
-    if (!isBottleProduct()) {
-      setPublishButtonEnabled(false);
+    if (!this.isBottleProduct()) {
+      this.setPublishButtonEnabled(false);
       return;
     }
 
-    setPublishButtonEnabled(hsCodeField.value.trim() !== "");
-  }
-
-  evalProductPublishable();
-  evalWineFormEnabled();
-
-  // Check every time the HS code field changes
-  hsCodeField.addEventListener("change", evalProductPublishable);
-  productTypeSelect.addEventListener("change", evalProductPublishable);
-
-  drinkTypeSelect.addEventListener("change", evalWineFormEnabled);
-
-  function evalWineFormEnabled() {
-    const isWineProduct = (['still', 'sparkling']).includes(drinkTypeSelect.value);
-    wineFields.forEach((field) => {
+    this.setPublishButtonEnabled(this.hsCodeField.value.trim() !== "");
+  },
+  evalWineFormEnabled() {
+    const isWineProduct = (['still', 'sparkling']).includes(this.drinkTypeSelect.value);
+    this.setAppellationFieldsEnabled(!isWineProduct);
+    this.wineFields.forEach((field) => {
       if (isWineProduct) {
-        setAppellationFieldsEnabled(false);
         field.removeAttribute("disabled");
       } else {
-        setAppellationFieldsEnabled(true);
         field.setAttribute("disabled", "disabled");
       }
     });
-  }
-
-  function setAppellationFieldsEnabled(enabled) {
+  },
+  setAppellationFieldsEnabled(enabled) {
     if (enabled) {
-      appellationField.closest(".form-field").style.display = "block";
-      hsCodeField.closest(".form-field").style.display = "block";
+      this.appellationField.closest(".form-field").style.display = "block";
+      this.hsCodeField.closest(".form-field").style.display = "block";
     } else {
-      appellationField.closest(".form-field").style.display = "none";
-      hsCodeField.closest(".form-field").style.display = "none";
+      this.appellationField.closest(".form-field").style.display = "none";
+      this.hsCodeField.closest(".form-field").style.display = "none";
     }
-  }
-
-  async function checkHsCode() {
-    const currentCapacity = capacityField.value;
-    const currentAlcoholPercentage = alcoholPercentageField.value;
-    const currentColor = colorField.value;
-    const selectedAppellation = appellationSelect.value;
+  },
+  async checkHsCode() {
+    
+    const currentCapacity = this.capacityField.value;
+    const currentAlcoholPercentage = this.alcoholPercentageField.value;
+    const currentColor = this.colorField.value;
+    const selectedAppellation = this.appellationSelect.value;
     const errorContainer = document.querySelector("#error-container");
 
     if (
@@ -175,32 +194,28 @@ document.addEventListener("DOMContentLoaded", function () {
         color: currentColor,
       });
 
-      const hsCodeField = document.querySelector("#_hs_code");
-
       if (hsCode) {
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsSuccess),
           errorContainer,
           "success"
         );
-        hsCodeField.value = hsCode;
-        appellationField.value = selectedAppellation;
+        this.hsCodeField.value = hsCode;
+        this.appellationField.value = selectedAppellation;
       } else {
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsError),
           errorContainer,
           "error"
         );
-        hsCodeField.value = "";
+        this.hsCodeField.value = "";
       }
 
       // Recheck button state
-      evalProductPublishable();
+      this.evalProductPublishable();
     }
-  }
-
-  function showCustomPublishError(message) {
-    let existingNotice = document.querySelector("#hges-custom-notice");
+  },
+  showCustomPublishError(message) {
 
     if (!existingNotice) {
       const notice = document.createElement("div");
@@ -215,27 +230,26 @@ document.addEventListener("DOMContentLoaded", function () {
         button.parentNode.insertBefore(notice, button);
       }
     }
-  }
-
-  function removeCustomPublishError() {
-    const existingNotice = document.querySelector("#hges-custom-notice");
-    if (existingNotice) {
-      existingNotice.remove();
+  },
+  removeCustomPublishError() {
+    if (this.existingNotice) {
+      this.existingNotice.remove();
+      this.existingNotice = null;
     }
-  }
-
-  function setPublishButtonEnabled(enabled) {
-    if (publishButton) {
+  },
+  setPublishButtonEnabled(enabled) {
+    if (this.publishButton) {
       if (!enabled) {
-        publishButton.disabled = true;
-        publishButton.classList.add("button-disabled");
-        showCustomPublishError(__(hges.messages.productMeta.preventPublish));
+        this.publishButton.disabled = true;
+        this.publishButton.classList.add("button-disabled");
+        this.showCustomPublishError(__(hges.messages.productMeta.preventPublish));
       } else {
-        publishButton.disabled = false;
-        publishButton.classList.remove("button-disabled");
-        publishButton.removeAttribute("title");
+        this.publishButton.disabled = false;
+        this.publishButton.classList.remove("button-disabled");
+        this.publishButton.removeAttribute("title");
       }
     }
   }
-});
-  
+}
+
+document.addEventListener("DOMContentLoaded", productMetaModule.init.bind(productMetaModule));

@@ -121,7 +121,10 @@ class ProductMeta
     {
         foreach (ProductMetaEnum::getList() as $meta) {
             if (isset($_POST[$meta])) {
-                update_post_meta($post_id, $meta, $_POST[$meta]);
+                $value = sanitize_text_field($_POST[$meta]);
+                update_post_meta($post_id, $meta, $value);
+            } else {
+                delete_post_meta($post_id, $meta);
             }
         }
     }
