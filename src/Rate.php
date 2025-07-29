@@ -75,35 +75,11 @@ class Rate
             unset($params['from']['state']);
         }
 
-        $standardQuantity = 0;
-        $magnumQuantity = 0;
         $containsSparkling = false;
 
         foreach ($package['contents'] as $item) {
             $productId = $item['product_id'];
-            $variationId = $item['variation_id'];
-
-            $itemQuantity = get_post_meta($productId, ProductMetaEnum::NUMBER_OF_BOTTLE, true);
-            $bottleSize = get_post_meta($productId, ProductMetaEnum::SIZE_OF_BOTTLE, true);
             $productType = get_post_meta($productId, ProductMetaEnum::TYPE, true);
-
-            if ($item['variation_id'] !== 0) {
-                $itemQuantity = get_post_meta($variationId, '_variation_quantity', true);
-            }
-
-            if ($itemQuantity === '') {
-                $itemQuantity = $item['quantity'];
-            } else {
-                $itemQuantity = (int) $itemQuantity;
-            }
-
-            $totalItemQuantity = $itemQuantity * $item['quantity'];
-
-            if ($bottleSize === 'magnum') {
-                $magnumQuantity += $totalItemQuantity;
-            } else {
-                $standardQuantity += $totalItemQuantity;
-            }
 
             if ($productType === 'sparkling') {
                 $containsSparkling = true;
@@ -111,9 +87,8 @@ class Rate
         }
 
         try {
-
             $packageList = Packaging::calculatePackagingPossibilities($package['contents']);
-            
+
             $packageParam = [];
 
             if (empty($packageList)) {
@@ -131,7 +106,6 @@ class Rate
                 }
             }
             $params['packages'] = $packageParam;
-
         } catch (\Exception $th) {
             \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
@@ -160,7 +134,6 @@ class Rate
         $params['pickupDate'] = $pickupDate->format('Y-m-d');
         $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
-        $params['nbBottles'] = $magnumQuantity + $standardQuantity;
 
         $details = [];
 
@@ -191,6 +164,11 @@ class Rate
                 'quantity' => $itemQuantity * $item['quantity'],
                 'currency' => get_woocommerce_currency(),
             ];
+
+            if (get_post_meta($productId, ProductMetaEnum::TYPE, true) === ProductMetaEnum::STILL || get_post_meta($productId, ProductMetaEnum::TYPE, true) === ProductMetaEnum::SPARKLING) {
+                $details[count($details) - 1]['vintage'] = get_post_meta($productId, ProductMetaEnum::VINTAGE_YEAR, true);
+                $details[count($details) - 1]['color'] = get_post_meta($productId, ProductMetaEnum::COLOR, true);
+            }
         }
 
         $params['details'] = $details;
@@ -241,7 +219,7 @@ class Rate
     {
         $allowed = true;
         $debug = [];
-        
+
         // do not attempt retrieving rates if current action is "add-to-cart"
         if (
             !empty($_GET['add-to-cart'])

@@ -15,6 +15,9 @@ class ProductMetaEnum implements EnumInterface
     const APPELLATION = "_appellation";
     const HS_CODE = "_hs_code";
 
+    const STILL = "still";
+    const SPARKLING = "sparkling";
+
     const PRODUCT_META_GROUP = "HGeS_product_meta_group";
 
     /**

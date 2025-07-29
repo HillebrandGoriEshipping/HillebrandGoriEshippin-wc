@@ -32,7 +32,7 @@
         </select>
     </p>
 
-    <p class="form-field">
+    <p class="form-field wine-form-field">
         <label for="{{ hgesProductMeta('COLOR') }}">{{ __('Color') }}</label>
         <select id="{{ hgesProductMeta('COLOR') }}" name="{{ hgesProductMeta('COLOR') }}" class="short">
             <option value="" >{{ __('Select a color') }}</option>
@@ -44,7 +44,7 @@
         </select>
     </p>
 
-    <p class="form-field">
+    <p class="form-field wine-form-field">
         <label for="{{ hgesProductMeta('CAPACITY') }}">{{ __('Capacity') }}</label>
         <input
             type="number"
@@ -58,7 +58,7 @@
     <span class="description">{{ __('Capacity of a single product (in mL)') }}</span>
     </p>
     
-    <p class="form-field">
+    <p class="form-field wine-form-field">
         <label for="{{ hgesProductMeta('ALCOHOL_PERCENTAGE') }}">{{ __('Alcohol percentage') }}</label>
         <input
             type="number"
@@ -71,7 +71,7 @@
         />
     </p>
 
-    <p class="form-field">
+    <p class="form-field wine-form-field">
         <label for="{{ hgesProductMeta('VINTAGE_YEAR') }}">{{ __('Vintage Year') }}</label>
         <input
             type="number"
@@ -85,32 +85,34 @@
         />
     </p>
 
-   <p class="form-field">
-    <label for="{{ hgesProductMeta('PRODUCING_COUNTRY') }}">{{ __('Producing country') }}</label>
-    <select id="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" name="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" class="short">
-        {% for code, country in producingCountries %}
-            <option value="{{ code }}" {{ code == productMeta[hgesProductMeta('PRODUCING_COUNTRY')] ? 'selected' : '' }}>
-                {{ country }}
-            </option>
-        {% endfor %}
-    </select>
-</p>
+    <p class="form-field wine-form-field">
+        <label for="{{ hgesProductMeta('PRODUCING_COUNTRY') }}">{{ __('Producing country') }}</label>
+        <select id="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" name="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" class="short">
+            {% for code, country in producingCountries %}
+                <option value="{{ code }}" {{ code == productMeta[hgesProductMeta('PRODUCING_COUNTRY')] ? 'selected' : '' }}>
+                    {{ country }}
+                </option>
+            {% endfor %}
+        </select>
+    </p>
 
-<p class="form-field">
-    <label for="{{ hgesProductMeta('APPELLATION') }}">{{ __('Appellation') }}</label>
-    <select id="{{ hgesProductMeta('APPELLATION') }}" name="{{ hgesProductMeta('APPELLATION') }}" data-saved-value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" class="short">
-        {% if productMeta[hgesProductMeta('APPELLATION')] %}
-            <option value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" selected>
-                {{ productMeta[hgesProductMeta('APPELLATION')] }}
-            </option>
-        {% else %}
-        <option value="">{{ __( 'Select an appellation') }}</option>
-        {% endif %}
-    </select>
+    <p class="form-field wine-form-field">
+        <label for="appellation-select-field">{{ __('Appellation') }}</label>
+        <select id="appellation-select-field" data-saved-value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" class="short"></select>
+    </p>
 
-    <input type="hidden" name="_hs_code" id="_hs_code" value="{{ productMeta[hgesProductMeta('HS_CODE')] }}">
-</p>
+    <p class="form-field">
+        <textarea name="{{ hgesProductMeta('APPELLATION') }}" id="{{ hgesProductMeta('APPELLATION') }}" />{{ productMeta[hgesProductMeta('APPELLATION')] }}</textarea>
+    </p>
 
-<div id="error-container"></div>
+    <p class="form-field">
+        <label for="appellation-select-field">{{ __('HS Code') }}</label>
+        <input type="text" name="{{ hgesProductMeta('HS_CODE') }}" id="{{ hgesProductMeta('HS_CODE') }}" value="{{ productMeta[hgesProductMeta('HS_CODE')] }}" class="short"/>
+    </p>
+
+    
+    
+
+    <div id="error-container"></div>
 
 </div>
