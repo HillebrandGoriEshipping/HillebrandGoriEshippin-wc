@@ -2,11 +2,13 @@
 
 namespace HGeS\WooCommerce\Model;
 
+use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
+use HGeS\Utils\RateHelper;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
 
@@ -15,16 +17,15 @@ use HGeS\WooCommerce\Address;
  */
 class Order
 {
-
     /**
      * The pickup point meta key used in database
      */
-    const PICKUP_POINT_META_KEY = 'hges_pickup_point';
+    public const PICKUP_POINT_META_KEY = 'hges_pickup_point';
 
-    /** 
+    /**
      * The attachments meta key used in database
      */
-    const ATTACHMENTS_META_KEY = 'hges_attachments';
+    public const ATTACHMENTS_META_KEY = 'hges_attachments';
 
     /**
      * Initialize the order hooks and filters
@@ -38,10 +39,10 @@ class Order
 
     /**
      * Update the selected pickup point for the given order
-     * 
+     *
      * @param int $orderId the ID for the woocommerce order to update
      * @param array $pickupPoint the associative array describing the pickup point
-     * 
+     *
      * @return void
      */
     public static function setPickupPoint(int $orderId, array $pickupPoint): void
@@ -116,8 +117,15 @@ class Order
         $order->update_meta_data(self::PICKUP_POINT_META_KEY, $pickupPoint);
     }
 
-    public static function updateSelectedShippingRate(int $orderId, int $orderShippingItemId, string $newShippingRateChecksum): ?array
-    {
+    public static function updateSelectedShippingRate(
+        int $orderId,
+        int $orderShippingItemId,
+        string $newShippingRateChecksum
+    ): ?RateDto {
+        if (!$orderId || !$orderShippingItemId || !$newShippingRateChecksum) {
+            throw new \Exception("Invalid order ID, shipping item ID, or shipping rate checksum.");
+        }
+
         $order = wc_get_order($orderId);
         if (!$order) {
             return null;
@@ -137,19 +145,24 @@ class Order
             throw new \Exception("Order item or shipping rate not found.");
         }
         $item->set_props([
-            "name" => $rate['serviceName'],
-            "total" => $rate['shippingPrice']['amount'],
+            "name" => $rate->getServiceName(),
+            "total" => RateHelper::calculateTotal($rate),
             "total_tax" => "0",
             "taxes" => ["total" => []],
             "tax_status" => "taxable",
         ]);
 
+
         $metaData = [
             "checksum" => $newShippingRateChecksum,
-            "method_title" => $rate['serviceName'],
-            "method_id" => "hges_shipping",
-            "customer_selected_rate" => $formerShippingRate ?? $item->get_data(),
+            "method_title" => $rate->getServiceName(),
+            "method_id" => ShippingMethod::METHOD_ID,
         ];
+
+        $customerSelectedRateExists = $item->meta_exists('customer_selected_rate');
+        if (!$customerSelectedRateExists) {
+            $metaData['customer_selected_rate'] = $formerShippingRate;
+        }
 
         foreach ($metaData as $key => $value) {
             $item->update_meta_data($key, $value);
@@ -165,7 +178,7 @@ class Order
     /**
      * Check if the shipping method is still available before updating the order status.
      * triggered by the 'woocommerce_order_edit_status' action.
-     * 
+     *
      * @param int $orderId The ID of the order.
      * @param string $newStatus The new status to which the order is being updated.
      * @return bool True if the shipping method is still available, false otherwise.
@@ -192,7 +205,7 @@ class Order
     /**
      * Check if the required attachments are present before updating the order status.
      * triggered by the 'woocommerce_order_edit_status' action.
-     * 
+     *
      * @param int $orderId The ID of the order.
      * @param string $newStatus The new status to which the order is being updated.
      * @return bool True if all required attachments are present, false otherwise.
@@ -235,7 +248,7 @@ class Order
 
     /**
      * Get the shipping rate checksum for a specific order and shipping item.
-     * 
+     *
      * @param int $orderId The ID of the order.
      * @return string|null The shipping rate checksum if found, otherwise null.
      */
@@ -252,6 +265,29 @@ class Order
         }
         $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
             return $meta->key === 'checksum';
+        });
+
+        return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
+    }
+
+    public static function getInitialSelectedRate($orderId): ?RateDto
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return null;
+        }
+        $item = array_pop($order->get_items('shipping'));
+
+        if (
+            !$item
+            || get_class($item) !== 'WC_Order_Item_Shipping'
+            || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
+        ) {
+            return null;
+        }
+
+        $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
+            return $meta->key === 'customer_selected_rate';
         });
 
         return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
@@ -314,7 +350,7 @@ class Order
 
     /**
      * Update the attachments for a specific order.
-     * 
+     *
      * @param array $data The POST body containing the order ID and attachments.
      */
     public static function updateAttachments(array $data): void

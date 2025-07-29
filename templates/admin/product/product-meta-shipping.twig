@@ -1,0 +1,16 @@
+
+
+<div class="options_group hges_shipping_fieldset">
+
+	<p class="form-field shipping_class_field">
+		<label for="{{ hgesProductMeta('HS_CODE') }}">HS Code</label>
+			<input type="text" class="short" name="{{ hgesProductMeta('HS_CODE') }}" id="{{ hgesProductMeta('HS_CODE') }}" value="{{ productHsCode }}" placeholder="Enter HS Code" />
+			<span class="woocommerce-help-tip" tabindex="0" aria-label="HS Code is used to identify the product for customs purposes."></span>	
+	</p>
+	<p class="form-field shipping_class_field">
+		<label for="{{ hgesProductMeta('APPELLATION') }}">Appellation</label>
+		<textarea {{ fieldsDisabled }} class="short" name="{{ hgesProductMeta('APPELLATION') }}" id="{{ hgesProductMeta('APPELLATION') }}" placeholder="Enter Appellation">{{ productAppellation }}</textarea>
+		<span class="woocommerce-help-tip" tabindex="0" aria-label="Appellation is used to identify the product for customs purposes."></span>
+	</p>
+</div>
+        

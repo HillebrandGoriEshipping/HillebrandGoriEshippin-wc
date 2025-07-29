@@ -4,6 +4,7 @@ namespace HGeS\Admin\Order;
 
 use HGeS\Rate;
 use HGeS\Utils\Messages;
+use HGeS\Utils\RateHelper;
 use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
 use HGeS\WooCommerce\Model\ShippingMethod;
@@ -53,7 +54,7 @@ class ShippingMethodRow {
         }
 
         if ($shippingRate) {
-            $remainingAttachments = array_filter($shippingRate['requiredAttachments'] ?? [], function ($requiredAttachment) use ($attachments) {
+            $remainingAttachments = array_filter($shippingRate->getRequiredAttachments() ?? [], function ($requiredAttachment) use ($attachments) {
                 $requiredAttachmentType = $requiredAttachment['type'] ?? '';
                 return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
             });
@@ -61,10 +62,17 @@ class ShippingMethodRow {
             $remainingAttachments = [];
         }
 
+        $initialSelectedRate = Order::getInitialSelectedRate($orderId);
+
+        if ($initialSelectedRate && $initialSelectedRate->getChecksum() !== $shippingRateChecksum) {
+            $priceDelta = RateHelper::calculateTotal($shippingRate) - RateHelper::calculateTotal($initialSelectedRate);
+            $shippingRate->addMetaData('priceDelta', $priceDelta);
+        }
+
         $templateData = [
             'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
             'stillAvailable' => $shippingMethodStillAvailable,
-            'shippingRate' => $shippingRate ?? null,
+            'shippingRate' => $shippingRate->toArray() ?? null,
             'attachments' => $attachments,
             'remainingAttachments' => $remainingAttachments,
             'itemId' => $item_id,
