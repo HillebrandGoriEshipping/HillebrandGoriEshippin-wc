@@ -2,6 +2,7 @@
 
 namespace HGeS;
 
+use HGeS\Dto\RateDto;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
@@ -294,34 +295,26 @@ class Rate
         }
 
         foreach ($shippingRates as $rate) {
-            if (!empty($rate['prices'])) {
-                $totalPrice = array_reduce($rate['prices'], function ($carry, $price) {
-                    if (empty($price['amountAllIn'])) {
-                        return $carry; // Skip if amountAllIn is not set
-                    }
+            
+            $newRate = new RateDto();
+            $newRate->setChecksum($rate['checksum']);
+            $newRate->setServiceName($rate['serviceName']);
+            $newRate->setPrices($rate['prices']);
+            $newRate->setCarrier($rate['carrier']);
+            $newRate->setServiceCode($rate['serviceCode']);
+            $newRate->setPickupDate($rate['pickupDate']);
+            $newRate->setDeliveryMode($rate['deliveryMode']);
+            $newRate->setDeliveryDate($rate['deliveryDate']);
+            $newRate->setRequiredAttachments($rate['requiredAttachments'] ?? []);
+            $newRate->setCoast($rate['coast'] ?? null);
+            $newRate->setFirstPickupDelivery($rate['firstPickupDelivery'] ?? null);
+            $newRate->addMetaData('carrier', $rate['carrier']);
+            $newRate->addMetaData('pickupDate', $rate['pickupDate']);
+            $newRate->addMetaData('deliveryMode', $rate['deliveryMode']);
+            $newRate->addMetaData('deliveryDate', $rate['deliveryDate']);
+            $newRate->addMetaData('checksum', $rate['checksum']);
 
-                    if (get_option(OptionEnum::HGES_INSURANCE) == "no" && $price['key'] === 'insurance_price') {
-                        // Skip insurance price if insurance is not activated
-                        return $carry;
-                    }
-                    return $carry + $price['amountAllIn'];
-                }, 0);
-            }
-
-            $formattedShippingRates[] = [
-                'id' => $rate['serviceName'],
-                'label' => $rate['serviceName'],
-                'cost' => $totalPrice,
-                'pickupDate' => $rate['pickupDate'],
-                'deliveryMode' => $rate['deliveryMode'],
-                'meta_data' => [
-                    'deliveryDate' => $rate['deliveryDate'],
-                    'carrier' => $rate['carrier'],
-                    'pickupDate' => $rate['pickupDate'],
-                    'deliveryMode' => $rate['deliveryMode'],
-                    'checksum' => $rate['checksum'],
-                ],
-            ];
+            $formattedShippingRates[] = $newRate->toArray();
 
             if (!$rate['deliveryMode']) {
                 $formattedShippingRates['meta_data']['pickupServiceId'] = array_search($rate['service'], self::SERVICES_NAMES);
@@ -334,7 +327,7 @@ class Rate
     /**
      * Retrieves a shipping rate by its checksum.
      */
-    public static function getByChecksum(string $checksum): ?array
+    public static function getByChecksum(string $checksum): ?RateDto
     {
         $shippingRate = ApiClient::get("/v2/rates/$checksum");
 
@@ -342,7 +335,24 @@ class Rate
             return null;
         }
 
-        return $shippingRate['data'];
+        $rateArray = $shippingRate['data'] ?? null;
+        $rateDto = new RateDto();
+        if ($rateArray) {
+            $rateDto->setChecksum($rateArray['checksum']);
+            $rateDto->setServiceName($rateArray['serviceName']);
+            $rateDto->setPrices($rateArray['prices']);
+            $rateDto->setCarrier($rateArray['carrier']);
+            $rateDto->setServiceCode($rateArray['serviceCode']);
+            $rateDto->setPickupDate($rateArray['pickupDate']);
+            $rateDto->setDeliveryMode($rateArray['deliveryMode']);
+            $rateDto->setDeliveryDate($rateArray['deliveryDate']);
+            $rateDto->setRequiredAttachments($rateArray['requiredAttachments'] ?? []);
+            $rateDto->setCoast($rateArray['coast'] ?? null);
+            $rateDto->setFirstPickupDelivery($rateArray['firstPickupDelivery'] ?? null);
+        }
+
+        return $rateDto;
+
     }
 
     /**

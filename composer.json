@@ -19,7 +19,8 @@
   },
   "require-dev": {
     "phpdocumentor/shim": "^3.7",
-    "saggre/phpdocumentor-markdown": "^0.1.4"
+    "saggre/phpdocumentor-markdown": "^0.1.4",
+    "friendsofphp/php-cs-fixer": "^3.84"
   },
   "config": {
     "allow-plugins": {

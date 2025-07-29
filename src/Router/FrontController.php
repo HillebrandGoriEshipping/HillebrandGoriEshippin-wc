@@ -140,7 +140,7 @@ class FrontController
                 $bodyParams['shippingRateChecksum']
             );
             $response['success'] = true;
-            $response['shippingRate'] = $rate;
+            $response['shippingRate'] = $rate->toArray();
         } else {
             $response['error'] = 'Unable to update shipping method, orderId and orderShippingItemId are expected in the query params and shippingRateChecksum json object is expected in the json body.';
             
