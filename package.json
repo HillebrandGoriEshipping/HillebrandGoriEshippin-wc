@@ -7,8 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "watch": "npx wp-scripts start orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
-    "build": "npx wp-scripts build orderRecapFill.js shippingRatesFill.js --source-path=assets/js/fills --output-path=dist",
+    "watch": "npx wp-scripts start fills/orderRecapFill.js fills/shippingRatesFill.js react/components.js --source-path=assets/js --output-path=dist",
+    "build": "npx wp-scripts build fills/orderRecapFill.js fills/shippingRatesFill.js react/components.js --source-path=assets/js --output-path=dist",
     "ui-mode-classic": "node ./scripts/switchui.js classic",
     "ui-mode-blocks": "node ./scripts/switchui.js blocks",
     "playwright-run": "npx playwright test --config=playwright.config.js",
@@ -17,6 +17,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@wordpress/element": "^6.27.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",

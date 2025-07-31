@@ -100,8 +100,7 @@ class Scripts
             ['leaflet-map'],
             null,
             true
-        );
-
+        );     
         self::globalObjectInjection();
     }
 
@@ -117,6 +116,14 @@ class Scripts
             'hges-modal',
             HGES_PLUGIN_URL . 'assets/js/modal.js',
             [],
+            null,
+            ['in_footer' => true]
+        );
+
+        wp_enqueue_script(
+            'hges-react-spawn-component',
+            HGES_PLUGIN_URL . 'assets/js/react/spawnComponent.js',
+            ['wp-element', 'wp-i18n'],
             null,
             ['in_footer' => true]
         );
@@ -174,6 +181,14 @@ class Scripts
                 ['in_footer' => true]
             );
         }
+        
+        wp_enqueue_script(
+            'hges-components',
+            HGES_PLUGIN_URL . 'dist/components.js',
+            ['wp-element'],
+            null,
+            true
+        );
 
         wp_enqueue_script(
             'hges-global-object-injection',
