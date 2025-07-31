@@ -6,6 +6,7 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
+use Twig\Markup;
 
 class Twig
 {
@@ -85,6 +86,18 @@ class Twig
 
         self::$twig->addFunction(new \Twig\TwigFunction('hgesProductMeta', function ($metaName) {
             return ProductMetaEnum::{$metaName};
+        }));
+
+        self::$twig->addFunction(new \Twig\TwigFunction('spawnComponent', function ($componentName, $props) {
+            $props = json_encode($props, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+            $html = "
+                <div id=\"react-component-$componentName\"></div>
+                <script type=\"module\">
+                spawnComponent('$componentName', $props);
+                </script>
+            ";
+            return new Markup($html, 'UTF-8');
         }));
     }
 }
