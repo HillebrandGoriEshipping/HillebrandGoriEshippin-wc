@@ -70,12 +70,14 @@ class ShippingMethodRow {
         }
 
         $templateData = [
-            'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
-            'stillAvailable' => $shippingMethodStillAvailable,
-            'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
-            'attachments' => $attachments,
-            'remainingAttachments' => $remainingAttachments,
-            'itemId' => $item_id,
+            'componentData' => [
+                'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
+                'stillAvailable' => $shippingMethodStillAvailable,
+                'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
+                'attachments' => $attachments,
+                'remainingAttachments' => $remainingAttachments,
+                'itemId' => $item_id,
+            ],
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
