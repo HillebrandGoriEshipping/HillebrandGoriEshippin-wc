@@ -66,6 +66,14 @@ class ShippingMethodRow {
 
         if ($initialSelectedRate && $initialSelectedRate->getChecksum() !== $shippingRateChecksum) {
             $priceDelta = RateHelper::calculateTotal($shippingRate) - RateHelper::calculateTotal($initialSelectedRate);
+            
+            $plusPrefix = '';
+            if ($priceDelta > 0) {
+                $plusPrefix = '+';
+            }
+
+            $priceDelta = html_entity_decode(strip_tags(wc_price($priceDelta)));
+            $priceDelta = $plusPrefix . $priceDelta;
             $shippingRate->addMetaData('priceDelta', $priceDelta);
         }
 

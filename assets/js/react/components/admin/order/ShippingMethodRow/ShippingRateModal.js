@@ -1,21 +1,31 @@
 const __ = wp.i18n.__;
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import apiClient from '../../../../../apiClient';
+import ShippingRateItem from './ShippingRateItem';
 
-const ShippingRateModal = ({ isOpen, onClose, onShippingRateSelected }) => {
+const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
 
-    const [ratesHTML, setRatesHTML] = useState("");
+    const [rates, setRates] = useState("");
+    const [selectedRateChecksum, setSelectedRateChecksum] = useState("");
 
     const loadShippingRates = async () => {
         const currentUrlParams = new URLSearchParams(window.location.search);
-        const response = await apiClient.get(window.hges.ajaxUrl, { orderId: currentUrlParams.get('id'), action: 'hges_get_shipping_rates_for_order_html' });
-        
-        setRatesHTML(response.shippingRatesHtml);
+        const response = await apiClient.get(window.hges.ajaxUrl, { orderId: currentUrlParams.get('id'), action: 'hges_get_shipping_rates_for_order' });
+        console.log("Shipping rates response:", response);
+        setRates(response.shippingRates);
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
+        if (!isOpen) {
+            setRates([]);
+            return;
+        }
         loadShippingRates();
-    }, []);
+    }, [isOpen]);
+
+    const onRateSelected = (checksum) => {
+        setSelectedRateChecksum(checksum);
+    }
 
     return (
         <div id="hges-shipping-rate-modal" className={`modal ${!isOpen ? "hidden" : ""}`}>
@@ -27,13 +37,27 @@ const ShippingRateModal = ({ isOpen, onClose, onShippingRateSelected }) => {
                     </h2>
                 </div>
                 <div className="modal__body">
-                    <div className="shipping-rate-list" dangerouslySetInnerHTML={{ __html: ratesHTML }}></div>
+                    <div className="shipping-rate-list">
+                        {rates && rates.length > 0 ? (
+                            rates.map((rate) => (
+                                <ShippingRateItem
+                                    key={rate.checksum}
+                                    rate={rate}
+                                    onSelect={onRateSelected}
+                                    isSelected={selectedRateChecksum === rate.checksum}
+                                />
+                            ))
+                        ) : (
+                            <p>{__('No shipping rates available.', 'hges')}</p>
+                        )}
+
+                    </div>
                 </div>
                 <div className="modal__footer">
                     <button
                         type="button"
                         id="hges-update-shipping-rate-modal-button"
-                        onClick={onShippingRateSelected}
+                        onClick={() => validateShippingRate(selectedRateChecksum)}
                     >
                         {__('Update')}
                     </button>

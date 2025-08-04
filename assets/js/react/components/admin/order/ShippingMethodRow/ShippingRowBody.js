@@ -77,3 +77,5 @@ const ShippingRowBody = ({
         </div>
     );
 };
+
+export default ShippingRowBody;

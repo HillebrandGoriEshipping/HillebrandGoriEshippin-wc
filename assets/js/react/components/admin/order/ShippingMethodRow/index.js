@@ -2,6 +2,7 @@ const __ = wp.i18n.__;
 import apiClient from '../../../../../apiClient';
 import ShippingRateModal from './ShippingRateModal';
 import ShippingRowBody from './ShippingRowBody';
+import { useState } from 'react';
 
 const ShippingMethodRow = ({
     errorMessage,
@@ -11,10 +12,8 @@ const ShippingMethodRow = ({
     remainingAttachments = [],
     itemId,
 }) => {
-    // set isRateSelectionModalOpen as state variable
-    const [isRateSelectionModalOpen, setIsRateSelectionModalOpen] = React.useState(false);
-    const requiredAttachments = shippingRate?.requiredAttachments || [];
-    const priceDelta = shippingRate?.meta_data?.priceDelta;
+    const [isRateSelectionModalOpen, setIsRateSelectionModalOpen] = useState(false);
+
     const openShippingRateModal = async (e) =>{
         e.preventDefault();
         setIsRateSelectionModalOpen(true);
@@ -24,29 +23,20 @@ const ShippingMethodRow = ({
         setIsRateSelectionModalOpen(false);
     }
 
-    const onShippingRateSelected = (event) => {
-        document.querySelectorAll('#hges-shipping-rate-modal .shipping-rate-list .hges-shipping-method').forEach((rateElement) => {
-            rateElement.classList.remove('selected');
-        });
-        event.currentTarget.classList.add('selected');
-        this.selectedShippingRateChecksum = event.currentTarget.dataset.checksum;
-    }
-    const updateShippingRate = async () => {
-        if (this.selectedShippingRateChecksum) {
-            this.selectedRate = await apiClient.post(
-                window.hges.ajaxUrl, 
-                {
-                    action: 'hges_set_order_shipping_rate',
-                    orderId: new URLSearchParams(window.location.search).get('id'),
-                    orderShippingItemId: this.currentEditingItemId,
-                }, 
-                {
-                    shippingRateChecksum: this.selectedShippingRateChecksum
-                },
-            );
-            
-            window.location.reload();
-        }
+    const onShippingRateValidated = async (selectedShippingRateChecksum) => {
+        const selectedRate = await apiClient.post(
+            window.hges.ajaxUrl, 
+            {
+                action: 'hges_set_order_shipping_rate',
+                orderId: new URLSearchParams(window.location.search).get('id'),
+                orderShippingItemId: itemId,
+            }, 
+            {
+                shippingRateChecksum: selectedShippingRateChecksum
+            },
+        );
+        
+        window.location.reload();
     }
 
     const render = () => {
@@ -74,7 +64,7 @@ const ShippingMethodRow = ({
                 <ShippingRateModal
                     isOpen={isRateSelectionModalOpen}
                     onClose={closeShippingRateModal}
-                    onShippingRateSelected={onShippingRateSelected}
+                    validateShippingRate={onShippingRateValidated}
                 />
             </div>
         );
