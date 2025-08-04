@@ -352,7 +352,6 @@ class Rate
         }
 
         return $rateDto;
-
     }
 
     /**
