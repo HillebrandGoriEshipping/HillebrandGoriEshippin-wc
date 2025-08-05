@@ -262,7 +262,7 @@ const productMetaModule = {
 
     if (!this.customCapacityWrapper || !this.capacityField) return;
 
-    if (selected === "standard") {
+    if (selected === "bottle") {
       this.customCapacityWrapper.style.display = "none";
       this.capacityField.value = "750";
       this.capacityField.dispatchEvent(new Event("change", { bubbles: true }));
@@ -271,11 +271,10 @@ const productMetaModule = {
       this.capacityField.value = "1500";
       this.capacityField.dispatchEvent(new Event("change", { bubbles: true }));
     } else if (selected === "other") {
-      this.customCapacityWrapper.style.display = "";
+      this.customCapacityWrapper.style.display = "block";
  
       if (["750", "1500"].includes(this.capacityField.value)) {
         this.capacityField.value = "";
-        this.capacityField.dispatchEvent(new Event("change", { bubbles: true }));
       }
     }
   }

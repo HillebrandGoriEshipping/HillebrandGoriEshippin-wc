@@ -36,16 +36,16 @@
         </select>
     </p>
 
-    <p class="form-field wine-form-field">
+    <p class="form-field">
         <label for="{{ hgesProductMeta('CAPACITY_TYPE') }}">{{ __('Capacity') }}</label>
         <select id="{{ hgesProductMeta('CAPACITY_TYPE') }}" name="{{ hgesProductMeta('CAPACITY_TYPE') }}" class="short">
-            <option value="bottle" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'bottle' ? 'selected' : '' }}>{{ __('Standard') }}</option>
-            <option value="magnum" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'magnum' ? 'selected' : '' }}>{{ __('Magnum') }}</option>
+            <option value="bottle" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'bottle' ? 'selected' : '' }}>{{ __('Standard (750 mL)') }}</option>
+            <option value="magnum" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'magnum' ? 'selected' : '' }}>{{ __('Magnum (1500 mL)') }}</option>
             <option value="other" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'other' ? 'selected' : '' }}>{{ __('Other') }}</option>
         </select>
     </p>
 
-    <p id="custom-capacity-wrapper" class="form-field wine-form-field" style="display: none;">
+    <p id="custom-capacity-wrapper" class="form-field" style="display: none;">
         <label for="{{ hgesProductMeta('CAPACITY') }}">{{ __('Custom Capacity') }}</label>
         <input
             type="number"
