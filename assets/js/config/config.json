@@ -1,4 +1,4 @@
 {
-  "apiUrl": "https://eu-eshipping-extranet-ifte.azurewebsites.net/api",
+  "apiUrl": "https://eu-eshipping-extranet-acceptance.azurewebsites.net/api",
   "proxyApiUrl": "/wp-json/hges/v1"
 }

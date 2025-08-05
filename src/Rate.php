@@ -35,9 +35,12 @@ class Rate
      */
     public static function prepareUrlParams(array $package): array
     {
+        $isCompanyCheckboxKey = ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::IS_COMPANY_CHECKBOX_OPTIONS['id'];
+        $companyNameKey = ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::COMPANY_NAME_FIELD_OPTIONS['id'];
+
         $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
         if ($currentOrder) {
-            $currentOrderShippingAddressCategory = $currentOrder->get_meta(ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::IS_COMPANY_CHECKBOX_OPTIONS['key']) ? 'company' : 'individual';
+            $currentOrderShippingAddressCategory = $currentOrder->get_meta($isCompanyCheckboxKey) ? 'company' : 'individual';
             $toAddress = [
                 'category' => $currentOrderShippingAddressCategory,
                 'firstname' => $currentOrder->get_shipping_first_name(),
@@ -54,14 +57,31 @@ class Rate
                 $toAddress['state'] = $currentOrder->get_shipping_state();
             }
         } else {
+            $sessionMetaData = WC()->session->customer['meta_data'] ?? [];
+            $isCompanyMeta = array_find($sessionMetaData, function ($meta) use ($isCompanyCheckboxKey) {
+                return $meta['key'] === $isCompanyCheckboxKey;
+            });
+            $category = 'individual';
+            if(!empty($isCompanyMeta) && $isCompanyMeta['value']) {
+                $category = $isCompanyMeta['value'] ? 'company' : 'individual';
+            }
+
+            if ($category === 'company') {
+                $companyNameMeta = array_find($sessionMetaData, function ($meta) use ($companyNameKey) {
+                    return $meta['key'] === $companyNameKey;
+                });
+                $companyName = !empty($companyNameMeta) ? $companyNameMeta['value'] : '';
+            }
+
             $toAddress = [
-                'category' => 'individual',
+                'category' => $category,
                 'zipCode' => $package['destination']['postcode'],
                 'city' => $package['destination']['city'],
                 'country' => $package['destination']['country'],
-
-                'telephone' => '0123456789',
-                'address' => '3 rue de la Paix',
+                'state' => !empty($package['destination']['state']) ? $package['destination']['state'] : null,
+                'address' => $package['destination']['address'],
+                'telephone' => $package['destination']['phone'] ?? '0123456789',
+                'company' => $category === 'company' ? $companyName : '',
             ];
         }
 
