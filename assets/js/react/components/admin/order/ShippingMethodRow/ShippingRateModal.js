@@ -11,7 +11,6 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
     const loadShippingRates = async () => {
         const currentUrlParams = new URLSearchParams(window.location.search);
         const response = await apiClient.get(window.hges.ajaxUrl, { orderId: currentUrlParams.get('id'), action: 'hges_get_shipping_rates_for_order' });
-        console.log("Shipping rates response:", response);
         setRates(response.shippingRates);
     };
 
