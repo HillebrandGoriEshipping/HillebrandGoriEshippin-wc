@@ -29,8 +29,6 @@ class Packaging
 
     public static function calculatePackagingPossibilities(mixed $products): array
     {
-        dump($products);
-        // die();
         $packagingAvailable = self::getAvailablePackagingOptions();
         usort($packagingAvailable[self::PACKAGING_BOTTLE], function ($a, $b) {
             return $a['itemNumber'] <=> $b['itemNumber'];
@@ -45,18 +43,15 @@ class Packaging
         foreach ([self::PACKAGING_BOTTLE, self::PACKAGING_MAGNUM] as $packagingType) {
 
             $nbItems = array_reduce($products, function ($carry, $item) use ($packagingType) {
-                dump($item);
-                dump($packagingType);
-                //SIZE_OF_BOTTLES n'existe plus
-                $bottleType = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY, true);
-                dump($bottleType);
+
+                $bottleType = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY_TYPE, true);
                 if ($bottleType === $packagingType) {
                     return $carry + $item['quantity'];
                 } else {
                     return $carry;
                 }
             });
-            die();
+
             $packages[$packagingType] = [];
             $delta = 0;
             while ($nbItems > 0) {

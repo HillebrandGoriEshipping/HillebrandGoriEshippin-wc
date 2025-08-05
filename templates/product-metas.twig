@@ -39,7 +39,7 @@
     <p class="form-field wine-form-field">
         <label for="{{ hgesProductMeta('CAPACITY_TYPE') }}">{{ __('Capacity') }}</label>
         <select id="{{ hgesProductMeta('CAPACITY_TYPE') }}" name="{{ hgesProductMeta('CAPACITY_TYPE') }}" class="short">
-            <option value="standard" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'standard' ? 'selected' : '' }}>{{ __('Standard') }}</option>
+            <option value="bottle" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'bottle' ? 'selected' : '' }}>{{ __('Standard') }}</option>
             <option value="magnum" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'magnum' ? 'selected' : '' }}>{{ __('Magnum') }}</option>
             <option value="other" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'other' ? 'selected' : '' }}>{{ __('Other') }}</option>
         </select>
