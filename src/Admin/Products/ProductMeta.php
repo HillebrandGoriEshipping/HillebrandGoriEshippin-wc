@@ -2,6 +2,7 @@
 
 namespace HGeS\Admin\Products;
 
+use HGeS\Utils\ApiClient;
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Enums\GlobalEnum;
@@ -204,12 +205,10 @@ class ProductMeta
 
     public static function getProducingCountries(): array
     {
-        return [
-            'FR' => 'France',
-            'GB' => 'Great Britain',
-            'IT' => 'Italy',
-            'ES' => 'Spain',
-            'PT' => 'Portugal',
-        ];
+        $producingCountriesFromApi = ApiClient::get('/v2/producing-countries');;
+
+        $producingCountries = array_column($producingCountriesFromApi['data'], 'name', 'code');
+
+        return $producingCountries;
     }
 }
