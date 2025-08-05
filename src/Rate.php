@@ -62,7 +62,7 @@ class Rate
                 return $meta['key'] === $isCompanyCheckboxKey;
             });
             $category = 'individual';
-            if(!empty($isCompanyMeta) && $isCompanyMeta['value']) {
+            if (!empty($isCompanyMeta) && $isCompanyMeta['value']) {
                 $category = $isCompanyMeta['value'] ? 'company' : 'individual';
             }
 
@@ -315,7 +315,7 @@ class Rate
         }
 
         foreach ($shippingRates as $rate) {
-            
+
             $newRate = new RateDto();
             $newRate->setChecksum($rate['checksum']);
             $newRate->setServiceName($rate['serviceName']);

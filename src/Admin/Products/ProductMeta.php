@@ -70,13 +70,7 @@ class ProductMeta
             $productMeta[$meta] = get_post_meta(get_the_ID(), $meta, true);
         }
 
-        $producingCountries = [
-            'FR' => 'France',
-            'GB' => 'Great Britain',
-            'IT' => 'Italy',
-            'ES' => 'Spain',
-            'PT' => 'Portugal',
-        ];
+        $producingCountries = self::getProducingCountries();
 
         $html = $twig->render('product-metas.twig', [
             'productMeta' => $productMeta,
@@ -206,5 +200,16 @@ class ProductMeta
         $data['isWine'] = $isWine;
 
         echo $twig->render('admin/product/product-meta-shipping.twig', $data);
+    }
+
+    public static function getProducingCountries(): array
+    {
+        return [
+            'FR' => 'France',
+            'GB' => 'Great Britain',
+            'IT' => 'Italy',
+            'ES' => 'Spain',
+            'PT' => 'Portugal',
+        ];
     }
 }
