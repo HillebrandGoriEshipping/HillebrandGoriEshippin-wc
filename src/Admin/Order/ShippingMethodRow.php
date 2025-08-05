@@ -64,7 +64,7 @@ class ShippingMethodRow {
 
         $initialSelectedRate = Order::getInitialSelectedRate($orderId);
 
-        if ($initialSelectedRate && $initialSelectedRate->getChecksum() !== $shippingRateChecksum) {
+        if ($shippingRate && $initialSelectedRate && $initialSelectedRate->getChecksum() !== $shippingRateChecksum) {
             $priceDelta = RateHelper::calculateTotal($shippingRate) - RateHelper::calculateTotal($initialSelectedRate);
             
             $plusPrefix = '';
