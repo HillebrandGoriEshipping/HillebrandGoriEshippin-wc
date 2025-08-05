@@ -72,7 +72,7 @@ class FrontController
      * @param array $postData
      * @return void
      */
-    public static function getShippingRatesForOrderHtml(array $postData): void
+    public static function getShippingRatesForOrder(array $postData): void
     {
         $orderId = filter_input(INPUT_GET, 'orderId', FILTER_VALIDATE_INT);
 
@@ -87,34 +87,9 @@ class FrontController
                 'contents' => $order->get_items(),
             ]);
            
-
-            $html = '';
-            foreach ($rates as $rate) {
-                $metadata = $rate['meta_data'];
-            
-                if (empty($metadata['carrier'])) {
-                    $imagePath = null;
-                } else {
-                    $imagePath = HGES_PLUGIN_URL . 'assets/img/' . $metadata['carrier'] . '.png';
-                }
-
-                if ($rate['label'] === 'Aérien') {
-                    $imagePath = HGES_PLUGIN_URL . 'assets/img/airfreight.png';
-                } else if ($rate['label'] === 'Maritime') {
-                    $imagePath = HGES_PLUGIN_URL . 'assets/img/seafreight.png';
-                }
-                $html .= Twig::getTwig()->render('shipping-label.twig', [
-                    'rate' => $rate,
-                    'metaData' => $rate['meta_data'] ?? [],
-                    'label' => $rate['label'] ?? '',
-                    'cost' => $rate['cost'] ?? 0,
-                    'imagePath' => $imagePath,
-                ]);
-            }
-
             self::renderJson([
                 'success' => true,
-                'shippingRatesHtml' => $html
+                'shippingRates' => $rates
             ]);
         } else {
             http_response_code(400);

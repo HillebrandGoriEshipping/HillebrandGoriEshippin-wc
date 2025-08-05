@@ -36,7 +36,7 @@ class Scripts
         wp_enqueue_script(
             'hges-shipping-rates-fill',
             HGES_PLUGIN_URL . 'dist/shippingRatesFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-components', 'wp-hooks', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
         );
@@ -44,7 +44,7 @@ class Scripts
         wp_enqueue_script(
             'hges-order-recap-fill',
             HGES_PLUGIN_URL . 'dist/orderRecapFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wp-components', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
         );
@@ -141,34 +141,6 @@ class Scripts
             );
         }
 
-        if (
-            !empty($_GET['page']) && $_GET['page'] === 'wc-orders'
-            && !empty($_GET['action']) && $_GET['action'] === 'edit'
-        ) {
-            wp_enqueue_script_module(
-                'hges-order-edit-script',
-                HGES_PLUGIN_URL . 'assets/js/orderEditPage.js',
-                [],
-                false,
-                ['in_footer' => true]
-            );
-
-            wp_enqueue_script_module(
-                'hges-api-client',
-                HGES_PLUGIN_URL . 'assets/js/apiClient.js',
-                [],
-                null,
-                ['in_footer' => true]
-            );
-
-            wp_enqueue_script(
-                'hges-api-client-init',
-                'https://unpkg.com/filepond@^4/dist/filepond.js',
-                [],
-                null,
-                ['in_footer' => true]
-            );
-        }
 
         $screen = get_current_screen();
 

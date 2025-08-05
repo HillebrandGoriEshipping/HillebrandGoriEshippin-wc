@@ -1,7 +1,21 @@
 {
-	"plugins": [
-		[ "transform-react-jsx", {
-			"pragma": "createElement"
-		} ]
-	]
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "pragma": "wp.element.createElement"
+      }
+    ],
+    [
+      "babel-plugin-auto-import",
+      {
+        "declarations": [
+          {
+            "named": "createElement",
+            "path": "@wordpress/element"
+          }
+        ]
+      }
+    ]
+  ]
 }

@@ -302,6 +302,7 @@ class Order
 
         //get shipping address
         $shippingAddress = $order->get_address('shipping');
+        dump($order->get_billing_phone());
 
         $destAddress = [
             "category" => "individual", //dynamize
@@ -316,8 +317,9 @@ class Order
         ];
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
-
-        $prices = $rate['prices'];
+        dump($rate);
+        $prices = $rate->getPrices();
+        dump($prices);
 
         $optionalPrices = [];
         foreach ($prices as $key => $price) {
@@ -325,12 +327,22 @@ class Order
                 $optionalPrices[] = $price['key'];
             }
         }
+        dump($optionalPrices);
 
         $params = [
-            "checksum" => $rate['checksum'],
+            "checksum" => $rate->getChecksum(),
             "to" => $destAddress,
             "optionalPrices" => $optionalPrices
         ];
+
+
+        // if fiscalRepresentation is set, add it to the params
+        if ($prices['fiscalRepresentation']) {
+            dump($prices['fiscalRepresentation']);
+            $params['exciseDuties'] = "paid";
+            $params['shipmentPurpose'] = "sale";
+        }
+        dump($params);
 
         $pickupPoint = $order->get_meta(self::PICKUP_POINT_META_KEY, true);
 
@@ -341,10 +353,10 @@ class Order
         try {
             error_log('Payload envoyé : ' . json_encode($params, JSON_PRETTY_PRINT));
             $response = ApiClient::post('/v2/shipments', $params);
-            error_log('🟢 Réponse API : ' . print_r($response, true));
+            error_log('Réponse API : ' . print_r($response, true));
         } catch (\Exception $e) {
-            error_log('❌ Erreur API createShipment: ' . $e->getMessage());
-            error_log('❌ Trace : ' . $e->getTraceAsString());
+            error_log('Erreur API createShipment: ' . $e->getMessage());
+            error_log('Trace : ' . $e->getTraceAsString());
         }
     }
 
