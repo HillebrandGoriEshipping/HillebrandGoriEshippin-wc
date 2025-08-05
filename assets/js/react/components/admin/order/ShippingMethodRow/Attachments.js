@@ -7,8 +7,7 @@ import apiClient from '../../../../../apiClient';
 registerPlugin(FilePondPluginFileMetadata);
 
 const Attachments = ({ attachments, requiredAttachments, remainingAttachments }) => {
-    console.log('attachments', attachments);
-    const currentAttachments = attachments;
+    let currentAttachments = attachments;
     const serverConfig = {
         process: async (fieldName, file, metadata, load, error, progress, abort) => {
             const response = await apiClient.upload(window.hges.apiUrl + '/v2/attachments/upload', {}, {file, type: metadata.fileType});
@@ -43,10 +42,9 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
     }
     
     const  fileUploadedSuccess = async (file) => {
-        console.log('File uploaded successfully:', file.getMetadata('fileType'), file.getMetadata('label'));
-        console.log('Current attachments before update:', currentAttachments);
+    
         if (currentAttachments.some(attachment => attachment.type === file.getMetadata('fileType'))) {
-            currentAttachments = this.currentAttachments.filter(attachment => attachment.type !== file.getMetadata('fileType'));
+            currentAttachments = currentAttachments.filter(attachment => attachment.type !== file.getMetadata('fileType'));
         }
 
         currentAttachments.push({
@@ -74,7 +72,6 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
                     attachments: currentAttachments,
                 },
             );
-            console.log('Attachments updated successfully', response);
         } catch (error) {
             console.error('Attachments update failed', error);
         }
@@ -95,7 +92,7 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
                                 id={`attachments-marker-${attachment.type}`}
                             ></span>
                             {attachment.label}
-                            <FilePond allowMultiple={false} server="/api" />
+                            <FilePond name="fileUpload" allowMultiple={false} server={serverConfig} fileMetadataObject={{ fileType: attachment.type, label: attachment.label }} onprocessfile={onProcessFile} credits={false} />
                         </li>
                     ))}
                     {remainingAttachments.map((remainingAttachment) => (
@@ -105,7 +102,7 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
                                 id={`attachments-marker-${remainingAttachment.type}`}
                             ></span>
                             {remainingAttachment.label}
-                            <FilePond name="fileUpload" allowMultiple={false} server={serverConfig} fileMetadataObject={{ fileType: remainingAttachment.type, label: remainingAttachment.label }} onprocessfile={onProcessFile} />
+                            <FilePond name="fileUpload" allowMultiple={false} server={serverConfig} fileMetadataObject={{ fileType: remainingAttachment.type, label: remainingAttachment.label }} onprocessfile={onProcessFile} credits={false} />
 
                         </li>
                     ))}
