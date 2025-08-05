@@ -14,10 +14,10 @@ class Packaging
     {
         $allOptions = ApiClient::get('/v2/packages')['data'];
 
-        $packagingBottle = array_filter($allOptions, function($packagingOption) {
+        $packagingBottle = array_filter($allOptions, function ($packagingOption) {
             return in_array($packagingOption['id'], get_option('HGES_PACKAGING_BOTTLE', []));
         });
-        $packagingMagnum = array_filter($allOptions, function($packagingOption) {
+        $packagingMagnum = array_filter($allOptions, function ($packagingOption) {
             return in_array($packagingOption['id'], get_option('HGES_PACKAGING_MAGNUM', []));
         });
 
@@ -30,10 +30,10 @@ class Packaging
     public static function calculatePackagingPossibilities(mixed $products): array
     {
         $packagingAvailable = self::getAvailablePackagingOptions();
-        usort($packagingAvailable[self::PACKAGING_BOTTLE], function($a, $b) {
+        usort($packagingAvailable[self::PACKAGING_BOTTLE], function ($a, $b) {
             return $a['itemNumber'] <=> $b['itemNumber'];
         });
-        usort($packagingAvailable[self::PACKAGING_MAGNUM], function($a, $b) {
+        usort($packagingAvailable[self::PACKAGING_MAGNUM], function ($a, $b) {
             return $a['itemNumber'] <=> $b['itemNumber'];
         });
 
@@ -42,18 +42,19 @@ class Packaging
 
         foreach ([self::PACKAGING_BOTTLE, self::PACKAGING_MAGNUM] as $packagingType) {
 
-            $nbItems = array_reduce($products, function($carry, $item) use ($packagingType) {
-                $bottleType = get_post_meta($item['product_id'], ProductMetaEnum::SIZE_OF_BOTTLE, true);
-                if( $bottleType === $packagingType) {
+            $nbItems = array_reduce($products, function ($carry, $item) use ($packagingType) {
+
+                $bottleType = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY_TYPE, true);
+                if ($bottleType === $packagingType) {
                     return $carry + $item['quantity'];
                 } else {
-                    return $carry;                    
+                    return $carry;
                 }
             });
 
             $packages[$packagingType] = [];
             $delta = 0;
-            while  ($nbItems > 0) {
+            while ($nbItems > 0) {
                 self::makePackaging($packages[$packagingType], $packagingAvailable[$packagingType], $nbItems, $delta);
                 $delta++;
             }
@@ -68,9 +69,9 @@ class Packaging
     /**
      * Make packaging from the available packaging options
      */
-    public static function makePackaging(&$packages, $packagingAvailable, &$nbItems, $allowedDelta = 0) 
+    public static function makePackaging(&$packages, $packagingAvailable, &$nbItems, $allowedDelta = 0)
     {
-        foreach( $packagingAvailable as $packaging) {
+        foreach ($packagingAvailable as $packaging) {
             if ($packaging['itemNumber'] > $nbItems + $allowedDelta) {
                 continue;
             }

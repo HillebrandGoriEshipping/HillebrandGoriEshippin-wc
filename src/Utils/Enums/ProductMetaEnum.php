@@ -5,9 +5,9 @@ namespace HGeS\Utils\Enums;
 class ProductMetaEnum implements EnumInterface
 {
     const NUMBER_OF_BOTTLE = "_number_of_bottle";
-    const SIZE_OF_BOTTLE = "_size_of_bottle";
     const TYPE = "_type";
     const COLOR = "_color";
+    const CAPACITY_TYPE = "_capacity_type";
     const CAPACITY = "_capacity";
     const ALCOHOL_PERCENTAGE = "_alcohol_percentage";
     const VINTAGE_YEAR = "_vintage";
@@ -29,9 +29,9 @@ class ProductMetaEnum implements EnumInterface
     {
         return [
             self::NUMBER_OF_BOTTLE,
-            self::SIZE_OF_BOTTLE,
             self::TYPE,
             self::COLOR,
+            self::CAPACITY_TYPE,
             self::CAPACITY,
             self::ALCOHOL_PERCENTAGE,
             self::VINTAGE_YEAR,

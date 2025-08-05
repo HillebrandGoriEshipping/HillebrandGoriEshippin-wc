@@ -35,6 +35,8 @@ const productMetaModule = {
     this.tabs = document.querySelectorAll(".attribute_tab");
     this.existingNotice = document.querySelector("#hges-custom-notice");
     this.variationCheckbox = document.querySelectorAll(".enable_variation");
+    this.capacityTypeSelect = document.querySelector("#_capacity_type");
+    this.customCapacityWrapper = document.querySelector("#custom-capacity-wrapper");
     this.initEventListeners();
 
     hges.pricableProductTypes.forEach((productType) => {
@@ -86,6 +88,11 @@ const productMetaModule = {
         this.evalUseInVariationCheckboxDisplay();
       }.bind(this));
     });
+
+    if (this.capacityTypeSelect) {
+      this.capacityTypeSelect.addEventListener("change", this.handleCapacityTypeChange.bind(this));
+      this.handleCapacityTypeChange();
+    }
   },
   evalUseInVariationCheckboxDisplay() {
     if (hges.variableProductTypes.includes(this.productTypeSelect.value)) {
@@ -247,6 +254,27 @@ const productMetaModule = {
         this.publishButton.disabled = false;
         this.publishButton.classList.remove("button-disabled");
         this.publishButton.removeAttribute("title");
+      }
+    }
+  },
+  handleCapacityTypeChange() {
+    const selected = this.capacityTypeSelect.value;
+
+    if (!this.customCapacityWrapper || !this.capacityField) return;
+
+    if (selected === "bottle") {
+      this.customCapacityWrapper.style.display = "none";
+      this.capacityField.value = "750";
+      this.capacityField.dispatchEvent(new Event("change", { bubbles: true }));
+    } else if (selected === "magnum") {
+      this.customCapacityWrapper.style.display = "none";
+      this.capacityField.value = "1500";
+      this.capacityField.dispatchEvent(new Event("change", { bubbles: true }));
+    } else if (selected === "other") {
+      this.customCapacityWrapper.style.display = "block";
+ 
+      if (["750", "1500"].includes(this.capacityField.value)) {
+        this.capacityField.value = "";
       }
     }
   }
