@@ -36,7 +36,7 @@ class Scripts
         wp_enqueue_script(
             'hges-shipping-rates-fill',
             HGES_PLUGIN_URL . 'dist/shippingRatesFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-components', 'wp-hooks', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
         );
@@ -44,7 +44,7 @@ class Scripts
         wp_enqueue_script(
             'hges-order-recap-fill',
             HGES_PLUGIN_URL . 'dist/orderRecapFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wp-components', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
         );

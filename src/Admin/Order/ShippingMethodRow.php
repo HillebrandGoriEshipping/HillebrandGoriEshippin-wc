@@ -58,24 +58,36 @@ class ShippingMethodRow {
                 $requiredAttachmentType = $requiredAttachment['type'] ?? '';
                 return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
             });
+            // reinit array indexes to avoid gaps in the array
+            $remainingAttachments = array_values($remainingAttachments);
         } else {
             $remainingAttachments = [];
         }
 
         $initialSelectedRate = Order::getInitialSelectedRate($orderId);
 
-        if ($initialSelectedRate && $initialSelectedRate->getChecksum() !== $shippingRateChecksum) {
+        if ($shippingRate && $initialSelectedRate && $initialSelectedRate->getChecksum() !== $shippingRateChecksum) {
             $priceDelta = RateHelper::calculateTotal($shippingRate) - RateHelper::calculateTotal($initialSelectedRate);
+            
+            $plusPrefix = '';
+            if ($priceDelta > 0) {
+                $plusPrefix = '+';
+            }
+
+            $priceDelta = html_entity_decode(strip_tags(wc_price($priceDelta)));
+            $priceDelta = $plusPrefix . $priceDelta;
             $shippingRate->addMetaData('priceDelta', $priceDelta);
         }
-
+        
         $templateData = [
-            'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
-            'stillAvailable' => $shippingMethodStillAvailable,
-            'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
-            'attachments' => $attachments,
-            'remainingAttachments' => $remainingAttachments,
-            'itemId' => $item_id,
+            'componentData' => [
+                'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
+                'stillAvailable' => $shippingMethodStillAvailable,
+                'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
+                'attachments' => $attachments,
+                'remainingAttachments' => $remainingAttachments,
+                'itemId' => $item_id,
+            ],
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);

@@ -37,8 +37,8 @@ class ShippingAddressFields {
         'CHECKBOX' => 'checkbox',
     ];
 
-    const WC_ORDER_META_PREFIX_SHIPPING = 'wc_shipping/';
-    const WC_ORDER_META_PREFIX_BILLING = 'wc_billing/';
+    const WC_ORDER_META_PREFIX_SHIPPING = '_wc_shipping/';
+    const WC_ORDER_META_PREFIX_BILLING = '_wc_billing/';
 
     /**
      * See the woocommerce documentation to get the list of available options

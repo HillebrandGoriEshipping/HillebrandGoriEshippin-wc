@@ -30,10 +30,10 @@ class Router {
                 FrontController::class,
                 'setCurrentPickupPoint'
             ),
-            'hges_get_shipping_rates_for_order_html' => new Route(
+            'hges_get_shipping_rates_for_order' => new Route(
                 'GET',
                 FrontController::class,
-                'getShippingRatesForOrderHtml'
+                'getShippingRatesForOrder'
             ),
             'hges_set_order_shipping_rate' => new Route(
                 'POST',

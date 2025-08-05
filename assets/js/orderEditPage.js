@@ -63,50 +63,7 @@ const orderEditPage = {
         }
     },
     
-    async openShippingRateModal(e) {
-        this.currentEditingItemId = e.currentTarget.dataset.itemId;
-
-        const modal = document.querySelector('#hges-shipping-rate-modal');
-        if (modal) {
-            modal.classList.remove('hidden');
-            const currentUrlParams = new URLSearchParams(window.location.search);
-            const response = await apiClient.get(window.hges.ajaxUrl, { orderId: currentUrlParams.get('id'), action: 'hges_get_shipping_rates_for_order_html' });
-            document.querySelector('#hges-shipping-rate-modal .shipping-rate-list').innerHTML = response.shippingRatesHtml;
-            document.querySelectorAll('#hges-shipping-rate-modal .shipping-rate-list .hges-shipping-method').forEach((rateElement) => {
-                rateElement.addEventListener('click', this.onShippingRateSelected.bind(this));
-            });
-        }
-    },
-    closeShippingRateModal() {
-        const modal = document.querySelector('#hges-shipping-rate-modal');
-        if (modal) {
-            modal.classList.add('hidden');
-        }
-    },
-    async onShippingRateSelected(event) {
-        document.querySelectorAll('#hges-shipping-rate-modal .shipping-rate-list .hges-shipping-method').forEach((rateElement) => {
-            rateElement.classList.remove('selected');
-        });
-        event.currentTarget.classList.add('selected');
-        this.selectedShippingRateChecksum = event.currentTarget.dataset.checksum;
-    },
-    async updateShippingRate() {
-        if (this.selectedShippingRateChecksum) {
-            this.selectedRate = await apiClient.post(
-                window.hges.ajaxUrl, 
-                {
-                    action: 'hges_set_order_shipping_rate',
-                    orderId: new URLSearchParams(window.location.search).get('id'),
-                    orderShippingItemId: this.currentEditingItemId,
-                }, 
-                {
-                    shippingRateChecksum: this.selectedShippingRateChecksum
-                },
-            );
-            
-            window.location.reload();
-        }
-    },
+    
     fileUploadedError(error, file) {
         console.error('File upload error:', error, file);
     },
