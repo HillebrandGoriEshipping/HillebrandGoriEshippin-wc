@@ -1,4 +1,85 @@
-const Attachments = ({ attachments, remainingAttachments }) => {
+const { __ } = wp.i18n;
+import { FilePond, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
+import FilePondPluginFileMetadata from 'filepond-plugin-file-metadata';
+import apiClient from '../../../../../apiClient';
+
+registerPlugin(FilePondPluginFileMetadata);
+
+const Attachments = ({ attachments, requiredAttachments, remainingAttachments }) => {
+    console.log('attachments', attachments);
+    const currentAttachments = attachments;
+    const serverConfig = {
+        process: async (fieldName, file, metadata, load, error, progress, abort) => {
+            const response = await apiClient.upload(window.hges.apiUrl + '/v2/attachments/upload', {}, {file, type: metadata.fileType});
+            if (response.error) {
+                error(response.error);
+            }
+            if (response.progress) {
+                progress(response.progress);
+            } else {
+                load(response.id);
+
+            }
+            return {
+                abort: () => {
+                    request.abort();
+                    abort();
+                },
+            };
+        },
+    };
+
+    const onProcessFile = (error, file) => {
+        if (error) {
+            fileUploadedError(error, file);
+        } else {
+            fileUploadedSuccess(file);
+        }
+    };
+
+    const fileUploadedError = (error, file) => {
+            console.error('File upload error:', error, file);
+    }
+    
+    const  fileUploadedSuccess = async (file) => {
+        console.log('File uploaded successfully:', file.getMetadata('fileType'), file.getMetadata('label'));
+        console.log('Current attachments before update:', currentAttachments);
+        if (currentAttachments.some(attachment => attachment.type === file.getMetadata('fileType'))) {
+            currentAttachments = this.currentAttachments.filter(attachment => attachment.type !== file.getMetadata('fileType'));
+        }
+
+        currentAttachments.push({
+            id: file.serverId,
+            name: file.filename,
+            url: file.serverUrl,
+            mimeType: file.fileType,
+            type: file.getMetadata('fileType'),
+            label: file.getMetadata('label')
+        });
+
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.remove('marker-red');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.remove('dashicons-marker');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.add('marker-green');
+        document.querySelector('#attachments-marker-' + file.getMetadata('fileType')).classList.add('dashicons-yes-alt');
+
+        try {
+            const response = await apiClient.post(
+                window.hges.ajaxUrl, 
+                {
+                    action: 'hges_update_order_attachments',
+                },
+                {
+                    orderId: new URLSearchParams(window.location.search).get('id'),
+                    attachments: currentAttachments,
+                },
+            );
+            console.log('Attachments updated successfully', response);
+        } catch (error) {
+            console.error('Attachments update failed', error);
+        }
+    }
+
     return (
         <div>
             <h3>{__('Required attachments')}</h3>
@@ -14,14 +95,7 @@ const Attachments = ({ attachments, remainingAttachments }) => {
                                 id={`attachments-marker-${attachment.type}`}
                             ></span>
                             {attachment.label}
-                            <input
-                                type="file"
-                                data-file-label={attachment.label}
-                                data-file-type={attachment.type}
-                                name="fileUpload"
-                                className="filepond-file-input"
-                                id={`attachments-input-${attachment.type}`}
-                            />
+                            <FilePond allowMultiple={false} server="/api" />
                         </li>
                     ))}
                     {remainingAttachments.map((remainingAttachment) => (
@@ -31,14 +105,8 @@ const Attachments = ({ attachments, remainingAttachments }) => {
                                 id={`attachments-marker-${remainingAttachment.type}`}
                             ></span>
                             {remainingAttachment.label}
-                            <input
-                                type="file"
-                                data-file-label={remainingAttachment.label}
-                                data-file-type={remainingAttachment.type}
-                                name="fileUpload"
-                                className="filepond-file-input"
-                                id={`attachments-input-${remainingAttachment.type}`}
-                            />
+                            <FilePond name="fileUpload" allowMultiple={false} server={serverConfig} fileMetadataObject={{ fileType: remainingAttachment.type, label: remainingAttachment.label }} onprocessfile={onProcessFile} />
+
                         </li>
                     ))}
                 </ul>

@@ -32,6 +32,7 @@ const ShippingRowBody = ({
             {requiredAttachments.length > 0 && (
                 <Attachments
                     attachments={attachments}
+                    requiredAttachments={requiredAttachments}
                     remainingAttachments={remainingAttachments}
                 />
             )}

@@ -58,6 +58,8 @@ class ShippingMethodRow {
                 $requiredAttachmentType = $requiredAttachment['type'] ?? '';
                 return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
             });
+            // reinit array indexes to avoid gaps in the array
+            $remainingAttachments = array_values($remainingAttachments);
         } else {
             $remainingAttachments = [];
         }
@@ -76,7 +78,7 @@ class ShippingMethodRow {
             $priceDelta = $plusPrefix . $priceDelta;
             $shippingRate->addMetaData('priceDelta', $priceDelta);
         }
-
+        
         $templateData = [
             'componentData' => [
                 'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
