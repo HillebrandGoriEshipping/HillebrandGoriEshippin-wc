@@ -53,7 +53,6 @@ const productMetaModule = {
     }
 
     if (this.appellationSelect) {
-      console.log("appellationSelect", this.appellationSelect);
       this.appellationSelect.addEventListener("change", this.checkHsCode.bind(this));
     }
 
@@ -112,7 +111,7 @@ const productMetaModule = {
   async loadAppellationInSelect() {
     const selectedCountry = this.countrySelect.value;
     if (selectedCountry) {
-      const result = await apiClient.get("/get-appellations", {
+      const result = await apiClient.get("/v2/appellations", {
         producingCountry: selectedCountry,
       });
 
