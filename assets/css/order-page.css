@@ -1,3 +1,13 @@
+.shipping-method-row {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    background-color: white;
+    text-align-last: left;
+}
+
 #order_shipping_line_items
 .shipping 
 .name {

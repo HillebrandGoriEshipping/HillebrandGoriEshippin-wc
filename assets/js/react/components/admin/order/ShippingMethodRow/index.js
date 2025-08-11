@@ -45,14 +45,7 @@ const ShippingMethodRow = ({
                 <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
                     {errorMessage}
                 </div>
-                {!shippingRate ? '' : (
-                    <ShippingRowBody
-                        shippingRate={shippingRate}
-                        attachments={attachments}
-                        remainingAttachments={remainingAttachments}
-                        itemId={itemId}
-                    />
-                )}
+                
                 <button
                     type="button"
                     id="hges-change-shipping-rate-button"
@@ -61,6 +54,16 @@ const ShippingMethodRow = ({
                 >
                     {__('Change shipping option')}
                 </button>
+
+                {!shippingRate ? '' : (
+                    <ShippingRowBody
+                        shippingRate={shippingRate}
+                        attachments={attachments}
+                        remainingAttachments={remainingAttachments}
+                        itemId={itemId}
+                    />
+                )}
+               
                 <ShippingRateModal
                     isOpen={isRateSelectionModalOpen}
                     onClose={closeShippingRateModal}

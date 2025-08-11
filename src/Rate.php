@@ -328,6 +328,7 @@ class Rate
             $newRate->setRequiredAttachments($rate['requiredAttachments'] ?? []);
             $newRate->setCoast($rate['coast'] ?? null);
             $newRate->setFirstPickupDelivery($rate['firstPickupDelivery'] ?? null);
+            $newRate->setPackages($rate['packages'] ?? []);
             $newRate->addMetaData('carrier', $rate['carrier']);
             $newRate->addMetaData('pickupDate', $rate['pickupDate']);
             $newRate->addMetaData('deliveryMode', $rate['deliveryMode']);
@@ -369,6 +370,7 @@ class Rate
             $rateDto->setRequiredAttachments($rateArray['requiredAttachments'] ?? []);
             $rateDto->setCoast($rateArray['coast'] ?? null);
             $rateDto->setFirstPickupDelivery($rateArray['firstPickupDelivery'] ?? null);
+            $rateDto->setPackages($rateArray['packages'] ?? []);
         }
 
         return $rateDto;

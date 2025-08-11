@@ -44,7 +44,14 @@ class Packaging
 
             $nbItems = array_reduce($products, function ($carry, $item) use ($packagingType) {
 
-                $bottleType = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY_TYPE, true);
+                $bottleCapacity = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY, true);
+               
+                if ($bottleCapacity == 750) {
+                    $bottleType = self::PACKAGING_BOTTLE;
+                } else if ($bottleCapacity == 1500) {
+                    $bottleType = self::PACKAGING_MAGNUM;
+                }
+
                 if ($bottleType === $packagingType) {
                     return $carry + $item['quantity'];
                 } else {

@@ -22,19 +22,29 @@ class ShippingMethodRow {
         add_action('woocommerce_before_order_itemmeta', [self::class, 'beforeOrderItemMeta'], 10, 3);
         add_action('woocommerce_after_order_itemmeta', [self::class, 'afterOrderItemMeta'], 10, 3);
         add_filter('woocommerce_hidden_order_itemmeta', [self::class, 'hiddenOrderItemMeta'], 10, 1);
+        add_action('woocommerce_admin_order_totals_after_shipping', [self::class, 'afterCartItems'], 10, 1);
     }
 
-    /**
-     * Displays the shipping method edition button
-     * triggered by the 'woocommerce_before_order_itemmeta' action
-     * @param int $item_id The item ID
-     * @param \WC_Order_Item $item The order item object
-     * @param \WC_Product|null $product The product object, if available
-     * 
-     * @return void
-     */
-    public static function beforeOrderItemMeta(int $item_id, \WC_Order_Item $item, ?\WC_Product $product = null): void
+    public static function afterCartItems(int $orderId): void
     {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return;
+        }
+
+        $shippingItems = $order->get_items('shipping');
+        if (empty($shippingItems)) {
+            return;
+        }
+        $item = array_find($shippingItems, function ($shippingItem) {
+            return get_class($shippingItem) === 'WC_Order_Item_Shipping' 
+                && $shippingItem->get_data()['method_id'] === ShippingMethod::METHOD_ID;
+        });
+        
+        if (!$item) {
+            return;
+        }
+
         if (
             get_class($item) !== 'WC_Order_Item_Shipping' 
             || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
@@ -52,7 +62,7 @@ class ShippingMethodRow {
         } catch (\Exception $e) {
             $shippingRate = null;
         }
-
+        
         if ($shippingRate) {
             $remainingAttachments = array_filter($shippingRate->getRequiredAttachments() ?? [], function ($requiredAttachment) use ($attachments) {
                 $requiredAttachmentType = $requiredAttachment['type'] ?? '';
@@ -91,6 +101,20 @@ class ShippingMethodRow {
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
+    }
+
+    /**
+     * Displays the shipping method edition button
+     * triggered by the 'woocommerce_before_order_itemmeta' action
+     * @param int $item_id The item ID
+     * @param \WC_Order_Item $item The order item object
+     * @param \WC_Product|null $product The product object, if available
+     * 
+     * @return void
+     */
+    public static function beforeOrderItemMeta(int $item_id, \WC_Order_Item $item, ?\WC_Product $product = null): void
+    {
+        
         echo '<div style="display: none">';
     }
 

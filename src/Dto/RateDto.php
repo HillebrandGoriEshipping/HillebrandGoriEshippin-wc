@@ -23,7 +23,8 @@ class RateDto
         private ?string $deliveryMode = null,
         private ?string $coast = null,
         private ?string $firstPickupDelivery = null,
-        private ?array $requiredAttachments = null
+        private ?array $requiredAttachments = null,
+        private ?array $packages = []
     ) {
     }
 
@@ -178,6 +179,16 @@ class RateDto
         $this->requiredAttachments = $requiredAttachments;
     }
 
+    public function getPackages(): ?array
+    {
+        return $this->packages;
+    }
+
+    public function setPackages(?array $packages): void
+    {
+        $this->packages = $packages;
+    }
+
     public function getMetaData($key): mixed
     {
         return $this->metaData[$key];
@@ -209,6 +220,7 @@ class RateDto
             'coast' => $this->getCoast(),
             'firstPickupDelivery' => $this->getFirstPickupDelivery(),
             'requiredAttachments' => $this->getRequiredAttachments(),
+            'packages' => $this->getPackages(),
             'meta_data' => $this->metaData,
         ];
     }

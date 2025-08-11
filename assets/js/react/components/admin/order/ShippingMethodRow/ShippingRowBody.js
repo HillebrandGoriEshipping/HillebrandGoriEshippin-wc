@@ -1,5 +1,6 @@
 const __ = wp.i18n.__;
 import Attachments from './Attachments';
+import Packaging from './Packaging';
 
 const ShippingRowBody = ({
     shippingRate,
@@ -36,6 +37,8 @@ const ShippingRowBody = ({
                     remainingAttachments={remainingAttachments}
                 />
             )}
+
+            <Packaging packaging={shippingRate} onChange={() => {}} />
         </div>
     );
 };
