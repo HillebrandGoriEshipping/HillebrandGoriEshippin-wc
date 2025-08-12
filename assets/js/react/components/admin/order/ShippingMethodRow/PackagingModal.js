@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import apiClient from '../../../../../apiClient';
 import PackagingOptionItem from './PackagingOptionItem';
 import { __ } from '@wordpress/i18n'
+import clsx from 'clsx';
 
-const PackagingModal = ({ currentPackaging, products, onChange }) => {
+const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose }) => {
 
     const [packagingOptions, setPackagingOptions] = useState([]);
     const [packages, setPackages] = useState([]);
+    
     const initialProductsNumberByType = Object.keys(products).reduce((acc, key) => {
         const product = products[key];
         const type = product.meta_data.find(item => item.key === 'packaging')?.value || 'bottle';
@@ -70,12 +72,12 @@ const PackagingModal = ({ currentPackaging, products, onChange }) => {
     const removePackage = (index) => {
         setPackages(packages.filter(pkg => pkg.index !== index));
     };
-    
+
 
     return (
-        <div id="packaging-modal" className="modal">
+        <div id="packaging-modal" className={clsx("modal", { 'hidden': !isOpen })}>
             <div className="modal__content">
-                <span className="modal__close" >&times;</span>
+                <span className="modal__close" onClick={onClose}>&times;</span>
                 <div className="modal__section">
                     <h3>{ __('Products to dispatch') }</h3>
                     <div>

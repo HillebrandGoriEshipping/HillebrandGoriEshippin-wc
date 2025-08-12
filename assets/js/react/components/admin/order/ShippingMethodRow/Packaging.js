@@ -18,10 +18,11 @@ const Packaging = ({ packaging, products, onChange }) => {
             <div className="packaging-details">
                 <h4>Packaging applied :</h4>
                 <p>3 x [3 magnums, 42x25x18]</p>
-                <a href="javascript:void(0);" onClick={openPackagingModal}>Change Packaging</a>
+                <a href="#" onClick={openPackagingModal}>Change Packaging</a>
             </div>
             <PackagingModal
                 isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
                 currentPackaging={currentPackaging}
                 products={products}
                 onChange={(newPackaging) => {
