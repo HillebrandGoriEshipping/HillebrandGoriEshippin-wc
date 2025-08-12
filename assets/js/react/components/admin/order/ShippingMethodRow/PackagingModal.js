@@ -7,7 +7,17 @@ const PackagingModal = ({ currentPackaging, products, onChange }) => {
 
     const [packagingOptions, setPackagingOptions] = useState([]);
     const [packages, setPackages] = useState([]);
-    console.log('products in PackagingModal:', products);
+    const initialProductsNumberByType = Object.keys(products).reduce((acc, key) => {
+        const product = products[key];
+        const type = product.meta_data.find(item => item.key === 'packaging')?.value || 'bottle';
+        if (!acc[type]) {
+            acc[type] = 0;
+        }
+        acc[type] += product.quantity || 0;
+        return acc;
+    }, {});
+
+    const [productsNumberByType, setProductsNumberByType] = useState(initialProductsNumberByType);
 
     useEffect(() => {
         const fetchPackagingOptions = async () => {
@@ -16,7 +26,6 @@ const PackagingModal = ({ currentPackaging, products, onChange }) => {
                     window.hges.ajaxUrl,
                     { action: 'hges_get_packaging_options' }
                 );
-                console.log("Packaging options fetched:", response);
                 setPackagingOptions(response.packagings);
             } catch (error) {
                 console.error("Error fetching packaging options:", error);
@@ -26,24 +35,35 @@ const PackagingModal = ({ currentPackaging, products, onChange }) => {
         fetchPackagingOptions();
     }, []);
 
-    const productsNumberByType = Object.keys(products).reduce((acc, key) => {
-        const product = products[key];
-        const type = product.meta_data.find(item => item.key === 'packaging')?.value || 'bottle';
-        if (!acc[type]) {
-            acc[type] = 0;
+    const updateCurrentPackaging = (itemIndex, packagingOption) => {
+        setPackages(prevPackages => {
+            const updatedPackages = [...prevPackages];
+            const packageToUpdate = updatedPackages.find(pkg => pkg.index === itemIndex);
+            if (packageToUpdate) {
+                Object.assign(packageToUpdate, packagingOption);
+            }
+            return updatedPackages;
+        });
+    };
+
+    useEffect(() => {
+        updateProductsToDispatch();
+    }, [packages]);
+
+    const updateProductsToDispatch = () => {
+        const updatedProductsNumberByType = { ...initialProductsNumberByType };
+        for (const type in updatedProductsNumberByType) {
+            packages.forEach((pkg) => {
+                if (pkg.containerType === type) {
+                    updatedProductsNumberByType[type] -= pkg.itemNumber;
+                }
+            });
         }
-        acc[type] += product.quantity || 1;
-        return acc;
-    }, {});
-
-    console.log("Products by type:", productsNumberByType);
-
-    const updateCurrentPackaging = (packagingOption) => {
-        console.log("Updated packaging option:", packagingOption);
+        setProductsNumberByType(updatedProductsNumberByType);
     };
 
     const createPackage = () => {
-        setPackages([...packages, { id: packages.length + 1, itemNumber: 1, width: 0, height: 0, length: 0, weight: { still: 0, sparkling: 0 } }]);
+        setPackages([...packages, { index: packages.length + 1, itemNumber: 0, width: 0, height: 0, length: 0, weight: { still: 0, sparkling: 0 } }]);
     };
 
     return (
@@ -60,15 +80,19 @@ const PackagingModal = ({ currentPackaging, products, onChange }) => {
                 </div>
                 <div className="modal__section">
                     <h3>{ __('Packages') }</h3>
+                    <div className="packaging-option-list">
                         {packages.map((packageItem) => (
-                            <PackagingOptionItem key={packageItem.id} packagingOptions={packagingOptions} packageItem={packageItem} onSelect={updateCurrentPackaging} />
+                            <PackagingOptionItem key={packageItem.index} packagingOptions={packagingOptions} packageItem={packageItem} onSelect={(selectedOption) => updateCurrentPackaging(packageItem.index, selectedOption)} />
                         ))}
                         <div className="plus-round-button" onClick={createPackage}>
                             <span className="dashicons dashicons-plus"></span>
                         </div>
+                    </div>
+                </div>
+                <div className="modal__footer">
+                    <button onClick={() => onChange(null)}>Close</button>
                 </div>
             </div>
-            <button onClick={() => onChange(null)}>Close</button>
         </div>
     );
 
