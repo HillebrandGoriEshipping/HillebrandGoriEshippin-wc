@@ -7,8 +7,7 @@ import clsx from 'clsx';
 const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose }) => {
 
     const [packagingOptions, setPackagingOptions] = useState([]);
-    const [packages, setPackages] = useState([]);
-    
+    const [packages, setPackages] = useState(currentPackaging || []);
     const initialProductsNumberByType = Object.keys(products).reduce((acc, key) => {
         const product = products[key];
         const type = product.meta_data.find(item => item.key === 'packaging')?.value || 'bottle';
