@@ -53,6 +53,12 @@ class Router {
                 'updateAttachments',
                 true
             ),
+            'hges_get_packaging_options' => new Route(
+                'GET',
+                FrontController::class,
+                'getPackagingOptions',
+                true
+            ),
         ];
     }
 
@@ -123,7 +129,7 @@ class Router {
         if (
             !isset($_GET['action'])
             || !isset($this->ajaxRoutes[$_GET['action']])
-            || $this->ajaxRoutes[$_GET['action'] instanceof Route] === false
+            || $this->ajaxRoutes[$_GET['action']] instanceof Route === false
             || $this->ajaxRoutes[$_GET['action']]->getHttpMethod() !== $_SERVER['REQUEST_METHOD']
         ) {
             self::errorNotFound();
@@ -135,7 +141,7 @@ class Router {
         if (in_array($currentRoute->getHttpMethod() , ['POST', 'PATCH', 'PUT'])) {
             $postData = json_decode(file_get_contents('php://input'), true);
         }
-// var_dump($currentRoute);exit;
+
         $class = $currentRoute->getClass();
         $actionMethod = $currentRoute->getActionMethod();
         $class::$actionMethod($postData);

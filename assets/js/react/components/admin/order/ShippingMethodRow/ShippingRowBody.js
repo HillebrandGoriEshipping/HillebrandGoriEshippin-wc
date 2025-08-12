@@ -7,6 +7,7 @@ const ShippingRowBody = ({
     attachments = [],
     remainingAttachments = [],
     itemId,
+    products = [],
 }) => {
     const requiredAttachments = shippingRate?.requiredAttachments || [];
     const priceDelta = shippingRate?.meta_data?.priceDelta;
@@ -38,7 +39,7 @@ const ShippingRowBody = ({
                 />
             )}
 
-            <Packaging packaging={shippingRate} onChange={() => {}} />
+            <Packaging products={products} packaging={[]} onChange={() => {}} />
         </div>
     );
 };

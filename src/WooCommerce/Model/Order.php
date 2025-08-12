@@ -4,7 +4,6 @@ namespace HGeS\WooCommerce\Model;
 
 use HGeS\Dto\RateDto;
 use HGeS\Rate;
-use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
 use HGeS\Utils\RateHelper;
 

@@ -11,6 +11,7 @@ const ShippingMethodRow = ({
     attachments = [],
     remainingAttachments = [],
     itemId,
+    products = [],
 }) => {
     const [isRateSelectionModalOpen, setIsRateSelectionModalOpen] = useState(false);
 
@@ -61,6 +62,7 @@ const ShippingMethodRow = ({
                         attachments={attachments}
                         remainingAttachments={remainingAttachments}
                         itemId={itemId}
+                        products={products}
                     />
                 )}
                

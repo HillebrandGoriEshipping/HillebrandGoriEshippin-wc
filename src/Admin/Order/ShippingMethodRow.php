@@ -4,6 +4,7 @@ namespace HGeS\Admin\Order;
 
 use HGeS\Rate;
 use HGeS\Utils\Messages;
+use HGeS\Utils\Packaging;
 use HGeS\Utils\RateHelper;
 use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
@@ -89,6 +90,13 @@ class ShippingMethodRow {
             $shippingRate->addMetaData('priceDelta', $priceDelta);
         }
         
+        $products = array_map(function ($item) {
+            $item->update_meta_data('packaging', Packaging::getProductPackaging($item->get_product()));
+            $item->get_data_store()->update($item);
+            $item->apply_changes($item);
+            return $item->get_data();
+        }, $order->get_items());
+
         $templateData = [
             'componentData' => [
                 'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
@@ -96,7 +104,8 @@ class ShippingMethodRow {
                 'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
                 'attachments' => $attachments,
                 'remainingAttachments' => $remainingAttachments,
-                'itemId' => $item_id,
+                'itemId' => $item->get_id(),
+                'products' => $products,
             ],
         ];
 

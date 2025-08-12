@@ -22,8 +22,8 @@ class Packaging
         });
 
         return [
-            self::PACKAGING_BOTTLE => $packagingBottle,
-            self::PACKAGING_MAGNUM => $packagingMagnum,
+            self::PACKAGING_BOTTLE => array_values($packagingBottle),
+            self::PACKAGING_MAGNUM => array_values($packagingMagnum),
         ];
     }
 
@@ -91,5 +91,26 @@ class Packaging
                 break;
             }
         }
+    }
+
+    /**
+     * Get the packaging type for a product based on its capacity
+     *
+     * @param \WC_Product $product
+     * @return string|null Returns the packaging type or null if not applicable
+     */
+    public static function getProductPackaging(\WC_Product $product): ?string
+    {
+        $capacity = get_post_meta($product->get_id(), ProductMetaEnum::CAPACITY, true);
+        
+        if (empty($capacity)) {
+            return null;
+        }
+
+        return match($capacity) {
+            "750" => self::PACKAGING_BOTTLE,
+            "1500" => self::PACKAGING_MAGNUM,
+            default => null,
+        };
     }
 }

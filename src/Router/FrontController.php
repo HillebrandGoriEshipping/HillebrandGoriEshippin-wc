@@ -5,7 +5,6 @@ namespace HGeS\Router;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Packaging;
-use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
 
 class FrontController
@@ -173,5 +172,25 @@ class FrontController
             self::renderJson(['error' => 'Forbidden']);
             return;
         }
+    }
+
+    /**
+     * Get the available packaging options (as set by the admin in the settings)
+     *
+     * @param array $data
+     * @return void
+     */
+    public static function getPackagingOptions(array $data): void
+    {
+        self::checkUserCanEditOrders();
+        $availablePackagings = Packaging::getAvailablePackagingOptions();
+        $flatAvailablePackagings = [];
+        foreach ($availablePackagings as $packagings) {
+            $flatAvailablePackagings = array_merge($flatAvailablePackagings, $packagings);
+        }
+        self::renderJson([
+            'success' => true,
+            'packagings' => $flatAvailablePackagings,
+        ]);
     }
 }

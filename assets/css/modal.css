@@ -88,3 +88,7 @@
 .modal__load-mask.hidden {
     display: none;
 }
+
+.modal__section {
+    border-bottom: 1px solid #ddd;
+}
