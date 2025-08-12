@@ -39,7 +39,7 @@ const ShippingRowBody = ({
                 />
             )}
 
-            <Packaging products={products} packaging={[]} onChange={() => {}} />
+            <Packaging products={products} packaging={shippingRate.packages} onChange={() => {}} />
         </div>
     );
 };

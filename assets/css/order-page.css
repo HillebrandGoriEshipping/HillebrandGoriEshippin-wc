@@ -29,7 +29,15 @@
     flex-direction: column;
     margin-bottom: 1rem;
     padding: 1rem;
+    position: relative;
     width: 30%;
+}
+
+.packaging-option-item .remove-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
 }
 
 .packaging-option-item div {

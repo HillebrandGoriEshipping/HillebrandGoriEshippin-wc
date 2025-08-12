@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 
-const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect }) => {
+const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect, onRemove }) => {
     console.log("PackagingOptionItem props:", { packageItem, packagingOptions });
 
     const onSelectChange = (e) => {
@@ -10,6 +10,9 @@ const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect }) => {
     return (
         <div className="packaging-option-item">
             <h4>Package {packageItem.index}</h4>
+            <div className="remove-button" onClick={() => onRemove(packageItem)}>
+                <span className="dashicons dashicons-no-alt"></span>
+            </div>
             <div>
                 <label>{__('Type')}:</label> 
                 <select value={packageItem.type} onChange={onSelectChange}>

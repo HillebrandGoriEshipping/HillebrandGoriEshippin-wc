@@ -63,8 +63,14 @@ const PackagingModal = ({ currentPackaging, products, onChange }) => {
     };
 
     const createPackage = () => {
-        setPackages([...packages, { index: packages.length + 1, itemNumber: 0, width: 0, height: 0, length: 0, weight: { still: 0, sparkling: 0 } }]);
+        const newIndex = packages.length > 0 ? packages[packages.length - 1].index + 1 : 1;
+        setPackages([...packages, { index: newIndex, itemNumber: 0, width: 0, height: 0, length: 0, weight: { still: 0, sparkling: 0 } }]);
     };
+
+    const removePackage = (index) => {
+        setPackages(packages.filter(pkg => pkg.index !== index));
+    };
+    
 
     return (
         <div id="packaging-modal" className="modal">
@@ -82,7 +88,7 @@ const PackagingModal = ({ currentPackaging, products, onChange }) => {
                     <h3>{ __('Packages') }</h3>
                     <div className="packaging-option-list">
                         {packages.map((packageItem) => (
-                            <PackagingOptionItem key={packageItem.index} packagingOptions={packagingOptions} packageItem={packageItem} onSelect={(selectedOption) => updateCurrentPackaging(packageItem.index, selectedOption)} />
+                            <PackagingOptionItem key={packageItem.index} packagingOptions={packagingOptions} packageItem={packageItem} onSelect={(selectedOption) => updateCurrentPackaging(packageItem.index, selectedOption)} onRemove={() => removePackage(packageItem.index)} />
                         ))}
                         <div className="plus-round-button" onClick={createPackage}>
                             <span className="dashicons dashicons-plus"></span>
