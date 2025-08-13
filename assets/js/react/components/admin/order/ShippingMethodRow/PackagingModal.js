@@ -69,6 +69,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                     packaging: JSON.stringify(packages),
                 },
             );
+            onChange(packages);
         } catch (error) {
             console.error("Error updating packaging:", error);
         }

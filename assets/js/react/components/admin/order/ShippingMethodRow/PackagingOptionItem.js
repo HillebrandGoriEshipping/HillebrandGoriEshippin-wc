@@ -1,8 +1,6 @@
 const { __ } = wp.i18n;
 
 const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect, onRemove }) => {
-    console.log("PackagingOptionItem props:", { packageItem, packagingOptions });
-
     const onSelectChange = (e) => {
         onSelect(packagingOptions.find(option => option.id === Number(e.target.value)) );
     };

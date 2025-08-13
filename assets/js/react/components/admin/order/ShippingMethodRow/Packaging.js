@@ -16,8 +16,7 @@ const Packaging = ({ packaging, products, onChange }) => {
         <div className="packaging-row">
         <h3>Packaging</h3>
             <div className="packaging-details">
-                <h4>Packaging applied :</h4>
-                <p>3 x [3 magnums, 42x25x18]</p>
+                <p>{currentPackaging.map(pkg => `${pkg.itemNumber}x${pkg.containerType} [${pkg.width}x${pkg.height}x${pkg.length}]`).join(', ')}</p>
                 <a href="#" onClick={openPackagingModal}>Change Packaging</a>
             </div>
             <PackagingModal
@@ -26,6 +25,7 @@ const Packaging = ({ packaging, products, onChange }) => {
                 currentPackaging={currentPackaging}
                 products={products}
                 onChange={(newPackaging) => {
+                    console.log('Updated packaging:', newPackaging);
                     setCurrentPackaging(newPackaging);
                     onChange(newPackaging);
                 }}
