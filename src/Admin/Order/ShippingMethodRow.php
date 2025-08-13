@@ -67,6 +67,7 @@ class ShippingMethodRow {
                 $shippingRate = null;
             }
         } else {
+            $shippingMethodStillAvailable = false;
             $shippingRate = null;
         }
         
@@ -97,6 +98,9 @@ class ShippingMethodRow {
         }
         
         $products = array_map(function ($item) {
+            if (!$item->get_product()) {
+                return null;
+            }
             $item->update_meta_data('packaging', Packaging::getProductPackaging($item->get_product()));
             $item->get_data_store()->update($item);
             $item->apply_changes($item);
@@ -108,7 +112,7 @@ class ShippingMethodRow {
                 'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
                 'stillAvailable' => $shippingMethodStillAvailable,
                 'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
-                'attachments' => $attachments,
+                'attachments' => $attachments ?? [],
                 'remainingAttachments' => $remainingAttachments,
                 'itemId' => $item->get_id(),
                 'products' => $products,

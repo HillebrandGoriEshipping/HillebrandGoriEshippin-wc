@@ -360,7 +360,6 @@ class Rate
         if (isset($shippingRates['error'])) {
             return null;
         }
-
         $rateArray = $shippingRate['data'] ?? null;
         $rateDto = new RateDto();
         if ($rateArray) {

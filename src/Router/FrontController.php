@@ -6,7 +6,6 @@ use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Model\Order;
-use HGeS\WooCommerce\Model\ShippingMethod;
 
 class FrontController
 {
@@ -109,11 +108,21 @@ class FrontController
         }, $_GET);
 
         if (!empty($bodyParams['shippingRateChecksum']) && !empty($urlParams['orderId']) && !empty($urlParams['orderShippingItemId'])) {
-            $rate = Order::updateSelectedShippingRate(
-                intval($urlParams['orderId']),
-                intval($urlParams['orderShippingItemId']),
-                $bodyParams['shippingRateChecksum']
-            );
+            
+            try {
+                $rate = Order::updateSelectedShippingRate(
+                    intval($urlParams['orderId']),
+                    intval($urlParams['orderShippingItemId']),
+                    $bodyParams['shippingRateChecksum']
+                );
+
+            } catch (\Exception $e) {
+                $response['error'] = 'Unable to update shipping method: ' . $e->getMessage();
+                http_response_code(400);
+                self::renderJson($response);
+                return;
+            }
+
             $response['success'] = true;
             $response['shippingRate'] = $rate->toArray();
         } else {

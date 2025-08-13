@@ -2,6 +2,7 @@
 
 namespace HGeS\WooCommerce\Model;
 
+use Error;
 use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\Messages;
@@ -28,13 +29,33 @@ class Order
     public const PACKAGING_META_KEY = 'hges_packaging';
 
     /**
+     * The key used to store the shipping rate checksum in the order meta
+     */
+    public const CONSUMER_SELECTED_RATE_META_KEY = 'customer_selected_rate';    
+
+    /**
      * Initialize the order hooks and filters
      */
     public static function init(): void
     {
+        add_action('woocommerce_checkout_create_order', [self::class, 'setRateInitialData'], 10, 2);
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
+    }
+
+    public static function setRateInitialData(\WC_Order $order, \WP_REST_Request $request): void
+    {
+        $shippingRateChecksum = $request->get_param('shippingRateChecksum');
+        if ($shippingRateChecksum) {
+            $rate = Rate::getByChecksum($shippingRateChecksum);
+            if ($rate) {
+                $order->update_meta_data('hges_shipping_rate_checksum', $shippingRateChecksum);
+                $order->update_meta_data('hges_shipping_rate', $rate->toArray());
+            } else {
+                \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
+            }
+        }
     }
 
     /**
@@ -127,7 +148,7 @@ class Order
 
         $order = wc_get_order($orderId);
         if (!$order) {
-            return null;
+            throw new \Exception("Order not found.");
         }
 
         $item = $order->get_item($orderShippingItemId);
@@ -136,6 +157,7 @@ class Order
         try {
             $formerShippingRate = Rate::getByChecksum($formerShippingRateChecksum);
         } catch (\Exception $e) {
+            error_log("Error retrieving former shipping rate: " . $e->getMessage());
             $formerShippingRate = null;
         }
 
@@ -158,9 +180,9 @@ class Order
             "method_id" => ShippingMethod::METHOD_ID,
         ];
 
-        $customerSelectedRateExists = $item->meta_exists('customer_selected_rate');
+        $customerSelectedRateExists = $item->meta_exists(self::CONSUMER_SELECTED_RATE_META_KEY);
         if (!$customerSelectedRateExists) {
-            $metaData['customer_selected_rate'] = $formerShippingRate;
+            $metaData[self::CONSUMER_SELECTED_RATE_META_KEY] = $formerShippingRate->toArray();
         }
 
         foreach ($metaData as $key => $value) {
@@ -281,10 +303,10 @@ class Order
         }
 
         $shippingRateChecksumMeta = array_find($item->get_meta_data(), function (\WC_Meta_Data $meta) {
-            return $meta->key === 'customer_selected_rate';
+            return $meta->key === self::CONSUMER_SELECTED_RATE_META_KEY;
         });
 
-        return $shippingRateChecksumMeta ? $shippingRateChecksumMeta->value : null;
+        return $shippingRateChecksumMeta ? RateDto::fromArray($shippingRateChecksumMeta->value) : null;
     }
 
     /**
@@ -373,9 +395,6 @@ class Order
 
         $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
         $order->save_meta_data();
-
-
-        self::invalidateOrderShippingRate($orderId);
     }
 
 
@@ -399,13 +418,8 @@ class Order
         if (!$item) {
             throw new \Exception("Shipping item not found.");
         }
-        
-        $checksumMeta = $item->get_meta('checksum');
-        dump($checksumMeta);
-        $item->update_meta_data('checksum', null);
-        $item->save_meta_data();
 
-        $checksumMeta = $item->get_meta('checksum');
-        dd($checksumMeta);
+        $item->update_meta_data('checksum', '');
+        $item->save_meta_data();
     }
 }
