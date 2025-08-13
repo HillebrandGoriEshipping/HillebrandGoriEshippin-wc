@@ -193,4 +193,36 @@ class FrontController
             'packagings' => $flatAvailablePackagings,
         ]);
     }
+
+    /**
+     * Set the packaging for the given order
+     * 
+     * @param array $data
+     * @return void
+     * 
+     * @throws \Exception If the order is not found or if the packaging is invalid
+     */
+    public static function setPackagingForOrder(array $data): void
+    {
+        self::checkUserCanEditOrders();
+        $response = [];
+        $bodyParams = $data;
+
+        if (!empty($bodyParams['packaging']) && !empty($bodyParams['orderId'])) {
+            try {
+                Order::updatePackaging($bodyParams['orderId'], json_decode($bodyParams['packaging'], true));
+            } catch (\Exception $e) {
+                $response['error'] = 'Unable to set packaging: ' . $e->getMessage();
+                http_response_code(500);
+                self::renderJson($response);
+                return;
+            }
+            $response['success'] = true;
+        } else {
+            $response['error'] = 'Unable to set packaging, orderId is expected in the query params and packaging json object is expected in the json body.';
+            http_response_code(400);
+        }
+        
+        self::renderJson($response);   
+    }
 }

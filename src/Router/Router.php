@@ -59,6 +59,12 @@ class Router {
                 'getPackagingOptions',
                 true
             ),
+            'hges_set_packaging_for_order' => new Route(
+                'POST',
+                FrontController::class,
+                'setPackagingForOrder',
+                true
+            ),
         ];
     }
 
@@ -141,7 +147,7 @@ class Router {
         if (in_array($currentRoute->getHttpMethod() , ['POST', 'PATCH', 'PUT'])) {
             $postData = json_decode(file_get_contents('php://input'), true);
         }
-
+        
         $class = $currentRoute->getClass();
         $actionMethod = $currentRoute->getActionMethod();
         $class::$actionMethod($postData);

@@ -6,6 +6,13 @@ import clsx from 'clsx';
 
 const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose }) => {
 
+    if (currentPackaging) {
+        currentPackaging.forEach((pkg, index) => {
+            if (!pkg.index) {
+                pkg.index = index + 1;
+            }
+        });
+    }
     const [packagingOptions, setPackagingOptions] = useState([]);
     const [packages, setPackages] = useState(currentPackaging || []);
     const initialProductsNumberByType = Object.keys(products).reduce((acc, key) => {
@@ -36,15 +43,32 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
         fetchPackagingOptions();
     }, []);
 
-    const updateCurrentPackaging = (itemIndex, packagingOption) => {
-        setPackages(prevPackages => {
-            const updatedPackages = [...prevPackages];
-            const packageToUpdate = updatedPackages.find(pkg => pkg.index === itemIndex);
-            if (packageToUpdate) {
-                Object.assign(packageToUpdate, packagingOption);
-            }
-            return updatedPackages;
-        });
+    const updateCurrentPackaging =  async (itemIndex, selectedPackagingOption) => {
+        
+        const newPackages = [...packages];
+        const packageToUpdate = newPackages.find(pkg => pkg.index === itemIndex);
+        if (packageToUpdate) {
+            Object.assign(packageToUpdate, selectedPackagingOption);
+        } else {
+            console.warn(`Package with index ${itemIndex} not found.`);
+            return;
+        }
+
+        try {
+            await apiClient.post(
+                window.hges.ajaxUrl,
+                {
+                    action: 'hges_set_packaging_for_order',
+                },
+                {
+                    orderId: new URLSearchParams(window.location.search).get('id'),
+                    packaging: JSON.stringify(newPackages),
+                },
+            );
+            setPackages(newPackages);
+        } catch (error) {
+            console.error("Error updating packaging:", error);
+        }
     };
 
     useEffect(() => {
@@ -54,11 +78,14 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
     const updateProductsToDispatch = () => {
         const updatedProductsNumberByType = { ...initialProductsNumberByType };
         for (const type in updatedProductsNumberByType) {
-            packages.forEach((pkg) => {
-                if (pkg.containerType === type) {
-                    updatedProductsNumberByType[type] -= pkg.itemNumber;
-                }
-            });
+            console.log(packages);
+            if (packages) {
+                packages.forEach((pkg) => {
+                    if (pkg.containerType === type) {
+                        updatedProductsNumberByType[type] -= pkg.itemNumber;
+                    }
+                });
+            }
         }
         setProductsNumberByType(updatedProductsNumberByType);
     };
@@ -88,7 +115,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                 <div className="modal__section">
                     <h3>{ __('Packages') }</h3>
                     <div className="packaging-option-list">
-                        {packages.map((packageItem) => (
+                        {!packages.length ? '' : packages.map((packageItem) => (
                             <PackagingOptionItem key={packageItem.index} packagingOptions={packagingOptions} packageItem={packageItem} onSelect={(selectedOption) => updateCurrentPackaging(packageItem.index, selectedOption)} onRemove={() => removePackage(packageItem.index)} />
                         ))}
                         <div className="plus-round-button" onClick={createPackage}>
@@ -97,7 +124,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                     </div>
                 </div>
                 <div className="modal__footer">
-                    <button onClick={() => onChange(null)}>Close</button>
+                    <button onClick={(e) => e.preventDefault() || onClose()}>Close</button>
                 </div>
             </div>
         </div>

@@ -22,6 +22,11 @@ class Order
      */
     public const ATTACHMENTS_META_KEY = 'hges_attachments';
 
+    /** 
+     * The packaging meta key used in database
+     */
+    public const PACKAGING_META_KEY = 'hges_packaging';
+
     /**
      * Initialize the order hooks and filters
      */
@@ -353,5 +358,20 @@ class Order
         }
 
         return $attachments;
+    }
+
+    public static function updatePackaging(int $orderId, array $packaging): void
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            throw new \Exception("Order not found.");
+        }
+
+        $packaging = array_map(function ($item) {
+            return array_map('sanitize_text_field', $item);
+        }, $packaging);
+
+        $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
+        $order->save_meta_data();
     }
 }
