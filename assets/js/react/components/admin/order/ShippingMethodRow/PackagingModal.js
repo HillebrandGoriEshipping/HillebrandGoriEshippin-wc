@@ -54,6 +54,10 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
             return;
         }
 
+        setPackages(newPackages);
+    };
+
+    async function updateOrderPackagingMeta(packages) {
         try {
             await apiClient.post(
                 window.hges.ajaxUrl,
@@ -62,16 +66,16 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                 },
                 {
                     orderId: new URLSearchParams(window.location.search).get('id'),
-                    packaging: JSON.stringify(newPackages),
+                    packaging: JSON.stringify(packages),
                 },
             );
-            setPackages(newPackages);
         } catch (error) {
             console.error("Error updating packaging:", error);
         }
-    };
+    }
 
     useEffect(() => {
+        updateOrderPackagingMeta(packages);
         updateProductsToDispatch();
     }, [packages]);
 
