@@ -6,6 +6,7 @@ use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Model\Order;
+use HGeS\WooCommerce\Model\ShippingMethod;
 
 class FrontController
 {

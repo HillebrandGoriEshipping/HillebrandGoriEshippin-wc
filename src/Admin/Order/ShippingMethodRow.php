@@ -55,12 +55,18 @@ class ShippingMethodRow {
 
         $orderId = $item->get_data()['order_id'];
         $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
-        $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
-        $attachments = Order::getAttachmentList($orderId);
-        
-        try {
-            $shippingRate = Rate::getByChecksum($shippingRateChecksum);
-        } catch (\Exception $e) {
+
+        if ($shippingRateChecksum) {
+
+            $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
+            $attachments = Order::getAttachmentList($orderId);
+            
+            try {
+                $shippingRate = Rate::getByChecksum($shippingRateChecksum);
+            } catch (\Exception $e) {
+                $shippingRate = null;
+            }
+        } else {
             $shippingRate = null;
         }
         

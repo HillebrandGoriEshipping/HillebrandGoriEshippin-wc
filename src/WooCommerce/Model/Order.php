@@ -373,5 +373,39 @@ class Order
 
         $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
         $order->save_meta_data();
+
+
+        self::invalidateOrderShippingRate($orderId);
+    }
+
+
+    public static function invalidateOrderShippingRate(int $orderId): void
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            throw new \Exception("Order not found.");
+        }
+
+        $shippingItems = $order->get_items('shipping');
+        if (empty($shippingItems)) {
+            throw new \Exception("No shipping items found for this order.");
+        }
+
+        $item = array_find($shippingItems, function ($shippingItem) {
+            return get_class($shippingItem) === 'WC_Order_Item_Shipping' 
+                && $shippingItem->get_data()['method_id'] === ShippingMethod::METHOD_ID;
+        });
+
+        if (!$item) {
+            throw new \Exception("Shipping item not found.");
+        }
+        
+        $checksumMeta = $item->get_meta('checksum');
+        dump($checksumMeta);
+        $item->update_meta_data('checksum', null);
+        $item->save_meta_data();
+
+        $checksumMeta = $item->get_meta('checksum');
+        dd($checksumMeta);
     }
 }
