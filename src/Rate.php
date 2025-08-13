@@ -41,11 +41,12 @@ class Rate
         $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
         if ($currentOrder) {
             $currentOrderShippingAddressCategory = $currentOrder->get_meta($isCompanyCheckboxKey) ? 'company' : 'individual';
+            $currentCompanyName = $currentOrder->get_meta($companyNameKey) ?: '';
             $toAddress = [
                 'category' => $currentOrderShippingAddressCategory,
                 'firstname' => $currentOrder->get_shipping_first_name(),
                 'lastname' => $currentOrder->get_shipping_last_name(),
-                'company' => $currentOrder->get_shipping_company(),
+                'company' => $currentCompanyName,
                 'address' => $currentOrder->get_shipping_address_1(),
                 'telephone' => $currentOrder->get_billing_phone(),
                 'zipCode' => $currentOrder->get_shipping_postcode(),
@@ -81,8 +82,10 @@ class Rate
                 'state' => !empty($package['destination']['state']) ? $package['destination']['state'] : null,
                 'address' => $package['destination']['address'],
                 'telephone' => $package['destination']['phone'] ?? '0123456789',
-                'company' => $category === 'company' ? $companyName : '',
             ];
+            if ($category === 'company') {
+                $toAddress['company'] = $companyName ?? '';
+            }
         }
 
         $expAddress = Address::getFavoriteAddress();
@@ -117,7 +120,9 @@ class Rate
             foreach ($packageList as $packageType) {
                 foreach ($packageType as $p) {
                     $packageParam[] = [
-                        'nb' => $p['itemNumber'],
+                        'nb' => 1,
+                        'itemNumber' => $p['itemNumber'],
+                        'containerType' => $p['containerType'],
                         'width' => $p['width'],
                         'height' => $p['height'],
                         'length' => $p['length'],
