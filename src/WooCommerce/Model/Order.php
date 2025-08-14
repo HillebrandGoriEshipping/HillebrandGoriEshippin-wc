@@ -384,7 +384,13 @@ class Order
         self::invalidateOrderShippingRate($orderId);
     }
 
-
+    /**
+     * Invalidate the shipping rate for a specific order.
+     * This method clears the shipping rate checksum from the order's shipping item.
+     * 
+     * @param int $orderId The ID of the order to invalidate the shipping rate for.
+     * @return void
+     */
     public static function invalidateOrderShippingRate(int $orderId): void
     {
         $order = wc_get_order($orderId);
@@ -408,5 +414,42 @@ class Order
 
         $item->update_meta_data('checksum', '');
         $item->save_meta_data();
+    }
+
+    /**
+     * Get the shipping order item for a specific order.
+     * 
+     * @param int $orderId The ID of the order to retrieve the shipping item for.
+     * @return WC_Order_Item_Shipping|null The shipping order item if found, otherwise null.
+     */
+    public static function getShippingOrderItem(int $orderId): ?\WC_Order_Item_Shipping
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return null;
+        }
+
+        $shippingItems = $order->get_items('shipping');
+        if (empty($shippingItems)) {
+            return null;
+        }
+        
+        $item = array_find($shippingItems, function ($shippingItem) {
+            return get_class($shippingItem) === 'WC_Order_Item_Shipping' 
+                && $shippingItem->get_data()['method_id'] === ShippingMethod::METHOD_ID;
+        });
+        
+        if (!$item) {
+            return null;
+        }
+
+        if (
+            get_class($item) !== 'WC_Order_Item_Shipping' 
+            || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
+        ) {
+            return null;
+        }
+
+        return $item;
     }
 }

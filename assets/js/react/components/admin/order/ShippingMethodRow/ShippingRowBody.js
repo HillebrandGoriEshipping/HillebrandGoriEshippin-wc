@@ -1,13 +1,10 @@
 const __ = wp.i18n.__;
 import Attachments from './Attachments';
-import Packaging from './Packaging';
 
 const ShippingRowBody = ({
     shippingRate,
     attachments = [],
     remainingAttachments = [],
-    itemId,
-    products = [],
 }) => {
     const requiredAttachments = shippingRate?.requiredAttachments || [];
     const priceDelta = shippingRate?.meta_data?.priceDelta;
@@ -39,7 +36,6 @@ const ShippingRowBody = ({
                 />
             )}
 
-            <Packaging products={products} packaging={shippingRate.packages} />
         </div>
     );
 };

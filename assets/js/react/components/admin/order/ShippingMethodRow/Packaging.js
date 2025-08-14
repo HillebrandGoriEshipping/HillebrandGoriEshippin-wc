@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import apiClient from '../../../../../apiClient';
 import PackagingModal from './PackagingModal';
 
 const Packaging = ({ packaging, products }) => {
@@ -32,7 +31,6 @@ const Packaging = ({ packaging, products }) => {
                 onChange={(newPackaging) => {
                     console.log('Updated packaging:', newPackaging);
                     setCurrentPackaging(newPackaging);
-                    onChangePackaging();
                 }}
             />
         </div>

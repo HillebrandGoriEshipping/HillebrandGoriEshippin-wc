@@ -28,32 +28,12 @@ class ShippingMethodRow {
 
     public static function afterCartItems(int $orderId): void
     {
-        $order = wc_get_order($orderId);
-        if (!$order) {
-            return;
-        }
-
-        $shippingItems = $order->get_items('shipping');
-        if (empty($shippingItems)) {
-            return;
-        }
-        $item = array_find($shippingItems, function ($shippingItem) {
-            return get_class($shippingItem) === 'WC_Order_Item_Shipping' 
-                && $shippingItem->get_data()['method_id'] === ShippingMethod::METHOD_ID;
-        });
+        $item = Order::getShippingOrderItem($orderId);
         
         if (!$item) {
             return;
-        }
+        }       
 
-        if (
-            get_class($item) !== 'WC_Order_Item_Shipping' 
-            || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
-        ) {
-            return;
-        }
-
-        $orderId = $item->get_data()['order_id'];
         $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
 
         if ($shippingRateChecksum) {
@@ -105,10 +85,11 @@ class ShippingMethodRow {
             $item->get_data_store()->update($item);
             $item->apply_changes($item);
             return $item->get_data();
-        }, $order->get_items());
+        }, wc_get_order($orderId)->get_items());
 
         $templateData = [
             'componentData' => [
+                'initialSelectedRate' => $initialSelectedRate ? $initialSelectedRate->toArray() : null,
                 'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
                 'stillAvailable' => $shippingMethodStillAvailable,
                 'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,

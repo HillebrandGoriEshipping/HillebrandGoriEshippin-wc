@@ -3,6 +3,7 @@ import apiClient from '../../../../../apiClient';
 import ShippingRateModal from './ShippingRateModal';
 import ShippingRowBody from './ShippingRowBody';
 import { useState } from 'react';
+import Packaging from './Packaging';
 
 const ShippingMethodRow = ({
     errorMessage,
@@ -11,7 +12,7 @@ const ShippingMethodRow = ({
     attachments = [],
     remainingAttachments = [],
     itemId,
-    products = [],
+    products = []
 }) => {
     const [isRateSelectionModalOpen, setIsRateSelectionModalOpen] = useState(false);
 
@@ -61,11 +62,10 @@ const ShippingMethodRow = ({
                         shippingRate={shippingRate}
                         attachments={attachments}
                         remainingAttachments={remainingAttachments}
-                        itemId={itemId}
-                        products={products}
                     />
                 )}
-               
+
+                <Packaging products={products} packaging={shippingRate ? shippingRate.packages : []} />
                 <ShippingRateModal
                     isOpen={isRateSelectionModalOpen}
                     onClose={closeShippingRateModal}
