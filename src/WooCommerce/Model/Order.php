@@ -38,24 +38,9 @@ class Order
      */
     public static function init(): void
     {
-        add_action('woocommerce_checkout_create_order', [self::class, 'setRateInitialData'], 10, 2);
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
-    }
-
-    public static function setRateInitialData(\WC_Order $order, \WP_REST_Request $request): void
-    {
-        $shippingRateChecksum = $request->get_param('shippingRateChecksum');
-        if ($shippingRateChecksum) {
-            $rate = Rate::getByChecksum($shippingRateChecksum);
-            if ($rate) {
-                $order->update_meta_data('hges_shipping_rate_checksum', $shippingRateChecksum);
-                $order->update_meta_data('hges_shipping_rate', $rate->toArray());
-            } else {
-                \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
-            }
-        }
     }
 
     /**
@@ -395,6 +380,8 @@ class Order
 
         $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
         $order->save_meta_data();
+
+        self::invalidateOrderShippingRate($orderId);
     }
 
 

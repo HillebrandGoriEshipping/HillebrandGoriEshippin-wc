@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import apiClient from '../../../../../apiClient';
 import PackagingModal from './PackagingModal';
 
-const Packaging = ({ packaging, products, onChange }) => {
+const Packaging = ({ packaging, products }) => {
 
     const [currentPackaging, setCurrentPackaging] = useState(packaging || []);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,6 +11,11 @@ const Packaging = ({ packaging, products, onChange }) => {
         e.preventDefault();
         setIsModalOpen(true);
     };
+
+    const closePackagingModal = () => {
+        setIsModalOpen(false);
+        window.location.reload();
+    }
 
     return (
         <div className="packaging-row">
@@ -21,13 +26,13 @@ const Packaging = ({ packaging, products, onChange }) => {
             </div>
             <PackagingModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={closePackagingModal}
                 currentPackaging={currentPackaging}
                 products={products}
                 onChange={(newPackaging) => {
                     console.log('Updated packaging:', newPackaging);
                     setCurrentPackaging(newPackaging);
-                    onChange(newPackaging);
+                    onChangePackaging();
                 }}
             />
         </div>

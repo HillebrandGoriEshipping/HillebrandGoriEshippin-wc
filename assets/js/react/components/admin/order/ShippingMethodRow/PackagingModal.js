@@ -55,9 +55,11 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
         }
 
         setPackages(newPackages);
+        updateOrderPackagingMeta(newPackages);
     };
 
     async function updateOrderPackagingMeta(packages) {
+        
         try {
             await apiClient.post(
                 window.hges.ajaxUrl,
@@ -76,7 +78,6 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
     }
 
     useEffect(() => {
-        updateOrderPackagingMeta(packages);
         updateProductsToDispatch();
     }, [packages]);
 
