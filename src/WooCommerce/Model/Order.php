@@ -2,7 +2,6 @@
 
 namespace HGeS\WooCommerce\Model;
 
-use Error;
 use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\Messages;
@@ -41,6 +40,49 @@ class Order
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
+        add_action('woocommerce_thankyou', [self::class, 'setInitialPackagingData'], 10);
+    }
+
+    /**
+     * Set the initial packaging data for the order.
+     * This method is called during the thank you page rendering,
+     * triggered by the 'woocommerce_thankyou' action.
+     *
+     * @return void
+     */
+    public static function setInitialPackagingData(int $orderId): void
+    {
+        if ($orderId) {
+            $order = wc_get_order($orderId);
+        }
+        
+        if (!$order) {
+            return;
+        }
+
+        $shippingItem = self::getShippingOrderItem($orderId);
+        if (!$shippingItem) {
+            return;
+        }
+
+        $shippingRateChecksum = self::getShippingRateChecksum($orderId);
+        if ($shippingRateChecksum) {
+            try {
+                $shippingRate = Rate::getByChecksum($shippingRateChecksum);
+            } catch (\Exception $e) {
+                $shippingRate = null;
+            }
+        } else {
+            $shippingRate = null;
+        }
+        
+        if ($shippingRate && !empty($shippingRate->getPackages())) {
+            $packaging = $shippingRate->getPackages();
+            $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
+            $order->save_meta_data();
+        } else {
+            $packaging = [];
+        }
     }
 
     /**
