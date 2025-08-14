@@ -8,6 +8,7 @@ use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
+use HGeS\WooCommerce\Model\Order;
 use HGeS\WooCommerce\ShippingAddressFields;
 
 class Rate
@@ -110,27 +111,31 @@ class Rate
         }
 
         try {
-            $packageList = Packaging::calculatePackagingPossibilities($package['contents']);
+            if ($currentOrder) {
+               $params['packages'] = $currentOrder->get_meta(Order::PACKAGING_META_KEY, true);
+            } else {
+                $packageList = Packaging::calculatePackagingPossibilities($package['contents']);
+                $packageParam = [];
 
-            $packageParam = [];
-
-            if (empty($packageList)) {
-                return [];
-            }
-            foreach ($packageList as $packageType) {
-                foreach ($packageType as $p) {
-                    $packageParam[] = [
-                        'nb' => 1,
-                        'itemNumber' => $p['itemNumber'],
-                        'containerType' => $p['containerType'],
-                        'width' => $p['width'],
-                        'height' => $p['height'],
-                        'length' => $p['length'],
-                        'weight' => $p['weight'][$containsSparkling ? 'sparkling' : 'still'],
-                    ];
+                if (empty($packageList)) {
+                    return [];
                 }
+                foreach ($packageList as $packageType) {
+                    foreach ($packageType as $p) {
+                        $packageParam[] = [
+                            'nb' => 1,
+                            'itemNumber' => $p['itemNumber'],
+                            'containerType' => $p['containerType'],
+                            'width' => $p['width'],
+                            'height' => $p['height'],
+                            'length' => $p['length'],
+                            'weight' => $p['weight'][$containsSparkling ? 'sparkling' : 'still'],
+                        ];
+
+                    }
+                }
+                $params['packages'] = $packageParam;
             }
-            $params['packages'] = $packageParam;
         } catch (\Exception $th) {
             \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
