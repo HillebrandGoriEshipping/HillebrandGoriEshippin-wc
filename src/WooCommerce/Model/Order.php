@@ -57,12 +57,12 @@ class Order
         }
         
         if (!$order) {
-            return;
+            throw new \Exception("Order not found.");
         }
 
         $shippingItem = self::getShippingOrderItem($orderId);
         if (!$shippingItem) {
-            return;
+            throw new \Exception("Shipping item not found for order ID: $orderId.");
         }
 
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
@@ -73,7 +73,7 @@ class Order
                 $shippingRate = null;
             }
         } else {
-            $shippingRate = null;
+            throw new \Exception("Shipping rate checksum not found for order ID: $orderId.");
         }
         
         if ($shippingRate && !empty($shippingRate->getPackages())) {
@@ -81,7 +81,7 @@ class Order
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
             $order->save_meta_data();
         } else {
-            $packaging = [];
+            throw new \Exception("Shipping rate or packages not found for order ID: $orderId.");
         }
     }
 
