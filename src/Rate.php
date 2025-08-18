@@ -112,30 +112,23 @@ class Rate
 
         try {
             if ($currentOrder) {
-               $params['packages'] = $currentOrder->get_meta(Order::PACKAGING_META_KEY, true);
+               $packageList = $currentOrder->get_meta(Order::PACKAGING_META_KEY, true);
             } else {
-                $packageList = Packaging::calculatePackagingPossibilities($package['contents']);
-                $packageParam = [];
-
-                if (empty($packageList)) {
-                    return [];
-                }
-                foreach ($packageList as $packageType) {
-                    foreach ($packageType as $p) {
-                        $packageParam[] = [
-                            'nb' => 1,
-                            'itemNumber' => $p['itemNumber'],
-                            'containerType' => $p['containerType'],
-                            'width' => $p['width'],
-                            'height' => $p['height'],
-                            'length' => $p['length'],
-                            'weight' => $p['weight'][$containsSparkling ? 'sparkling' : 'still'],
-                        ];
-
+                $packageListByType = Packaging::calculatePackagingPossibilities($package['contents']);
+                $packageList = [];
+                foreach ($packageListByType as $packagingType => $packages) {
+                    foreach ($packages as $pkg) {
+                        $packageList[] = $pkg;
                     }
                 }
-                $params['packages'] = $packageParam;
             }
+
+            foreach ($packageList as &$shippingPackage) {
+
+                $shippingPackage['weight'] = $containsSparkling ? $shippingPackage['weightDefinition']['sparkling'] : $shippingPackage['weightDefinition']['still'];
+                $shippingPackage['nb'] = 1;
+            }
+            $params['packages'] = $packageList;
         } catch (\Exception $th) {
             \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
@@ -254,6 +247,7 @@ class Rate
         if (
             !empty($_GET['add-to-cart'])
             || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
+            || isset($_POST['add-to-cart'])
         ) {
             $allowed = false;
             $debug[] = 'Rate retrieval not allowed for add-to-cart action.';

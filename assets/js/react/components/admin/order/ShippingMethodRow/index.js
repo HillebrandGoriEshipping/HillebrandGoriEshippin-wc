@@ -12,7 +12,8 @@ const ShippingMethodRow = ({
     attachments = [],
     remainingAttachments = [],
     itemId,
-    products = []
+    products = [],
+    packaging = [],
 }) => {
     const [isRateSelectionModalOpen, setIsRateSelectionModalOpen] = useState(false);
 
@@ -65,7 +66,7 @@ const ShippingMethodRow = ({
                     />
                 )}
 
-                <Packaging products={products} packaging={shippingRate ? shippingRate.packages : []} />
+                <Packaging products={products} packaging={packaging} />
                 <ShippingRateModal
                     isOpen={isRateSelectionModalOpen}
                     onClose={closeShippingRateModal}

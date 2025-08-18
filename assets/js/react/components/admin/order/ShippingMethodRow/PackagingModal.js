@@ -59,7 +59,6 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
     };
 
     async function updateOrderPackagingMeta(packages) {
-        
         try {
             await apiClient.post(
                 window.hges.ajaxUrl,

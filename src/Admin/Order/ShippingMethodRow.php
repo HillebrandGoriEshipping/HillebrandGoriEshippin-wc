@@ -87,6 +87,8 @@ class ShippingMethodRow {
             return $item->get_data();
         }, wc_get_order($orderId)->get_items());
 
+        $packaging = wc_get_order($orderId)->get_meta(Order::PACKAGING_META_KEY, true);
+
         $templateData = [
             'componentData' => [
                 'initialSelectedRate' => $initialSelectedRate ? $initialSelectedRate->toArray() : null,
@@ -97,6 +99,7 @@ class ShippingMethodRow {
                 'remainingAttachments' => $remainingAttachments,
                 'itemId' => $item->get_id(),
                 'products' => $products,
+                'packaging' => $packaging,
             ],
         ];
 

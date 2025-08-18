@@ -2,6 +2,7 @@
 
 namespace HGeS\WooCommerce\Model;
 
+use HGeS\Dto\PackageDto;
 use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\Messages;
@@ -78,6 +79,7 @@ class Order
         
         if ($shippingRate && !empty($shippingRate->getPackages())) {
             $packaging = $shippingRate->getPackages();
+
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
             $order->save_meta_data();
         } else {
@@ -417,7 +419,7 @@ class Order
         }
 
         $packaging = array_map(function ($item) {
-            return array_map('sanitize_text_field', $item);
+            return PackageDto::fromArray($item)->sanitize()->toArray();
         }, $packaging);
 
         $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
