@@ -49,6 +49,8 @@ const ShippingMethodRow = ({
                     {errorMessage}
                 </div>
                 
+                <Packaging products={products} packaging={packaging} />
+                
                 <button
                     type="button"
                     id="hges-change-shipping-rate-button"
@@ -66,7 +68,6 @@ const ShippingMethodRow = ({
                     />
                 )}
 
-                <Packaging products={products} packaging={packaging} />
                 <ShippingRateModal
                     isOpen={isRateSelectionModalOpen}
                     onClose={closeShippingRateModal}
