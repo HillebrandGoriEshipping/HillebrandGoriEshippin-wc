@@ -354,11 +354,13 @@ class Rate
      */
     public static function getByChecksum(string $checksum): ?RateDto
     {
-        $shippingRate = ApiClient::get("/v2/rates/$checksum");
-
-        if (isset($shippingRates['error'])) {
+        try {
+            $shippingRate = ApiClient::get("/v2/rates/$checksum");
+        } catch (\Throwable $e) {
+            error_log('Error retrieving shipping rate by checksum: ' . $e->getMessage());
             return null;
         }
+
         $rateArray = $shippingRate['data'] ?? null;
         $rateDto = new RateDto();
         if ($rateArray) {

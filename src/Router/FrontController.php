@@ -79,9 +79,9 @@ class FrontController
             $order = wc_get_order($orderId);
             $rates = Rate::getShippingRates([
                 'destination' => [
-                    'city' => $order->shipping_city,
-                    'postcode' => $order->shipping_postcode,
-                    'country' => $order->shipping_country,
+                    'city' => $order->get_shipping_city(),
+                    'postcode' => $order->get_shipping_postcode(),
+                    'country' => $order->get_shipping_country(),
                 ],
                 'contents' => $order->get_items(),
             ]);

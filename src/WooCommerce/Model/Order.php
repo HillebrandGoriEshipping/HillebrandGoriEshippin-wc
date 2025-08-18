@@ -185,7 +185,7 @@ class Order
         $formerShippingRateChecksum = self::getShippingRateChecksum($orderId);
         try {
             $formerShippingRate = Rate::getByChecksum($formerShippingRateChecksum);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             error_log("Error retrieving former shipping rate: " . $e->getMessage());
             $formerShippingRate = null;
         }
@@ -210,10 +210,10 @@ class Order
         ];
 
         $customerSelectedRateExists = $item->meta_exists(self::CONSUMER_SELECTED_RATE_META_KEY);
-        if (!$customerSelectedRateExists) {
+        if (!$customerSelectedRateExists && $formerShippingRate) {
             $metaData[self::CONSUMER_SELECTED_RATE_META_KEY] = $formerShippingRate->toArray();
         }
-
+ 
         foreach ($metaData as $key => $value) {
             $item->update_meta_data($key, $value);
         }
