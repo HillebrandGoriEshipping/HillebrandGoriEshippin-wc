@@ -27,8 +27,7 @@ class OptionEnum implements EnumInterface
     const HGES_MINHOUR = "HGES_MINHOUR";
     const HGES_CUTOFF = "HGES_CUTOFF";
     const HGES_WORKING_DAYS = "HGES_WORKING_DAYS";
-    const HGES_PACKAGING_BOTTLE = "HGES_PACKAGING_BOTTLE";
-    const HGES_PACKAGING_MAGNUM = "HGES_PACKAGING_MAGNUM";
+    const HGES_PACKAGING_AVAILABLE = "HGES_PACKAGING_AVAILABLE";
     const HGES_FAVORITE_ADDRESS_ID = "HGES_FAVORITE_ADDRESS_ID";
 
 
@@ -58,8 +57,7 @@ class OptionEnum implements EnumInterface
             self::HGES_MINHOUR,
             self::HGES_CUTOFF,
             self::HGES_WORKING_DAYS,
-            self::HGES_PACKAGING_BOTTLE,
-            self::HGES_PACKAGING_MAGNUM,
+            self::HGES_PACKAGING_AVAILABLE,
         ];
     }
 
@@ -108,10 +106,7 @@ class OptionEnum implements EnumInterface
             self::HGES_WORKING_DAYS => [
                 new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings')['workingDaysError']]),
             ],
-            self::HGES_PACKAGING_BOTTLE => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
-            ],
-            self::HGES_PACKAGING_MAGNUM => [
+            self::HGES_PACKAGING_AVAILABLE => [
                 new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
             ],
         ];
@@ -137,8 +132,7 @@ class OptionEnum implements EnumInterface
             self::HGES_MINHOUR => 'string',
             self::HGES_CUTOFF => 'string',
             self::HGES_WORKING_DAYS => 'array',
-            self::HGES_PACKAGING_BOTTLE => 'array',
-            self::HGES_PACKAGING_MAGNUM => 'array',
+            self::HGES_PACKAGING_AVAILABLE => 'array',
         ];
 
         return $sanitizationTypes[$option] ?? null;

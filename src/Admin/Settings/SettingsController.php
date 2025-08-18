@@ -37,14 +37,11 @@ class SettingsController
             $allAddresses = [];
         }
 
-        $existingPackagingOptions = ApiClient::get('/v2/packages')['data'];
-        $existingPackagingOptionsBottle = array_filter($existingPackagingOptions, function($packagingOption) {
-            return $packagingOption['containerType'] === 'bottle';
-        });
-
-        $existingPackagingOptionsMagnum = array_filter($existingPackagingOptions, function($packagingOption) {
-            return $packagingOption['containerType'] === 'magnum';
-        });
+        $packagingOptions = ApiClient::get('/v2/packages')['data'];
+        $existingPackagingOptions = [];
+        foreach ($packagingOptions as $packagingOption) {
+            $existingPackagingOptions[$packagingOption['containerType']][] = $packagingOption;
+        }
         
         echo Twig::getTwig()->render('admin/settings-page.twig', [
             'title' => __(self::SETTING_PAGE_TITLE),
@@ -52,10 +49,7 @@ class SettingsController
             'favoriteAddress' => $favoriteAddress,
             'allAddresses' => $allAddresses,
             'errors' => FormSessionMessages::getMessages('error'),
-            'existingPackagingOptions' => [
-                'bottle' => $existingPackagingOptionsBottle,
-                'magnum' => $existingPackagingOptionsMagnum,
-            ],
+            'existingPackagingOptions' => $existingPackagingOptions,
         ]);
     }
 
