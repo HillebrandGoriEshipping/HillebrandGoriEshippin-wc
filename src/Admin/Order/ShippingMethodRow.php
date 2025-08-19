@@ -92,7 +92,7 @@ class ShippingMethodRow {
         $templateData = [
             'componentData' => [
                 'initialSelectedRate' => $initialSelectedRate ? $initialSelectedRate->toArray() : null,
-                'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
+                'errorMessage' => Messages::getMessage('orderAdmin.shippingRateNotAvailable'),
                 'stillAvailable' => $shippingMethodStillAvailable,
                 'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
                 'attachments' => $attachments ?? [],

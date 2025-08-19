@@ -117,7 +117,9 @@ class Rate
             if ($currentOrder) {
                $packageList = $currentOrder->get_meta(Order::PACKAGING_META_KEY, true);
             } else {
+
                 $packageListByType = Packaging::calculatePackagingPossibilities($package['contents']);
+                
                 $packageList = [];
                 foreach ($packageListByType as $packagingType => $packages) {
                     foreach ($packages as $pkg) {
