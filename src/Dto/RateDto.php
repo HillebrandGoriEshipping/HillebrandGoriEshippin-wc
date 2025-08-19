@@ -23,7 +23,8 @@ class RateDto
         private ?string $deliveryMode = null,
         private ?string $coast = null,
         private ?string $firstPickupDelivery = null,
-        private ?array $requiredAttachments = null
+        private ?array $requiredAttachments = null,
+        private ?array $packages = []
     ) {
     }
 
@@ -178,6 +179,16 @@ class RateDto
         $this->requiredAttachments = $requiredAttachments;
     }
 
+    public function getPackages(): ?array
+    {
+        return $this->packages;
+    }
+
+    public function setPackages(?array $packages): void
+    {
+        $this->packages = $packages;
+    }
+
     public function getMetaData($key): mixed
     {
         return $this->metaData[$key];
@@ -209,9 +220,37 @@ class RateDto
             'coast' => $this->getCoast(),
             'firstPickupDelivery' => $this->getFirstPickupDelivery(),
             'requiredAttachments' => $this->getRequiredAttachments(),
+            'packages' => $this->getPackages(),
             'meta_data' => $this->metaData,
         ];
     }
 
-   
+    public static function fromArray(array $data): self
+    {
+        $instance = new self();
+        $instance->setChecksum($data['id'] ?? null);
+        $instance->setServiceName($data['serviceName'] ?? null);
+        $instance->setPrices($data['prices'] ?? []);
+        $instance->setCarrier($data['carrier'] ?? null);
+        $instance->setServiceCode($data['serviceCode'] ?? null);
+        $instance->setPickupDate($data['pickupDate'] ?? null);
+        $instance->setPickupTime($data['pickupTime'] ?? null);
+        $instance->setDeliveryDate($data['deliveryDate'] ?? null);
+        $instance->setDeliveryTime($data['deliveryTime'] ?? null);
+        $instance->setSaturdayDelivery($data['saturdayDelivery'] ?? null);
+        $instance->setGuaranteedDelay($data['guaranteedDelay'] ?? null);
+        $instance->setDeliveryMode($data['deliveryMode'] ?? null);
+        $instance->setCoast($data['coast'] ?? null);
+        $instance->setFirstPickupDelivery($data['firstPickupDelivery'] ?? null);
+        $instance->setRequiredAttachments($data['requiredAttachments'] ?? []);
+        $instance->setPackages($data['packages'] ?? []);
+        
+        if (isset($data['meta_data']) && is_array($data['meta_data'])) {
+            foreach ($data['meta_data'] as $key => $value) {
+                $instance->addMetaData($key, $value);
+            }
+        }
+
+        return $instance;
+    }
 }

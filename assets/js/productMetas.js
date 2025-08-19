@@ -17,7 +17,7 @@ const productMetaModule = {
   tabs: null,
   target: null,
   variationCheckbox: null,
-  wineFields: null,
+  colorField: null,
   init() {
     this.countrySelect = document.querySelector("#_producing_country");
     this.appellationSelect = document.querySelector("#appellation-select-field");
@@ -30,7 +30,7 @@ const productMetaModule = {
     this.hsCodeField = document.querySelector("#_hs_code");
     this.productTypeSelect = document.querySelector("#product-type");
     this.drinkTypeSelect = document.querySelector("#_type");
-    this.wineFields = document.querySelectorAll(".wine-form-field input, .wine-form-field select, .wine-form-field textarea");
+    this.colorField = document.querySelector("#_color");
     this.productTypeSelect = document.querySelector("#product-type");
     this.tabs = document.querySelectorAll(".attribute_tab");
     this.existingNotice = document.querySelector("#hges-custom-notice");
@@ -162,13 +162,11 @@ const productMetaModule = {
   evalWineFormEnabled() {
     const isWineProduct = (['still', 'sparkling']).includes(this.drinkTypeSelect.value);
     this.setAppellationFieldsEnabled(!isWineProduct);
-    this.wineFields.forEach((field) => {
-      if (isWineProduct) {
-        field.removeAttribute("disabled");
-      } else {
-        field.setAttribute("disabled", "disabled");
-      }
-    });
+    if (!isWineProduct) {
+      this.colorField.setAttribute('disabled', 'disabled');
+    } else {
+      this.colorField.removeAttribute('disabled');
+    }
   },
   setAppellationFieldsEnabled(enabled) {
     if (enabled) {

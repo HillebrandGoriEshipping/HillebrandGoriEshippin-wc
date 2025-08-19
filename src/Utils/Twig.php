@@ -60,12 +60,17 @@ class Twig
         self::$twig->addFunction(new \Twig\TwigFunction('checkboxChecked', function ($optionName, $expectedValue, $defaultValue = '') {
             $optionChecked = '';
             $optionContent = get_option($optionName);
+            if (is_array($optionContent)) {
+                $optionContent = array_map('stripcslashes', $optionContent);
 
-            if (is_array($optionContent) && in_array($expectedValue, $optionContent)) {
-                $optionChecked = 'checked';
+                if (in_array($expectedValue, $optionContent)) {
+                    $optionChecked = true;
+                }
+            } elseif ($optionContent === $expectedValue || (empty($optionContent) && $expectedValue == $defaultValue)) {
+                $optionChecked = true;
             }
 
-            return $optionChecked;
+            return $optionChecked ? 'checked' : '';
         }));
 
         self::$twig->addFunction(new \Twig\TwigFunction('optionSelected', function ($optionName, $expectedValue, $defaultValue = '') {

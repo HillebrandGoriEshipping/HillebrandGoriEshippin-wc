@@ -4,6 +4,7 @@ namespace HGeS\Admin\Order;
 
 use HGeS\Rate;
 use HGeS\Utils\Messages;
+use HGeS\Utils\Packaging;
 use HGeS\Utils\RateHelper;
 use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
@@ -22,37 +23,34 @@ class ShippingMethodRow {
         add_action('woocommerce_before_order_itemmeta', [self::class, 'beforeOrderItemMeta'], 10, 3);
         add_action('woocommerce_after_order_itemmeta', [self::class, 'afterOrderItemMeta'], 10, 3);
         add_filter('woocommerce_hidden_order_itemmeta', [self::class, 'hiddenOrderItemMeta'], 10, 1);
+        add_action('woocommerce_admin_order_totals_after_shipping', [self::class, 'afterCartItems'], 10, 1);
     }
 
-    /**
-     * Displays the shipping method edition button
-     * triggered by the 'woocommerce_before_order_itemmeta' action
-     * @param int $item_id The item ID
-     * @param \WC_Order_Item $item The order item object
-     * @param \WC_Product|null $product The product object, if available
-     * 
-     * @return void
-     */
-    public static function beforeOrderItemMeta(int $item_id, \WC_Order_Item $item, ?\WC_Product $product = null): void
+    public static function afterCartItems(int $orderId): void
     {
-        if (
-            get_class($item) !== 'WC_Order_Item_Shipping' 
-            || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
-        ) {
-            return;
-        }
-
-        $orderId = $item->get_data()['order_id'];
-        $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
-        $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
-        $attachments = Order::getAttachmentList($orderId);
+        $item = Order::getShippingOrderItem($orderId);
         
-        try {
-            $shippingRate = Rate::getByChecksum($shippingRateChecksum);
-        } catch (\Exception $e) {
+        if (!$item) {
+            return;
+        }       
+
+        $shippingRateChecksum = Order::getShippingRateChecksum($orderId);
+
+        if ($shippingRateChecksum) {
+
+            $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
+            $attachments = Order::getAttachmentList($orderId);
+            
+            try {
+                $shippingRate = Rate::getByChecksum($shippingRateChecksum);
+            } catch (\Exception $e) {
+                $shippingRate = null;
+            }
+        } else {
+            $shippingMethodStillAvailable = false;
             $shippingRate = null;
         }
-
+        
         if ($shippingRate) {
             $remainingAttachments = array_filter($shippingRate->getRequiredAttachments() ?? [], function ($requiredAttachment) use ($attachments) {
                 $requiredAttachmentType = $requiredAttachment['type'] ?? '';
@@ -79,18 +77,47 @@ class ShippingMethodRow {
             $shippingRate->addMetaData('priceDelta', $priceDelta);
         }
         
+        $products = array_map(function ($item) {
+            if (!$item->get_product()) {
+                return null;
+            }
+            $item->update_meta_data('packaging', Packaging::getProductPackaging($item->get_product()));
+            $item->get_data_store()->update($item);
+            $item->apply_changes($item);
+            return $item->get_data();
+        }, wc_get_order($orderId)->get_items());
+
+        $packaging = wc_get_order($orderId)->get_meta(Order::PACKAGING_META_KEY, true);
+
         $templateData = [
             'componentData' => [
+                'initialSelectedRate' => $initialSelectedRate ? $initialSelectedRate->toArray() : null,
                 'errorMessage' => Messages::getMessage('orderAdmin')['shippingRateNotAvailable'],
                 'stillAvailable' => $shippingMethodStillAvailable,
                 'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
-                'attachments' => $attachments,
+                'attachments' => $attachments ?? [],
                 'remainingAttachments' => $remainingAttachments,
-                'itemId' => $item_id,
+                'itemId' => $item->get_id(),
+                'products' => $products,
+                'packaging' => $packaging,
             ],
         ];
 
         echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
+    }
+
+    /**
+     * Displays the shipping method edition button
+     * triggered by the 'woocommerce_before_order_itemmeta' action
+     * @param int $item_id The item ID
+     * @param \WC_Order_Item $item The order item object
+     * @param \WC_Product|null $product The product object, if available
+     * 
+     * @return void
+     */
+    public static function beforeOrderItemMeta(int $item_id, \WC_Order_Item $item, ?\WC_Product $product = null): void
+    {
+        
         echo '<div style="display: none">';
     }
 

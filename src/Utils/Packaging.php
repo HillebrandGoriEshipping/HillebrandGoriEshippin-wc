@@ -14,16 +14,25 @@ class Packaging
     {
         $allOptions = ApiClient::get('/v2/packages')['data'];
 
-        $packagingBottle = array_filter($allOptions, function ($packagingOption) {
-            return in_array($packagingOption['id'], get_option('HGES_PACKAGING_BOTTLE', []));
-        });
-        $packagingMagnum = array_filter($allOptions, function ($packagingOption) {
-            return in_array($packagingOption['id'], get_option('HGES_PACKAGING_MAGNUM', []));
+        $packaging = array_filter($allOptions, function ($packagingOption) {
+            $packagingIdsInOption = array_map(function ($option) {
+                $option = json_decode(stripcslashes($option), true);
+                return $option['id'];
+            }, get_option('HGES_PACKAGING_AVAILABLE', []));
+            return in_array($packagingOption['id'], $packagingIdsInOption);
         });
 
+        $packagingBottle = array_filter($packaging, function ($packagingOption) {
+            return $packagingOption['containerType'] === self::PACKAGING_BOTTLE;
+        });
+
+        $packagingMagnum = array_filter($packaging, function ($packagingOption) {
+            return $packagingOption['containerType'] === self::PACKAGING_MAGNUM;
+        });
+        
         return [
-            self::PACKAGING_BOTTLE => $packagingBottle,
-            self::PACKAGING_MAGNUM => $packagingMagnum,
+            self::PACKAGING_BOTTLE => array_values($packagingBottle),
+            self::PACKAGING_MAGNUM => array_values($packagingMagnum),
         ];
     }
 
@@ -44,7 +53,14 @@ class Packaging
 
             $nbItems = array_reduce($products, function ($carry, $item) use ($packagingType) {
 
-                $bottleType = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY_TYPE, true);
+                $bottleCapacity = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY, true);
+               
+                if ($bottleCapacity == 750) {
+                    $bottleType = self::PACKAGING_BOTTLE;
+                } else if ($bottleCapacity == 1500) {
+                    $bottleType = self::PACKAGING_MAGNUM;
+                }
+
                 if ($bottleType === $packagingType) {
                     return $carry + $item['quantity'];
                 } else {
@@ -84,5 +100,26 @@ class Packaging
                 break;
             }
         }
+    }
+
+    /**
+     * Get the packaging type for a product based on its capacity
+     *
+     * @param \WC_Product $product
+     * @return string|null Returns the packaging type or null if not applicable
+     */
+    public static function getProductPackaging(\WC_Product $product): ?string
+    {
+        $capacity = get_post_meta($product->get_id(), ProductMetaEnum::CAPACITY, true);
+        
+        if (empty($capacity)) {
+            return null;
+        }
+
+        return match($capacity) {
+            "750" => self::PACKAGING_BOTTLE,
+            "1500" => self::PACKAGING_MAGNUM,
+            default => null,
+        };
     }
 }

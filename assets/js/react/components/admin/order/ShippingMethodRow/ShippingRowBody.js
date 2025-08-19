@@ -5,7 +5,6 @@ const ShippingRowBody = ({
     shippingRate,
     attachments = [],
     remainingAttachments = [],
-    itemId,
 }) => {
     const requiredAttachments = shippingRate?.requiredAttachments || [];
     const priceDelta = shippingRate?.meta_data?.priceDelta;
@@ -36,6 +35,7 @@ const ShippingRowBody = ({
                     remainingAttachments={remainingAttachments}
                 />
             )}
+
         </div>
     );
 };

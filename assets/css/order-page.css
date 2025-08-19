@@ -1,5 +1,49 @@
+.shipping-method-row {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    background-color: white;
+    text-align-last: left;
+}
+
 #order_shipping_line_items
 .shipping 
 .name {
     width: 80%;
+}
+
+.packaging-option-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+}
+
+.packaging-option-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    position: relative;
+    width: 30%;
+}
+
+.packaging-option-item .remove-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+}
+
+.packaging-option-item div {
+    text-align: left;
+}
+
+.packaging-option-item h4 {
+    margin-top: 0;
 }

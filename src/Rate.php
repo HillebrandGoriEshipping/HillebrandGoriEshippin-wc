@@ -8,6 +8,7 @@ use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
+use HGeS\WooCommerce\Model\Order;
 use HGeS\WooCommerce\ShippingAddressFields;
 
 class Rate
@@ -113,27 +114,24 @@ class Rate
         }
 
         try {
-            $packageList = Packaging::calculatePackagingPossibilities($package['contents']);
-
-            $packageParam = [];
-
-            if (empty($packageList)) {
-                return [];
-            }
-            foreach ($packageList as $packageType) {
-                foreach ($packageType as $p) {
-                    $packageParam[] = [
-                        'nb' => 1,
-                        'itemNumber' => $p['itemNumber'],
-                        'containerType' => $p['containerType'],
-                        'width' => $p['width'],
-                        'height' => $p['height'],
-                        'length' => $p['length'],
-                        'weight' => $p['weight'][$containsSparkling ? 'sparkling' : 'still'],
-                    ];
+            if ($currentOrder) {
+               $packageList = $currentOrder->get_meta(Order::PACKAGING_META_KEY, true);
+            } else {
+                $packageListByType = Packaging::calculatePackagingPossibilities($package['contents']);
+                $packageList = [];
+                foreach ($packageListByType as $packagingType => $packages) {
+                    foreach ($packages as $pkg) {
+                        $packageList[] = $pkg;
+                    }
                 }
             }
-            $params['packages'] = $packageParam;
+
+            foreach ($packageList as &$shippingPackage) {
+
+                $shippingPackage['weight'] = $containsSparkling ? $shippingPackage['weightDefinition']['sparkling'] : $shippingPackage['weightDefinition']['still'];
+                $shippingPackage['nb'] = 1;
+            }
+            $params['packages'] = $packageList;
         } catch (\Exception $th) {
             \Sentry\captureException($th);
             throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
@@ -253,6 +251,7 @@ class Rate
         if (
             !empty($_GET['add-to-cart'])
             || (isset($_GET['wc-ajax']) && $_GET['wc-ajax'] === 'add_to_cart')
+            || isset($_POST['add-to-cart'])
         ) {
             $allowed = false;
             $debug[] = 'Rate retrieval not allowed for add-to-cart action.';
@@ -336,6 +335,7 @@ class Rate
             $newRate->setRequiredAttachments($rate['requiredAttachments'] ?? []);
             $newRate->setCoast($rate['coast'] ?? null);
             $newRate->setFirstPickupDelivery($rate['firstPickupDelivery'] ?? null);
+            $newRate->setPackages($rate['packages'] ?? []);
             $newRate->addMetaData('carrier', $rate['carrier']);
             $newRate->addMetaData('pickupDate', $rate['pickupDate']);
             $newRate->addMetaData('deliveryMode', $rate['deliveryMode']);
@@ -357,9 +357,10 @@ class Rate
      */
     public static function getByChecksum(string $checksum): ?RateDto
     {
-        $shippingRate = ApiClient::get("/v2/rates/$checksum");
-
-        if (isset($shippingRates['error'])) {
+        try {
+            $shippingRate = ApiClient::get("/v2/rates/$checksum");
+        } catch (\Throwable $e) {
+            error_log('Error retrieving shipping rate by checksum: ' . $e->getMessage());
             return null;
         }
 
@@ -377,6 +378,7 @@ class Rate
             $rateDto->setRequiredAttachments($rateArray['requiredAttachments'] ?? []);
             $rateDto->setCoast($rateArray['coast'] ?? null);
             $rateDto->setFirstPickupDelivery($rateArray['firstPickupDelivery'] ?? null);
+            $rateDto->setPackages($rateArray['packages'] ?? []);
         }
 
         return $rateDto;
