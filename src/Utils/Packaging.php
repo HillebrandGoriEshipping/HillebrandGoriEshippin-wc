@@ -67,12 +67,17 @@ class Packaging
                     return $carry;
                 }
             });
+
+            if ($nbItems <= 0) {
+                continue;
+            }
+
             $packages[$packagingType] = [];
             $delta = 0;
-
+            
             if ($packagingAvailable[$packagingType] === []) {
                 wc_add_notice( __(Messages::getMessage('frontOffice.packagingNotAvailable', ['packagingType' => $packagingType]), 'hges' ), 'error' );
-                break;
+                continue;
             }
 
             while ($nbItems > 0) {
