@@ -54,7 +54,7 @@ class Packaging
             $nbItems = array_reduce($products, function ($carry, $item) use ($packagingType) {
 
                 $bottleCapacity = get_post_meta($item['product_id'], ProductMetaEnum::CAPACITY, true);
-               
+
                 if ($bottleCapacity == 750) {
                     $bottleType = self::PACKAGING_BOTTLE;
                 } else if ($bottleCapacity == 1500) {
@@ -67,12 +67,20 @@ class Packaging
                     return $carry;
                 }
             });
-
             $packages[$packagingType] = [];
             $delta = 0;
+
+            if ($packagingAvailable[$packagingType] === []) {
+                wc_add_notice( __(Messages::getMessage('frontOffice')['packagingNotAvailable'], 'hges' ), 'error' );
+                break;
+            }
+
             while ($nbItems > 0) {
                 self::makePackaging($packages[$packagingType], $packagingAvailable[$packagingType], $nbItems, $delta);
                 $delta++;
+                if ($delta > 10) {
+                    throw new \Exception("Too many iterations for packaging type: $packagingType with items left: $nbItems");
+                }
             }
         }
 
