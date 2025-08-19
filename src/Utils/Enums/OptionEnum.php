@@ -68,16 +68,16 @@ class OptionEnum implements EnumInterface
     {
         $constraints = [
             self::HGES_PREF_TRANSP => [
-                new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings')['carrierCountError']]),
+                new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings.carrierCountError')]),
             ],
             self::HGES_TAX_RIGHTS => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_VAT_NUMBER => [
                 new VatNumber(),
             ],
             self::HGES_VAT_OSS => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_EORI_NUMBER => [
                 new EoriNumber(),
@@ -86,28 +86,28 @@ class OptionEnum implements EnumInterface
                 new FdaNumber(),
             ],
             self::HGES_INSURANCE => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_NBR_MIN => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_PREP_TIME => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_PREF_DEL => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_MINHOUR => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_CUTOFF => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.notEmpty')]),
             ],
             self::HGES_WORKING_DAYS => [
-                new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings')['workingDaysError']]),
+                new Count(['min' => 1, 'minMessage' => Messages::getMessage('settings.workingDaysError')]),
             ],
             self::HGES_PACKAGING_AVAILABLE => [
-                new NotBlank(['message' => Messages::getMessage('settings')['notEmpty']]),
+                new NotBlank(['message' => Messages::getMessage('settings.packagingAvailableError')]),
             ],
         ];
 

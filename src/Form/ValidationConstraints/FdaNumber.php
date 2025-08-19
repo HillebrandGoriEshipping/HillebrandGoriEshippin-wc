@@ -12,7 +12,7 @@ class FdaNumber extends \Symfony\Component\Validator\Constraints\Regex
     {
         parent::__construct([
             'pattern' => self::PATTERN,
-            'message' => Messages::getMessage('settings')['fdaNumberError'],
+            'message' => Messages::getMessage('settings.fdaNumberError'),
             'htmlPattern' => self::PATTERN,
         ]);
     }

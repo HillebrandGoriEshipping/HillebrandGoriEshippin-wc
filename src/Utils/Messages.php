@@ -18,7 +18,7 @@ class Messages
      * @return string The message string associated with the provided key.
      * @throws \Exception If the JSON file cannot be read, decoded, or if the message key is not found.
      */
-    public static function getMessage(string $messageKey): array | string
+    public static function getMessage(string $messageKey, array $vars = []): array | string
     {
         $jsonFilePath = HGES_MESSAGES_JSON_PATH;
 
@@ -32,8 +32,22 @@ class Messages
             throw new \Exception("Failed to decode JSON: " . json_last_error_msg());
         }
 
-        if (isset($messages[$messageKey])) {
-            return $messages[$messageKey];
+        $hierarchy = explode('.', $messageKey);
+        $currentItem = $messages;
+        foreach ($hierarchy as $key) {  
+            if (isset($currentItem[$key])) {
+                $currentItem = $currentItem[$key];
+            } else {
+                throw new \Exception("Message key not found: " . $messageKey);
+            }
+        }
+        if (isset($currentItem)) {
+            if (is_string($currentItem)) {
+                foreach ($vars as $varKey => $varValue) {
+                    $currentItem = preg_replace('/\{\s*' . preg_quote($varKey, '/') . '\s*\}/', $varValue, $currentItem);
+                }
+            }
+            return $currentItem;
         } else {
             throw new \Exception("Message key not found: " . $messageKey);
         }
