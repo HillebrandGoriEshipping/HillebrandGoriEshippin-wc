@@ -12,7 +12,7 @@ class VatNumber extends \Symfony\Component\Validator\Constraints\Regex
     {
         parent::__construct([
             'pattern' => self::PATTERN,
-            'message' => Messages::getMessage('settings')['vatNumberError'],
+            'message' => Messages::getMessage('settings.vatNumberError'),
             'htmlPattern' => self::PATTERN,
         ]);
     }

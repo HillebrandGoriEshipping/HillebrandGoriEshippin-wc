@@ -12,7 +12,7 @@ class EoriNumber extends \Symfony\Component\Validator\Constraints\Regex
     {
         parent::__construct([
             'pattern' => self::PATTERN,
-            'message' => Messages::getMessage('settings')['eoriNumberError'],
+            'message' => Messages::getMessage('settings.eoriNumberError'),
             'htmlPattern' => self::PATTERN,
         ]);
     }

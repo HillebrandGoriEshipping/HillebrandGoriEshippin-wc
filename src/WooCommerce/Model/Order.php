@@ -241,8 +241,8 @@ class Order
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
         $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
         if (!$shippingMethodStillAvailable) {
-            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
-            $url = add_query_arg('error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
+            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin.shippingRateNotAvailable'));
+            $url = add_query_arg('error', Messages::getMessage('orderAdmin.shippingRateNotAvailable'), wp_get_referer());
             wp_redirect($url);
             exit;
         }
@@ -266,8 +266,8 @@ class Order
         $currentShippingRate = Rate::getByChecksum(self::getShippingRateChecksum($orderId));
 
         if (!$currentShippingRate) {
-            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['shippingRateNotAvailable']);
-            $url = add_query_arg('error', Messages::getMessage('orderAdmin')['shippingRateNotAvailable'], wp_get_referer());
+            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin.shippingRateNotAvailable'));
+            $url = add_query_arg('error', Messages::getMessage('orderAdmin.shippingRateNotAvailable'), wp_get_referer());
             wp_redirect($url);
             exit;
         }
@@ -284,8 +284,8 @@ class Order
         });
 
         if (count($missingAttachments)) {
-            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin')['attachmentsMissing']);
-            $url = add_query_arg('error', Messages::getMessage('orderAdmin')['attachmentsMissing'], wp_get_referer());
+            \WC_Admin_Meta_Boxes::add_error(Messages::getMessage('orderAdmin.attachmentsMissing'));
+            $url = add_query_arg('error', Messages::getMessage('orderAdmin.attachmentsMissing'), wp_get_referer());
             wp_redirect($url);
             exit;
         }
