@@ -115,38 +115,25 @@
         <tr valign="top">
             <th scope="row">{{ __( 'Packaging available')|escape }}</th>
             <td>
-                <h4>{{ __( 'For bottles')|escape }}</h4>
+            {% for packagingOptionGroupKey in existingPackagingOptions|keys %}
+                <h4>{{ __(packagingOptionGroupKey)|escape }}</h4>
                 <ul>
-                    {% for packagingOption in existingPackagingOptions.bottle %}
+                    {% for packagingOption in existingPackagingOptions[packagingOptionGroupKey] %}
+                    {% set packagingOptionJson = packagingOption|json_encode() %}
                     <li>
                         <input 
                             type="checkbox" 
                             id="packaging-option-{{ packagingOption.id }}" 
-                            name="{{ hgesOptionName('HGES_PACKAGING_BOTTLE') }}[]" 
-                            value="{{ packagingOption.id }}" 
-                            {{ checkboxChecked(hgesOptionName('HGES_PACKAGING_BOTTLE'), packagingOption.id) }}
+                            name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}[]" 
+                            value="{{ packagingOptionJson }}" 
+                            {{ checkboxChecked(hgesOptionName('HGES_PACKAGING_AVAILABLE'), packagingOptionJson) }}
                         >
                         <label for="packaging-option-{{ packagingOption.id }}">{{ packagingOption.itemNumber }} {{ __('items') }} ({{ packagingOption.width }}x{{ packagingOption.length }}x{{ packagingOption.height }})</label> 
                     </li>
                     {% endfor %}
                 </ul>
-                <h4>{{ __( 'For magnums')|escape }}</h4>
-                <ul>
-                    {% for packagingOption in existingPackagingOptions.magnum %}
-                    <li>
-                        <input 
-                            type="checkbox" 
-                            id="{{ packagingOption.id }}" 
-                            name="{{ hgesOptionName('HGES_PACKAGING_MAGNUM') }}[]" 
-                            value="{{ packagingOption.id }}"
-                            {{ checkboxChecked(hgesOptionName('HGES_PACKAGING_MAGNUM'), packagingOption.id) }}
-                        >
-                        <label for="{{ packagingOption.id }}">{{ packagingOption.itemNumber }} {{ __('items') }} ({{ packagingOption.width }}x{{ packagingOption.length }}x{{ packagingOption.height }})</label> 
-
-                    {% endfor %}
-                </ul>
-                {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_BOTTLE} %}
-                {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_MAGNUM} %}
+            {% endfor %}
+            {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_AVAILABLE} %}
             </td>
         </tr>   
         <!-- MINIMUM NUMBER OF BOTTLES -->

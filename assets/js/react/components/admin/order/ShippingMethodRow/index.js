@@ -3,6 +3,7 @@ import apiClient from '../../../../../apiClient';
 import ShippingRateModal from './ShippingRateModal';
 import ShippingRowBody from './ShippingRowBody';
 import { useState } from 'react';
+import Packaging from './Packaging';
 
 const ShippingMethodRow = ({
     errorMessage,
@@ -11,6 +12,8 @@ const ShippingMethodRow = ({
     attachments = [],
     remainingAttachments = [],
     itemId,
+    products = [],
+    packaging = [],
 }) => {
     const [isRateSelectionModalOpen, setIsRateSelectionModalOpen] = useState(false);
 
@@ -45,14 +48,9 @@ const ShippingMethodRow = ({
                 <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
                     {errorMessage}
                 </div>
-                {!shippingRate ? '' : (
-                    <ShippingRowBody
-                        shippingRate={shippingRate}
-                        attachments={attachments}
-                        remainingAttachments={remainingAttachments}
-                        itemId={itemId}
-                    />
-                )}
+                
+                <Packaging products={products} packaging={packaging} />
+                
                 <button
                     type="button"
                     id="hges-change-shipping-rate-button"
@@ -61,6 +59,15 @@ const ShippingMethodRow = ({
                 >
                     {__('Change shipping option')}
                 </button>
+
+                {!shippingRate ? '' : (
+                    <ShippingRowBody
+                        shippingRate={shippingRate}
+                        attachments={attachments}
+                        remainingAttachments={remainingAttachments}
+                    />
+                )}
+
                 <ShippingRateModal
                     isOpen={isRateSelectionModalOpen}
                     onClose={closeShippingRateModal}

@@ -5,7 +5,6 @@ namespace HGeS\Router;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Packaging;
-use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
 
 class FrontController
@@ -80,9 +79,9 @@ class FrontController
             $order = wc_get_order($orderId);
             $rates = Rate::getShippingRates([
                 'destination' => [
-                    'city' => $order->shipping_city,
-                    'postcode' => $order->shipping_postcode,
-                    'country' => $order->shipping_country,
+                    'city' => $order->get_shipping_city(),
+                    'postcode' => $order->get_shipping_postcode(),
+                    'country' => $order->get_shipping_country(),
                 ],
                 'contents' => $order->get_items(),
             ]);
@@ -109,11 +108,21 @@ class FrontController
         }, $_GET);
 
         if (!empty($bodyParams['shippingRateChecksum']) && !empty($urlParams['orderId']) && !empty($urlParams['orderShippingItemId'])) {
-            $rate = Order::updateSelectedShippingRate(
-                intval($urlParams['orderId']),
-                intval($urlParams['orderShippingItemId']),
-                $bodyParams['shippingRateChecksum']
-            );
+            
+            try {
+                $rate = Order::updateSelectedShippingRate(
+                    intval($urlParams['orderId']),
+                    intval($urlParams['orderShippingItemId']),
+                    $bodyParams['shippingRateChecksum']
+                );
+
+            } catch (\Exception $e) {
+                $response['error'] = 'Unable to update shipping method: ' . $e->getMessage();
+                http_response_code(400);
+                self::renderJson($response);
+                return;
+            }
+
             $response['success'] = true;
             $response['shippingRate'] = $rate->toArray();
         } else {
@@ -173,5 +182,57 @@ class FrontController
             self::renderJson(['error' => 'Forbidden']);
             return;
         }
+    }
+
+    /**
+     * Get the available packaging options (as set by the admin in the settings)
+     *
+     * @param array $data
+     * @return void
+     */
+    public static function getPackagingOptions(array $data): void
+    {
+        self::checkUserCanEditOrders();
+        $availablePackagings = Packaging::getAvailablePackagingOptions();
+        $flatAvailablePackagings = [];
+        foreach ($availablePackagings as $packagings) {
+            $flatAvailablePackagings = array_merge($flatAvailablePackagings, $packagings);
+        }
+        self::renderJson([
+            'success' => true,
+            'packagings' => $flatAvailablePackagings,
+        ]);
+    }
+
+    /**
+     * Set the packaging for the given order
+     * 
+     * @param array $data
+     * @return void
+     * 
+     * @throws \Exception If the order is not found or if the packaging is invalid
+     */
+    public static function setPackagingForOrder(array $data): void
+    {
+        self::checkUserCanEditOrders();
+        $response = [];
+        $bodyParams = $data;
+
+        if (!empty($bodyParams['packaging']) && !empty($bodyParams['orderId'])) {
+            try {
+                Order::updatePackaging($bodyParams['orderId'], json_decode($bodyParams['packaging'], true));
+            } catch (\Exception $e) {
+                $response['error'] = 'Unable to set packaging: ' . $e->getMessage();
+                http_response_code(500);
+                self::renderJson($response);
+                return;
+            }
+            $response['success'] = true;
+        } else {
+            $response['error'] = 'Unable to set packaging, orderId is expected in the query params and packaging json object is expected in the json body.';
+            http_response_code(400);
+        }
+        
+        self::renderJson($response);   
     }
 }
