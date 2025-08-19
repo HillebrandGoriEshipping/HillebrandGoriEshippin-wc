@@ -71,7 +71,7 @@ class Packaging
             $delta = 0;
 
             if ($packagingAvailable[$packagingType] === []) {
-                wc_add_notice( __(Messages::getMessage('frontOffice')['packagingNotAvailable'], 'hges' ), 'error' );
+                wc_add_notice( __(Messages::getMessage('frontOffice.packagingNotAvailable', ['packagingType' => $packagingType]), 'hges' ), 'error' );
                 break;
             }
 
