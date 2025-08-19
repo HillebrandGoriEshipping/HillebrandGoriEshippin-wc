@@ -32,8 +32,17 @@ class Messages
             throw new \Exception("Failed to decode JSON: " . json_last_error_msg());
         }
 
-        if (isset($messages[$messageKey])) {
-            return $messages[$messageKey];
+        $hierarchy = explode('.', $messageKey);
+        $currentItem = $messages;
+        foreach ($hierarchy as $key) {  
+            if (isset($currentItem[$key])) {
+                $currentItem = $currentItem[$key];
+            } else {
+                throw new \Exception("Message key not found: " . $messageKey);
+            }
+        }
+        if (isset($currentItem)) {
+            return $currentItem;
         } else {
             throw new \Exception("Message key not found: " . $messageKey);
         }
