@@ -357,10 +357,11 @@ class Order
 
         //get shipping address
         $shippingAddress = $order->get_address('shipping');
-        dump($order->get_billing_phone());
+
+        $isCompany = $order->get_meta('_wc_shipping/hges/is-company-address', true);
 
         $destAddress = [
-            "category" => "individual", //dynamize
+            "category" => $isCompany ? "company" : "individual",
             "firstname" => $shippingAddress['first_name'] ?? '',
             "lastname" => $shippingAddress['last_name'] ?? '',
             "email" => $order->get_billing_email() ?? '',
@@ -370,6 +371,10 @@ class Order
             "zipCode" => $shippingAddress['postcode'],
             "city" => $shippingAddress['city'],
         ];
+
+        if ($isCompany) {
+            $destAddress['company'] = $order->get_meta('_wc_shipping/hges/company-name', true);
+        }
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
         dump($rate);
@@ -392,12 +397,10 @@ class Order
 
 
         // if fiscalRepresentation is set, add it to the params
-        if ($prices['fiscalRepresentation']) {
-            dump($prices['fiscalRepresentation']);
+        if (isset($prices['fiscalRepresentation'])) {
             $params['exciseDuties'] = "paid";
             $params['shipmentPurpose'] = "sale";
         }
-        dump($params);
 
         $pickupPoint = $order->get_meta(self::PICKUP_POINT_META_KEY, true);
 
