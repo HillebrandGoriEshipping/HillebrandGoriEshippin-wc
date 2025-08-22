@@ -1,5 +1,6 @@
 
-import { test, expect } from '@playwright/test';
+import { test } from '../helpers/fixtures';
+import { expect } from '@playwright/test';
 import setUiToBlocks from '../../scripts/setUiToBlocks';
 import { selectRateInAccordion } from '../helpers/shippingRates';
 import { checkOrderConfirmationContent } from '../helpers/orderConfirmation';
@@ -15,26 +16,24 @@ test.describe('Block UI Order spec', () => {
         await addToCart(page, 'blocks');
     });
 
-    test('Select a shipping method in checkout view', async ({ page }) => {
+    test('Select a shipping method in checkout view', async ({ page, customer }) => {
         await page.goto('/checkout');
 
         const emailInput = page.locator('.wc-block-components-address-form__email input');
         await expect(emailInput).toBeVisible();
         await expect(emailInput).toHaveValue('');
         await emailInput.fill('test@test.com');
-
         const inputValues = {
-            'shipping-first_name': 'Jean',
-            'shipping-last_name': 'Némar',
-            'shipping-address_1': '1 rue du Test Automatisé',
-            'shipping-postcode': '45000',
-            'shipping-city': 'Orléans'
+            'shipping-first_name': customer().firstName,
+            'shipping-last_name': customer().lastName,
+            'shipping-address_1': customer().address1,
+            'shipping-postcode': customer().postcode,
+            'shipping-city': customer().city
         };
-        
         formFillById(page, inputValues);
 
         const shippingAddressFieldset = page.locator('.wp-block-woocommerce-checkout-shipping-methods-block');
-        await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 'DHL DOMESTIC EXPRESS');
+        await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 0);
 
         const placeOrderBtn = page.locator('button.wc-block-components-checkout-place-order-button');
         await expect(placeOrderBtn).toBeVisible();
@@ -42,7 +41,7 @@ test.describe('Block UI Order spec', () => {
         await checkOrderConfirmationContent(page, false);
     });
 
-    test('Selects a pickup point in map', async ({ page }) => {
+    test('Selects a pickup point in map', async ({ page, customer }) => {
         await page.goto('/cart');
         await page.getByText('Proceed to Checkout').click();
 
@@ -52,13 +51,13 @@ test.describe('Block UI Order spec', () => {
         await emailInput.fill('test@test.com');
 
         const inputValues = {
-            'shipping-first_name': 'Jean',
-            'shipping-last_name': 'Némar',
-            'shipping-address_1': '1 rue du Test Automatisé',
-            'shipping-postcode': '45000',
-            'shipping-city': 'Orléans'
+            'shipping-first_name': customer().firstName,
+            'shipping-last_name': customer().lastName,
+            'shipping-address_1': customer().address1,
+            'shipping-postcode': customer().postcode,
+            'shipping-city': customer().city
         };
-        
+
         formFillById(page, inputValues);
 
         const pickupButton = page.locator('.rate-content.selected div.pickup-point-button > button');
@@ -95,7 +94,7 @@ test.describe('Block UI Order spec', () => {
         await expect(confirmationAddress).toContainText(thirdPickupName);
     });
 
-    test('Saves custom business order address fields', async ({ page }) => {
+    test('Saves custom business order address fields', async ({ page, customer }) => {
         await page.goto('/checkout');
 
         await page.waitForLoadState('networkidle');
@@ -106,18 +105,19 @@ test.describe('Block UI Order spec', () => {
 
 
         const inputValues = {
-            'shipping-first_name': 'Jean',
-            'shipping-last_name': 'Némar',
-            'shipping-address_1': '1 rue du Test Automatisé',
-            'shipping-postcode': '45000',
-            'shipping-city': 'Orléans',
-            'shipping-hges-is-company-address': true,
-            'shipping-hges-company-name': 'Test Company',
-            'shipping-hges-excise-number': '12345678901234',
+            'shipping-first_name': customer().firstName,
+            'shipping-last_name': customer().lastName,
+            'shipping-address_1': customer().address1,
+            'shipping-postcode': customer().postcode,
+            'shipping-city': customer().city,
+            'shipping-hges-is-company-address': customer(true).isCompanyAddress,
+            'shipping-hges-company-name': customer(true).companyName,
+            'shipping-hges-excise-number': customer(true).exciseNumber,
         };
+        
         await formFillById(page, inputValues);
         const shippingAddressFieldset = page.locator('.wp-block-woocommerce-checkout-shipping-methods-block');
-        await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 'DHL DOMESTIC EXPRESS');
+        await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 0);
         const placeOrderBtn = page.locator('button.wc-block-components-checkout-place-order-button');
         await expect(placeOrderBtn).toBeVisible();
         await placeOrderBtn.click();

@@ -12,7 +12,7 @@
     "ui-mode-classic": "node ./scripts/switchui.js classic",
     "ui-mode-blocks": "node ./scripts/switchui.js blocks",
     "playwright-run": "npx playwright test --config=playwright.config.js",
-    "playwright-open": "npm playwright-run --ui"
+    "playwright-open": "npx playwright test --config=playwright.config.js --ui"
   },
   "author": "",
   "license": "ISC",
