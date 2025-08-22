@@ -4,7 +4,7 @@ namespace HGeS\WooCommerce\ProductType;
 
 use HGeS\Utils\Enums\GlobalEnum;
 
-class SimpleBottleProduct extends \WC_Product
+class SimpleBottleProduct extends \WC_Product_Simple
 {
     const PRODUCT_TYPE = 'bottle-simple';
     const PRODUCT_TYPE_LABEL = 'Simple Bottle Product';
