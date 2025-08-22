@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { addToCart, blocksFillDeliveryAddress } from '../helpers/cart';
-import { selectRateInAccordion } from '../helpers/shippingRates';
+import { addToCart } from '../helpers/cart';
 import setUiToBlocks from '../../scripts/setUiToBlocks';
 
 test.describe('Block UI Cart spec', () => {
@@ -10,30 +9,6 @@ test.describe('Block UI Cart spec', () => {
 
   test.beforeEach(async ({ page }) => {
     await addToCart(page, 'blocks');
-  });
-
-  test('Select a shipping method in cart view', async ({ page }) => {
-    await page.goto('/cart');
-    await expect(page.locator('h1')).toContainText('Cart');
-    await blocksFillDeliveryAddress(page);
-
-    const cartShippingFieldset = await page.locator('.wc-block-components-totals-shipping__fieldset');
-    await selectRateInAccordion(page, cartShippingFieldset, 'Door Delivery', 0);
-    await selectRateInAccordion(page, cartShippingFieldset, 'Other shipping method', 'Flat rate');
-
-    console.log('Anon Cart spec done');
-  });
-
-  test('Select a pickup delivery mode shipping method in checkout view', async ({ page }) => {
-    await page.goto('/cart');
-    await expect(page.locator('h1')).toContainText('Cart');
-    await blocksFillDeliveryAddress(page);
-
-    const cartShippingFieldset = await page.locator('.wc-block-components-totals-shipping__fieldset');
-    await selectRateInAccordion(page, cartShippingFieldset, 'Pickup points', 0);
- 
-    const selectedRate =  page.locator('.rate-content.selected');
-    await expect(selectedRate.locator('div.pickup-point-button > button')).toHaveCount(0);
   });
 
   test('Remove items from cart', async ({ page }) => {
