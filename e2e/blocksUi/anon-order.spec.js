@@ -34,7 +34,7 @@ test.describe('Block UI Order spec', () => {
         formFillById(page, inputValues);
 
         const shippingAddressFieldset = page.locator('.wp-block-woocommerce-checkout-shipping-methods-block');
-        await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 'DHL DOMESTIC EXPRESS');
+        await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 0);
 
         const placeOrderBtn = page.locator('button.wc-block-components-checkout-place-order-button');
         await expect(placeOrderBtn).toBeVisible();
