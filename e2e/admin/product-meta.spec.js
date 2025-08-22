@@ -72,16 +72,15 @@ test.describe('Admin Product Meta spec', () => {
     await expect(alcoholInput).toHaveAttribute('type', 'number');
     await expect(alcoholInput).toHaveAttribute('step', '0.1');
 
-    await expect(page.locator('#_capacity')).toBeVisible();
+    await expect(page.locator('#_capacity')).toBeHidden();
+    await page.selectOption('#_capacity_type', 'magnum');
     const capacityInput = page.locator('input#_capacity');
     await expect(capacityInput).toHaveValue('1500');
-    await expect(capacityInput).toHaveAttribute('type', 'number');
-    await expect(capacityInput).toHaveAttribute('step', '1');
 
     await expect(page.locator('#_producing_country')).toBeVisible();
     await page.selectOption('#_producing_country', 'France');
 
-    await page.selectOption('#_appellation', 'Hydromel');
+    await page.selectOption('#appellation-select-field', 'Hydromel');
 
     await expect(page.locator('#error-container')).toBeVisible();
     await expect(page.locator('#error-container')).toContainText(messages.productMeta.settingsError);
