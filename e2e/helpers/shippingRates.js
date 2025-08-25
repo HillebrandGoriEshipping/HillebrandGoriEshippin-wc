@@ -3,7 +3,6 @@ import { expect } from "@playwright/test";
 export const selectRateInAccordion = async (page, parentLocator, headerTitle, method) => {
     let methodName = method;
    
-
     const loadingMask = page.locator('.wc-block-components-totals-shipping__fieldset .wc-block-components-loading-mask');
     await loadingMask.waitFor({ state: 'hidden' });
 
@@ -18,10 +17,10 @@ export const selectRateInAccordion = async (page, parentLocator, headerTitle, me
         await header.click();
     }
 
-    let label;    
+    let methodNameContainer;    
     if (typeof method === 'number') {
 
-        const rateElements = await header.locator('xpath=ancestor::div[contains(@class,"accordion")]//p[contains(@class,"rate-name")]').all();
+        const rateElements = await header.locator('xpath=ancestor::div[contains(@class, "accordion")]//p[contains(@class,"rate-name")]').all();
         if (rateElements.length <= method) {
             throw new Error('Method index out of bounds');
         }
@@ -29,17 +28,18 @@ export const selectRateInAccordion = async (page, parentLocator, headerTitle, me
         if (rateElements[method] === undefined) {
             throw new Error('No rate element found at index ' + method);
         }
-        label = rateElements[method];
+        methodNameContainer = rateElements[method];
     } else {
-        label = await page.locator('.shipping-rates .rate-name span', { hasText: methodName }).first();
+        methodNameContainer = await page.locator('.shipping-rates .rate-name span', { hasText: methodName }).first();
     }
-    
-    await label.waitFor({ state: 'visible' });
 
-    const rate = label.locator('xpath=ancestor::*[contains(@class, "rate-content")]');
-    await rate.waitFor({ state: 'visible' });
-    await rate.click();
-    return expect(rate).toHaveClass(/selected/);
+    await methodNameContainer.waitFor({ state: 'visible' });
+
+    const labelContent = methodNameContainer.locator('xpath=ancestor::label//div[contains(@class,"rate-content")]');
+    await labelContent.waitFor({ state: 'visible' });
+    await labelContent.click();
+
+    return expect(labelContent).toHaveClass(/selected/);
 };
 
 export const selectRateByName = async (page, labelText) => {

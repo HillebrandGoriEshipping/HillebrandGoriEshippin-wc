@@ -6,6 +6,9 @@ import { selectRateInAccordion } from '../helpers/shippingRates';
 import { checkOrderConfirmationContent } from '../helpers/orderConfirmation';
 import { addToCart } from '../helpers/cart';
 import { formFillById } from '../helpers/formFill';
+import adminLogin from '../helpers/adminLogin';
+
+let createdOrderId = null;
 
 test.describe('Block UI Order spec', () => {
     test.beforeAll(async () => {
@@ -117,11 +120,24 @@ test.describe('Block UI Order spec', () => {
         
         await formFillById(page, inputValues);
         const shippingAddressFieldset = page.locator('.wp-block-woocommerce-checkout-shipping-methods-block');
+        await page.waitForTimeout(5000);
         await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 0);
         const placeOrderBtn = page.locator('button.wc-block-components-checkout-place-order-button');
         await expect(placeOrderBtn).toBeVisible();
         await placeOrderBtn.click();
         await expect(page).toHaveURL(/\/order-received/);
         await checkOrderConfirmationContent(page, false);
+
+        createdOrderId = page.url().match(/order-received\/(\d+)\//)[1];
+        console.log('Created order ID:', createdOrderId);
+    });
+
+    test('Create order and get shipping labels', async ({ page }) => {
+        await page.goto('/wp/wp-admin/admin.php?page=wc-orders');
+        await adminLogin(page);
+        const orderLink = page.locator(`a[href*="page=wc-orders&action=edit&id=${createdOrderId}"]`).first();
+        await expect(orderLink).toBeVisible();
+        await orderLink.click();
+        await expect(page).toHaveURL(new RegExp(`page=wc-orders&action=edit&id=${createdOrderId}`));
     });
 });
