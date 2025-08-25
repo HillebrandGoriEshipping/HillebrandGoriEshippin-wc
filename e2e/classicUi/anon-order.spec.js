@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test } from '../helpers/fixtures';
+import { expect } from '@playwright/test';
 import setUiToClassic from '../../scripts/setUiToClassic.js';
 import { addToCart } from '../helpers/cart';
 import { formFillById } from '../helpers/formFill';
@@ -13,7 +14,7 @@ test.describe('Classic UI Cart spec', () => {
         await addToCart(page, 'classic');
     });
 
-    test('Places order with custom address fields', async ({ page }) => {
+    test('Places order with custom address fields', async ({ page, customer }) => {
         await page.goto('/cart');
         await expect(page.getByText('Proceed to checkout')).toBeVisible();
         await page.getByText('Proceed to checkout').click();
@@ -21,18 +22,18 @@ test.describe('Classic UI Cart spec', () => {
         await expect(page.locator('h1')).toHaveText('Checkout');
 
         const formValues = {
-            'billing_first_name': 'Jean',
-            'billing_last_name': 'Némar',
-            'billing_address_1': '1 rue du Test Automatisé',
-            'billing_postcode': '45000',
-            'billing_city': 'Orléans',
-            'billing_email': 'test@test.com'
+            'billing_first_name': customer().firstName,
+            'billing_last_name': customer().lastName,
+            'billing_address_1': customer().address1,
+            'billing_postcode': customer().postcode,
+            'billing_city': customer().city,
+            'billing_email': customer().email
         };
 
         await formFillById(page, formValues);
 
-        const isCompanyCheckboxId = '#wc_billing\\/hges\\/is-company-address';
-        const companyNameId = '#wc_billing\\/hges\\/company-name';
+        const isCompanyCheckboxId = '#_wc_billing\\/hges\\/is-company-address';
+        const companyNameId = '#_wc_billing\\/hges\\/company-name';
 
         const checkbox = page.locator(isCompanyCheckboxId);
         await expect(checkbox).toBeVisible();
@@ -61,19 +62,19 @@ test.describe('Classic UI Cart spec', () => {
         await checkOrderConfirmationContent(page, false);
     });
 
-    test('Saves custom business order address fields', async ({ page }) => {
+    test('Saves custom business order address fields', async ({ page, customer }) => {
         await page.goto('/checkout');
 
         const formValues = {
-            'billing_first_name': 'Jean',
-            'billing_last_name': 'Némar',
-            'billing_address_1': '1 rue du Test Automatisé',
-            'billing_postcode': '45000',
-            'billing_city': 'Orléans',
-            'billing_email': 'test@test.com',
-            'wc_billing/hges/is-company-address': true,
-            'wc_billing/hges/company-name': 'Test Company',
-            'wc_billing/hges/excise-number': '12345678901234'
+            'billing_first_name': customer().firstName,
+            'billing_last_name': customer().lastName,
+            'billing_address_1': customer().address1,
+            'billing_postcode': customer().postcode,
+            'billing_city': customer().city,
+            'billing_email': customer().email,
+            '_wc_billing/hges/is-company-address': customer(true).isCompanyAddress,
+            '_wc_billing/hges/company-name': customer(true).companyName,
+            '_wc_billing/hges/excise-number': customer(true).exciseNumber
         };
 
         await formFillById(page, formValues);

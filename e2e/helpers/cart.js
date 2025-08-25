@@ -49,16 +49,3 @@ export async function addToCart(page, uiType) {
         await checkCartBlocks(page);
     }
 }
-
-export async function blocksFillDeliveryAddress(page) {
-    const cartShippingFormButton = page.locator('.wc-block-components-totals-shipping-panel > div[role="button"]');
-    await expect(cartShippingFormButton).toBeVisible();
-    await cartShippingFormButton.click();
-
-    await page.locator('.wc-block-components-address-form__postcode input').fill('45000');
-    await page.locator('.wc-block-components-address-form__city input').fill('Orléans');
-
-    await page.locator('form.wc-block-components-shipping-calculator-address .wc-block-components-shipping-calculator-address__button').click();
-
-    await page.waitForTimeout(10000);
-};

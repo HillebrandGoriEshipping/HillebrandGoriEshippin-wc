@@ -1,4 +1,5 @@
-import { test, expect } from '@playwright/test';
+import { test } from '../helpers/fixtures';
+import { expect } from '@playwright/test';
 import setUiToClassic from '../../scripts/setUiToClassic.js';
 import { addToCart } from '../helpers/cart';
 import { formFillById } from '../helpers/formFill';
@@ -13,7 +14,7 @@ test.describe('Classic UI Cart spec', () => {
         await addToCart(page, 'classic');
     });
 
-    test('Go to checkout from cart and select rate', async ({ page }) => {
+    test('Go to checkout from cart and select rate', async ({ page, customer }) => {
         await page.goto('/cart');
 
         const proceedToCheckout = page.getByRole('link', { name: 'Proceed to checkout' });
@@ -23,16 +24,16 @@ test.describe('Classic UI Cart spec', () => {
         await expect(page.locator('h1')).toHaveText('Checkout');
 
         const inputValues = {
-            'billing_first_name': 'Jean',
-            'billing_last_name': 'Némar',
-            'billing_address_1': '1 rue du Test Automatisé',
-            'billing_postcode': '29200',
-            'billing_city': 'BREST',
-            'billing_email': 'test@test.com'
+            'billing_first_name': customer().firstName,
+            'billing_last_name': customer().lastName,
+            'billing_address_1': customer().address1,
+            'billing_postcode': customer().postcode,
+            'billing_city': customer().city,
+            'billing_email': customer().email
         };
         await formFillById(page, inputValues);
 
-        await selectRateByName(page, 'DHL DOMESTIC EXPRESS');
+        await selectRateByName(page, 'UPS Standard');
         await selectRateByName(page, 'Flat rate');
     });
 });

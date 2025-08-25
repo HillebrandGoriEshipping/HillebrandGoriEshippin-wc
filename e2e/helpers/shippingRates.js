@@ -1,18 +1,8 @@
 import { expect } from "@playwright/test";
 
 export const selectRateInAccordion = async (page, parentLocator, headerTitle, method) => {
-    console.log('headerTitle', headerTitle);
     let methodName = method;
-    if (typeof method === 'number') {
-        const rateElements = await page.$$('.shipping-rates .rate-name span');
-        if (rateElements.length <= method) {
-            throw new Error('Method index out of bounds');
-        }
-        methodName = (await rateElements[method].textContent()).trim();
-        if (!methodName) {
-            throw new Error('Shipping method name is empty');
-        }
-    }
+   
 
     const loadingMask = page.locator('.wc-block-components-totals-shipping__fieldset .wc-block-components-loading-mask');
     await loadingMask.waitFor({ state: 'hidden' });
@@ -22,12 +12,28 @@ export const selectRateInAccordion = async (page, parentLocator, headerTitle, me
     const headerCount = await header.count();
     expect(headerCount).toBeGreaterThan(0);
 
+    
     const classList = await header.getAttribute('class');
     if (classList.includes('collapsed')) {
         await header.click();
     }
 
-    const label = await page.locator('.shipping-rates .rate-name span', { hasText: methodName }).first();
+    let label;    
+    if (typeof method === 'number') {
+
+        const rateElements = await header.locator('xpath=ancestor::div[contains(@class,"accordion")]//p[contains(@class,"rate-name")]').all();
+        if (rateElements.length <= method) {
+            throw new Error('Method index out of bounds');
+        }
+
+        if (rateElements[method] === undefined) {
+            throw new Error('No rate element found at index ' + method);
+        }
+        label = rateElements[method];
+    } else {
+        label = await page.locator('.shipping-rates .rate-name span', { hasText: methodName }).first();
+    }
+    
     await label.waitFor({ state: 'visible' });
 
     const rate = label.locator('xpath=ancestor::*[contains(@class, "rate-content")]');
