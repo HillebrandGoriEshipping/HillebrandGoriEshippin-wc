@@ -108,7 +108,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
     return (
         <div id="packaging-modal" className={clsx("modal", { 'hidden': !isOpen })}>
             <div className="modal__content">
-                <span className="modal__close" onClick={onClose}>&times;</span>
+                <span className="modal__close" onClick={() => { onClose(false) }}>&times;</span>
                 <div className="modal__section">
                     <h3>{ __('Products to dispatch') }</h3>
                     <div>
@@ -129,7 +129,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                     </div>
                 </div>
                 <div className="modal__footer">
-                    <button onClick={(e) => e.preventDefault() || onClose()}>Close</button>
+                    <button onClick={(e) => e.preventDefault() || onClose(true)}>Next</button>
                 </div>
             </div>
         </div>

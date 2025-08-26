@@ -42,15 +42,19 @@ const ShippingMethodRow = ({
         window.location.reload();
     }
 
+    const onPackagingUpdated = () => {
+        setIsRateSelectionModalOpen(true);
+    }
+
     const render = () => {
         return (
             <div className="shipping-method-row">
                 <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
                     {errorMessage}
                 </div>
-                
-                <Packaging products={products} packaging={packaging} />
-                
+
+                <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
+
                 <button
                     type="button"
                     id="hges-change-shipping-rate-button"
