@@ -157,7 +157,7 @@ class Scripts
         wp_enqueue_script(
             'hges-components',
             HGES_PLUGIN_URL . 'dist/components.js',
-            ['wp-element'],
+            ['wp-element',  'wc-blocks-checkout'],
             null,
             true
         );
