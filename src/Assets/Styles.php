@@ -103,6 +103,13 @@ class Styles
                 ['hges-shipping-rates-classic-style'],
                 null
             );
+
+            wp_enqueue_style(
+                'woocommerce-packages',
+                HGES_PLUGIN_URL . '../woocommerce/assets/client/blocks/packages-style.css',
+                [],
+                null
+            );
         }
     }
 }
