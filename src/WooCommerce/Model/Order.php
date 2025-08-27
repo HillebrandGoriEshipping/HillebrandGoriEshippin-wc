@@ -252,7 +252,9 @@ class Order
             exit;
         }
 
-        self::createShipment($orderId, $shippingRateChecksum);
+        if ($newStatus === 'processing') {
+            self::createShipment($orderId, $shippingRateChecksum);
+        }
 
         return $shippingMethodStillAvailable;
     }
@@ -377,9 +379,7 @@ class Order
         }
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
-        dump($rate);
         $prices = $rate->getPrices();
-        dump($prices);
 
         $optionalPrices = [];
         foreach ($prices as $key => $price) {
@@ -387,8 +387,6 @@ class Order
                 $optionalPrices[] = $price['key'];
             }
         }
-        dump($optionalPrices);
-
         $params = [
             "checksum" => $rate->getChecksum(),
             "to" => $destAddress,
