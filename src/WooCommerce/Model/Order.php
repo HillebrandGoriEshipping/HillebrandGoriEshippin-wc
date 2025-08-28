@@ -7,8 +7,6 @@ use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\Messages;
 use HGeS\Utils\RateHelper;
-use HGeS\Utils\Packaging;
-use HGeS\WooCommerce\Address;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -274,13 +272,13 @@ class Order
             exit;
         }
 
-        $attachmentsRequired = $currentShippingRate->getRequiredAttachments() ?? false;
+        $attachmentsRequired = $currentShippingRate['requiredAttachments'] ?? false;
         if (empty($attachmentsRequired)) {
             return true;
         }
 
         $attachments = self::getAttachmentList($orderId);
-        $missingAttachments = array_filter($currentShippingRate->getRequiredAttachments() ?? [], function ($requiredAttachment) use ($attachments) {
+        $missingAttachments = array_filter($currentShippingRate['requiredAttachments'] ?? [], function ($requiredAttachment) use ($attachments) {
             $requiredAttachmentType = $requiredAttachment['type'] ?? '';
             return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
         });
@@ -338,72 +336,6 @@ class Order
         });
 
         return $shippingRateChecksumMeta ? RateDto::fromArray($shippingRateChecksumMeta->value) : null;
-    }
-
-    public static function createShipment(int $orderId, string $shippingRateChecksum): void
-    {
-        $order = wc_get_order($orderId);
-        if (!$order) {
-            return;
-        }
-
-        //get shipping address
-        $shippingAddress = $order->get_address('shipping');
-
-        $isCompany = $order->get_meta('_wc_shipping/hges/is-company-address', true);
-
-        $destAddress = [
-            "category" => $isCompany ? "company" : "individual",
-            "firstname" => $shippingAddress['first_name'] ?? '',
-            "lastname" => $shippingAddress['last_name'] ?? '',
-            "email" => $order->get_billing_email() ?? '',
-            "telephone" => $order->get_billing_phone() ?? '',
-            "address" => $shippingAddress['address_1'] . ' ' . $shippingAddress['address_2'],
-            "country" => $shippingAddress['country'],
-            "zipCode" => $shippingAddress['postcode'],
-            "city" => $shippingAddress['city'],
-        ];
-
-        if ($isCompany) {
-            $destAddress['company'] = $order->get_meta('_wc_shipping/hges/company-name', true);
-        }
-
-        $rate = Rate::getByChecksum($shippingRateChecksum);
-        $prices = $rate->getPrices();
-
-        $optionalPrices = [];
-        foreach ($prices as $key => $price) {
-            if ($key !== 'shippingPrice' && (!isset($price['required']) || $price['required'] === false)) {
-                $optionalPrices[] = $price['key'];
-            }
-        }
-        $params = [
-            "checksum" => $rate->getChecksum(),
-            "to" => $destAddress,
-            "optionalPrices" => $optionalPrices
-        ];
-
-
-        // if fiscalRepresentation is set, add it to the params
-        if (isset($prices['fiscalRepresentation'])) {
-            $params['exciseDuties'] = "paid";
-            $params['shipmentPurpose'] = "sale";
-        }
-
-        $pickupPoint = $order->get_meta(self::PICKUP_POINT_META_KEY, true);
-
-        if (is_array($pickupPoint) && !empty($pickupPoint)) {
-            $params['pickupPoint'] = $pickupPoint;
-        }
-
-        try {
-            error_log('Payload envoyé : ' . json_encode($params, JSON_PRETTY_PRINT));
-            $response = ApiClient::post('/v2/shipments', $params);
-            error_log('Réponse API : ' . print_r($response, true));
-        } catch (\Exception $e) {
-            error_log('Erreur API createShipment: ' . $e->getMessage());
-            error_log('Trace : ' . $e->getTraceAsString());
-        }
     }
 
     /**
