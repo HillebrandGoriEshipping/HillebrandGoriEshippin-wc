@@ -107,4 +107,5 @@ git pull origin "$FROM_BRANCH"
 git checkout -b "$BRANCH_NAME"
 git push origin "$BRANCH_NAME"
 
-echo "Work Item Url : https://dev.azure.com/jfhillebrand/Development/_workitems/edit/$TICKET_ID"
+echo -e "\033[1;32m=== Work Item Created ===\033[0m"
+echo -e "URL : \033[1;32mhttps://dev.azure.com/jfhillebrand/Development/_workitems/edit/$TICKET_ID\033[0m"
