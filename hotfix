@@ -82,14 +82,21 @@ if [[ -z "$AZ_HF_PROJECT" || -z "$AZ_HF_AREA" || -z "$AZ_HF_ORG" || -z "$AZ_HF_T
   exit 1
 fi
 
+# get the current az user displayName from json output
+AZ_USER=$(az ad signed-in-user show --query displayName -o tsv)
+if [[ -z "$AZ_USER" ]]; then
+  echo "❌ Could not get the current Azure DevOps user. Please make sure you are logged in with 'az login' and have access to the organization."
+  exit 1
+fi
+
 # get the returned json object
 JSON_OUT=$(az boards work-item create --title "$TITLE" \
  --type "$TYPE" \
- --description "$DESCRIPTION" \
  --area "$AZ_HF_AREA" \
  --project "$AZ_HF_PROJECT" \
  --org "$AZ_HF_ORG" \
- --fields "Tags=$AZ_HF_TAGS" )
+ --assigned-to "$AZ_USER" \
+ --fields "Tags=$AZ_HF_TAGS" "Repro Steps=$DESCRIPTION" )
 
 TICKET_ID=$(echo "$JSON_OUT" | jq -r '.id')
 
