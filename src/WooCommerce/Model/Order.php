@@ -5,8 +5,13 @@ namespace HGeS\WooCommerce\Model;
 use HGeS\Dto\PackageDto;
 use HGeS\Dto\RateDto;
 use HGeS\Rate;
+use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
 use HGeS\Utils\RateHelper;
+use HGeS\Utils\Packaging;
+use HGeS\WooCommerce\Address;
+use HgeS\WooCommerce\ShippingAddressFields;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -31,7 +36,7 @@ class Order
     /**
      * The key used to store the shipping rate checksum in the order meta
      */
-    public const CONSUMER_SELECTED_RATE_META_KEY = 'customer_selected_rate';    
+    public const CONSUMER_SELECTED_RATE_META_KEY = 'customer_selected_rate';
 
     /**
      * Initialize the order hooks and filters
@@ -41,6 +46,7 @@ class Order
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
+        add_action('woocommerce_order_edit_status', [self::class, 'createShipment'], 20, 2);
         add_action('woocommerce_thankyou', [self::class, 'setInitialPackagingData'], 10);
     }
 
@@ -56,7 +62,7 @@ class Order
         if ($orderId) {
             $order = wc_get_order($orderId);
         }
-        
+
         if (!$order) {
             throw new \Exception("Order not found.");
         }
@@ -76,7 +82,7 @@ class Order
         } else {
             throw new \Exception("Shipping rate checksum not found for order ID: $orderId.");
         }
-        
+
         if ($shippingRate && !empty($shippingRate->getPackages())) {
             $packaging = $shippingRate->getPackages();
 
@@ -161,9 +167,10 @@ class Order
             return;
         }
 
-        foreach ($pickupPoint as $key => $value) {
-            $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
-        }
+        // foreach ($pickupPoint as $key => $value) {
+        //     $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
+        // }
+        $order->update_meta_data(self::PICKUP_POINT_META_KEY, $pickupPoint);
     }
 
     public static function updateSelectedShippingRate(
@@ -213,7 +220,7 @@ class Order
         if (!$customerSelectedRateExists && $formerShippingRate) {
             $metaData[self::CONSUMER_SELECTED_RATE_META_KEY] = $formerShippingRate->toArray();
         }
- 
+
         foreach ($metaData as $key => $value) {
             $item->update_meta_data($key, $value);
         }
@@ -246,6 +253,11 @@ class Order
             wp_redirect($url);
             exit;
         }
+
+        if ($newStatus === 'processing') {
+            self::createShipment($orderId, $shippingRateChecksum);
+        }
+
         return $shippingMethodStillAvailable;
     }
 
@@ -272,13 +284,13 @@ class Order
             exit;
         }
 
-        $attachmentsRequired = $currentShippingRate['requiredAttachments'] ?? false;
+        $attachmentsRequired = $currentShippingRate->getRequiredAttachments() ?? false;
         if (empty($attachmentsRequired)) {
             return true;
         }
 
         $attachments = self::getAttachmentList($orderId);
-        $missingAttachments = array_filter($currentShippingRate['requiredAttachments'] ?? [], function ($requiredAttachment) use ($attachments) {
+        $missingAttachments = array_filter($currentShippingRate->getRequiredAttachments() ?? [], function ($requiredAttachment) use ($attachments) {
             $requiredAttachmentType = $requiredAttachment['type'] ?? '';
             return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
         });
@@ -305,6 +317,7 @@ class Order
         if (!$order) {
             return null;
         }
+
         $item = array_pop($order->get_items('shipping'));
         if (!$item || get_class($item) !== 'WC_Order_Item_Shipping' || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID) {
             return null;
@@ -324,7 +337,8 @@ class Order
         }
         $item = array_pop($order->get_items('shipping'));
 
-        if (!$item
+        if (
+            !$item
             || get_class($item) !== 'WC_Order_Item_Shipping'
             || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
         ) {
@@ -336,6 +350,85 @@ class Order
         });
 
         return $shippingRateChecksumMeta ? RateDto::fromArray($shippingRateChecksumMeta->value) : null;
+    }
+
+    public static function createShipment(int $orderId, string $newStatus): void
+    {
+        if ($newStatus !== 'processing') {
+            return;
+        }
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return;
+        }
+
+        //get shipping address
+        $shippingAddress = $order->get_address('shipping');
+        $shippingRateChecksum = self::getShippingRateChecksum($orderId);
+
+        $isCompany = $order->get_meta(ShippingAddressFields::SHIPPING_IS_COMPANY_METANAME);
+
+        $destAddress = [
+            "category" => $isCompany ? "company" : "individual",
+            "firstname" => $shippingAddress['first_name'] ?? '',
+            "lastname" => $shippingAddress['last_name'] ?? '',
+            "email" => $order->get_billing_email() ?? '',
+            "telephone" => $order->get_billing_phone() ?? '',
+            "address" => $shippingAddress['address_1'] . ' ' . $shippingAddress['address_2'],
+            "country" => $shippingAddress['country'],
+            "zipCode" => $shippingAddress['postcode'],
+            "city" => $shippingAddress['city'],
+        ];
+
+        if ($isCompany) {
+            $destAddress['company'] = $order->get_meta(ShippingAddressFields::SHIPPING_COMPANY_NAME_METANAME);
+        }
+
+        $rate = Rate::getByChecksum($shippingRateChecksum);
+        $prices = $rate->getPrices();
+
+        $optionalPrices = [];
+        foreach ($prices as $key => $price) {
+            if ($key !== 'shippingPrice' && (!isset($price['required']) || $price['required'] === false)) {
+                $optionalPrices[] = $price['key'];
+            }
+        }
+        $params = [
+            "checksum" => $rate->getChecksum(),
+            "to" => $destAddress,
+            "optionalPrices" => $optionalPrices
+        ];
+
+        // if fiscalRepresentation is set, add it to the params
+        if (isset($prices['fiscalRepresentation'])) {
+            $params['exciseDuties'] = "paid";
+            $params['shipmentPurpose'] = "sale";
+        }
+
+        if (isset($prices['landedCost'])) {
+            $params['incoterm'] = get_option(OptionEnum::HGES_TAX_RIGHTS);
+            $params['exciseDuties'] = "paid";
+            $params['shipmentPurpose'] = "sale";
+        }
+
+        $pickupPoint = $order->get_meta(self::PICKUP_POINT_META_KEY, true);
+
+        if (is_array($pickupPoint) && !empty($pickupPoint)) {
+            $params['pickupPoint'] = $pickupPoint;
+        }
+
+        try {
+            error_log('Payload envoyé : ' . json_encode($params, JSON_PRETTY_PRINT));
+            $response = ApiClient::post('/v2/shipments', $params);
+            error_log('Réponse API : ' . json_encode($response, JSON_PRETTY_PRINT));
+
+            if (isset($response['data']['shipment']['id'])) {
+                error_log('Shipment created with ID: ' . $response['data']['shipment']['id']);
+            }
+        } catch (\Exception $e) {
+            error_log('Erreur API createShipment: ' . $e->getMessage());
+            error_log('Trace : ' . $e->getTraceAsString());
+        }
     }
 
     /**
@@ -448,7 +541,7 @@ class Order
         }
 
         $item = array_find($shippingItems, function ($shippingItem) {
-            return get_class($shippingItem) === 'WC_Order_Item_Shipping' 
+            return get_class($shippingItem) === 'WC_Order_Item_Shipping'
                 && $shippingItem->get_data()['method_id'] === ShippingMethod::METHOD_ID;
         });
 
@@ -477,18 +570,18 @@ class Order
         if (empty($shippingItems)) {
             return null;
         }
-        
+
         $item = array_find($shippingItems, function ($shippingItem) {
-            return get_class($shippingItem) === 'WC_Order_Item_Shipping' 
+            return get_class($shippingItem) === 'WC_Order_Item_Shipping'
                 && $shippingItem->get_data()['method_id'] === ShippingMethod::METHOD_ID;
         });
-        
+
         if (!$item) {
             return null;
         }
 
         if (
-            get_class($item) !== 'WC_Order_Item_Shipping' 
+            get_class($item) !== 'WC_Order_Item_Shipping'
             || $item->get_data()['method_id'] !== ShippingMethod::METHOD_ID
         ) {
             return null;

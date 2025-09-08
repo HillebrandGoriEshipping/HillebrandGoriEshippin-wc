@@ -8,7 +8,7 @@ class SimpleBottleProduct extends \WC_Product_Simple
 {
     const PRODUCT_TYPE = 'bottle-simple';
     const PRODUCT_TYPE_LABEL = 'Simple Bottle Product';
-    
+
     public static function init(): void
     {
         add_action('woocommerce_' . self::PRODUCT_TYPE . '_add_to_cart', 'woocommerce_simple_add_to_cart', 30);

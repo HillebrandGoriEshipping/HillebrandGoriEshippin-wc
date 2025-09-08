@@ -3,6 +3,7 @@
 namespace HGeS\WooCommerce;
 
 use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\OptionEnum;
 
 /**
  * Address Model
@@ -62,7 +63,7 @@ class Address
      */
     public static function getFavoriteAddress(): ?array
     {
-        $favoriteAddressId = get_option(\HGeS\Utils\Enums\OptionEnum::HGES_FAVORITE_ADDRESS_ID);
+        $favoriteAddressId = get_option(OptionEnum::HGES_FAVORITE_ADDRESS_ID);
         if (!$favoriteAddressId) {
             return null;
         }
@@ -70,7 +71,8 @@ class Address
         try {
             return self::singleFromApi($favoriteAddressId);
         } catch (\Throwable $e) {
+            throw $e;
             return null;
         }
-    }   
+    }
 }

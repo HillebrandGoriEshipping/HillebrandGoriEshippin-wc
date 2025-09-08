@@ -54,7 +54,6 @@ class App
 
         Scripts::init();
         Styles::init();
-
         ClassicUiRender::init();
         PickupPointsRender::init();
         ShippingAddressFields::init();
@@ -67,7 +66,6 @@ class App
             VariableBottleProduct::init();
             SimpleBottleProduct::init();
         });
-        
     }
 
     /**
@@ -82,7 +80,6 @@ class App
 
         Scripts::initAdmin();
         Styles::initAdmin();
-
         BottleShippingClass::initAdmin();
         Menu::initAdmin();
         Product::initAdmin();
@@ -95,6 +92,5 @@ class App
             SimpleBottleProduct::initAdmin();
             VariableBottleProduct::initAdmin();
         });
-
     }
 }

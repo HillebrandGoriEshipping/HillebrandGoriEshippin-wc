@@ -40,6 +40,7 @@ class Rate
         $companyNameKey = ShippingAddressFields::WC_ORDER_META_PREFIX_SHIPPING . ShippingAddressFields::COMPANY_NAME_FIELD_OPTIONS['id'];
 
         $currentOrder = wc_get_order($package['order_id'] ?? $_GET['orderId'] ?? 0);
+
         if ($currentOrder) {
             $currentOrderShippingAddressCategory = $currentOrder->get_meta($isCompanyCheckboxKey) ? 'company' : 'individual';
             $currentCompanyName = $currentOrder->get_meta($companyNameKey) ?: '';
@@ -90,6 +91,7 @@ class Rate
         }
 
         $expAddress = Address::getFavoriteAddress();
+
         $params = [
             'from' => ['addressId' => $expAddress['id']],
             'to' => $toAddress,
@@ -112,11 +114,11 @@ class Rate
 
         try {
             if ($currentOrder) {
-               $packageList = $currentOrder->get_meta(Order::PACKAGING_META_KEY, true);
+                $packageList = $currentOrder->get_meta(Order::PACKAGING_META_KEY, true);
             } else {
 
                 $packageListByType = Packaging::calculatePackagingPossibilities($package['contents']);
-                
+
                 $packageList = [];
                 foreach ($packageListByType as $packagingType => $packages) {
                     foreach ($packages as $pkg) {
@@ -144,18 +146,20 @@ class Rate
 
         // Increment the pickup date to reach the prep time set in the user settings
         // We add a day to the pickup date until the number of working days is spent to reach the prep time
-        $pickupDate = new \DateTime();
         $countedDays = 0;
         $countedPrepDays = 0;
         $prepTime = get_option(OptionEnum::HGES_PREP_TIME);
 
-        while ($countedPrepDays <= $prepTime) {
+        while ($countedPrepDays < $prepTime) {
+            $pickupDate = new \DateTime();
             $pickupDate->modify('+' . $countedDays . ' days');
+
             if (in_array($pickupDate->format('N'), $workingDays)) {
                 $countedPrepDays++;
             }
             $countedDays++;
         }
+
         $params['pickupDate'] = $pickupDate->format('Y-m-d');
         $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
@@ -321,7 +325,6 @@ class Rate
         }
 
         foreach ($shippingRates as $rate) {
-
             $newRate = new RateDto();
             $newRate->setChecksum($rate['checksum']);
             $newRate->setServiceName($rate['serviceName']);
@@ -359,7 +362,7 @@ class Rate
         try {
             $shippingRate = ApiClient::get("/v2/rates/$checksum");
         } catch (\Throwable $e) {
-            error_log('Error retrieving shipping rate by checksum: ' . $e->getMessage());
+            error_log('Error retrieving shipping rate by checksum: ' . $checksum  . ' - ' . $e->getMessage());
             return null;
         }
 

@@ -6,6 +6,9 @@ import { selectRateInAccordion } from '../helpers/shippingRates';
 import { checkOrderConfirmationContent } from '../helpers/orderConfirmation';
 import { addToCart } from '../helpers/cart';
 import { formFillById } from '../helpers/formFill';
+import adminLogin from '../helpers/adminLogin';
+
+let createdOrderId = null;
 
 test.describe('Block UI Order spec', () => {
     test.beforeAll(async () => {
@@ -117,11 +120,42 @@ test.describe('Block UI Order spec', () => {
         
         await formFillById(page, inputValues);
         const shippingAddressFieldset = page.locator('.wp-block-woocommerce-checkout-shipping-methods-block');
+        await page.waitForTimeout(5000);  
         await selectRateInAccordion(page, shippingAddressFieldset, 'Door Delivery', 0);
         const placeOrderBtn = page.locator('button.wc-block-components-checkout-place-order-button');
         await expect(placeOrderBtn).toBeVisible();
         await placeOrderBtn.click();
         await expect(page).toHaveURL(/\/order-received/);
         await checkOrderConfirmationContent(page, false);
+
+        createdOrderId = page.url().match(/order-received\/(\d+)\//)[1];
+    });
+
+});
+
+test.describe('Order admin view spec', () => {
+    let orderPageUrl = null;
+    test('Display order admin page', async ({ page }) => {
+        await page.goto('/wp/wp-admin/admin.php?page=wc-orders');
+        await adminLogin(page);
+        const orderLink = page.locator(`a[href*="page=wc-orders&action=edit&id=${createdOrderId}"]`).first();
+        await expect(orderLink).toBeVisible();
+        await orderLink.click();
+        await expect(page).toHaveURL(new RegExp(`page=wc-orders&action=edit&id=${createdOrderId}`));
+        orderPageUrl = page.url();
+    });
+
+    test('Save order', async ({ page }) => {
+        await page.goto(orderPageUrl);
+        await adminLogin(page);
+
+        const statusSelect = page.locator('#order_status');
+        await statusSelect.selectOption({ label: 'Processing' });
+
+        const updateButton = page.locator('.order_actions button[type="submit"] ');
+        await expect(updateButton).toBeVisible();
+        await updateButton.click();
+
+        await expect(page.locator('#message.updated.notice-success')).toBeVisible();
     });
 });
