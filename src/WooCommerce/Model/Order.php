@@ -6,11 +6,12 @@ use HGeS\Dto\PackageDto;
 use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
-use HGeS\Utils\Enums\ProductMetaEnum;
+use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
 use HGeS\Utils\RateHelper;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
+use HgeS\WooCommerce\ShippingAddressFields;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -45,6 +46,7 @@ class Order
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
+        add_action('woocommerce_order_edit_status', [self::class, 'createShipment'], 20, 2);
         add_action('woocommerce_thankyou', [self::class, 'setInitialPackagingData'], 10);
     }
 
@@ -282,13 +284,13 @@ class Order
             exit;
         }
 
-        $attachmentsRequired = $currentShippingRate['requiredAttachments'] ?? false;
+        $attachmentsRequired = $currentShippingRate->getRequiredAttachments() ?? false;
         if (empty($attachmentsRequired)) {
             return true;
         }
 
         $attachments = self::getAttachmentList($orderId);
-        $missingAttachments = array_filter($currentShippingRate['requiredAttachments'] ?? [], function ($requiredAttachment) use ($attachments) {
+        $missingAttachments = array_filter($currentShippingRate->getRequiredAttachments() ?? [], function ($requiredAttachment) use ($attachments) {
             $requiredAttachmentType = $requiredAttachment['type'] ?? '';
             return !in_array($requiredAttachmentType, array_column($attachments, 'type'));
         });
@@ -350,8 +352,11 @@ class Order
         return $shippingRateChecksumMeta ? RateDto::fromArray($shippingRateChecksumMeta->value) : null;
     }
 
-    public static function createShipment(int $orderId, string $shippingRateChecksum): void
+    public static function createShipment(int $orderId, string $newStatus): void
     {
+        if ($newStatus !== 'processing') {
+            return;
+        }
         $order = wc_get_order($orderId);
         if (!$order) {
             return;
@@ -359,8 +364,10 @@ class Order
 
         //get shipping address
         $shippingAddress = $order->get_address('shipping');
+        $shippingRateChecksum = self::getShippingRateChecksum($orderId);
 
-        $isCompany = $order->get_meta('_wc_shipping/hges/is-company-address', true);
+        $isCompany = $order->get_meta(ShippingAddressFields::SHIPPING_IS_COMPANY_METANAME);
+        dump($order->get_meta_data());
 
         $destAddress = [
             "category" => $isCompany ? "company" : "individual",
@@ -375,7 +382,7 @@ class Order
         ];
 
         if ($isCompany) {
-            $destAddress['company'] = $order->get_meta('_wc_shipping/hges/company-name', true);
+            $destAddress['company'] = $order->get_meta(ShippingAddressFields::SHIPPING_COMPANY_NAME_METANAME);
         }
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
@@ -400,6 +407,12 @@ class Order
             $params['shipmentPurpose'] = "sale";
         }
 
+        if (isset($prices['landedCost'])) {
+            $params['incoterm'] = get_option(OptionEnum::HGES_TAX_RIGHTS);
+            $params['exciseDuties'] = "paid";
+            $params['shipmentPurpose'] = "sale";
+        }
+
         $pickupPoint = $order->get_meta(self::PICKUP_POINT_META_KEY, true);
 
         if (is_array($pickupPoint) && !empty($pickupPoint)) {
@@ -409,7 +422,11 @@ class Order
         try {
             error_log('Payload envoyé : ' . json_encode($params, JSON_PRETTY_PRINT));
             $response = ApiClient::post('/v2/shipments', $params);
-            error_log('Réponse API : ' . print_r($response, true));
+            error_log('Réponse API : ' . json_encode($response, JSON_PRETTY_PRINT));
+
+            if (isset($response['data']['shipment']['id'])) {
+                error_log('Shipment created with ID: ' . $response['data']['shipment']['id']);
+            }
         } catch (\Exception $e) {
             error_log('Erreur API createShipment: ' . $e->getMessage());
             error_log('Trace : ' . $e->getTraceAsString());

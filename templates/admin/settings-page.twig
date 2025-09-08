@@ -275,12 +275,12 @@
                 <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control">
                     {% if options.HGES_TAX_RIGHTS %}  
                         <option value="" disabled {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), '', '' ) }}>{{ __('Select your option')|escape }}</option>
-                        <option value="exp" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'exp', '' ) }}> {{ __("At the sender's expense")|escape }}</option>
-                        <option value="dest" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'dest', '' ) }}>{{ __("At the recipient's expense")|escape }}</option>
+                        <option value="DDP" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'DDP', '' ) }}> {{ __("At the sender's expense")|escape }}</option>
+                        <option value="DAP" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'DAP', '' ) }}>{{ __("At the recipient's expense")|escape }}</option>
                     {% else %}
                         <option value="" disabled>{{ __('Select your option')|escape }}</option>
-                        <option value="exp">{{ __("At the sender's expense")|escape }}</option>
-                        <option value="dest">{{ __("At the recipient's expense")|escape }}</option>
+                        <option value="DDP">{{ __("At the sender's expense")|escape }}</option>
+                        <option value="DAP">{{ __("At the recipient's expense")|escape }}</option>
                     {% endif %}
                 </select>
                 <div class="tooltip">?
