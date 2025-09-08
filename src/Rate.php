@@ -91,7 +91,6 @@ class Rate
         }
 
         $expAddress = Address::getFavoriteAddress();
-        // dump($expAddress);
 
         $params = [
             'from' => ['addressId' => $expAddress['id']],
