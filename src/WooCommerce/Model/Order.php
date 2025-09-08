@@ -367,7 +367,6 @@ class Order
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
 
         $isCompany = $order->get_meta(ShippingAddressFields::SHIPPING_IS_COMPANY_METANAME);
-        dump($order->get_meta_data());
 
         $destAddress = [
             "category" => $isCompany ? "company" : "individual",
@@ -399,7 +398,6 @@ class Order
             "to" => $destAddress,
             "optionalPrices" => $optionalPrices
         ];
-
 
         // if fiscalRepresentation is set, add it to the params
         if (isset($prices['fiscalRepresentation'])) {

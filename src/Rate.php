@@ -147,18 +147,20 @@ class Rate
 
         // Increment the pickup date to reach the prep time set in the user settings
         // We add a day to the pickup date until the number of working days is spent to reach the prep time
-        $pickupDate = new \DateTime();
         $countedDays = 0;
         $countedPrepDays = 0;
         $prepTime = get_option(OptionEnum::HGES_PREP_TIME);
 
-        while ($countedPrepDays <= $prepTime) {
+        while ($countedPrepDays < $prepTime) {
+            $pickupDate = new \DateTime();
             $pickupDate->modify('+' . $countedDays . ' days');
+
             if (in_array($pickupDate->format('N'), $workingDays)) {
                 $countedPrepDays++;
             }
             $countedDays++;
         }
+
         $params['pickupDate'] = $pickupDate->format('Y-m-d');
         $params['minHour'] = get_option(OptionEnum::HGES_MINHOUR) . ':00';
         $params['cutoff'] = get_option(OptionEnum::HGES_CUTOFF) . ':00';
@@ -203,8 +205,7 @@ class Rate
 
         $carrierList = get_option(OptionEnum::HGES_PREF_TRANSP, []);
         $params['preferredCarrier'] = $carrierList;
-        // dump($params);
-        // die();
+
         return $params;
     }
 
