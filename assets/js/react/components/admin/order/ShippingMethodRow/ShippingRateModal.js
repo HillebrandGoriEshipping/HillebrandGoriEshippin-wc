@@ -2,16 +2,20 @@ const __ = wp.i18n.__;
 import { useState, useEffect } from 'react';
 import apiClient from '../../../../../apiClient';
 import ShippingRateItem from './ShippingRateItem';
+import LoadingMask from '../../../../../blocks/LoadingMask';
 
 const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
 
     const [rates, setRates] = useState("");
     const [selectedRateChecksum, setSelectedRateChecksum] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const loadShippingRates = async () => {
+        setLoading(true);
         const currentUrlParams = new URLSearchParams(window.location.search);
         const response = await apiClient.get(window.hges.ajaxUrl, { orderId: currentUrlParams.get('id'), action: 'hges_get_shipping_rates_for_order' });
         setRates(response.shippingRates);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -36,6 +40,11 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                     </h2>
                 </div>
                 <div className="modal__body">
+                    <LoadingMask
+                        isLoading={loading}
+                        screenReaderLabel={__("Loading shipping rates", "hges")}
+                        showSpinner={true}
+                    >
                     <div className="shipping-rate-list">
                         {rates && rates.length > 0 ? (
                             rates.map((rate) => (
@@ -46,11 +55,12 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                                     isSelected={selectedRateChecksum === rate.checksum}
                                 />
                             ))
-                        ) : (
+                        ) : loading ? '' : (
                             <p>{__('No shipping rates available.', 'hges')}</p>
                         )}
 
                     </div>
+                    </LoadingMask>
                 </div>
                 <div className="modal__footer">
                     <button
