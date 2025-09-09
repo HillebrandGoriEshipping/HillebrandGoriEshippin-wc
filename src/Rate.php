@@ -363,7 +363,7 @@ class Rate
             $shippingRate = ApiClient::get("/v2/rates/$checksum");
         } catch (\Throwable $e) {
             error_log('Error retrieving shipping rate by checksum: ' . $checksum  . ' - ' . $e->getMessage());
-            return null;
+            throw $e;
         }
 
         $rateArray = $shippingRate['data'] ?? null;

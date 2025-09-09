@@ -10,10 +10,11 @@ use HGeS\WooCommerce\Model\Order;
  *
  * This class is responsible for handling plugin specific actions and routing.
  */
-class Router {
-    
+class Router
+{
+
     private $ajaxRoutes;
-    
+
     /**
      * Router constructor.
      */
@@ -63,6 +64,12 @@ class Router {
                 'POST',
                 FrontController::class,
                 'setPackagingForOrder',
+                true
+            ),
+            'hges_create_shipment' => new Route(
+                'POST',
+                FrontController::class,
+                'createShipment',
                 true
             ),
         ];
@@ -142,12 +149,12 @@ class Router {
         }
 
         $currentRoute = $this->ajaxRoutes[$_GET['action']];
-        
+
         $postData = [];
-        if (in_array($currentRoute->getHttpMethod() , ['POST', 'PATCH', 'PUT'])) {
+        if (in_array($currentRoute->getHttpMethod(), ['POST', 'PATCH', 'PUT'])) {
             $postData = json_decode(file_get_contents('php://input'), true);
         }
-        
+
         $class = $currentRoute->getClass();
         $actionMethod = $currentRoute->getActionMethod();
         $class::$actionMethod($postData);

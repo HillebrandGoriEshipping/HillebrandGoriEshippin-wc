@@ -46,6 +46,21 @@ const ShippingMethodRow = ({
         setIsRateSelectionModalOpen(true);
     }
 
+    const onValidateShipment = async () => {
+       try {
+        const response = await apiClient.post(
+            window.hges.ajaxUrl,
+            {
+                action: 'hges_create_shipment',
+                orderId: new URLSearchParams(window.location.search).get('id'),
+            }
+        );
+
+        } catch (error) {
+            console.error("❌ AJAX error:", error);
+        }
+    }
+
     const render = () => {
         return (
             <div className="shipping-method-row">
@@ -77,6 +92,14 @@ const ShippingMethodRow = ({
                     onClose={closeShippingRateModal}
                     validateShippingRate={onShippingRateValidated}
                 />
+
+                <button
+                    type="button"
+                    id="hges-validate-shipment-button"
+                    onClick={onValidateShipment}
+                >
+                    {__('Validate shipment')}
+                </button>
             </div>
         );
     };

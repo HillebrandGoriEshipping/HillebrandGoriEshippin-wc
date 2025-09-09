@@ -46,7 +46,6 @@ class Order
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
         add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
-        add_action('woocommerce_order_edit_status', [self::class, 'createShipment'], 20, 2);
         add_action('woocommerce_thankyou', [self::class, 'setInitialPackagingData'], 10);
     }
 
@@ -242,9 +241,6 @@ class Order
      */
     public static function checkShippingBeforeStatusUpdate(int $orderId, string $newStatus): bool
     {
-        if ($newStatus !== 'processing' && $newStatus !== 'completed') {
-            return true;
-        }
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
         $shippingMethodStillAvailable = Rate::isStillAvailable($shippingRateChecksum);
         if (!$shippingMethodStillAvailable) {
@@ -252,10 +248,6 @@ class Order
             $url = add_query_arg('error', Messages::getMessage('orderAdmin.shippingRateNotAvailable'), wp_get_referer());
             wp_redirect($url);
             exit;
-        }
-
-        if ($newStatus === 'processing') {
-            self::createShipment($orderId, $shippingRateChecksum);
         }
 
         return $shippingMethodStillAvailable;
@@ -352,14 +344,11 @@ class Order
         return $shippingRateChecksumMeta ? RateDto::fromArray($shippingRateChecksumMeta->value) : null;
     }
 
-    public static function createShipment(int $orderId, string $newStatus): void
+    public static function createShipment(int $orderId): array
     {
-        if ($newStatus !== 'processing') {
-            return;
-        }
         $order = wc_get_order($orderId);
         if (!$order) {
-            return;
+            throw new \Exception("Order not found.");
         }
 
         //get shipping address
@@ -422,12 +411,18 @@ class Order
             $response = ApiClient::post('/v2/shipments', $params);
             error_log('Réponse API : ' . json_encode($response, JSON_PRETTY_PRINT));
 
-            if (isset($response['data']['shipment']['id'])) {
+            if (isset($response['data']['shipment']) && is_array($response['data']['shipment'])) {
                 error_log('Shipment created with ID: ' . $response['data']['shipment']['id']);
+
+                return $response['data']['shipment'];
+            } else {
+                error_log('Erreur API createShipment: Réponse invalide');
+                throw new \Exception("Invalid response from API when creating shipment.");
             }
         } catch (\Exception $e) {
             error_log('Erreur API createShipment: ' . $e->getMessage());
             error_log('Trace : ' . $e->getTraceAsString());
+            throw new \Exception("Error creating shipment: " . $e->getMessage());
         }
     }
 

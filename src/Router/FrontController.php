@@ -9,6 +9,17 @@ use HGeS\WooCommerce\Model\Order;
 
 class FrontController
 {
+
+    /**
+     * Constant representing the key used to store or retrieve the shipment ID.
+     */
+    public const SHIPMENT_ID = 'hges_shipment_id';
+
+    /**
+     * Constant representing the shipment label URL.
+     */
+    public const SHIPMENT_LABEL_URL = 'hges_shipment_label_url';
+
     /**
      * Get the pickup points
      *
@@ -20,7 +31,7 @@ class FrontController
         $urlParams = array_map(function ($param) {
             return htmlspecialchars(strip_tags($param));
         }, $_GET);
-        
+
         $pickupPointsRequest = ApiClient::get(
             '/relay/get-access-points',
             $urlParams,
@@ -29,8 +40,7 @@ class FrontController
         if ($pickupPointsRequest['status'] !== 200) {
             self::renderJson([
                 'error' => 'Unable to fetch pickup points',
-            ]);
-            http_response_code($pickupPointsRequest['status']);
+            ], $pickupPointsRequest['status']);
             return;
         }
 
@@ -56,12 +66,11 @@ class FrontController
         if (!empty($bodyParams['pickupPoint']) && !empty($urlParams['orderId'])) {
             Order::setPickupPoint($urlParams['orderId'], $bodyParams['pickupPoint']);
             $response['success'] = true;
-            http_response_code(200);
         } else {
             $response['error'] = 'Unable to update pickup point, orderId is expected in the query params and pickupPoint json object is expected in the json body.';
-            http_response_code(400);
+            self::renderJson($response, 400);
         }
-        
+
         self::renderJson($response);
     }
 
@@ -85,16 +94,15 @@ class FrontController
                 ],
                 'contents' => $order->get_items(),
             ]);
-           
+
             self::renderJson([
                 'success' => true,
                 'shippingRates' => $rates
             ]);
         } else {
-            http_response_code(400);
             self::renderJson([
                 'error' => 'Unable to retrieve shipping rates, orderId is expected in the query params.',
-            ]);
+            ], 400);
         }
     }
 
@@ -108,18 +116,16 @@ class FrontController
         }, $_GET);
 
         if (!empty($bodyParams['shippingRateChecksum']) && !empty($urlParams['orderId']) && !empty($urlParams['orderShippingItemId'])) {
-            
+
             try {
                 $rate = Order::updateSelectedShippingRate(
                     intval($urlParams['orderId']),
                     intval($urlParams['orderShippingItemId']),
                     $bodyParams['shippingRateChecksum']
                 );
-
             } catch (\Exception $e) {
                 $response['error'] = 'Unable to update shipping method: ' . $e->getMessage();
-                http_response_code(400);
-                self::renderJson($response);
+                self::renderJson($response, 400);
                 return;
             }
 
@@ -127,9 +133,8 @@ class FrontController
             $response['shippingRate'] = $rate->toArray();
         } else {
             $response['error'] = 'Unable to update shipping method, orderId and orderShippingItemId are expected in the query params and shippingRateChecksum json object is expected in the json body.';
-            
-            http_response_code(400);
-            self::renderJson($response);
+
+            self::renderJson($response, 400);
             return;
         }
         self::renderJson($response);
@@ -158,18 +163,21 @@ class FrontController
                 $response['packagingPossibilities'] = $packagingPossibilities;
             } else {
                 $response['error'] = 'Invalid products data format.';
-                http_response_code(400);
+                self::renderJson($response, 400);
             }
         } else {
             $response['error'] = 'Products data is required.';
-            http_response_code(400);
+            self::renderJson($response, 400);
         }
 
         self::renderJson($response);
     }
 
-    public static function renderJson($data): void
+    public static function renderJson(array $data, int $httpStatus = 200): void
     {
+        if ($httpStatus) {
+            http_response_code($httpStatus);
+        }
         header('Content-Type: application/json');
         echo json_encode($data);
         exit;
@@ -177,9 +185,8 @@ class FrontController
 
     public static function checkUserCanEditOrders(): void
     {
-        if (!current_user_can( 'edit_shop_orders' )) {
-            http_response_code(403);
-            self::renderJson(['error' => 'Forbidden']);
+        if (!current_user_can('edit_shop_orders')) {
+            self::renderJson(['error' => 'Forbidden'], 403);
             return;
         }
     }
@@ -223,16 +230,45 @@ class FrontController
                 Order::updatePackaging($bodyParams['orderId'], json_decode($bodyParams['packaging'], true));
             } catch (\Exception $e) {
                 $response['error'] = 'Unable to set packaging: ' . $e->getMessage();
-                http_response_code(500);
-                self::renderJson($response);
+                self::renderJson($response, 500);
                 return;
             }
             $response['success'] = true;
         } else {
             $response['error'] = 'Unable to set packaging, orderId is expected in the query params and packaging json object is expected in the json body.';
-            http_response_code(400);
+            self::renderJson($response, 400);
         }
-        
-        self::renderJson($response);   
+
+        self::renderJson($response);
+    }
+
+    /**
+     * Creates a shipment for a given WooCommerce order.
+     *
+     * Retrieves the order ID from the GET parameters, validates it, and attempts to create a shipment. If successful, it updates the order's meta data with the shipment ID and label URL.
+     *
+     * @return void Outputs JSON response and updates order meta data.
+     */
+    public static function createShipment(): void
+    {
+        $orderId = intval($_GET['orderId'] ?? 0);
+        if (!$orderId) {
+            self::renderJson(['error' => 'orderId is required'], 400);
+            return;
+        }
+        try {
+            $shipment = Order::createShipment($orderId);
+
+            $order = wc_get_order($orderId);
+            if ($order) {
+                $order->add_meta_data(self::SHIPMENT_ID, $shipment['id']);
+                $order->add_meta_data(self::SHIPMENT_LABEL_URL, $shipment['label']['directLink']);
+                $order->save_meta_data();
+            }
+
+            self::renderJson(['message' => "Shipment for order #$orderId validated", 'shipment' => $shipment]);
+        } catch (\Exception $e) {
+            self::renderJson(['error' => $e->getMessage()], 500);
+        }
     }
 }
