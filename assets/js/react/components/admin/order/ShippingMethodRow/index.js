@@ -2,7 +2,7 @@ const __ = wp.i18n.__;
 import apiClient from '../../../../../apiClient';
 import ShippingRateModal from './ShippingRateModal';
 import ShippingRowBody from './ShippingRowBody';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Packaging from './Packaging';
 
 const ShippingMethodRow = ({
@@ -61,6 +61,39 @@ const ShippingMethodRow = ({
         }
     }
 
+    const [hasShipment, setHasShipment] = useState(false);
+
+    useEffect(() => {
+        const orderId = new URLSearchParams(window.location.search).get("id");
+        if (!orderId) return;
+
+        checkIfHasShipment(orderId).then((result) => {
+            setHasShipment(result);
+            setLoading(false);
+        });
+    }, []);
+
+
+    const checkIfHasShipment = async (orderId) => {
+        try {
+            const res = await apiClient.post(
+            window.hges.ajaxUrl, 
+                {
+                    action: 'hges_check_if_has_shipment',
+                    orderId: orderId,
+                }
+            );
+
+            if (res.success) {
+                return res.has_shipment;
+            }
+            return false;
+        } catch (err) {
+            console.error("Error checking shipment:", err);
+            return false;
+        }
+    }
+
     const render = () => {
         return (
             <div className="shipping-method-row">
@@ -93,13 +126,19 @@ const ShippingMethodRow = ({
                     validateShippingRate={onShippingRateValidated}
                 />
 
-                <button
-                    type="button"
-                    id="hges-validate-shipment-button"
-                    onClick={onValidateShipment}
-                >
-                    {__('Validate shipment')}
-                </button>
+                {hasShipment ? (
+                    <div className="shipment-validated-message">
+                        {__('Shipment has been validated for this order.')}
+                    </div>
+                ) : (
+                    <button
+                        type="button"
+                        id="hges-validate-shipment-button"
+                        onClick={onValidateShipment}
+                    >
+                        {__('Validate shipment')}
+                    </button>
+                )}
             </div>
         );
     };

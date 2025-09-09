@@ -72,6 +72,12 @@ class Router
                 'createShipment',
                 true
             ),
+            'hges_check_if_has_shipment' => new Route(
+                'POST',
+                FrontController::class,
+                'checkIfHasShipment',
+                true
+            ),
         ];
     }
 

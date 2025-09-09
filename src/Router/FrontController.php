@@ -271,4 +271,33 @@ class FrontController
             self::renderJson(['error' => $e->getMessage()], 500);
         }
     }
+
+
+    /**
+     * Checks if a WooCommerce order has an associated shipment ID.
+     *
+     * @return void Outputs a JSON response with the result or error.
+     */
+    public static function checkIfHasShipment(): void
+    {
+        $order_id = intval($_GET['orderId'] ?? 0);
+
+        if (!$order_id) {
+            self::renderJson(['error' => 'orderId is required'], 400);
+            return;
+        }
+
+        $order = wc_get_order($order_id);
+        if (!$order) {
+            self::renderJson(['error' => 'Invalid order'], 404);
+            return;
+        }
+
+        $shipmentId = $order->get_meta(self::SHIPMENT_ID);
+
+        self::renderJson([
+            'success' => true,
+            'has_shipment' => !empty($shipmentId),
+        ]);
+    }
 }
