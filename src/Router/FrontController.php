@@ -9,17 +9,6 @@ use HGeS\WooCommerce\Model\Order;
 
 class FrontController
 {
-
-    /**
-     * Constant representing the key used to store or retrieve the shipment ID.
-     */
-    public const SHIPMENT_ID = 'hges_shipment_id';
-
-    /**
-     * Constant representing the shipment label URL.
-     */
-    public const SHIPMENT_LABEL_URL = 'hges_shipment_label_url';
-
     /**
      * Get the pickup points
      *
@@ -175,9 +164,8 @@ class FrontController
 
     public static function renderJson(array $data, int $httpStatus = 200): void
     {
-        if ($httpStatus) {
-            http_response_code($httpStatus);
-        }
+
+        http_response_code($httpStatus);
         header('Content-Type: application/json');
         echo json_encode($data);
         exit;
@@ -280,24 +268,24 @@ class FrontController
      */
     public static function checkIfHasShipment(): void
     {
-        $order_id = intval($_GET['orderId'] ?? 0);
+        $orderId = intval($_GET['orderId'] ?? 0);
 
-        if (!$order_id) {
+        if (!$orderId) {
             self::renderJson(['error' => 'orderId is required'], 400);
             return;
         }
 
-        $order = wc_get_order($order_id);
+        $order = wc_get_order($orderId);
         if (!$order) {
             self::renderJson(['error' => 'Invalid order'], 404);
             return;
         }
 
-        $shipmentId = $order->get_meta(self::SHIPMENT_ID);
+        $shipmentId = Order::hasShipment($orderId);
 
         self::renderJson([
             'success' => true,
-            'has_shipment' => !empty($shipmentId),
+            'hasShipment' => $shipmentId,
         ]);
     }
 }

@@ -85,7 +85,7 @@ const ShippingMethodRow = ({
             );
 
             if (res.success) {
-                return res.has_shipment;
+                return res.hasShipment;
             }
             return false;
         } catch (err) {
@@ -103,6 +103,7 @@ const ShippingMethodRow = ({
 
                 <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
 
+                {hasShipment ? '' :(
                 <button
                     type="button"
                     id="hges-change-shipping-rate-button"
@@ -111,6 +112,7 @@ const ShippingMethodRow = ({
                 >
                     {__('Change shipping option')}
                 </button>
+                )}
 
                 {!shippingRate ? '' : (
                     <ShippingRowBody

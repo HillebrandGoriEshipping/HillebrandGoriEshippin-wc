@@ -39,6 +39,16 @@ class Order
     public const CONSUMER_SELECTED_RATE_META_KEY = 'customer_selected_rate';
 
     /**
+     * Constant representing the key used to store or retrieve the shipment ID.
+     */
+    public const SHIPMENT_ID = 'hges_shipment_id';
+
+    /**
+     * Constant representing the shipment label URL.
+     */
+    public const SHIPMENT_LABEL_URL = 'hges_shipment_label_url';
+
+    /**
      * Initialize the order hooks and filters
      */
     public static function init(): void
@@ -583,5 +593,17 @@ class Order
         }
 
         return $item;
+    }
+
+    public static function hasShipment(int $orderId): bool
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            throw new \Exception("Order not found.");
+        }
+
+        $shipmentId = $order->get_meta(self::SHIPMENT_ID, true);
+
+        return !empty($shipmentId);
     }
 }
