@@ -244,6 +244,10 @@ class FrontController
             self::renderJson(['error' => 'orderId is required'], 400);
             return;
         }
+        if (Order::checkBeforeValidate($orderId) === false) {
+            self::renderJson(['error' => 'Data is missing or invalid'], 400);
+            return;
+        }
         try {
             $shipment = Order::createShipment($orderId);
 
