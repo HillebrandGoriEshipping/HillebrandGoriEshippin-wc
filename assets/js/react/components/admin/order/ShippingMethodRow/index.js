@@ -46,6 +46,8 @@ const ShippingMethodRow = ({
         setIsRateSelectionModalOpen(true);
     }
 
+    const [shipmentError, setShipmentError] = useState("");
+
     const onValidateShipment = async () => {
        try {
         const response = await apiClient.post(
@@ -56,8 +58,16 @@ const ShippingMethodRow = ({
             }
         );
 
+        if (response.error) {
+            setShipmentError(response.error);
+        } else {
+            setShipmentError("");
+            window.location.reload();
+        }
+
         } catch (error) {
-            console.error("❌ AJAX error:", error);
+            console.error("error:", error);
+            setShipmentError("Impossible de valider l’expédition, erreur réseau.");
         }
     }
 
@@ -140,6 +150,11 @@ const ShippingMethodRow = ({
                     >
                         {__('Validate shipment')}
                     </button>
+                )}
+                {shipmentError && (
+                    <div className="shipment-error">
+                        {shipmentError}
+                    </div>
                 )}
             </div>
         );
