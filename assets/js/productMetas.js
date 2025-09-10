@@ -171,9 +171,11 @@ const productMetaModule = {
   setAppellationFieldsEnabled(enabled) {
     if (enabled) {
       this.appellationField.closest(".form-field").style.display = "block";
+      this.appellationSelect.closest(".form-field").style.display = "none";
       this.hsCodeField.closest(".form-field").style.display = "block";
     } else {
       this.appellationField.closest(".form-field").style.display = "none";
+      this.appellationSelect.closest(".form-field").style.display = "block";
       this.hsCodeField.closest(".form-field").style.display = "none";
     }
   },
