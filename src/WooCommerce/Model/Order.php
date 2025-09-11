@@ -59,8 +59,8 @@ class Order
     public static function init(): void
     {
         add_action('woocommerce_checkout_create_order', [self::class, 'setOrderPickupMeta'], 10, 2);
-        // add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
-        // add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
+        add_action('woocommerce_order_edit_status', [self::class, 'checkShippingBeforeStatusUpdate'], 10, 2);
+        add_action('woocommerce_order_edit_status', [self::class, 'checkAttachmentsBeforeStatusUpdate'], 10, 2);
         add_action('woocommerce_thankyou', [self::class, 'setInitialPackagingData'], 10);
     }
 
