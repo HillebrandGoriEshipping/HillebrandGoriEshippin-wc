@@ -18,6 +18,7 @@ const productMetaModule = {
   target: null,
   variationCheckbox: null,
   colorField: null,
+  errorContainer: null,
   init() {
     this.countrySelect = document.querySelector("#_producing_country");
     this.appellationSelect = document.querySelector("#appellation-select-field");
@@ -31,12 +32,12 @@ const productMetaModule = {
     this.productTypeSelect = document.querySelector("#product-type");
     this.drinkTypeSelect = document.querySelector("#_type");
     this.colorField = document.querySelector("#_color");
-    this.productTypeSelect = document.querySelector("#product-type");
     this.tabs = document.querySelectorAll(".attribute_tab");
     this.existingNotice = document.querySelector("#hges-custom-notice");
     this.variationCheckbox = document.querySelectorAll(".enable_variation");
     this.capacityTypeSelect = document.querySelector("#_capacity_type");
     this.customCapacityWrapper = document.querySelector("#custom-capacity-wrapper");
+    this.errorContainer = document.querySelector("#error-container");
     this.initEventListeners();
 
     hges.pricableProductTypes.forEach((productType) => {
@@ -62,7 +63,7 @@ const productMetaModule = {
     }
 
     if (this.drinkTypeSelect) {
-      this.drinkTypeSelect.addEventListener("change", this.evalWineFormEnabled.bind(this));
+      this.drinkTypeSelect.addEventListener("change", this.onDrinkTypeSelectChange.bind(this));
     }
 
     this.evalUseInVariationCheckboxDisplay();
@@ -92,6 +93,10 @@ const productMetaModule = {
       this.capacityTypeSelect.addEventListener("change", this.handleCapacityTypeChange.bind(this));
       this.handleCapacityTypeChange();
     }
+  },
+  onDrinkTypeSelectChange() {
+    this.evalWineFormEnabled();
+    utils.removeAdminNotices(this.errorContainer);
   },
   evalUseInVariationCheckboxDisplay() {
     if (hges.variableProductTypes.includes(this.productTypeSelect.value)) {
@@ -171,9 +176,12 @@ const productMetaModule = {
   setAppellationFieldsEnabled(enabled) {
     if (enabled) {
       this.appellationField.closest(".form-field").style.display = "block";
+      this.appellationField.value = "";
+      this.appellationSelect.closest(".form-field").style.display = "none";
       this.hsCodeField.closest(".form-field").style.display = "block";
     } else {
       this.appellationField.closest(".form-field").style.display = "none";
+      this.appellationSelect.closest(".form-field").style.display = "block";
       this.hsCodeField.closest(".form-field").style.display = "none";
     }
   },
@@ -183,7 +191,6 @@ const productMetaModule = {
     const currentAlcoholPercentage = this.alcoholPercentageField.value;
     const currentColor = this.colorField.value;
     const selectedAppellation = this.appellationSelect.value;
-    const errorContainer = document.querySelector("#error-container");
 
     if (
       selectedAppellation &&
@@ -201,15 +208,16 @@ const productMetaModule = {
       if (hsCode) {
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsSuccess),
-          errorContainer,
+          this.errorContainer,
           "success"
         );
         this.hsCodeField.value = hsCode;
         this.appellationField.value = selectedAppellation;
       } else {
+        console.log('no hs code found', this.errorContainer);
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsError),
-          errorContainer,
+          this.errorContainer,
           "error"
         );
         this.hsCodeField.value = "";
@@ -221,7 +229,7 @@ const productMetaModule = {
   },
   showCustomPublishError(message) {
 
-    if (!existingNotice) {
+    if (!this.existingNotice) {
       const notice = document.createElement("div");
       notice.id = "hges-custom-notice";
       notice.className = "notice notice-error";
