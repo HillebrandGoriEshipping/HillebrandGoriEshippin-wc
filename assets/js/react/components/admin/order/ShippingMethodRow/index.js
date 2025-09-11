@@ -4,6 +4,7 @@ import ShippingRateModal from './ShippingRateModal';
 import ShippingRowBody from './ShippingRowBody';
 import { useState, useEffect } from 'react';
 import Packaging from './Packaging';
+import LoadingMask from '../../../../../blocks/LoadingMask';
 
 const ShippingMethodRow = ({
     errorMessage,
@@ -46,8 +47,12 @@ const ShippingMethodRow = ({
         setIsRateSelectionModalOpen(true);
     }
 
+    const [shipmentError, setShipmentError] = useState("");
+    const [isLoadingShipment, setIsLoadingShipment] = useState(false);
+
     const onValidateShipment = async () => {
-       try {
+        setIsLoadingShipment(true);
+      try {
         const response = await apiClient.post(
             window.hges.ajaxUrl,
             {
@@ -56,9 +61,17 @@ const ShippingMethodRow = ({
             }
         );
 
-        } catch (error) {
-            console.error("❌ AJAX error:", error);
+        if (response.error) {
+            setShipmentError(response.error);
+        } else {
+            setShipmentError("");
+            window.location.reload();
         }
+      } catch (error) {
+        setShipmentError(__("An error occurred while validating the shipment."));
+      } finally {
+        setIsLoadingShipment(false);
+      }
     }
 
     const [hasShipment, setHasShipment] = useState(false);
@@ -97,50 +110,61 @@ const ShippingMethodRow = ({
     const render = () => {
         return (
             <div className="shipping-method-row">
-                <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
-                    {errorMessage}
-                </div>
-
-                <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
-
-                {hasShipment ? '' :(
-                <button
-                    type="button"
-                    id="hges-change-shipping-rate-button"
-                    data-item-id={itemId}
-                    onClick={openShippingRateModal}
+                <LoadingMask
+                    isLoading={isLoadingShipment}
+                    screenReaderLabel={__("Validating shipment...", "hges")}
+                    showSpinner={true}
                 >
-                    {__('Change shipping option')}
-                </button>
-                )}
-
-                {!shippingRate ? '' : (
-                    <ShippingRowBody
-                        shippingRate={shippingRate}
-                        attachments={attachments}
-                        remainingAttachments={remainingAttachments}
-                    />
-                )}
-
-                <ShippingRateModal
-                    isOpen={isRateSelectionModalOpen}
-                    onClose={closeShippingRateModal}
-                    validateShippingRate={onShippingRateValidated}
-                />
-
-                {hasShipment ? (
-                    <div className="shipment-validated-message">
-                        {__('Shipment has been validated for this order.')}
+                    <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
+                        {errorMessage}
                     </div>
-                ) : (
-                    <button
-                        type="button"
-                        id="hges-validate-shipment-button"
-                        onClick={onValidateShipment}
-                    >
-                        {__('Validate shipment')}
-                    </button>
-                )}
+                    {hasShipment ? '' : (
+                        <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
+                    )}
+                    {hasShipment ? '' : (
+                        <button
+                            type="button"
+                            id="hges-change-shipping-rate-button"
+                            data-item-id={itemId}
+                        onClick={openShippingRateModal}
+                        >
+                        {__('Change shipping option')}
+                        </button>
+                    )}
+
+                    {!shippingRate ? '' : (
+                        <ShippingRowBody
+                            shippingRate={shippingRate}
+                            attachments={attachments}
+                            remainingAttachments={remainingAttachments}
+                        />
+                    )}
+
+                    <ShippingRateModal
+                        isOpen={isRateSelectionModalOpen}
+                        onClose={closeShippingRateModal}
+                        validateShippingRate={onShippingRateValidated}
+                    />
+
+                    {hasShipment ? (
+                        <div className="shipment-validated-message">
+                            {__('Shipment has been validated for this order.')}
+                        </div>
+                    ) : (
+                        <button
+                            type="button"
+                            id="hges-validate-shipment-button"
+                            onClick={onValidateShipment}
+                        >
+                            {__('Validate shipment')}
+                        </button>
+                    )}
+                    {shipmentError && (
+                        <div className="shipment-error">
+                            {shipmentError}
+                        </div>
+                    )}
+                </LoadingMask>
             </div>
         );
     };

@@ -49,6 +49,11 @@ class Order
     public const SHIPMENT_LABEL_URL = 'hges_shipment_label_url';
 
     /**
+     * Constant representing the meta key for the shipping address index in an order.
+     */
+    public const ORDER_SHIPPING_ADDRESS_INDEX = '_shipping_address_index';
+
+    /**
      * Initialize the order hooks and filters
      */
     public static function init(): void
@@ -605,5 +610,55 @@ class Order
         $shipmentId = $order->get_meta(self::SHIPMENT_ID, true);
 
         return !empty($shipmentId);
+    }
+
+    public static function checkBeforeValidate(int $orderId): bool
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            throw new \Exception("Order not found.");
+        }
+
+        $shippingAddressOrder = $order->get_address('shipping');
+        $shippingAddressMeta = $order->get_meta(self::ORDER_SHIPPING_ADDRESS_INDEX, true);
+
+        $fieldsToCheck = [
+            "first_name",
+            "last_name",
+            "address_1",
+            "address_2",
+            "city",
+            "state",
+            "postcode",
+            "country",
+            "phone"
+        ];
+
+        $normalizedAddressOrder = [];
+        foreach ($fieldsToCheck as $field) {
+            if (!empty($shippingAddressOrder[$field])) {
+                $normalizedAddressOrder[] = $shippingAddressOrder[$field];
+            }
+        }
+        $stringFromAddressOrder = implode(' ', $normalizedAddressOrder);
+
+        function normalize($string)
+        {
+            return trim(preg_replace('/\s+/', ' ', $string));
+        }
+
+        $stringFromAddressOrder = normalize($stringFromAddressOrder);
+        $stringFromAddressMeta = normalize($shippingAddressMeta);
+
+        if ($stringFromAddressOrder === $stringFromAddressMeta) {
+            $shippingAddressMatch = true;
+        } else {
+            $shippingAddressMatch = false;
+        }
+
+        $shippingRateChecksum = self::getShippingRateChecksum($orderId);
+        $packaging = $order->get_meta(self::PACKAGING_META_KEY, true);
+
+        return !empty($shippingAddressOrder) && !empty($shippingAddressMeta) && !empty($shippingAddressMatch) && !empty($shippingRateChecksum) && !empty($packaging);
     }
 }
