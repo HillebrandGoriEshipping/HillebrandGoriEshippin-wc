@@ -634,23 +634,23 @@ class Order
             "phone"
         ];
 
-        $normalized1 = [];
+        $normalizedAddressOrder = [];
         foreach ($fieldsToCheck as $field) {
             if (!empty($shippingAddressOrder[$field])) {
-                $normalized1[] = $shippingAddressOrder[$field];
+                $normalizedAddressOrder[] = $shippingAddressOrder[$field];
             }
         }
-        $stringFromData1 = implode(' ', $normalized1);
+        $stringFromAddressOrder = implode(' ', $normalizedAddressOrder);
 
         function normalize($string)
         {
             return trim(preg_replace('/\s+/', ' ', $string));
         }
 
-        $stringFromData1 = normalize($stringFromData1);
-        $data2 = normalize($shippingAddressMeta);
+        $stringFromAddressOrder = normalize($stringFromAddressOrder);
+        $stringFromAddressMeta = normalize($shippingAddressMeta);
 
-        if ($stringFromData1 === $data2) {
+        if ($stringFromAddressOrder === $stringFromAddressMeta) {
             $shippingAddressMatch = true;
         } else {
             $shippingAddressMatch = false;
