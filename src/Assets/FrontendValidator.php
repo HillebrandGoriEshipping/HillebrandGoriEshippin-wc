@@ -31,7 +31,9 @@ class FrontendValidator
                 }
                 $constraintsWithKeys = [];
                 foreach ($constraints as $constraint) {
-                    $key = array_pop(explode('\\', get_class($constraint)));
+                    $fqcn = get_class($constraint);
+                    $fqcnFragments = explode('\\', $fqcn);
+                    $key = array_pop($fqcnFragments);
                     $constraintsWithKeys[$key] = json_decode(json_encode($constraint), true);
                 }
 

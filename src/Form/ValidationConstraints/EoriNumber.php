@@ -8,12 +8,12 @@ class EoriNumber extends \Symfony\Component\Validator\Constraints\Regex
 {
     public const PATTERN = '/^([A-Z]{2})([0-9A-Z]{5,15})$/';
 
-    public function __construct($options = null)
+    public function __construct($pattern = self::PATTERN, $message = null, $htmlPattern = self::PATTERN)
     {
-        parent::__construct([
-            'pattern' => self::PATTERN,
-            'message' => Messages::getMessage('settings.eoriNumberError'),
-            'htmlPattern' => self::PATTERN,
-        ]);
+        parent::__construct(
+            pattern: $pattern,
+            message: $message ?? Messages::getMessage('settings.eoriNumberError'),
+            htmlPattern: $htmlPattern,
+        );
     }
 }
