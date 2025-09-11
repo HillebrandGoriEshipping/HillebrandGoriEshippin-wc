@@ -247,21 +247,25 @@ class FrontController
         }
         if (Order::checkBeforeValidate($orderId) === false) {
             self::renderJson(['error' => 'Data is missing or invalid'], 400);
-            $order?->add_order_note('Error : Data is missing or invalid', false);
             return;
         }
         try {
             $shipment = Order::createShipment($orderId);
 
             if ($order) {
-                $order->add_meta_data(self::SHIPMENT_ID, $shipment['id']);
-                $order->add_meta_data(self::SHIPMENT_LABEL_URL, $shipment['label']['directLink']);
+                $order->add_meta_data(Order::SHIPMENT_ID, $shipment['id']);
+                $order->add_meta_data(Order::SHIPMENT_LABEL_URL, $shipment['label']['directLink']);
                 $order->save_meta_data();
             }
 
-            self::renderJson(['message' => "Shipment for order #$orderId validated", 'shipment' => $shipment]);
             $order->set_status('processing', 'Shipment created with ID ' . $shipment['id']);
             $order->save();
+
+            self::renderJson([
+                'success' => true,
+                'message' => "Shipment for order #$orderId validated",
+                'shipment' => $shipment
+            ]);
         } catch (\Exception $e) {
             self::renderJson(['error' => $e->getMessage()], 500);
         }

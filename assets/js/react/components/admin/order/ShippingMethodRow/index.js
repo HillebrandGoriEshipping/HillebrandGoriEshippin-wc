@@ -65,10 +65,9 @@ const ShippingMethodRow = ({
             window.location.reload();
         }
 
-        } catch (error) {
-            console.error("error:", error);
-            setShipmentError("Impossible de valider l’expédition, erreur réseau.");
-        }
+    } catch (error) {
+        setShipmentError(__("An error occurred while validating the shipment."));
+    }
     }
 
     const [hasShipment, setHasShipment] = useState(false);
@@ -110,14 +109,14 @@ const ShippingMethodRow = ({
                 <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
                     {errorMessage}
                 </div>
-
-                <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
-
-                {hasShipment ? '' :(
-                <button
-                    type="button"
-                    id="hges-change-shipping-rate-button"
-                    data-item-id={itemId}
+                {hasShipment ? '' : (
+                    <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
+                )}
+                {hasShipment ? '' : (
+                    <button
+                        type="button"
+                        id="hges-change-shipping-rate-button"
+                        data-item-id={itemId}
                     onClick={openShippingRateModal}
                 >
                     {__('Change shipping option')}
