@@ -12,7 +12,6 @@ use HGeS\Utils\RateHelper;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
 use HgeS\WooCommerce\ShippingAddressFields;
-use Symfony\Component\Console\Attribute\Option;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
