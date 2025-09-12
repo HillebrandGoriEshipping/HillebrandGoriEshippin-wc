@@ -12,6 +12,7 @@ use HGeS\Utils\RateHelper;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Address;
 use HgeS\WooCommerce\ShippingAddressFields;
+use Symfony\Component\Console\Attribute\Option;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -54,6 +55,11 @@ class Order
     public const ORDER_SHIPPING_ADDRESS_INDEX = '_shipping_address_index';
 
     /**
+     * Constant representing the meta key for indicating whether insurance is activated on an order.
+     */
+    public const ORDER_INSURANCE = 'hges_insurance';
+
+    /**
      * Initialize the order hooks and filters
      */
     public static function init(): void
@@ -87,6 +93,9 @@ class Order
         }
 
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
+
+        $isInsuranceActivated = get_option(OptionEnum::HGES_INSURANCE) === 'yes' ? true : false;
+
         if ($shippingRateChecksum) {
             try {
                 $shippingRate = Rate::getByChecksum($shippingRateChecksum);
@@ -100,6 +109,7 @@ class Order
         if ($shippingRate && !empty($shippingRate->getPackages())) {
             $packaging = $shippingRate->getPackages();
 
+            $order->update_meta_data(self::ORDER_INSURANCE, $isInsuranceActivated ? 1 : 0);
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
             $order->save_meta_data();
         } else {
@@ -390,10 +400,15 @@ class Order
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
         $prices = $rate->getPrices();
+        $insuranceActivated = (int) $order->get_meta(self::ORDER_INSURANCE);
 
         $optionalPrices = [];
         foreach ($prices as $key => $price) {
             if ($key !== 'shippingPrice' && (!isset($price['required']) || $price['required'] === false)) {
+                // add insurancePrice only if insurance is activated on the order
+                if ($key === 'insurancePrice' && $insuranceActivated === 0) {
+                    continue;
+                }
                 $optionalPrices[] = $price['key'];
             }
         }
