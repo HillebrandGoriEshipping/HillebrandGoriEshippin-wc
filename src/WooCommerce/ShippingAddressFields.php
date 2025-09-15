@@ -15,7 +15,8 @@ use Automattic\WooCommerce\Admin\Overrides\Order;
  *
  * @see https://developer.woocommerce.com/docs/cart-and-checkout-additional-checkout-fields/
  */
-class ShippingAddressFields {
+class ShippingAddressFields
+{
 
     /**
      * Lists the available locations to be used in "location" option field
@@ -82,7 +83,8 @@ class ShippingAddressFields {
      * List of translatable option fields
      */
     const TRANSLATABLE_FIELDS = [
-        'optionLabel', 'label'
+        'optionLabel',
+        'label'
     ];
 
     const SHIPPING_IS_COMPANY_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'];
@@ -102,8 +104,7 @@ class ShippingAddressFields {
 
     public static function initAdmin(): void
     {
-                add_filter('woocommerce_admin_order_data_after_shipping_address', [self::class, 'renderCompanyBlock'], 10, 3);
-
+        add_filter('woocommerce_admin_order_data_after_shipping_address', [self::class, 'renderCompanyBlock'], 10, 3);
     }
 
 
@@ -192,6 +193,11 @@ class ShippingAddressFields {
         $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
 
+        // make phone mandatory
+        if (isset($fields['shipping']['shipping_phone'])) {
+            $fields['shipping']['shipping_phone']['required'] = true;
+        }
+
         return $fields;
     }
 
@@ -202,7 +208,8 @@ class ShippingAddressFields {
      */
     public static function onOrderCreate(\WC_Order $order, array $data): void
     {
-        if (empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']])
+        if (
+            empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']])
             && empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']])
         ) {
             return;
@@ -219,7 +226,7 @@ class ShippingAddressFields {
 
         foreach ($customPostFields as $field) {
             if (isset($data[$field])) {
-                $order->update_meta_data('_'.$field, $data[$field]);
+                $order->update_meta_data('_' . $field, $data[$field]);
             }
         }
 
@@ -227,7 +234,7 @@ class ShippingAddressFields {
             $billingIsCompanyValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']];
             $billingCompanyNameValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']];
             $billingExciseNumberValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']];
-            
+
             $order->update_meta_data(self::SHIPPING_IS_COMPANY_METANAME, $billingIsCompanyValue);
             $order->update_meta_data(self::SHIPPING_COMPANY_NAME_METANAME, $billingCompanyNameValue);
             $order->update_meta_data(self::SHIPPING_EXCISE_NUMBER_METANAME, $billingExciseNumberValue);
@@ -260,7 +267,7 @@ class ShippingAddressFields {
 
     public static function renderCompanyBlock(Order $order): void
     {
-        if ('store-api' === $order->get_created_via() ) {
+        if ('store-api' === $order->get_created_via()) {
             return;
         }
         $companyBlock = self::getRenderedCompanyBlock($order);
