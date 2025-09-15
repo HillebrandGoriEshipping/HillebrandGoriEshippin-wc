@@ -41,17 +41,27 @@ class Order
     /**
      * Constant representing the key used to store or retrieve the shipment ID.
      */
-    public const SHIPMENT_ID = 'hges_shipment_id';
+    public const SHIPMENT_ID_META_KEY = 'hges_shipment_id';
 
     /**
      * Constant representing the shipment label URL.
      */
-    public const SHIPMENT_LABEL_URL = 'hges_shipment_label_url';
+    public const SHIPMENT_LABEL_URL_META_KEY = 'hges_shipment_label_url';
 
     /**
      * Constant representing the meta key for the shipping address index in an order.
      */
-    public const ORDER_SHIPPING_ADDRESS_INDEX = '_shipping_address_index';
+    public const ORDER_SHIPPING_ADDRESS_INDEX_META_KEY = '_shipping_address_index';
+
+    /**
+     * Constant representing the meta key for indicating whether insurance is activated on an order.
+     */
+    public const ORDER_INSURANCE_META_KEY = 'hges_insurance';
+
+    /**
+     * Key used to store or retrieve the insurance price value from the API response.
+     */
+    public const API_INSURANCE_PRICE_KEY = 'insurancePrice';
 
     /**
      * Initialize the order hooks and filters
@@ -87,6 +97,9 @@ class Order
         }
 
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
+
+        $isInsuranceActivated = get_option(OptionEnum::HGES_INSURANCE) === 'yes' ? true : false;
+
         if ($shippingRateChecksum) {
             try {
                 $shippingRate = Rate::getByChecksum($shippingRateChecksum);
@@ -100,6 +113,7 @@ class Order
         if ($shippingRate && !empty($shippingRate->getPackages())) {
             $packaging = $shippingRate->getPackages();
 
+            $order->update_meta_data(self::ORDER_INSURANCE_META_KEY, $isInsuranceActivated ? 1 : 0);
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
             $order->save_meta_data();
         } else {
@@ -390,10 +404,11 @@ class Order
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
         $prices = $rate->getPrices();
+        $insuranceActivated = (int) $order->get_meta(self::ORDER_INSURANCE_META_KEY);
 
         $optionalPrices = [];
         foreach ($prices as $key => $price) {
-            if ($key !== 'shippingPrice' && (!isset($price['required']) || $price['required'] === false)) {
+            if ((!isset($price['required']) || $price['required'] === false) && $key === self::API_INSURANCE_PRICE_KEY && $insuranceActivated === 1) {
                 $optionalPrices[] = $price['key'];
             }
         }
@@ -607,7 +622,7 @@ class Order
             throw new \Exception("Order not found.");
         }
 
-        $shipmentId = $order->get_meta(self::SHIPMENT_ID, true);
+        $shipmentId = $order->get_meta(self::SHIPMENT_ID_META_KEY, true);
 
         return !empty($shipmentId);
     }
@@ -620,7 +635,7 @@ class Order
         }
 
         $shippingAddressOrder = $order->get_address('shipping');
-        $shippingAddressMeta = $order->get_meta(self::ORDER_SHIPPING_ADDRESS_INDEX, true);
+        $shippingAddressMeta = $order->get_meta(self::ORDER_SHIPPING_ADDRESS_INDEX_META_KEY, true);
 
         $fieldsToCheck = [
             "first_name",

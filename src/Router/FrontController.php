@@ -253,8 +253,8 @@ class FrontController
             $shipment = Order::createShipment($orderId);
 
             if ($order) {
-                $order->add_meta_data(Order::SHIPMENT_ID, $shipment['id']);
-                $order->add_meta_data(Order::SHIPMENT_LABEL_URL, $shipment['label']['directLink']);
+                $order->add_meta_data(Order::SHIPMENT_ID_META_KEY, $shipment['id']);
+                $order->add_meta_data(Order::SHIPMENT_LABEL_URL_META_KEY, $shipment['label']['directLink']);
                 $order->save_meta_data();
             }
 
