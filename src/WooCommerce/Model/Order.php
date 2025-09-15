@@ -408,7 +408,7 @@ class Order
 
         $optionalPrices = [];
         foreach ($prices as $key => $price) {
-            if ((!isset($price['required']) || $price['required'] === false) && $key === self::API_INSURANCE_PRICE_KEY && $insuranceActivated === 0) {
+            if ((!isset($price['required']) || $price['required'] === false) && $key === self::API_INSURANCE_PRICE_KEY && $insuranceActivated === 1) {
                 $optionalPrices[] = $price['key'];
             }
         }
