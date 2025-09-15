@@ -2,6 +2,7 @@
 
 namespace HGeS\Utils;
 
+use HGeS\Dto\PackageDto;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\WooCommerce\Model\Order;
 
@@ -139,20 +140,59 @@ class Packaging
         };
     }
 
-    public static function applyWeight($orderId): void
+    /**
+     * Apply the packaging weight to the order total weight
+     *
+     * @param int $orderId
+     * @param array $packaging
+     * @return PackageDto[]
+     */
+    public static function applyWeight(int $orderId, array $packaging): array
     {
-        $order = wc_get_order($orderId);
-        if (!$order) {
-            return;
+        $packagingTypeUsed = array_unique(array_map(fn($item) => $item['containerType'] ?? '', $packaging));
+        
+        $productCountByPackagingType = [];
+        foreach ($packagingTypeUsed as $type) {
+            $productCountByPackagingType[$type] = [];
         }
 
-        $packaging = $order->get_meta(Order::PACKAGING_META_KEY, true);
-        if (empty($packaging) || !is_array($packaging)) {
-            return;
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            throw new \Exception("Order not found.");
         }
         
         $products = $order->get_items();
         $products = array_filter($products, fn($item) => $item->get_quantity() > 0);
-        dd($products);
+        foreach ($products as $item) {
+            $product = $item->get_product();
+            if (!$product) {
+                continue;
+            }
+            $productPackagingType = $product->get_meta(ProductMetaEnum::CAPACITY_TYPE);
+            $wineType = $product->get_meta(ProductMetaEnum::TYPE);
+            if (in_array($productPackagingType, $packagingTypeUsed)) {
+                if (!isset($productCountByPackagingType[$productPackagingType][$wineType])) {
+                    $productCountByPackagingType[$productPackagingType][$wineType] = 0;
+                }
+                $productCountByPackagingType[$productPackagingType][$wineType] += $item->get_quantity();
+            }
+        }
+        
+        $packaging = array_map(function ($item) use ($productCountByPackagingType) {
+            if ($productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING] ?? 0 > 0) {
+                if ($item['itemNumber'] > $productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING]) {
+                    $productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING] = 0;
+                } else {
+                    $productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING] -= $item['itemNumber'];
+                }
+                $item['weight'] = $item['weightDefinition'][ProductMetaEnum::SPARKLING];
+            } else {
+                $item['weight'] = $item['weightDefinition'][ProductMetaEnum::STILL];
+            }
+            
+            return PackageDto::fromArray($item)->sanitize()->toArray();
+        }, $packaging);
+
+        return $packaging;
     }
 }

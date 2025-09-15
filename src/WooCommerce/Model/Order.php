@@ -100,6 +100,7 @@ class Order
 
         if ($shippingRate && !empty($shippingRate->getPackages())) {
             $packaging = $shippingRate->getPackages();
+            $packaging = Packaging::applyWeight($orderId, $packaging);
 
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
             $order->save_meta_data();
@@ -522,44 +523,7 @@ class Order
             throw new \Exception("Order not found.");
         }
 
-        $packagingTypeUsed = array_unique(array_map(fn($item) => $item['containerType'] ?? '', $packaging));
-        
-        $productCountByPackagingType = [];
-        foreach ($packagingTypeUsed as $type) {
-            $productCountByPackagingType[$type] = [];
-        }
-        
-        $products = $order->get_items();
-        $products = array_filter($products, fn($item) => $item->get_quantity() > 0);
-        foreach ($products as $item) {
-            $product = $item->get_product();
-            if (!$product) {
-                continue;
-            }
-            $productPackagingType = $product->get_meta(ProductMetaEnum::CAPACITY_TYPE);
-            $wineType = $product->get_meta(ProductMetaEnum::TYPE);
-            if (in_array($productPackagingType, $packagingTypeUsed)) {
-                if (!isset($productCountByPackagingType[$productPackagingType][$wineType])) {
-                    $productCountByPackagingType[$productPackagingType][$wineType] = 0;
-                }
-                $productCountByPackagingType[$productPackagingType][$wineType] += $item->get_quantity();
-            }
-        }
-        
-        $packaging = array_map(function ($item) use ($productCountByPackagingType) {
-            if ($productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING] ?? 0 > 0) {
-                if ($item['itemNumber'] > $productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING]) {
-                    $productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING] = 0;
-                } else {
-                    $productCountByPackagingType[$item['containerType']][ProductMetaEnum::SPARKLING] -= $item['itemNumber'];
-                }
-                $item['weight'] = $item['weightDefinition'][ProductMetaEnum::SPARKLING];
-            } else {
-                $item['weight'] = $item['weightDefinition'][ProductMetaEnum::STILL];
-            }
-            
-            return PackageDto::fromArray($item)->sanitize()->toArray();
-        }, $packaging);
+        $packaging = Packaging::applyWeight($orderId, $packaging);
 
         $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
         $order->save_meta_data();
