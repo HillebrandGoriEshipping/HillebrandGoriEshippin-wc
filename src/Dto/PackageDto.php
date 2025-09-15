@@ -126,7 +126,7 @@ class PackageDto
     {
         $package = new self();
         $package->setId($data['id'] ?? 0);
-        $package->setNb($data['nb'] ?? '');
+        $package->setNb(1);
         $package->setWeight($data['weight'] ?? 0.0);
         $package->setLength($data['length'] ?? 0.0);
         $package->setWidth($data['width'] ?? 0.0);

@@ -82,7 +82,6 @@ const ShippingMethodRow = ({
 
         checkIfHasShipment(orderId).then((result) => {
             setHasShipment(result);
-            setLoading(false);
         });
     }, []);
 

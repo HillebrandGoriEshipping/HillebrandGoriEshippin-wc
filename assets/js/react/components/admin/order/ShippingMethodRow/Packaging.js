@@ -31,7 +31,6 @@ const Packaging = ({ packaging, products, onPackagingUpdated }) => {
                 currentPackaging={currentPackaging}
                 products={products}
                 onChange={(newPackaging) => {
-                    console.log('Updated packaging:', newPackaging);
                     setCurrentPackaging(newPackaging);
                 }}
             />

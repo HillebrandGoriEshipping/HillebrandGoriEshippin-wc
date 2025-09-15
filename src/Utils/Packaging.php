@@ -3,6 +3,7 @@
 namespace HGeS\Utils;
 
 use HGeS\Utils\Enums\ProductMetaEnum;
+use HGeS\WooCommerce\Model\Order;
 
 class Packaging
 {
@@ -89,10 +90,12 @@ class Packaging
             }
         }
 
-        return [
+        $packaging = [
             self::PACKAGING_BOTTLE => $packages[self::PACKAGING_BOTTLE] ?? [],
             self::PACKAGING_MAGNUM => $packages[self::PACKAGING_MAGNUM] ?? [],
         ];
+
+        return $packaging;
     }
 
     /**
@@ -134,5 +137,22 @@ class Packaging
             "1500" => self::PACKAGING_MAGNUM,
             default => null,
         };
+    }
+
+    public static function applyWeight($orderId): void
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            return;
+        }
+
+        $packaging = $order->get_meta(Order::PACKAGING_META_KEY, true);
+        if (empty($packaging) || !is_array($packaging)) {
+            return;
+        }
+        
+        $products = $order->get_items();
+        $products = array_filter($products, fn($item) => $item->get_quantity() > 0);
+        dd($products);
     }
 }
