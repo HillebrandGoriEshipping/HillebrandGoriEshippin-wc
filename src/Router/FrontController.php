@@ -258,7 +258,7 @@ class FrontController
                 $order->save_meta_data();
             }
 
-            $order->set_status('processing', 'Shipment created with ID ' . $shipment['id']);
+            $order->add_order_note(__('Shipment created with ID ', 'hges') . $shipment['id']);
             $order->save();
 
             self::renderJson([
