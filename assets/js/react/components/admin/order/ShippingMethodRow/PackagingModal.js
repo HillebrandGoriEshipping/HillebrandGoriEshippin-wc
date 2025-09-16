@@ -83,7 +83,6 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
     const updateProductsToDispatch = () => {
         const updatedProductsNumberByType = { ...initialProductsNumberByType };
         for (const type in updatedProductsNumberByType) {
-            console.log(packages);
             if (packages) {
                 packages.forEach((pkg) => {
                     if (pkg.containerType === type) {

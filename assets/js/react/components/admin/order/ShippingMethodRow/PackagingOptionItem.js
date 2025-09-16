@@ -4,7 +4,7 @@ const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect, onRemove
     const onSelectChange = (e) => {
         onSelect(packagingOptions.find(option => option.id === Number(e.target.value)) );
     };
-console.log('packageItem', packageItem);
+    
     return (
         <div className="packaging-option-item">
             <h4>Package {packageItem.index}</h4>
