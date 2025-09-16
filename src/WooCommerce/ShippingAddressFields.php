@@ -194,9 +194,7 @@ class ShippingAddressFields
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
 
         // make phone mandatory
-        if (isset($fields['shipping']['shipping_phone'])) {
-            $fields['shipping']['shipping_phone']['required'] = true;
-        }
+        $fields['billing']['billing_phone']['required'] = true;
 
         return $fields;
     }
