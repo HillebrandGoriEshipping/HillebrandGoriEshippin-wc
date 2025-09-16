@@ -96,7 +96,6 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
 
     const createPackage = () => {
         const newIndex = packages.length > 0 ? packages[packages.length - 1].index + 1 : 1;
-        console.log(products);
         setPackages([...packages, { index: newIndex, itemNumber: 0, width: 0, height: 0, length: 0, weight: { still: 0, sparkling: 0 } }]);
     };
 
