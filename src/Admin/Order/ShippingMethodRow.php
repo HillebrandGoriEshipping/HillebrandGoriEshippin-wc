@@ -78,13 +78,12 @@ class ShippingMethodRow {
         }
         
         $products = array_map(function ($item) {
-            if (!$item->get_product()) {
+            $productPost = $item->get_product();
+            if (!$productPost) {
                 return null;
             }
-            $item->update_meta_data('packaging', Packaging::getProductPackaging($item->get_product()));
-            $item->get_data_store()->update($item);
-            $item->apply_changes($item);
-            return $item->get_data();
+
+            return $productPost->get_data();
         }, wc_get_order($orderId)->get_items());
 
         $packaging = wc_get_order($orderId)->get_meta(Order::PACKAGING_META_KEY, true);

@@ -113,7 +113,6 @@ export default {
         urlParams = {};
       }
       for (const [key, value] of formerParams.entries()) {
-        console.log(key, value);
         urlParams[key] = value;
       }
     }

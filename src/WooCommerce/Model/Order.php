@@ -7,6 +7,7 @@ use HGeS\Dto\RateDto;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
+use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
 use HgeS\WooCommerce\ShippingAddressFields;
 
@@ -109,6 +110,7 @@ class Order
 
         if ($shippingRate && !empty($shippingRate->getPackages())) {
             $packaging = $shippingRate->getPackages();
+            $packaging = Packaging::applyWeight($orderId, $packaging);
 
             $order->update_meta_data(self::ORDER_INSURANCE_META_KEY, $isInsuranceActivated ? 1 : 0);
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
@@ -252,7 +254,7 @@ class Order
         }
 
         foreach ($metaData as $key => $value) {
-            $item->update_meta_data($key, $value);
+            $item->get_data_store()->set_prop($key, $value);
         }
 
         $item->get_data_store()->update($item);
@@ -538,9 +540,7 @@ class Order
             throw new \Exception("Order not found.");
         }
 
-        $packaging = array_map(function ($item) {
-            return PackageDto::fromArray($item)->sanitize()->toArray();
-        }, $packaging);
+        $packaging = Packaging::applyWeight($orderId, $packaging);
 
         $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
         $order->save_meta_data();
