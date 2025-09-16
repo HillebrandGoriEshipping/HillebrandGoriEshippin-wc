@@ -17,6 +17,7 @@ use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\WooCommerce\Render\ClassicUiRender;
 use HGeS\WooCommerce\Render\PickupPointsRender;
 use HGeS\WooCommerce\ShippingClass\BottleShippingClass;
+use HGeS\LifeCycle;
 
 /**
  * Plugin entry class
@@ -45,6 +46,10 @@ class App
      */
     public function run(): void
     {
+        register_activation_hook(
+            HGES_PLUGIN_DIR . '/HillebrandGoriEshipping.php',
+            [LifeCycle::class, 'onPluginActivation']
+        );
 
         $this->router->init();
 

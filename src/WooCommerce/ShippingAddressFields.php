@@ -192,7 +192,6 @@ class ShippingAddressFields
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
         $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
-
         // make phone mandatory
         $fields['billing']['billing_phone']['required'] = true;
 
@@ -286,5 +285,10 @@ class ShippingAddressFields
         );
 
         return $companyBlock;
+    }
+
+    public static function makePhoneRequired(): void
+    {
+        update_option('woocommerce_checkout_phone_field', 'required');
     }
 }
