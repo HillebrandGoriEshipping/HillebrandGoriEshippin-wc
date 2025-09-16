@@ -8,9 +8,6 @@ use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
-use HGeS\Utils\RateHelper;
-use HGeS\Utils\Packaging;
-use HGeS\WooCommerce\Address;
 use HgeS\WooCommerce\ShippingAddressFields;
 
 /**
@@ -194,13 +191,19 @@ class Order
         ) {
             return;
         }
-
-        // foreach ($pickupPoint as $key => $value) {
-        //     $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
-        // }
+        
         $order->update_meta_data(self::PICKUP_POINT_META_KEY, $pickupPoint);
     }
 
+    /**
+     * Update the selected shipping rate for a specific order and shipping item.
+     *
+     * @param int $orderId The ID of the order to update.
+     * @param int $orderShippingItemId The ID of the shipping item within the order to update.
+     * @param string $newShippingRateChecksum The checksum of the new shipping rate to set.
+     * @return RateDto|null The updated RateDto object if successful, otherwise null.
+     * @throws \Exception If the order, shipping item, or shipping rate is not found or if parameters are invalid.
+     */
     public static function updateSelectedShippingRate(
         int $orderId,
         int $orderShippingItemId,
@@ -229,19 +232,18 @@ class Order
         if (!$rate) {
             throw new \Exception("Order item or shipping rate not found.");
         }
+
+
         $item->set_props([
             "name" => $rate->getServiceName(),
-            "total" => RateHelper::calculateTotal($rate),
             "total_tax" => "0",
             "taxes" => ["total" => []],
             "tax_status" => "taxable",
         ]);
 
-
         $metaData = [
             "checksum" => $newShippingRateChecksum,
             "method_title" => $rate->getServiceName(),
-            "method_id" => ShippingMethod::METHOD_ID,
         ];
 
         $customerSelectedRateExists = $item->meta_exists(self::CONSUMER_SELECTED_RATE_META_KEY);
@@ -252,11 +254,11 @@ class Order
         foreach ($metaData as $key => $value) {
             $item->update_meta_data($key, $value);
         }
+
         $item->get_data_store()->update($item);
         $item->apply_changes($item);
         $item->save();
 
-        $order->calculate_totals();
         return $rate;
     }
 
