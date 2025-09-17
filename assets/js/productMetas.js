@@ -214,7 +214,6 @@ const productMetaModule = {
         this.hsCodeField.value = hsCode;
         this.appellationField.value = selectedAppellation;
       } else {
-        console.log('no hs code found', this.errorContainer);
         utils.showAdminNotice(
           __(hges.messages.productMeta.settingsError),
           this.errorContainer,
