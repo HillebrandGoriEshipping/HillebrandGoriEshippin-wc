@@ -80,7 +80,7 @@ class Scripts
 
         wp_enqueue_script(
             'dayjs-lib',
-            'https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js',
+            HGES_PLUGIN_URL . 'node_modules/dayjs/dayjs.min.js',
             [],
             null,
             true
@@ -100,7 +100,7 @@ class Scripts
             ['leaflet-map'],
             null,
             true
-        );     
+        );
         self::globalObjectInjection();
     }
 
@@ -153,7 +153,7 @@ class Scripts
                 ['in_footer' => true]
             );
         }
-        
+
         wp_enqueue_script(
             'hges-components',
             HGES_PLUGIN_URL . 'dist/components.js',
@@ -178,7 +178,7 @@ class Scripts
      */
     public static function globalObjectInjection(bool $admin = false): void
     {
-        
+
         $frontendJsGlobalObject = [
             'assetsUrl' => HGES_PLUGIN_URL . 'assets/',
             'messages' => Messages::getMessageList(),

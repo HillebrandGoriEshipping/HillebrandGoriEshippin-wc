@@ -2,6 +2,7 @@
 
 namespace HGeS\WooCommerce\Model;
 
+use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
 
@@ -26,17 +27,17 @@ class Product
             return $data;
         }
 
-        $productType = $_POST['product-type'] ?? '';
+        $productType = wp_unslash($_POST['product-type']) ?? '';
 
         if (!in_array($productType, ['bottle-simple', 'bottle-variable'], true)) {
             return $data;
         }
 
         $requiredFields = [
-            ProductMetaEnum::HS_CODE => __('Valid appellation'),
-            ProductMetaEnum::CAPACITY => __('Capacity'),
-            ProductMetaEnum::ALCOHOL_PERCENTAGE => __('Alcohol Percentage'),
-            ProductMetaEnum::COLOR => __('Color'),
+            ProductMetaEnum::HS_CODE => __('Valid appellation', GlobalEnum::TRANSLATION_DOMAIN),
+            ProductMetaEnum::CAPACITY => __('Capacity', GlobalEnum::TRANSLATION_DOMAIN),
+            ProductMetaEnum::ALCOHOL_PERCENTAGE => __('Alcohol Percentage', GlobalEnum::TRANSLATION_DOMAIN),
+            ProductMetaEnum::COLOR => __('Color', GlobalEnum::TRANSLATION_DOMAIN),
         ];
 
         $missing = [];
@@ -75,7 +76,7 @@ class Product
             }
 
             $fields = isset($_GET['hges_missing_fields'])
-                ? explode(',', sanitize_text_field($_GET['hges_missing_fields']))
+                ? explode(',', sanitize_text_field(wp_unslash($_GET['hges_missing_fields'])))
                 : [];
 
             $fieldsList = !empty($fields) ? implode(', ', $fields) : 'certains champs requis';

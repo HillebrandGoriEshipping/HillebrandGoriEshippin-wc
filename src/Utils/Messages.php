@@ -24,12 +24,12 @@ class Messages
 
         $jsonContent = file_get_contents($jsonFilePath);
         if ($jsonContent === false) {
-            throw new \Exception("Failed to read JSON file: " . $jsonFilePath);
+            throw new \Exception("Failed to read JSON file: " . esc_html($jsonFilePath));
         }
 
         $messages = json_decode($jsonContent, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception("Failed to decode JSON: " . json_last_error_msg());
+            throw new \Exception("Failed to decode JSON: " . esc_html(json_last_error_msg()));
         }
 
         $hierarchy = explode('.', $messageKey);
@@ -38,7 +38,7 @@ class Messages
             if (isset($currentItem[$key])) {
                 $currentItem = $currentItem[$key];
             } else {
-                throw new \Exception("Message key not found: " . $messageKey);
+                throw new \Exception("Message key not found: " . esc_html($messageKey));
             }
         }
         if (isset($currentItem)) {
@@ -49,7 +49,7 @@ class Messages
             }
             return $currentItem;
         } else {
-            throw new \Exception("Message key not found: " . $messageKey);
+            throw new \Exception("Message key not found: " . esc_html($messageKey));
         }
     }
 
@@ -67,12 +67,12 @@ class Messages
 
         $jsonContent = file_get_contents($jsonFilePath);
         if ($jsonContent === false) {
-            throw new \Exception("Failed to read JSON file: " . $jsonFilePath);
+            throw new \Exception("Failed to read JSON file: " . esc_html($jsonFilePath));
         }
 
         $messages = json_decode($jsonContent, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception("Failed to decode JSON: " . json_last_error_msg());
+            throw new \Exception("Failed to decode JSON: " . esc_html(json_last_error_msg()));
         }
 
         if (!is_array($messages)) {

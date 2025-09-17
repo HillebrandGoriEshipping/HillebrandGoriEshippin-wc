@@ -9,9 +9,6 @@ use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
-use HGeS\Utils\RateHelper;
-use HGeS\Utils\Packaging;
-use HGeS\WooCommerce\Address;
 use HgeS\WooCommerce\ShippingAddressFields;
 
 /**
@@ -42,17 +39,27 @@ class Order
     /**
      * Constant representing the key used to store or retrieve the shipment ID.
      */
-    public const SHIPMENT_ID = 'hges_shipment_id';
+    public const SHIPMENT_ID_META_KEY = 'hges_shipment_id';
 
     /**
      * Constant representing the shipment label URL.
      */
-    public const SHIPMENT_LABEL_URL = 'hges_shipment_label_url';
+    public const SHIPMENT_LABEL_URL_META_KEY = 'hges_shipment_label_url';
 
     /**
      * Constant representing the meta key for the shipping address index in an order.
      */
-    public const ORDER_SHIPPING_ADDRESS_INDEX = '_shipping_address_index';
+    public const ORDER_SHIPPING_ADDRESS_INDEX_META_KEY = '_shipping_address_index';
+
+    /**
+     * Constant representing the meta key for indicating whether insurance is activated on an order.
+     */
+    public const ORDER_INSURANCE_META_KEY = 'hges_insurance';
+
+    /**
+     * Key used to store or retrieve the insurance price value from the API response.
+     */
+    public const API_INSURANCE_PRICE_KEY = 'insurancePrice';
 
     /**
      * Initialize the order hooks and filters
@@ -84,10 +91,13 @@ class Order
 
         $shippingItem = self::getShippingOrderItem($orderId);
         if (!$shippingItem) {
-            throw new \Exception("Shipping item not found for order ID: $orderId.");
+            throw new \Exception("Shipping item not found for order ID: " . esc_html($orderId));
         }
 
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
+
+        $isInsuranceActivated = get_option(OptionEnum::HGES_INSURANCE) === 'yes' ? true : false;
+
         if ($shippingRateChecksum) {
             try {
                 $shippingRate = Rate::getByChecksum($shippingRateChecksum);
@@ -95,17 +105,18 @@ class Order
                 $shippingRate = null;
             }
         } else {
-            throw new \Exception("Shipping rate checksum not found for order ID: $orderId.");
+            throw new \Exception("Shipping rate checksum not found for order ID: " . esc_html($orderId));
         }
 
         if ($shippingRate && !empty($shippingRate->getPackages())) {
             $packaging = $shippingRate->getPackages();
             $packaging = Packaging::applyWeight($orderId, $packaging);
 
+            $order->update_meta_data(self::ORDER_INSURANCE_META_KEY, $isInsuranceActivated ? 1 : 0);
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
             $order->save_meta_data();
         } else {
-            throw new \Exception("Shipping rate or packages not found for order ID: $orderId.");
+            throw new \Exception("Shipping rate or packages not found for order ID: " . esc_html($orderId));
         }
     }
 
@@ -182,13 +193,19 @@ class Order
         ) {
             return;
         }
-
-        // foreach ($pickupPoint as $key => $value) {
-        //     $order->update_meta_data('_hges_pickup_point_' . sanitize_key($key), $value);
-        // }
+        
         $order->update_meta_data(self::PICKUP_POINT_META_KEY, $pickupPoint);
     }
 
+    /**
+     * Update the selected shipping rate for a specific order and shipping item.
+     *
+     * @param int $orderId The ID of the order to update.
+     * @param int $orderShippingItemId The ID of the shipping item within the order to update.
+     * @param string $newShippingRateChecksum The checksum of the new shipping rate to set.
+     * @return RateDto|null The updated RateDto object if successful, otherwise null.
+     * @throws \Exception If the order, shipping item, or shipping rate is not found or if parameters are invalid.
+     */
     public static function updateSelectedShippingRate(
         int $orderId,
         int $orderShippingItemId,
@@ -217,19 +234,18 @@ class Order
         if (!$rate) {
             throw new \Exception("Order item or shipping rate not found.");
         }
+
+
         $item->set_props([
             "name" => $rate->getServiceName(),
-            "total" => RateHelper::calculateTotal($rate),
             "total_tax" => "0",
             "taxes" => ["total" => []],
             "tax_status" => "taxable",
         ]);
 
-
         $metaData = [
             "checksum" => $newShippingRateChecksum,
             "method_title" => $rate->getServiceName(),
-            "method_id" => ShippingMethod::METHOD_ID,
         ];
 
         $customerSelectedRateExists = $item->meta_exists(self::CONSUMER_SELECTED_RATE_META_KEY);
@@ -240,11 +256,11 @@ class Order
         foreach ($metaData as $key => $value) {
             $item->get_data_store()->set_prop($key, $value);
         }
+
         $item->get_data_store()->update($item);
         $item->apply_changes($item);
         $item->save();
 
-        $order->calculate_totals();
         return $rate;
     }
 
@@ -392,10 +408,11 @@ class Order
 
         $rate = Rate::getByChecksum($shippingRateChecksum);
         $prices = $rate->getPrices();
+        $insuranceActivated = (int) $order->get_meta(self::ORDER_INSURANCE_META_KEY);
 
         $optionalPrices = [];
         foreach ($prices as $key => $price) {
-            if ($key !== 'shippingPrice' && (!isset($price['required']) || $price['required'] === false)) {
+            if ((!isset($price['required']) || $price['required'] === false) && $key === self::API_INSURANCE_PRICE_KEY && $insuranceActivated === 1) {
                 $optionalPrices[] = $price['key'];
             }
         }
@@ -439,7 +456,7 @@ class Order
         } catch (\Exception $e) {
             error_log('Erreur API createShipment: ' . $e->getMessage());
             error_log('Trace : ' . $e->getTraceAsString());
-            throw new \Exception("Error creating shipment: " . $e->getMessage());
+            throw new \Exception("Error creating shipment: " . esc_html($e->getMessage()));
         }
     }
 
@@ -607,7 +624,7 @@ class Order
             throw new \Exception("Order not found.");
         }
 
-        $shipmentId = $order->get_meta(self::SHIPMENT_ID, true);
+        $shipmentId = $order->get_meta(self::SHIPMENT_ID_META_KEY, true);
 
         return !empty($shipmentId);
     }
@@ -620,7 +637,7 @@ class Order
         }
 
         $shippingAddressOrder = $order->get_address('shipping');
-        $shippingAddressMeta = $order->get_meta(self::ORDER_SHIPPING_ADDRESS_INDEX, true);
+        $shippingAddressMeta = $order->get_meta(self::ORDER_SHIPPING_ADDRESS_INDEX_META_KEY, true);
 
         $fieldsToCheck = [
             "first_name",

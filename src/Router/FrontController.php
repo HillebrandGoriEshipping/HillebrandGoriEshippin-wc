@@ -5,6 +5,7 @@ namespace HGeS\Router;
 use HGeS\Exception\HttpException;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Model\Order;
 use HGeS\WooCommerce\Model\PickupPoint;
@@ -20,7 +21,7 @@ class FrontController
     public static function getPickupPoints($data): void
     {
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
         if (!isset($urlParams['street'], $urlParams['zipCode'], $urlParams['city'], $urlParams['country'])) {
@@ -75,7 +76,7 @@ class FrontController
         $response = [];
         $bodyParams = $data;
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
         if (!empty($bodyParams['pickupPoint']) && !empty($urlParams['orderId'])) {
             Order::setPickupPoint($urlParams['orderId'], $bodyParams['pickupPoint']);
@@ -126,7 +127,7 @@ class FrontController
         $response = [];
         $bodyParams = $data;
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
         if (!empty($bodyParams['shippingRateChecksum']) && !empty($urlParams['orderId']) && !empty($urlParams['orderShippingItemId'])) {
@@ -138,7 +139,7 @@ class FrontController
                     $bodyParams['shippingRateChecksum']
                 );
             } catch (\Exception $e) {
-                $response['error'] = 'Unable to update shipping method: ' . $e->getMessage();
+                $response['error'] = 'Unable to update shipping method: ' . esc_html($e->getMessage());
                 self::renderJson($response, 400);
                 return;
             }
@@ -159,7 +160,7 @@ class FrontController
         self::checkUserCanEditOrders();
         $response = [];
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
         if (!empty($urlParams['orderId'])) {
@@ -278,12 +279,12 @@ class FrontController
             $shipment = Order::createShipment($orderId);
 
             if ($order) {
-                $order->add_meta_data(Order::SHIPMENT_ID, $shipment['id']);
-                $order->add_meta_data(Order::SHIPMENT_LABEL_URL, $shipment['label']['directLink']);
+                $order->add_meta_data(Order::SHIPMENT_ID_META_KEY, $shipment['id']);
+                $order->add_meta_data(Order::SHIPMENT_LABEL_URL_META_KEY, $shipment['label']['directLink']);
                 $order->save_meta_data();
             }
 
-            $order->set_status('processing', 'Shipment created with ID ' . $shipment['id']);
+            $order->add_order_note(__('Shipment created with ID ', GlobalEnum::TRANSLATION_DOMAIN) . $shipment['id']);
             $order->save();
 
             self::renderJson([

@@ -24,7 +24,7 @@ class EoriNumberValidator extends ConstraintValidator
         }
 
         if (!$constraint instanceof EoriNumber) {
-            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', EoriNumber::class, get_class($constraint)));
+            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', EoriNumber::class, esc_html(get_class($constraint))));
         }
 
         if (!preg_match($constraint->pattern, $value, $matches)) {

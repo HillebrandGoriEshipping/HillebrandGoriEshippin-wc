@@ -15,7 +15,8 @@ use Automattic\WooCommerce\Admin\Overrides\Order;
  *
  * @see https://developer.woocommerce.com/docs/cart-and-checkout-additional-checkout-fields/
  */
-class ShippingAddressFields {
+class ShippingAddressFields
+{
 
     /**
      * Lists the available locations to be used in "location" option field
@@ -82,8 +83,11 @@ class ShippingAddressFields {
      * List of translatable option fields
      */
     const TRANSLATABLE_FIELDS = [
-        'optionLabel', 'label'
+        'optionLabel',
+        'label'
     ];
+
+    const OPTION_CHECKOUT_PHONE_FIELD = 'woocommerce_checkout_phone_field';
 
     const SHIPPING_IS_COMPANY_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::IS_COMPANY_CHECKBOX_OPTIONS['id'];
     const SHIPPING_COMPANY_NAME_METANAME = '_' . self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id'];
@@ -190,6 +194,8 @@ class ShippingAddressFields {
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::COMPANY_NAME_FIELD_OPTIONS['id']] = $companyNameField;
         $fields['billing'][self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
         $fields['shipping'][self::WC_ORDER_META_PREFIX_SHIPPING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']] = $exciseNumberField;
+        // make phone mandatory
+        $fields['billing']['billing_phone']['required'] = true;
 
         return $fields;
     }
@@ -201,7 +207,8 @@ class ShippingAddressFields {
      */
     public static function onOrderCreate(\WC_Order $order, array $data): void
     {
-        if (empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']])
+        if (
+            empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']])
             && empty($data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']])
         ) {
             return;
@@ -218,7 +225,7 @@ class ShippingAddressFields {
 
         foreach ($customPostFields as $field) {
             if (isset($data[$field])) {
-                $order->update_meta_data('_'.$field, $data[$field]);
+                $order->update_meta_data('_' . $field, $data[$field]);
             }
         }
 
@@ -226,7 +233,7 @@ class ShippingAddressFields {
             $billingIsCompanyValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::IS_COMPANY_CHECKBOX_OPTIONS['id']];
             $billingCompanyNameValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::COMPANY_NAME_FIELD_OPTIONS['id']];
             $billingExciseNumberValue = $data[self::WC_ORDER_META_PREFIX_BILLING . self::EXCISE_NUMBER_FIELD_OPTIONS['id']];
-            
+
             $order->update_meta_data(self::SHIPPING_IS_COMPANY_METANAME, $billingIsCompanyValue);
             $order->update_meta_data(self::SHIPPING_COMPANY_NAME_METANAME, $billingCompanyNameValue);
             $order->update_meta_data(self::SHIPPING_EXCISE_NUMBER_METANAME, $billingExciseNumberValue);
@@ -259,7 +266,7 @@ class ShippingAddressFields {
 
     public static function renderCompanyBlock(Order $order): void
     {
-        if ('store-api' === $order->get_created_via() ) {
+        if ('store-api' === $order->get_created_via()) {
             return;
         }
         $companyBlock = self::getRenderedCompanyBlock($order);
@@ -269,7 +276,7 @@ class ShippingAddressFields {
     public static function getRenderedCompanyBlock(Order $order): string
     {
         $data = [
-            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),
+            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes', GlobalEnum::TRANSLATION_DOMAIN) : __('No', GlobalEnum::TRANSLATION_DOMAIN),
             'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
             'exciseNumber' => $order->get_meta(self::SHIPPING_EXCISE_NUMBER_METANAME, true),
         ];
@@ -280,5 +287,15 @@ class ShippingAddressFields {
         );
 
         return $companyBlock;
+    }
+
+    /**
+     * Sets the WooCommerce checkout phone field as required.
+     *
+     * @return void
+     */
+    public static function makePhoneRequired(): void
+    {
+        update_option(self::OPTION_CHECKOUT_PHONE_FIELD, 'required');
     }
 }

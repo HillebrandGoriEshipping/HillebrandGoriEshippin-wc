@@ -87,7 +87,7 @@ class Styles
         ) {
             wp_enqueue_style(
                 'hges-filepond-style',
-                'https://unpkg.com/filepond@^4/dist/filepond.css',
+                HGES_PLUGIN_URL . 'node_modules/filepond/dist/filepond.css',
                 [],
                 null
             );
