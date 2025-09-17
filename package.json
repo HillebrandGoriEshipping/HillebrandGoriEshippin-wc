@@ -21,7 +21,8 @@
     "dayjs": "^1.11.18",
     "filepond": "^4.32.8",
     "filepond-plugin-file-metadata": "^1.0.8",
-    "leaflet": "^1.9.4"
+    "leaflet": "^1.9.4",
+    "clsx": "^2.1.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
@@ -29,7 +30,6 @@
     "@wordpress/scripts": "^30.15.0",
     "babel-plugin-auto-import": "^1.1.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "clsx": "^2.1.1",
     "dotenv": "^16.5.0",
     "mysql2": "^3.14.1",
     "react-filepond": "^7.1.3"
