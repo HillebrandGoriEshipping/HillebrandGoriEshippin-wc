@@ -90,7 +90,7 @@ const PickupPointsMap = () => {
                 const options = { ...pickupPoint };
                 markerPopupTemplate.current.querySelector('.marker-popup__title').innerHTML = pickupPoint.name;
                 markerPopupTemplate.current.querySelector('.marker-popup__address').innerHTML = pickupPoint.addLine1;
-                markerPopupTemplate.current.querySelector('.marker-popup__distance').innerHTML = pickupPoint.distance + 'm';
+                markerPopupTemplate.current.querySelector('.marker-popup__distance').innerHTML = getDistanceString(pickupPoint.distance);
                 options.popupContent = markerPopupTemplate.current.innerHTML;
                 const marker = leafletMap.addMarker(
                     pickupPoint.latitude,
@@ -147,6 +147,14 @@ const PickupPointsMap = () => {
         }));
     };
 
+    const getDistanceString = (distance) => {
+        if (distance > 1) {
+            return distance.toFixed(2) + ' km';
+        } else {
+            return Math.round(distance * 1000) + ' m';
+        }
+    }
+
     return (
         <div id="pickup-points-map-modal" className={`modal ${showModal ? '' : 'hidden'}`} ref={modalRef}>
             <div className="modal__content">
@@ -173,7 +181,7 @@ const PickupPointsMap = () => {
                                     <div className="pickup-point__address">
                                         {pickupPoint.address_1}
                                     </div>
-                                    <div className="pickup-point__distance">{pickupPoint.distance}m</div>
+                                    <div className="pickup-point__distance">{getDistanceString(pickupPoint.distance)}</div>
                                 </div>
                             ))}
                         </div>
