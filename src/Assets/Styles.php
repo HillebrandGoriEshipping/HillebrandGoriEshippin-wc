@@ -110,6 +110,13 @@ class Styles
                 [],
                 null
             );
+
+            wp_enqueue_style(
+                'hges-map-style',
+                HGES_PLUGIN_URL . 'assets/css/map.css',
+                [],
+                null
+            );
         }
     }
 }

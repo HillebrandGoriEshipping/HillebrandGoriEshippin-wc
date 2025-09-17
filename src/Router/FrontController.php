@@ -2,10 +2,12 @@
 
 namespace HGeS\Router;
 
+use HGeS\Exception\HttpException;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Model\Order;
+use HGeS\WooCommerce\Model\PickupPoint;
 
 class FrontController
 {
@@ -21,22 +23,45 @@ class FrontController
             return htmlspecialchars(strip_tags($param));
         }, $_GET);
 
-        $pickupPointsRequest = ApiClient::get(
-            '/relay/get-access-points',
-            $urlParams,
-        );
+        if (!isset($urlParams['street'], $urlParams['zipCode'], $urlParams['city'], $urlParams['country'])) {
+            if (!empty($urlParams['orderId'])) {
+                $order = wc_get_order($urlParams['orderId'] ?? 0);
+                if (!$order) {
+                    self::renderJson([
+                        'error' => 'Invalid order',
+                    ], 404);
+                    return;
+                }
+                $urlParams['street'] = $order->get_shipping_address_1();
+                $urlParams['zipCode'] = $order->get_shipping_postcode();
+                $urlParams['city'] = $order->get_shipping_city();
+                $urlParams['country'] = $order->get_shipping_country();
+            } else {
+                self::renderJson([
+                    'error' => 'Unable to fetch pickup points: either [street, zipCode, city and country] or orderId are expected in the query params.',
+                ], 400);
+                return;
+            }
+        }
+        try {
+            $pickupPoints = PickupPoint::getPickupPoints(
+                street: $urlParams['street'],
+                zipCode: $urlParams['zipCode'],
+                city: $urlParams['city'],
+                country: $urlParams['country'],
+            );
 
-        if ($pickupPointsRequest['status'] !== 200) {
             self::renderJson([
-                'error' => 'Unable to fetch pickup points',
-            ], $pickupPointsRequest['status']);
+                'success' => true,
+                'data' => $pickupPoints,
+            ]);
+            
+        } catch (HttpException $e) {
+            self::renderJson([
+                'error' => 'Unable to fetch pickup points: ' . $e->getMessage(),
+            ], $e->getStatusCode());
             return;
         }
-
-        self::renderJson([
-            'success' => true,
-            'data' => $pickupPointsRequest['data'],
-        ]);
     }
 
     /**

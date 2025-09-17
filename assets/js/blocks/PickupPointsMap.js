@@ -23,6 +23,7 @@ const PickupPointsMap = () => {
 
     const openModal = (e) => {
         e.preventDefault();
+        console.log(e);
         if (e.detail?.rate) {
             setCurrentRate(e.detail.rate);
         }
@@ -59,6 +60,14 @@ const PickupPointsMap = () => {
 
             if (!map || !currentRate || !markerPopupTemplate) return;
 
+            // get current order id from the url if on admin page
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentPage = urlParams.get('page');
+            let orderId;
+            if (currentPage && currentPage === 'wc-orders') {
+                orderId = urlParams.get('id');
+            }
+
             setIsLoading(true);
             const shippingAddress = cartStore.getCustomerData().shippingAddress;
             const pickupPointListRequest = await apiClient.get(
@@ -70,7 +79,8 @@ const PickupPointsMap = () => {
                     city: shippingAddress.city,
                     shipmentDate: dayjs(currentRate.pickupDate).format('DD/MM/YYYY'),
                     country: shippingAddress.country,
-                    productCode: currentRate.pickupServiceId
+                    productCode: currentRate.pickupServiceId,
+                    orderId
                 },
             );
 
