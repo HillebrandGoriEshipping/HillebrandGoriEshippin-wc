@@ -100,7 +100,7 @@ class Scripts
             ['leaflet-map'],
             null,
             true
-        );     
+        );
         self::globalObjectInjection();
     }
 
@@ -153,7 +153,7 @@ class Scripts
                 ['in_footer' => true]
             );
         }
-        
+
         wp_enqueue_script(
             'hges-components',
             HGES_PLUGIN_URL . 'dist/components.js',
@@ -178,7 +178,7 @@ class Scripts
      */
     public static function globalObjectInjection(bool $admin = false): void
     {
-        
+
         $frontendJsGlobalObject = [
             'assetsUrl' => HGES_PLUGIN_URL . 'assets/',
             'messages' => Messages::getMessageList(),
