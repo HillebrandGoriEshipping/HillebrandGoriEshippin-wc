@@ -21,6 +21,7 @@ if [ -f "$ZIP_FILE" ]; then
   rm "$ZIP_FILE"
 fi
 
+rm -rf vendor node_modules
 npm install --omit=dev
 composer install --no-dev --optimize-autoloader
 
@@ -28,3 +29,5 @@ composer install --no-dev --optimize-autoloader
 zip -r "$ZIP_FILE" -@ < "$LIST_FILE"
 
 echo "Archive créée : $ZIP_FILE"
+
+npm install && composer install
