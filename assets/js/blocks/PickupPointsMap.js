@@ -25,7 +25,6 @@ const PickupPointsMap = () => {
         e.preventDefault();
         if (e.detail?.rate) {
             setCurrentRate(e.detail.rate);
-            console.log(e.detail);
         }
         modalRef.current.classList.remove('hidden');
         setShowModal(true);
