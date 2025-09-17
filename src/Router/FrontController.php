@@ -22,9 +22,24 @@ class FrontController
             return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
-        $pickupPointsRequest = ApiClient::get(
-            '/relay/get-access-points',
-            $urlParams,
+        $checksum = $urlParams['checksum'] ?? null;
+        $latitude = $urlParams['latitude'] ?? null;
+        $longitude = $urlParams['longitude'] ?? null;
+
+        if (empty($checksum)) {
+            self::renderJson([
+                'error' => 'Missing checksum parameter',
+            ], 400);
+            return;
+        }
+
+        $pickupPointsRequest = ApiClient::post(
+            '/v2/pickup-points',
+            [
+                'checksum' => $checksum,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+            ]
         );
 
         if ($pickupPointsRequest['status'] !== 200) {

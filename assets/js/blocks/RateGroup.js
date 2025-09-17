@@ -45,14 +45,14 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
     e.preventDefault();
     const label = e.currentTarget.closest("label");
     label.dispatchEvent(new Event("click"));
-    const rate = label.getAttribute("rate");
+    const rate = rates.find(r => r.checksum === label.getAttribute("rate"));
     window.dispatchEvent(new CustomEvent('hges:show-pickup-points-map', { detail: { rate } }));
   }
 
   return (
     <div>
       {rates.map((rate) => (
-        <label rate={rate} htmlFor={getRadioButtonId(rate)} key={rate.key}>
+        <label rate={rate.checksum} htmlFor={getRadioButtonId(rate)} key={rate.key}>
           <div className={"rate-content" + (rate.selected ? " selected" : "")}>
             <div className="rate-left">
               {hasLogo ? (

@@ -25,6 +25,7 @@ const PickupPointsMap = () => {
         e.preventDefault();
         if (e.detail?.rate) {
             setCurrentRate(e.detail.rate);
+            console.log(e.detail);
         }
         modalRef.current.classList.remove('hidden');
         setShowModal(true);
@@ -65,12 +66,7 @@ const PickupPointsMap = () => {
                 window.hges.ajaxUrl,
                 {
                     action: 'hges_get_pickup_points',
-                    street: shippingAddress.address_1,
-                    zipCode: shippingAddress.postcode,
-                    city: shippingAddress.city,
-                    shipmentDate: dayjs(currentRate.pickupDate).format('DD/MM/YYYY'),
-                    country: shippingAddress.country,
-                    productCode: currentRate.pickupServiceId
+                    checksum: currentRate.checksum
                 },
             );
 
