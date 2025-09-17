@@ -126,11 +126,15 @@ const PickupPointsMap = () => {
     const selectThisPickupPoint = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        let orderId = checkoutStore.getOrderId();
+        if (!orderId) {
+            orderId = new URLSearchParams(window.location.search).get('id');
+        }
         await apiClient.post(
             window.hges.ajaxUrl,
             {
                 action: 'hges_set_current_pickup_point',
-                orderId: checkoutStore.getOrderId()
+                orderId
             },
             {
                 pickupPoint: currentPickupPoint

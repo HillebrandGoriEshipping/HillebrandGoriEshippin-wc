@@ -102,8 +102,7 @@ class ShippingAddressFields {
 
     public static function initAdmin(): void
     {
-                add_filter('woocommerce_admin_order_data_after_shipping_address', [self::class, 'renderCompanyBlock'], 10, 3);
-
+        add_filter('woocommerce_admin_order_data_after_shipping_address', [self::class, 'renderCompanyBlock'], 10, 3);
     }
 
 
