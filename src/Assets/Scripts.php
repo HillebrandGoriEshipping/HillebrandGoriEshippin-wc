@@ -80,7 +80,7 @@ class Scripts
 
         wp_enqueue_script(
             'dayjs-lib',
-            'https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js',
+            HGES_PLUGIN_URL . 'node_modules/dayjs/dayjs.min.js',
             [],
             null,
             true

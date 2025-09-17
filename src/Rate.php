@@ -135,7 +135,7 @@ class Rate
             $params['packages'] = $packageList;
         } catch (\Exception $th) {
             \Sentry\captureException($th);
-            throw new \Exception('Error fetching package sizes: ' . $th->getMessage());
+            throw new \Exception('Error fetching package sizes: ' . esc_html($th->getMessage()));
         }
 
         $workingDays = get_option(OptionEnum::HGES_WORKING_DAYS, []);

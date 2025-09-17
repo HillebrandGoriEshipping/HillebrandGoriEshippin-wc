@@ -276,7 +276,7 @@ class ShippingAddressFields
     public static function getRenderedCompanyBlock(Order $order): string
     {
         $data = [
-            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes') : __('No'),
+            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes', GlobalEnum::TRANSLATION_DOMAIN) : __('No', GlobalEnum::TRANSLATION_DOMAIN),
             'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
             'exciseNumber' => $order->get_meta(self::SHIPPING_EXCISE_NUMBER_METANAME, true),
         ];

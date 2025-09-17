@@ -2,6 +2,7 @@
 
 namespace HGeS\Utils;
 
+use HGeS\Utils\Enums\GlobalEnum;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use HGeS\Utils\Enums\OptionEnum;
@@ -18,7 +19,7 @@ class Twig
             $loader = new FilesystemLoader(HGES_PLUGIN_DIR . '/templates');
             self::$twig = new Environment($loader, [
                 'cache' => false,
-                'debug' => $_ENV['WP_DEBUG'] ?? true,
+                'debug' => sanitize_text_field($_ENV['WP_DEBUG']) ?? true,
             ]);
             self::customFunctions();
         }
@@ -33,7 +34,7 @@ class Twig
         }));
 
         // Custom translation function
-        self::$twig->addFunction(new \Twig\TwigFunction('__', function ($text, $domain = 'hges') {
+        self::$twig->addFunction(new \Twig\TwigFunction('__', function ($text, $domain = GlobalEnum::TRANSLATION_DOMAIN) {
             return __($text, $domain);
         }));
 

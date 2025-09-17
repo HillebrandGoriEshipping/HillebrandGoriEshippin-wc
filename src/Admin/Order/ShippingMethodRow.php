@@ -72,7 +72,7 @@ class ShippingMethodRow {
                 $plusPrefix = '+';
             }
 
-            $priceDelta = html_entity_decode(strip_tags(wc_price($priceDelta)));
+            $priceDelta = html_entity_decode(wp_strip_all_tags(wc_price($priceDelta)));
             $priceDelta = $plusPrefix . $priceDelta;
             $shippingRate->addMetaData('priceDelta', $priceDelta);
         }

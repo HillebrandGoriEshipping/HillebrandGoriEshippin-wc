@@ -2,13 +2,14 @@
 /*
  * Plugin Name: Hillebrand Gori eShipping
  * Description: Hillebrand Gori eShipping plugin for WooCommerce
- * Version: 2.0.0
+ * Version: 1.0.0
  * Author: Hillebrand Gori eSHipping
  * Author URI: https://eshipping.hillebrandgori.com
- * Requires Plugins: WooCommerce
+ * Requires Plugins: woocommerce
  * Requires PHP: 8.3
  * License: GPLv3
-*/
+ * Text Domain: hges
+ */
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }

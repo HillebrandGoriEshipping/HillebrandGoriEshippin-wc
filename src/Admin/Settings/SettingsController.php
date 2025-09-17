@@ -4,6 +4,7 @@ namespace HGeS\Admin\Settings;
 
 use HGeS\Form\SettingsFormData;
 use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\FormSessionMessages;
 use HGeS\Utils\Twig;
@@ -44,7 +45,7 @@ class SettingsController
         }
         
         echo Twig::getTwig()->render('admin/settings-page.twig', [
-            'title' => __(self::SETTING_PAGE_TITLE),
+            'title' => __(esc_html(self::SETTING_PAGE_TITLE), GlobalEnum::TRANSLATION_DOMAIN),
             'options' => $options,
             'favoriteAddress' => $favoriteAddress,
             'allAddresses' => $allAddresses,
@@ -55,11 +56,11 @@ class SettingsController
 
     public static function saveApiKey(): void
     {
-        if (wp_verify_nonce($_POST['settings_nonce'], 'save_hges_api_key') !== 1) {
+        if (wp_verify_nonce(wp_unslash($_POST['settings_nonce']), 'save_hges_api_key') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
 
-        $accessKey = sanitize_text_field($_POST[OptionEnum::HGES_ACCESS_KEY]);
+        $accessKey = sanitize_text_field(wp_unslash($_POST[OptionEnum::HGES_ACCESS_KEY]) ?? '');
 
         try {
             $result = ApiClient::get(
@@ -91,11 +92,11 @@ class SettingsController
      */
     public static function saveFavoriteAddress(): void
     {
-        if (wp_verify_nonce($_POST['settings_nonce'], 'save_favorite_address') !== 1) {
+        if (wp_verify_nonce(wp_unslash($_POST['settings_nonce']), 'save_favorite_address') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
 
-        $favoriteAddressId = sanitize_text_field($_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID]);
+        $favoriteAddressId = sanitize_text_field(wp_unslash($_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID]));
         $favoriteAddress = Address::singleFromApi($favoriteAddressId);
         
         if (empty($favoriteAddress)) {
@@ -117,7 +118,7 @@ class SettingsController
      */
     public static function saveSettings(): void
     {
-        if (wp_verify_nonce($_POST['settings_nonce'], 'save_settings') !== 1) {
+        if (wp_verify_nonce(wp_unslash($_POST['settings_nonce']), 'save_settings') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
 
