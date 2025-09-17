@@ -3,6 +3,15 @@
   height: 100%;
 }
 
+.floating-button-container {
+  position: absolute;
+  top: 1.5rem;
+  left: 40%;
+  transform: translateX(-50%);
+  background: white;
+  z-index: 1000;
+}
+
 #pickup-points-list {
   max-height: calc(100% - 4rem);
   overflow-y: auto;
