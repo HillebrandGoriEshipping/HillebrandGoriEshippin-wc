@@ -92,6 +92,12 @@ class Styles
                 null
             );
             wp_enqueue_style(
+                'hges-leaflet-style',
+                HGES_PLUGIN_URL . 'node_modules/leaflet/dist/leaflet.css',
+                [],
+                null
+            );
+            wp_enqueue_style(
                 'hges-shipping-rates-classic-style',
                 HGES_PLUGIN_URL . 'assets/css/shipping-rates-classic.css',
                 [],
