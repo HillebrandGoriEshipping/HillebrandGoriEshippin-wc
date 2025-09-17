@@ -71,7 +71,7 @@ class ApiClient
             } else {
                 $message = $content;
             }
-            throw new \Exception('Error: ' . $message);
+            throw new \Exception('Error: ' . esc_html($message));
         }
 
         return [
@@ -129,7 +129,7 @@ class ApiClient
             } else {
                 $message = $content;
             }
-            throw new \Exception('Error: ' . $message);
+            throw new \Exception('Error: ' . esc_html($message));
         }
 
         return [

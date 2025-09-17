@@ -2,6 +2,8 @@
 
 namespace HGeS\WooCommerce\ShippingClass;
 
+use HGeS\Utils\Enums\GlobalEnum;
+
 /**
  * Class BottleShippingClass
  *
@@ -28,7 +30,8 @@ class BottleShippingClass
         $class_name = 'Bottle';
         $slug = sanitize_title($class_name);
 
-        $existing = get_terms('product_shipping_class', [
+        $existing = get_terms([
+            'taxonomy' => 'product_shipping_class',
             'slug'   => $slug,
             'fields' => 'ids',
         ]);
@@ -36,7 +39,7 @@ class BottleShippingClass
         if (empty($existing)) {
             wp_insert_term($class_name, 'product_shipping_class', [
                 'slug' => $slug,
-                'description' => __('Hillebrand Gori eShipping\'s shipping class for bottled products.', 'hges'),
+                'description' => __('Hillebrand Gori eShipping\'s shipping class for bottled products.', GlobalEnum::TRANSLATION_DOMAIN),
             ]);
         }
     }

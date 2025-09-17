@@ -4,6 +4,7 @@ namespace HGeS\Router;
 
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Model\Order;
 
@@ -18,7 +19,7 @@ class FrontController
     public static function getPickupPoints($data): void
     {
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
         $pickupPointsRequest = ApiClient::get(
@@ -50,7 +51,7 @@ class FrontController
         $response = [];
         $bodyParams = $data;
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
         if (!empty($bodyParams['pickupPoint']) && !empty($urlParams['orderId'])) {
             Order::setPickupPoint($urlParams['orderId'], $bodyParams['pickupPoint']);
@@ -101,7 +102,7 @@ class FrontController
         $response = [];
         $bodyParams = $data;
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
         if (!empty($bodyParams['shippingRateChecksum']) && !empty($urlParams['orderId']) && !empty($urlParams['orderShippingItemId'])) {
@@ -113,7 +114,7 @@ class FrontController
                     $bodyParams['shippingRateChecksum']
                 );
             } catch (\Exception $e) {
-                $response['error'] = 'Unable to update shipping method: ' . $e->getMessage();
+                $response['error'] = 'Unable to update shipping method: ' . esc_html($e->getMessage());
                 self::renderJson($response, 400);
                 return;
             }
@@ -134,7 +135,7 @@ class FrontController
         self::checkUserCanEditOrders();
         $response = [];
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(strip_tags($param));
+            return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
         if (!empty($urlParams['orderId'])) {
@@ -258,7 +259,7 @@ class FrontController
                 $order->save_meta_data();
             }
 
-            $order->add_order_note(__('Shipment created with ID ', 'hges') . $shipment['id']);
+            $order->add_order_note(__('Shipment created with ID ', GlobalEnum::TRANSLATION_DOMAIN) . $shipment['id']);
             $order->save();
 
             self::renderJson([

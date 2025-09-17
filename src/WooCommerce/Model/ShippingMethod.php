@@ -3,6 +3,7 @@
 namespace HGeS\WooCommerce\Model;
 
 use HGeS\Rate;
+use HGeS\Utils\Enums\GlobalEnum;
 
 class ShippingMethod extends \WC_Shipping_Method
 {
@@ -30,7 +31,7 @@ class ShippingMethod extends \WC_Shipping_Method
         $this->id = self::METHOD_ID;
         $this->instance_id = $instance_id;
         $this->method_title = self::METHOD_TITLE;
-        $this->method_description = __(self::METHOD_DESCRIPTION, 'hges');
+        $this->method_description = __(self::METHOD_DESCRIPTION, GlobalEnum::TRANSLATION_DOMAIN);
         $this->enabled = self::ENABLED;
         $this->title = self::METHOD_TITLE;
         $this->supports = self::SUPPORTS;
@@ -75,7 +76,7 @@ class ShippingMethod extends \WC_Shipping_Method
             error_log('Error calculating shipping: ' . $e->getMessage());
             \Sentry\captureException($e);
             if (defined('WP_DEBUG') && WP_DEBUG) {
-                throw new \Exception('Error calculating shipping: ' . $e->getMessage());
+                throw new \Exception('Error calculating shipping: ' . esc_html($e->getMessage()));
             }
         } 
     }

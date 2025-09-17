@@ -116,7 +116,7 @@ class ProductMeta
     {
         foreach (ProductMetaEnum::getList() as $meta) {
             if (isset($_POST[$meta])) {
-                $value = sanitize_text_field($_POST[$meta]);
+                $value = sanitize_text_field(wp_unslash($_POST[$meta]));
                 update_post_meta($post_id, $meta, $value);
             } else {
                 delete_post_meta($post_id, $meta);
@@ -138,7 +138,7 @@ class ProductMeta
             update_post_meta(
                 $variation_id,
                 '_variation_quantity',
-                $_POST['_variation_quantity'][$i]
+                wp_unslash($_POST['_variation_quantity'][$i])
             );
         }
     }

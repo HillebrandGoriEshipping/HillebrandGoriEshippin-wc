@@ -24,7 +24,7 @@ class FdaNumberValidator extends ConstraintValidator
         }
 
         if (!$constraint instanceof FdaNumber) {
-            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', VatNumber::class, get_class($constraint)));
+            throw new \UnexpectedValueException(sprintf('Expected argument of type "%s", "%s" given', FdaNumber::class, esc_html(get_class($constraint))));
         }
 
         if (!preg_match($constraint->pattern, $value, $matches)) {

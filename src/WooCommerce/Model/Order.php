@@ -91,7 +91,7 @@ class Order
 
         $shippingItem = self::getShippingOrderItem($orderId);
         if (!$shippingItem) {
-            throw new \Exception("Shipping item not found for order ID: $orderId.");
+            throw new \Exception("Shipping item not found for order ID: " . esc_html($orderId));
         }
 
         $shippingRateChecksum = self::getShippingRateChecksum($orderId);
@@ -105,7 +105,7 @@ class Order
                 $shippingRate = null;
             }
         } else {
-            throw new \Exception("Shipping rate checksum not found for order ID: $orderId.");
+            throw new \Exception("Shipping rate checksum not found for order ID: " . esc_html($orderId));
         }
 
         if ($shippingRate && !empty($shippingRate->getPackages())) {
@@ -116,7 +116,7 @@ class Order
             $order->update_meta_data(self::PACKAGING_META_KEY, $packaging);
             $order->save_meta_data();
         } else {
-            throw new \Exception("Shipping rate or packages not found for order ID: $orderId.");
+            throw new \Exception("Shipping rate or packages not found for order ID: " . esc_html($orderId));
         }
     }
 
@@ -456,7 +456,7 @@ class Order
         } catch (\Exception $e) {
             error_log('Erreur API createShipment: ' . $e->getMessage());
             error_log('Trace : ' . $e->getTraceAsString());
-            throw new \Exception("Error creating shipment: " . $e->getMessage());
+            throw new \Exception("Error creating shipment: " . esc_html($e->getMessage()));
         }
     }
 

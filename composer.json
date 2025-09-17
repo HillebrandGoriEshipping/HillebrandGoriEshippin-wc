@@ -13,14 +13,14 @@
   "require": {
     "twig/twig": "^3.20",
     "symfony/http-client": "^7.2",
-    "symfony/validator": "^7.2",
-    "sentry/sentry": "^4.11",
-    "symfony/var-dumper": "^7.3"
+    "symfony/validator": "^7.2"
   },
   "require-dev": {
     "phpdocumentor/shim": "^3.7",
     "saggre/phpdocumentor-markdown": "^0.1.4",
-    "friendsofphp/php-cs-fixer": "^3.84"
+    "friendsofphp/php-cs-fixer": "^3.84",
+    "sentry/sentry": "^4.11",
+    "symfony/var-dumper": "^7.3"
   },
   "config": {
     "allow-plugins": {

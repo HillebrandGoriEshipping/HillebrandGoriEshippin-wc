@@ -3,6 +3,7 @@
 namespace HGeS\Utils;
 
 use HGeS\Dto\PackageDto;
+use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\WooCommerce\Model\Order;
 
@@ -78,7 +79,10 @@ class Packaging
             $delta = 0;
             
             if ($packagingAvailable[$packagingType] === []) {
-                wc_add_notice( __(Messages::getMessage('frontOffice.packagingNotAvailable', ['packagingType' => $packagingType]), 'hges' ), 'error' );
+                wc_add_notice(
+                    __(Messages::getMessage('frontOffice.packagingNotAvailable', ['packagingType' => $packagingType]), 
+                    GlobalEnum::TRANSLATION_DOMAIN), 'error'
+                );
                 continue;
             }
 
@@ -86,7 +90,7 @@ class Packaging
                 self::makePackaging($packages[$packagingType], $packagingAvailable[$packagingType], $nbItems, $delta);
                 $delta++;
                 if ($delta > 10) {
-                    throw new \Exception("Too many iterations for packaging type: $packagingType with items left: $nbItems");
+                    throw new \Exception("Too many iterations for packaging type: " . esc_html($packagingType) . " with items left: " . esc_html($nbItems));
                 }
             }
         }
