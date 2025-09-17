@@ -33,18 +33,24 @@ class FrontController
             return;
         }
 
+        $postBody = [
+            'checksum' => $checksum
+        ];
+        if (!empty($latitude) && !empty($longitude)) {
+            $postBody['latitude'] = (string) filter_var($latitude, FILTER_VALIDATE_FLOAT);
+            $postBody['longitude'] = (string) filter_var($longitude, FILTER_VALIDATE_FLOAT);
+        }
+
+        
         $pickupPointsRequest = ApiClient::post(
             '/v2/pickup-points',
-            [
-                'checksum' => $checksum,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
-            ]
+            $postBody
         );
 
-        if ($pickupPointsRequest['status'] !== 200) {
+        if ($pickupPointsRequest['status'] !== 200 || isset($pickupPointsRequest['data']['errors'])) {
+            $errorMessage = $pickupPointsRequest['data']['errors'][0]['message'] ?? 'Unknown error';
             self::renderJson([
-                'error' => 'Unable to fetch pickup points',
+                'error' => 'Unable to fetch pickup points : ' . $errorMessage,
             ], $pickupPointsRequest['status']);
             return;
         }
