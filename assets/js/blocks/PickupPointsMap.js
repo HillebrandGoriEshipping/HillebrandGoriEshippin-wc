@@ -23,7 +23,6 @@ const PickupPointsMap = () => {
 
     const openModal = (e) => {
         e.preventDefault();
-        console.log(e);
         if (e.detail?.rate) {
             setCurrentRate(e.detail.rate);
         }
