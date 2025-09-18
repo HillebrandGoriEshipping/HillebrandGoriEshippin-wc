@@ -66,6 +66,8 @@ window.hges.validator = {
         }
     },
     displayErrors(form, errors) {
+        const errorBlocks = form.querySelectorAll(".error-message");
+        errorBlocks.forEach(block => block.remove());
         errors.forEach(error => {
             const errorElement = document.createElement("div");
             errorElement.className = "error-message";
@@ -78,6 +80,13 @@ window.hges.validator = {
             });
             fieldElement.insertAdjacentElement('afterend', errorElement);
         });
+        if (errors.length > 0) {
+            const submitErrorMessage = document.createElement("div");
+            const submitErrorContainer = form.querySelector('.submit-error-message');
+            submitErrorMessage.className = "error-message";
+            submitErrorMessage.innerHTML = `<p class="error-message__content">${window.hges.messages.settings.submitError}</p>`;
+            submitErrorContainer.appendChild(submitErrorMessage);
+        }
     },
     /**
      * 
@@ -119,6 +128,10 @@ window.hges.validator = {
                     return error;
                 } 
                 break;
+            case 'Count':
+                console.log(value);
+                error.message = constraint.message || "This field does not match the required format.";
+                return error;
         }
 
         return null;
