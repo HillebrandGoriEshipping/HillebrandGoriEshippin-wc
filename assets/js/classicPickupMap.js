@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const div = document.createElement('div');
                 div.className = 'pickup-point';
                 div.innerHTML = `
-          <div class="pickup-point__title">
-              <a href="#" data-pickup='${JSON.stringify(p)}'>${p.name}</a>
-          </div>
-          <div class="pickup-point__address">${p.addLine1}</div>
-          <div class="pickup-point__distance">${p.distance}m</div>
-      `;
+                    <div class="pickup-point__title">
+                        <a href="#" data-pickup='${JSON.stringify(p)}'>${p.name}</a>
+                    </div>
+                    <div class="pickup-point__address">${p.addLine1}</div>
+                    <div class="pickup-point__distance">${p.distance}m</div>
+                `;
                 div.querySelector('a').addEventListener('click', e => {
                     e.preventDefault();
                     currentPickupPoint = p;
