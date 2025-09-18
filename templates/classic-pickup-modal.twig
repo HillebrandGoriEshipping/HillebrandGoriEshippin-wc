@@ -1,16 +1,19 @@
 <div id="pickup-points-map-modal" class="modal hidden">
     <div class="modal__content">
+        <div class="modal__load-mask hidden" id="pickup-points-spinner">
+            <div class="wc-block-components-spinner is-active"></div>
+        </div>
+
+        <button type="button" class="modal__close" id="close-pickup-map-modal">
+            <span class="modal__close-icon"/>x<span>
+        </button>
         <div class="modal__body">
-            <div class="modal__load-mask hidden" id="pickup-points-spinner">
-                <div class="wc-block-components-spinner is-active"></div>
+            <div class="floating-button-container" title="Search in this area">
+                <button>
+                    Search in this area
+                </button>
             </div>
-
-            <button type="button" class="modal__close" id="close-pickup-map-modal">
-                <span class="modal__close-icon"/>x<span>
-            </button>
-
             <div class="map-container" id="pickup-points-map"></div>
-
             <div class="modal__side">
                 <div id="pickup-points-list"></div>
                 <div>

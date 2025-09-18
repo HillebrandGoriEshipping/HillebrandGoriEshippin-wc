@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const listContainer = document.querySelector('#pickup-points-list');
     const selectBtn = document.querySelector('#select-pickup-point');
     const selectedPointDiv = document.querySelector('#selected-pickup-point');
+    const searchThisAreaButton = document.querySelector('#pickup-points-map-modal .floating-button-container button');
+    
     if (selectedPointDiv) {
         selectedPointDiv.classList.add('hidden');
     }
@@ -17,6 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let pickupPoints = [];
     let currentPickupPoint = null;
     let currentRateChecksum = null;
+    let mapCurrentCenter = {lat: 0, lng: 0};
+
+    searchThisAreaButton?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (mapInstance) {
+            const center = mapInstance.getMap().getCenter();
+            mapCurrentCenter = {lat: center.lat, lng: center.lng};
+            loadPickupPoints();
+        }
+    });
 
     async function loadPickupPoints() {
         if (!mapInstance) return;
@@ -26,12 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         spinner.classList.remove('hidden');
 
+        const payload = {
+            checksum: currentRateChecksum,
+        };
+        if (mapCurrentCenter.lat !== 0 && mapCurrentCenter.lng !== 0) {
+            payload.latitude = mapCurrentCenter.lat;
+            payload.longitude = mapCurrentCenter.lng;
+        }
+
         try {
             const res = await apiClient.get(
                 window.hges.ajaxUrl,
                 {
                     action: 'hges_get_pickup_points',
-                    checksum: currentRateChecksum
+                    ...payload
                 }
             );
 
