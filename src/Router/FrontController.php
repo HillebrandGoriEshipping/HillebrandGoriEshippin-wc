@@ -2,13 +2,11 @@
 
 namespace HGeS\Router;
 
-use HGeS\Exception\HttpException;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Model\Order;
-use HGeS\WooCommerce\Model\PickupPoint;
 
 class FrontController
 {
@@ -24,45 +22,42 @@ class FrontController
             return htmlspecialchars(wp_strip_all_tags($param));
         }, $_GET);
 
-        if (!isset($urlParams['street'], $urlParams['zipCode'], $urlParams['city'], $urlParams['country'])) {
-            if (!empty($urlParams['orderId'])) {
-                $order = wc_get_order($urlParams['orderId'] ?? 0);
-                if (!$order) {
-                    self::renderJson([
-                        'error' => 'Invalid order',
-                    ], 404);
-                    return;
-                }
-                $urlParams['street'] = $order->get_shipping_address_1();
-                $urlParams['zipCode'] = $order->get_shipping_postcode();
-                $urlParams['city'] = $order->get_shipping_city();
-                $urlParams['country'] = $order->get_shipping_country();
-            } else {
-                self::renderJson([
-                    'error' => 'Unable to fetch pickup points: either [street, zipCode, city and country] or orderId are expected in the query params.',
-                ], 400);
-                return;
-            }
-        }
-        try {
-            $pickupPoints = PickupPoint::getPickupPoints(
-                street: $urlParams['street'],
-                zipCode: $urlParams['zipCode'],
-                city: $urlParams['city'],
-                country: $urlParams['country'],
-            );
+        $checksum = $urlParams['checksum'] ?? null;
+        $latitude = $urlParams['latitude'] ?? null;
+        $longitude = $urlParams['longitude'] ?? null;
 
+        if (empty($checksum)) {
             self::renderJson([
-                'success' => true,
-                'data' => $pickupPoints,
-            ]);
-            
-        } catch (HttpException $e) {
-            self::renderJson([
-                'error' => 'Unable to fetch pickup points: ' . $e->getMessage(),
-            ], $e->getStatusCode());
+                'error' => 'Missing checksum parameter',
+            ], 400);
             return;
         }
+
+        $postBody = [
+            'checksum' => $checksum
+        ];
+        if (!empty($latitude) && !empty($longitude)) {
+            $postBody['latitude'] = (string) filter_var($latitude, FILTER_VALIDATE_FLOAT);
+            $postBody['longitude'] = (string) filter_var($longitude, FILTER_VALIDATE_FLOAT);
+        }
+
+        $pickupPointsRequest = ApiClient::post(
+            '/v2/pickup-points',
+            $postBody
+        );
+
+        if ($pickupPointsRequest['status'] !== 200 || isset($pickupPointsRequest['data']['errors'])) {
+            $errorMessage = $pickupPointsRequest['data']['errors'][0]['message'] ?? 'Unknown error';
+            self::renderJson([
+                'error' => 'Unable to fetch pickup points : ' . $errorMessage,
+            ], $pickupPointsRequest['status']);
+            return;
+        }
+
+        self::renderJson([
+            'success' => true,
+            'data' => $pickupPointsRequest['data'],
+        ]);
     }
 
     /**
