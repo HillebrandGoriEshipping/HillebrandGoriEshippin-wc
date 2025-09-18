@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 const { select } = window.wp.data;
 const cartStore = select("wc/store/cart");
 const checkoutStore = select("wc/store/checkout");
-import dayjs from "dayjs";
+import { __ } from '@wordpress/i18n';
 
 const PickupPointsMap = () => {
     const modalRef = useRef(null);
@@ -182,7 +182,7 @@ const PickupPointsMap = () => {
                 <div className="modal__body">
                     <div className="floating-button-container" title="Search in this area">
                         <button onClick={onSearchForThisArea}>
-                            Search in this area
+                           { __("Search in this area") }
                         </button>
                     </div>
                     <div ref={mapContainerRef} className="map-container" id="pickup-points-map"></div>
