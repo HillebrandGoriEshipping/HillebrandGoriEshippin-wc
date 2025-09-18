@@ -55,6 +55,11 @@ class FrontController
             ], $pickupPointsRequest['status']);
             return;
         }
+
+        self::renderJson([
+            'success' => true,
+            'data' => $pickupPointsRequest['data'],
+        ]);
     }
 
     /**

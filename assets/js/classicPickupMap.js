@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadPickupPoints() {
         if (!mapInstance) return;
 
-        const form = document.querySelector('form.checkout');
-
         spinner.classList.remove('hidden');
 
         const payload = {
@@ -96,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 listContainer.appendChild(div);
             });
-
+console.log(points);
             if (points.length > 0) {
                 mapInstance.setView([points[0].latitude, points[0].longitude], 14);
             }
