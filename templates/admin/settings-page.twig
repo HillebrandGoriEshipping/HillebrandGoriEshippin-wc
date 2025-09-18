@@ -115,6 +115,7 @@
         <tr valign="top">
             <th scope="row">{{ __( 'Packaging available')|escape }}</th>
             <td>
+            <fieldset id="packaging_available" name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}">
             {% for packagingOptionGroupKey in existingPackagingOptions|keys %}
                 <h4>{{ __(packagingOptionGroupKey)|escape }}</h4>
                 <ul>
@@ -134,8 +135,9 @@
                 </ul>
             {% endfor %}
             {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_AVAILABLE} %}
+            </fieldset>   
             </td>
-        </tr>   
+        </tr>
         <!-- MINIMUM NUMBER OF BOTTLES -->
         <tr valign="top">
             <th scope="row">{{ __( 'Minimum number of bottles')|escape }}</th>
@@ -373,6 +375,8 @@
                 </td>
             </tr>
         </table>
+        <div class="submit-error-message" >
+        </div>
 
     {{ function('submit_button', '', 'primary', 'submit_button') }}
     {{ function('wp_nonce_field', 'save_settings', 'settings_nonce' )|raw }}
