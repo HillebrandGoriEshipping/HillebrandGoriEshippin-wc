@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 listContainer.appendChild(div);
             });
-console.log(points);
+
             if (points.length > 0) {
                 mapInstance.setView([points[0].latitude, points[0].longitude], 14);
             }
