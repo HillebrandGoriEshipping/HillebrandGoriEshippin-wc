@@ -63,7 +63,7 @@ class Scripts
         );
 
         wp_enqueue_script(
-            'leaflet-map',
+            'hges-leaflet-map',
             HGES_PLUGIN_URL . 'assets/js/classicLeafletMap.js',
             [],
             null,
@@ -97,7 +97,7 @@ class Scripts
         wp_enqueue_script_module(
             'hges-classic-pickup-map-handler',
             HGES_PLUGIN_URL . 'assets/js/classicPickupMap.js',
-            ['leaflet-map'],
+            ['hges-leaflet-map'],
             null,
             true
         );
