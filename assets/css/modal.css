@@ -76,7 +76,9 @@
 }
 
 .modal__load-mask {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     top: 0; left: 0;
     height: 100%;
@@ -88,6 +90,8 @@
 .modal__load-mask.hidden {
     display: none;
 }
+
+
 
 .modal__section {
     border-bottom: 1px solid #ddd;
