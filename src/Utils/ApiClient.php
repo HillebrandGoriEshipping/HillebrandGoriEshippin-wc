@@ -2,6 +2,7 @@
 
 namespace HGeS\Utils;
 
+use HGeS\Exception\HttpException;
 use HGeS\Utils\Enums\OptionEnum;
 use Symfony\Component\HttpClient\HttpClient;
 
@@ -71,7 +72,7 @@ class ApiClient
             } else {
                 $message = $content;
             }
-            throw new \Exception('Error: ' . esc_html($message));
+            throw new HttpException('Error: ' . esc_html($message), $response->getStatusCode());
         }
 
         return [

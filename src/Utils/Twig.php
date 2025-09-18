@@ -105,5 +105,9 @@ class Twig
             ";
             return new Markup($html, 'UTF-8');
         }));
+
+        self::$twig->addFunction(new \Twig\TwigFunction('getMessage', function ($messageKey, $var = []) {
+            return Messages::getMessage($messageKey, $var);
+        }));
     }
 }

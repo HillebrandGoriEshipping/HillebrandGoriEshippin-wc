@@ -2,11 +2,13 @@
 
 namespace HGeS\Router;
 
+use HGeS\Exception\HttpException;
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Packaging;
 use HGeS\WooCommerce\Model\Order;
+use HGeS\WooCommerce\Model\PickupPoint;
 
 class FrontController
 {
@@ -41,7 +43,6 @@ class FrontController
             $postBody['longitude'] = (string) filter_var($longitude, FILTER_VALIDATE_FLOAT);
         }
 
-        
         $pickupPointsRequest = ApiClient::post(
             '/v2/pickup-points',
             $postBody
@@ -54,11 +55,6 @@ class FrontController
             ], $pickupPointsRequest['status']);
             return;
         }
-
-        self::renderJson([
-            'success' => true,
-            'data' => $pickupPointsRequest['data'],
-        ]);
     }
 
     /**

@@ -108,6 +108,7 @@ class OptionEnum implements EnumInterface
             ],
             self::HGES_PACKAGING_AVAILABLE => [
                 new NotBlank(message: Messages::getMessage('settings.packagingAvailableError')),
+                new Count(min: 1, minMessage: Messages::getMessage('settings.packagingAvailableError')),
             ],
         ];
 
