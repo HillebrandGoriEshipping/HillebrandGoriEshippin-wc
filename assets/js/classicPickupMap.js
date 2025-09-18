@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!mapInstance) return;
 
         const form = document.querySelector('form.checkout');
-        const formData = new FormData(form);
 
         spinner.classList.remove('hidden');
 
