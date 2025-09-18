@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import apiClient from '../../../../../apiClient';
 import ShippingRateItem from './ShippingRateItem';
 import LoadingMask from '../../../../../blocks/LoadingMask';
+import PickupPointsMap from '../../../../../blocks/PickupPointsMap';
 
 const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
 
@@ -79,6 +80,7 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                     </div>
                 </div>
             </div>
+            <PickupPointsMap />
         </div>
     );
 };

@@ -92,6 +92,12 @@ class Styles
                 null
             );
             wp_enqueue_style(
+                'hges-leaflet-style',
+                HGES_PLUGIN_URL . 'node_modules/leaflet/dist/leaflet.css',
+                [],
+                null
+            );
+            wp_enqueue_style(
                 'hges-shipping-rates-classic-style',
                 HGES_PLUGIN_URL . 'assets/css/shipping-rates-classic.css',
                 [],
@@ -107,6 +113,13 @@ class Styles
             wp_enqueue_style(
                 'woocommerce-packages',
                 HGES_PLUGIN_URL . '../woocommerce/assets/client/blocks/packages-style.css',
+                [],
+                null
+            );
+
+            wp_enqueue_style(
+                'hges-map-style',
+                HGES_PLUGIN_URL . 'assets/css/map.css',
                 [],
                 null
             );

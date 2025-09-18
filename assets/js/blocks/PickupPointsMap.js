@@ -59,6 +59,14 @@ const PickupPointsMap = () => {
 
             if (!map || !currentRate || !markerPopupTemplate) return;
 
+            // get current order id from the url if on admin page
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentPage = urlParams.get('page');
+            let orderId;
+            if (currentPage && currentPage === 'wc-orders') {
+                orderId = urlParams.get('id');
+            }
+
             setIsLoading(true);
             const shippingAddress = cartStore.getCustomerData().shippingAddress;
             const pickupPointListRequest = await apiClient.get(
@@ -70,7 +78,8 @@ const PickupPointsMap = () => {
                     city: shippingAddress.city,
                     shipmentDate: dayjs(currentRate.pickupDate).format('DD/MM/YYYY'),
                     country: shippingAddress.country,
-                    productCode: currentRate.pickupServiceId
+                    productCode: currentRate.pickupServiceId,
+                    orderId
                 },
             );
 
@@ -80,7 +89,7 @@ const PickupPointsMap = () => {
                 const options = { ...pickupPoint };
                 markerPopupTemplate.current.querySelector('.marker-popup__title').innerHTML = pickupPoint.name;
                 markerPopupTemplate.current.querySelector('.marker-popup__address').innerHTML = pickupPoint.addLine1;
-                markerPopupTemplate.current.querySelector('.marker-popup__distance').innerHTML = pickupPoint.distance + 'm';
+                markerPopupTemplate.current.querySelector('.marker-popup__distance').innerHTML = getDistanceString(pickupPoint.distance);
                 options.popupContent = markerPopupTemplate.current.innerHTML;
                 const marker = leafletMap.addMarker(
                     pickupPoint.latitude,
@@ -116,11 +125,15 @@ const PickupPointsMap = () => {
     const selectThisPickupPoint = async (e) => {
         e.preventDefault();
         setIsLoading(true);
+        let orderId = checkoutStore.getOrderId();
+        if (!orderId) {
+            orderId = new URLSearchParams(window.location.search).get('id');
+        }
         await apiClient.post(
             window.hges.ajaxUrl,
             {
                 action: 'hges_set_current_pickup_point',
-                orderId: checkoutStore.getOrderId()
+                orderId
             },
             {
                 pickupPoint: currentPickupPoint
@@ -136,6 +149,14 @@ const PickupPointsMap = () => {
             }
         }));
     };
+
+    const getDistanceString = (distance) => {
+        if (distance > 1) {
+            return distance.toFixed(2) + ' km';
+        } else {
+            return Math.round(distance * 1000) + ' m';
+        }
+    }
 
     return (
         <div id="pickup-points-map-modal" className={`modal ${showModal ? '' : 'hidden'}`} ref={modalRef}>
@@ -163,7 +184,7 @@ const PickupPointsMap = () => {
                                     <div className="pickup-point__address">
                                         {pickupPoint.address_1}
                                     </div>
-                                    <div className="pickup-point__distance">{pickupPoint.distance}m</div>
+                                    <div className="pickup-point__distance">{getDistanceString(pickupPoint.distance)}</div>
                                 </div>
                             ))}
                         </div>
