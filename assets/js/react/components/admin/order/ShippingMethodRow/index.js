@@ -118,7 +118,7 @@ const ShippingMethodRow = ({
                         <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
                             {errorMessage}
                         </div>
-                        <div className="packaging-details">
+                        <div className="package-details">
                             {hasShipment ? '' : (
                                 <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
                             )}

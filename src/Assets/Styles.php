@@ -3,7 +3,7 @@
 namespace HGeS\Assets;
 
 class Styles
-{   
+{
     /**
      * Initializes the styles for the frontend
      */
@@ -40,7 +40,7 @@ class Styles
             [],
             null
         );
-        
+
         wp_enqueue_style(
             'hges-modal-style',
             HGES_PLUGIN_URL . 'assets/css/modal.css',
@@ -68,6 +68,14 @@ class Styles
      */
     public static function enqueueAdmin(): void
     {
+
+        wp_enqueue_style(
+            'hges-fonts',
+            HGES_PLUGIN_URL . 'assets/fonts/fonts.css',
+            [],
+            null
+        );
+
         wp_enqueue_style(
             'hges-admin-style',
             HGES_PLUGIN_URL . 'assets/css/admin.css',
@@ -82,7 +90,7 @@ class Styles
         );
 
         if (
-            !empty($_GET['page']) && $_GET['page'] === 'wc-orders' 
+            !empty($_GET['page']) && $_GET['page'] === 'wc-orders'
             && !empty($_GET['action']) && $_GET['action'] === 'edit'
         ) {
             wp_enqueue_style(

@@ -24,8 +24,8 @@ const Packaging = ({ packaging, products, onPackagingUpdated }) => {
             <h3>{__('Package details')}</h3>
             <div className="packaging-details">
                 <p>{currentPackaging.map(pkg => `${pkg.itemNumber}x${pkg.containerType} [${pkg.width}x${pkg.height}x${pkg.length}]`).join(', ')}</p>
-                <a href="#" className="hges-button edit-order-button" onClick={openPackagingModal}>Change Packaging and select a new shipping option</a>
             </div>
+            <a href="#" className="hges-button edit-order-button" onClick={openPackagingModal}>Change Packaging and select a new shipping option</a>
             <PackagingModal
                 isOpen={isModalOpen}
                 onClose={closePackagingModal}
