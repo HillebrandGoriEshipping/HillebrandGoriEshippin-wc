@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 const { select } = window.wp.data;
 const cartStore = select("wc/store/cart");
 const checkoutStore = select("wc/store/checkout");
-import dayjs from "dayjs";
+import { __ } from '@wordpress/i18n';
 
 const PickupPointsMap = () => {
     const modalRef = useRef(null);
@@ -20,6 +20,13 @@ const PickupPointsMap = () => {
     const [currentRate, setCurrentRate] = useState(null);
     const [currentPickupPoint, setCurrentPickupPoint] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [currentCenter, setCurrentCenter] = useState(null);
+
+    const currentCenterRef = useRef(null);
+
+    useEffect(() => {
+        currentCenterRef.current = currentCenter;
+    }, [currentCenter]);
 
     const openModal = (e) => {
         e.preventDefault();
@@ -73,13 +80,9 @@ const PickupPointsMap = () => {
                 window.hges.ajaxUrl,
                 {
                     action: 'hges_get_pickup_points',
-                    street: shippingAddress.address_1,
-                    zipCode: shippingAddress.postcode,
-                    city: shippingAddress.city,
-                    shipmentDate: dayjs(currentRate.pickupDate).format('DD/MM/YYYY'),
-                    country: shippingAddress.country,
-                    productCode: currentRate.pickupServiceId,
-                    orderId
+                    checksum: currentRate.checksum,
+                    latitude: currentCenter?.lat ?? '',
+                    longitude: currentCenter?.lng ?? ''
                 },
             );
 
@@ -104,11 +107,13 @@ const PickupPointsMap = () => {
             });
 
             map.setView([pickupPointList[0].latitude, pickupPointList[0].longitude], 14);
+            // adjust map center to avoid triggering a new update after the setView
+            currentCenterRef.current = {lat: pickupPointList[0].latitude, lng: pickupPointList[0].longitude};
             setPickupPoints(pickupPointList);
             setIsLoading(false);
         }
         loadPickupPoints(currentRate);
-    }, [map, currentRate, markerPopupTemplate]);
+    }, [map, currentRate, markerPopupTemplate, currentCenter]);
 
     const onItemClick = (e) => {
         e.preventDefault();
@@ -150,6 +155,14 @@ const PickupPointsMap = () => {
         }));
     };
 
+    const onSearchForThisArea = (e) => {
+        e.preventDefault();
+        if (map) {
+            const center = map.getMap().getCenter();
+            setCurrentCenter({ lat: center.lat, lng: center.lng });
+        }
+    };
+
     const getDistanceString = (distance) => {
         if (distance > 1) {
             return distance.toFixed(2) + ' km';
@@ -167,6 +180,11 @@ const PickupPointsMap = () => {
                     <SVG src={hges.assetsUrl + 'img/close.svg'} className="modal__close-icon" />
                 </button>
                 <div className="modal__body">
+                    <div className="floating-button-container" title="Search in this area">
+                        <button onClick={onSearchForThisArea}>
+                           { __("Search in this area") }
+                        </button>
+                    </div>
                     <div ref={mapContainerRef} className="map-container" id="pickup-points-map"></div>
                     <div className="modal__side">
                         <div id="pickup-points-list">
