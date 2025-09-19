@@ -18,10 +18,13 @@ const Packaging = ({ packaging, products, onPackagingUpdated }) => {
             onPackagingUpdated();
         }
     }
-
+    
     return (
         <div className="packaging-row">
             <h3>{__('Package details')}</h3>
+            <div className="total-number-bottles">
+                {currentPackaging.reduce((acc, pkg) => acc + Number(pkg.itemNumber), 0)} {__('bottles')}
+            </div>
             <div className="packaging-details">
                 <p>{currentPackaging.map(pkg => `${pkg.itemNumber}x${pkg.containerType} [${pkg.width}x${pkg.height}x${pkg.length}]`).join(', ')}</p>
             </div>
