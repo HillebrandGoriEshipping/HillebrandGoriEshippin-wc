@@ -9,6 +9,14 @@
     text-align-last: left;
 }
 
+.shipping-method-row .error-message {
+    background-color: #F5E8E8;
+    display: inline-block;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
+
 .shipping-method-row-inner {
     display: flex;
     flex-direction: row;
@@ -22,13 +30,15 @@
     width: 80%;
 }
 
-.package-details {
+.packaging-row {
     margin-right: 2rem;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
-.package-details p {
+.packaging-row p {
     font-family: "MierA-Light", sans-serif;
 }
 
@@ -75,7 +85,7 @@
     cursor: pointer;
     border-radius: 5px;
     padding: 0.5rem 1rem;
-    margin: 1rem 0;
+    margin-top: 1rem;
     font-size: 0.8rem;
 }
 

@@ -114,10 +114,10 @@ const ShippingMethodRow = ({
                     screenReaderLabel={__("Validating shipment...", "hges")}
                     showSpinner={true}
                 >
+                <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
+                    {errorMessage}
+                </div>
                     <div className="shipping-method-row-inner">
-                        <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
-                            {errorMessage}
-                        </div>
                         <div className="package-details">
                             {hasShipment ? '' : (
                                 <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
@@ -125,7 +125,10 @@ const ShippingMethodRow = ({
                            
                         </div>
                         <div className="shipping-details">
-                            {!shippingRate ? '' : (
+                        <h3>{__('Shipping details')}</h3> 
+                            {!shippingRate ?
+                                <p>{ __('Select a shipping solution') }</p> 
+                            : (
                                 <ShippingRowBody
                                     shippingRate={shippingRate}
                                     attachments={attachments}
