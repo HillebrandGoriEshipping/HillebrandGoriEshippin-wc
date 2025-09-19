@@ -12,6 +12,7 @@ const ShippingRowBody = ({
     return (
         <div>
             <div className="shipping-rate-row">
+                <h3>{__('Shipping details')}</h3>
                 <div className="shipping-rate-price">{shippingRate.price}</div>
                 {typeof priceDelta !== "undefined" && (
                     <div className="shipping-rate-price-delta">

@@ -8,10 +8,23 @@
     text-align-last: left;
 }
 
+.shipping-method-row-inner {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
 #order_shipping_line_items
 .shipping 
 .name {
     width: 80%;
+}
+
+.packaging-details {
+    margin-right: 2rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .packaging-option-list {
@@ -47,3 +60,32 @@
 .packaging-option-item h4 {
     margin-top: 0;
 }
+
+.hges-button {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+    font-size: 0.8rem;
+}
+
+.edit-order-button {
+    background-color: #FFF;
+    border: 1px solid #6F767E;
+    color: #6F767E;
+    text-decoration: none;
+}
+.edit-order-button:hover {
+    background-color: #F0F0F0;
+    border-color: #5A5D63;
+    color: #5A5D63;
+}
+
+.validate-shipment-button {
+    background-color: #6F767E;
+    border: none;
+    color: #FFF;
+}
+.validate-shipment-button:hover {
+    background-color: #5A5D63;
+}   
