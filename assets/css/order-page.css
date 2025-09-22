@@ -11,10 +11,10 @@
 
 .shipping-method-row .error-message {
     background-color: #F5E8E8;
-    display: inline-block;
     font-size: 1rem;
     padding: 0.5rem 1rem;
     border-radius: 5px;
+    max-width: fit-content;
 }
 
 .shipping-method-row-inner {
@@ -76,6 +76,13 @@
     margin-top: 0;
 }
 
+.shipping-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
 .shipping-rate-estimated-delivery, 
 .shipping-rate-pickup-date {
     font-family: 'MierA-Light', sans-serif;
@@ -108,4 +115,8 @@
 }
 .validate-shipment-button:hover {
     background-color: #5A5D63;
-}   
+}
+
+.hidden {
+    display: none;
+}

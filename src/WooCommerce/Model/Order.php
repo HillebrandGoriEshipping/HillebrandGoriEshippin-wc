@@ -9,7 +9,8 @@ use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
-use HgeS\WooCommerce\ShippingAddressFields;
+use HGeS\WooCommerce\ShippingAddressFields;
+use HGeS\Utils\Packaging;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
@@ -193,7 +194,7 @@ class Order
         ) {
             return;
         }
-        
+
         $order->update_meta_data(self::PICKUP_POINT_META_KEY, $pickupPoint);
     }
 
