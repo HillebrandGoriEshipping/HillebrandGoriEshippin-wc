@@ -9,8 +9,8 @@ use HGeS\Utils\ApiClient;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
-use HGeS\WooCommerce\ShippingAddressFields;
 use HGeS\Utils\Packaging;
+use HgeS\WooCommerce\ShippingAddressFields;
 
 /**
  * This class exposes methods to interact with the WooCommerce orders
