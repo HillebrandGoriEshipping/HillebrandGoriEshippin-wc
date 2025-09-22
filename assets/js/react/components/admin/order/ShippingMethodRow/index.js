@@ -15,6 +15,7 @@ const ShippingMethodRow = ({
     itemId,
     products = [],
     packaging = [],
+    shippingLabelLink
 }) => {
     const [isRateSelectionModalOpen, setIsRateSelectionModalOpen] = useState(false);
 
@@ -147,7 +148,11 @@ const ShippingMethodRow = ({
 
                     {hasShipment ? (
                         <div className="shipment-validated-message">
-                            {__('Shipment has been validated for this order.')}
+
+                            {__('Shipment has been validated for this order. ')}
+                            <a href={shippingLabelLink} target="_blank" rel="noopener noreferrer">
+                                {__('Download the shipping label here')}
+                            </a>.
                         </div>
                     ) : (
                         <button

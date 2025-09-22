@@ -678,4 +678,19 @@ class Order
 
         return !empty($shippingAddressOrder) && !empty($shippingAddressMeta) && !empty($shippingAddressMatch) && !empty($shippingRateChecksum) && !empty($packaging);
     }
+
+    /**
+     * Get the shipment label link for a specific order.
+     */
+    public static function getLabelLink(int $orderId): ?string
+    {
+        $order = wc_get_order($orderId);
+        if (!$order) {
+            throw new \Exception("Order not found.");
+        }
+
+        $labelUrl = $order->get_meta(self::SHIPMENT_LABEL_URL_META_KEY, true);
+
+        return !empty($labelUrl) ? $labelUrl : null;
+    }
 }
