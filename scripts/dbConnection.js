@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 
 const envPaths = [
+  path.resolve('.env'),
   path.resolve('../../../.env'),
   path.resolve('../../../.env.e2e'),
 ];
