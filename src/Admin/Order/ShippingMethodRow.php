@@ -87,6 +87,7 @@ class ShippingMethodRow {
         }, wc_get_order($orderId)->get_items());
 
         $packaging = wc_get_order($orderId)->get_meta(Order::PACKAGING_META_KEY, true);
+        $shippingLabelLink = Order::getLabelLink($orderId);
 
         $templateData = [
             'componentData' => [
@@ -99,6 +100,7 @@ class ShippingMethodRow {
                 'itemId' => $item->get_id(),
                 'products' => $products,
                 'packaging' => $packaging,
+                'shippingLabelLink' => $shippingLabelLink,
             ],
         ];
 
