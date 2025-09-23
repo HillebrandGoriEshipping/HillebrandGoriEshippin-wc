@@ -107,10 +107,11 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
     return (
         <div id="packaging-modal" className={clsx("modal", { 'hidden': !isOpen })}>
             <div className="modal__content">
+                <h3 className="modal__title">{ __('Package details') }</h3>
                 <span className="modal__close" onClick={() => { onClose(false) }}>&times;</span>
-                <div className="modal__section">
-                    <h3>{ __('Products to dispatch') }</h3>
-                    <div>
+                <div className="modal__header">
+                    <h4>{ __('Products to dispatch') }</h4>
+                    <div className="products-to-dispatch">
                         {Object.entries(productsNumberByType).map(([type, quantity], index) => (
                             <span key={type}>{quantity} x <strong>{type}</strong>{index < Object.entries(productsNumberByType).length - 1 ? ', ' : ''}</span>
                         ))}
@@ -123,12 +124,12 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                             <PackagingOptionItem key={packageItem.index} packagingOptions={packagingOptions} packageItem={packageItem} onSelect={(selectedOption) => updateCurrentPackaging(packageItem.index, selectedOption)} onRemove={() => removePackage(packageItem.index)} />
                         ))}
                         <div className="plus-round-button" onClick={createPackage}>
-                            <span className="dashicons dashicons-plus"></span>
+                            <span className="dashicons dashicons-plus"></span> <p>{ __('Add') }</p>
                         </div>
                     </div>
                 </div>
                 <div className="modal__footer">
-                    <button onClick={(e) => e.preventDefault() || onClose(true)}>Next</button>
+                    <button onClick={(e) => e.preventDefault() || onClose(true)}>{ __('Next') }</button>
                 </div>
             </div>
         </div>

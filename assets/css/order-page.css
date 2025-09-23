@@ -47,11 +47,11 @@
     flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
+    align-items: center;
 }
 
 .packaging-option-item {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    background-color: #EFF3F5;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -59,6 +59,7 @@
     padding: 1rem;
     position: relative;
     width: 30%;
+    border-radius: 5px;
 }
 
 .packaging-option-item .remove-button {
