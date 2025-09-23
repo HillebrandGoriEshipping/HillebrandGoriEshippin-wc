@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import PackagingModal from './PackagingModal';
+const __ = wp.i18n.__;
 
 const Packaging = ({ packaging, products, onPackagingUpdated }) => {
 
@@ -17,13 +18,18 @@ const Packaging = ({ packaging, products, onPackagingUpdated }) => {
             onPackagingUpdated();
         }
     }
-
+    
     return (
         <div className="packaging-row">
-        <h3>Packaging</h3>
+            <h3>{__('Package details')}</h3>
+            <div className="total-number-bottles">
+                {currentPackaging.reduce((acc, pkg) => acc + Number(pkg.itemNumber), 0)} {__('bottles')}
+            </div>
             <div className="packaging-details">
                 <p>{currentPackaging.map(pkg => `${pkg.itemNumber}x${pkg.containerType} [${pkg.width}x${pkg.height}x${pkg.length}]`).join(', ')}</p>
-                <a href="#" onClick={openPackagingModal}>Change Packaging and select a new shipping option</a>
+            </div>
+            <div className="packaging-change-button-container">
+                <a href="#" className="hges-button edit-order-button" onClick={openPackagingModal}>Change Packaging and select a new shipping option</a>
             </div>
             <PackagingModal
                 isOpen={isModalOpen}

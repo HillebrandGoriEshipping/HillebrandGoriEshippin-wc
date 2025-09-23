@@ -129,7 +129,6 @@ window.hges.validator = {
                 } 
                 break;
             case 'Count':
-                console.log(value);
                 error.message = constraint.message || "This field does not match the required format.";
                 return error;
         }

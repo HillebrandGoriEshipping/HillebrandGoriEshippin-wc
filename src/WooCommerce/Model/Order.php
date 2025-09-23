@@ -194,7 +194,7 @@ class Order
         ) {
             return;
         }
-        
+
         $order->update_meta_data(self::PICKUP_POINT_META_KEY, $pickupPoint);
     }
 

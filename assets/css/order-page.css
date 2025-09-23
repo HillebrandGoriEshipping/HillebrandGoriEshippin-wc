@@ -1,4 +1,5 @@
 .shipping-method-row {
+    font-family: "MierA-Demi", sans-serif;
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -8,10 +9,37 @@
     text-align-last: left;
 }
 
+.shipping-method-row .error-message {
+    background-color: #F5E8E8;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    max-width: fit-content;
+}
+
+.shipping-method-row-inner {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
 #order_shipping_line_items
 .shipping 
 .name {
     width: 80%;
+}
+
+.packaging-row {
+    margin-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.packaging-row p {
+    font-family: "MierA-Light", sans-serif;
 }
 
 .packaging-option-list {
@@ -46,4 +74,49 @@
 
 .packaging-option-item h4 {
     margin-top: 0;
+}
+
+.shipping-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.shipping-rate-estimated-delivery, 
+.shipping-rate-pickup-date {
+    font-family: 'MierA-Light', sans-serif;
+}
+
+.hges-button {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+}
+
+.edit-order-button {
+    background-color: #FFF;
+    border: 1px solid #6F767E;
+    color: #6F767E;
+    text-decoration: none;
+}
+.edit-order-button:hover {
+    background-color: #F0F0F0;
+    border-color: #5A5D63;
+    color: #5A5D63;
+}
+
+.validate-shipment-button {
+    background-color: #6F767E;
+    border: none;
+    color: #FFF;
+}
+.validate-shipment-button:hover {
+    background-color: #5A5D63;
+}
+
+.hidden {
+    display: none;
 }
