@@ -20,15 +20,13 @@
                 <div class="hges-shipping-delivery">
                     {{ __('Estimated delivery: ') }} {{ metaData.deliveryDate }}
                 </div>
-                {% if metaData.deliveryMode is same as "pickup" %}
-                    <div id="pickup-point-button" class="pickup-point-button" onclick="openModal(event)">
-                        <span >{{ __('Choose your pickup point') }}</span>
-                    </div>
-                {% endif %}
             {% endif %}
         </div>
     {% if metaData.deliveryMode is same as "pickup" %}
         <div id="selected-pickup-point" class="selected-pickup-point hidden">
+            <div id="pickup-point-button" class="pickup-point-button" onclick="openModal(event)">
+                <span >{{ __('Choose your pickup point') }}</span>
+            </div>
             <strong>{{ __('Selected pickup point:') }}</strong>
             <span id="selected-pickup-point-name"></span><span id="selected-pickup-point-address"></span>
         </div>
