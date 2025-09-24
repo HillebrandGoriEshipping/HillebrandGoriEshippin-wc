@@ -33,8 +33,8 @@ const Accordion = ({
         aria-expanded={isOpen}
         className={`accordion-header ${(isOpen ? "open" : "collapsed")}`}
       >
-        <span>{isOpen ? "− " : "+ "}</span>
         <span>{title}</span>
+        <div className="accordion-icon">{isOpen ? "−" : "+"}</div>
       </button>
       {isOpen && <div className="accordion-content">{children}</div>}
     </div>

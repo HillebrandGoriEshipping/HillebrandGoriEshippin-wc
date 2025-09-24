@@ -3,6 +3,7 @@
 }
 
 .shipping-rates {
+  font-family: 'MierA-Demi', sans-serif;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
@@ -103,11 +104,14 @@
 }
 
 .accordion {
+  border: 1px solid #E0E8ED;
   margin-bottom: 1rem;
 }
 
 .accordion-header {
-  background-color: #f1f1f1;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
   border: none;
   padding: 1rem;
   width: 100%;
