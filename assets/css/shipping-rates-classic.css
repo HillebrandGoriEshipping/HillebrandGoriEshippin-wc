@@ -10,13 +10,31 @@
   align-items: center;
 }
 
+.hges-shipping-method-title {
+  border-top: 1px solid #000;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.woocommerce-shipping-methods li + li .hges-shipping-method-title {
+  border-top: 1px solid #000;
+}
+
+/* first h5 with no border and padding */
+.woocommerce-shipping-methods li:first-child .hges-shipping-method-title {
+  border-top: none;
+  padding: 0;
+}
+
 .hges-shipping-method-left {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .hges-shipping-label {
-  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .hges-shipping-logo {
@@ -36,12 +54,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin-right: 1rem;
 }
 
 input[type="radio"]:checked + label .hges-shipping-method,
 .hges-shipping-method.selected {
   background-color: #EFF3F5;
-  border: solid hsla(0, 0%, 7%, 0.11);
+  border: 1px solid hsla(0, 0%, 7%, 0.11);
 }
 
 input[type="radio"] + label .hges-shipping-method .pickup-point-button{
@@ -68,10 +87,11 @@ input[type="radio"]:checked + label .hges-shipping-method .pickup-point-button {
 
 .pickup-point-button {
   text-align: center;
-  border-radius: 8px;
+  max-width: fit-content;
+  border-radius: 5px;
   color: #6F767E;
   font-weight: bold;
-  padding: 12px;
+  padding: 0.5rem 1rem;
   border: 2px solid #6F767E;
 }
 
@@ -88,12 +108,11 @@ input[type="radio"]:checked + label .hges-shipping-method .pickup-point-button {
 #selected-pickup-point {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 1rem 1rem 0;
+  margin: auto;
 }
 
 #selected-pickup-point-name {
-  margin-top: 1rem;
+  margin-top: 0.3rem;
 }
 
 .shipping-rate-list {
@@ -102,4 +121,9 @@ input[type="radio"]:checked + label .hges-shipping-method .pickup-point-button {
   gap: 1rem;
   width: 100%;
   padding-top: 2rem;
+}
+
+.hges-shipping-delivery {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
