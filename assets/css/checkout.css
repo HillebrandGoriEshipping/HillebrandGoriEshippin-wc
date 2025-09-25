@@ -58,7 +58,7 @@
 .rate-info {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .rate-name {
@@ -71,16 +71,12 @@
 
 .rate-date-box {
   display: flex;
-  flex-direction: row;
-}
-
-.rate-date-box > p {
-  margin-bottom: 0;
-  margin-right: 0.5rem;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .rate-estimated-date {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 0;
 }
@@ -89,14 +85,17 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 5rem;
 }
 
-.rate-price {
+.rate-price, .rate-price-pickup {
   font-weight: 600;
   font-size: 1rem;
-  text-align: right;
-  margin-bottom: 0;
+  margin-block-end: 0;
+  margin-block-start: 0;
+}
+
+.rate-price-pickup {
+  margin-top: 0.5rem;
 }
 
 .accordion {
@@ -130,10 +129,6 @@
 .rate-name .rate-logo-image {
   width: 1rem;
   margin-right: 0.5rem;
-}
-
-.pickup-point-button {
-  margin-top: 1rem;
 }
 
 .wp-block-woocommerce-checkout-fields-block .rate-name .rate-logo-image {
