@@ -191,7 +191,8 @@ const PickupPointsMap = () => {
                     <div className="modal__side">
                         <div id="pickup-points-list">
                             {pickupPoints && pickupPoints.map((pickupPoint, index) => (
-                                <div className="pickup-point" key={index}>
+                                <div className={`pickup-point ${currentPickupPoint?.id === pickupPoint.id ? "selected" : ""}`}
+                                key={pickupPoint.id}>
                                     <a
                                         href="#"
                                         onClick={onItemClick}
