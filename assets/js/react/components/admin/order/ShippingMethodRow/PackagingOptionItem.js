@@ -11,18 +11,22 @@ const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect, onRemove
             <div className="remove-button" onClick={() => onRemove(packageItem)}>
                 <span className="dashicons dashicons-no-alt"></span>
             </div>
-            <div>
-                <label>{__('Type')}:</label> 
-                <select 
-                    value={packageItem.id} 
+            <div className="package-select">
+                <label>{__('Type')}</label>
+                <select
+                    value={packageItem.id}
                     onChange={onSelectChange}
                 >
                     {packagingOptions.map((option) => (
                         <option key={option.id} value={option.id}>
-                            {option.itemNumber}x{option.containerType} ({option.width}x{option.height}x{option.length} cm)
+                            {option.itemNumber} x {option.containerType}
                         </option>
                     ))}
                 </select>
+            </div>
+            <div className="package-modal-details">
+                <p>{__('Selected')}: </p>
+                <p>{packageItem.width} x {packageItem.height} x {packageItem.length} cm</p>
             </div>
         </div>
     );
