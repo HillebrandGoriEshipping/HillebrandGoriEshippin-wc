@@ -3,34 +3,54 @@
   height: 100%;
 }
 
-.floating-button-container {
+.floating-button-container button {
   position: absolute;
-  top: 1.5rem;
-  left: 40%;
-  transform: translateX(-50%);
-  background: white;
+  top: 4.5rem;
+  left: 55%;
+  background-color: #6F767E;
   z-index: 1000;
+  color: #FFF;
+  border: none;
+  border-radius: 5px;
+}
+
+.floating-button-container button:hover {
+  color: #FFF;
+  border: none;
+  background-color: #444;
 }
 
 #pickup-points-list {
-  max-height: calc(100% - 4rem);
+  max-height: calc(100%);
   overflow-y: auto;
 }
 
 #pickup-points-list .pickup-point {
   padding: 1rem;
-  border: 1px solid hsla(0, 0%, 7%, .11);
-  border-bottom: 0;
+  border: 1px solid #E0E8ED;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   line-height: 1.2;
   font-size: 0.8rem;
   text-align: left;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+
+#pickup-points-list .pickup-point:hover,
+#pickup-points-list .pickup-point.selected {
+  background-color: #EFF3F5;
 }
 
 #pickup-points-list .pickup-point a {
   text-decoration: none;
+  color: #000;
+}
+
+#pickup-points-list .pickup-point .pickup-point__title {
+  margin-bottom: 0.5rem;
 }
 
 #pickup-points-list .pickup-point:first-child {
@@ -60,8 +80,6 @@
 .pickup-point .pickup-point__distance,
 .marker-popup__distance {
   font-size: 0.7rem;
-  font-style: italic;
-  color: #666;
 }
 
 .leaflet-touch .leaflet-bar a {
@@ -70,4 +88,15 @@
 
 .pickup-point__select-btn {
   margin-top: 1rem;
+  background-color: #6F767E;
+  color: #FFF;
+  border: none;
+}
+
+.pickup-point__select-btn:hover {
+  background-color: #444;
+}
+
+.map-container {
+  border-radius: 5px;
 }

@@ -175,10 +175,12 @@ const PickupPointsMap = () => {
         <div id="pickup-points-map-modal" className={`modal ${showModal ? '' : 'hidden'}`} ref={modalRef}>
             <div className="modal__content">
                 <div className={`modal__load-mask ${isLoading ? '' : 'hidden'}`}><Spinner /></div>
-                <button className="modal__close" onClick={closeModal}>
-                    {/* hges object is injected from the Assets\Scripts class */}
-                    <SVG src={hges.assetsUrl + 'img/close.svg'} className="modal__close-icon" />
-                </button>
+                <div className="modal__header">
+                    <h2 className="modal__title">{ __("Pick-up point") }</h2>
+                    <button className="modal__close" onClick={closeModal}>
+                        <span className="dashicons dashicons-no-alt"></span>
+                    </button>
+                </div>
                 <div className="modal__body">
                     <div className="floating-button-container" title="Search in this area">
                         <button onClick={onSearchForThisArea}>
@@ -189,27 +191,30 @@ const PickupPointsMap = () => {
                     <div className="modal__side">
                         <div id="pickup-points-list">
                             {pickupPoints && pickupPoints.map((pickupPoint, index) => (
-                                <div className="pickup-point" key={index}>
-                                    <div className="pickup-point__title">
-                                        <a
-                                            href="#"
-                                            onClick={onItemClick}
-                                            data-pickup-point={JSON.stringify(pickupPoint)}
-                                        >
-                                            {pickupPoint.name}
-                                        </a>
-                                    </div>
-                                    <div className="pickup-point__address">
+                                <div className={`pickup-point ${currentPickupPoint?.id === pickupPoint.id ? "selected" : ""}`}
+                                key={pickupPoint.id}>
+                                    <a
+                                        href="#"
+                                        onClick={onItemClick}
+                                        data-pickup-point={JSON.stringify(pickupPoint)}
+                                    >
+                                        <div className="pickup-point__title">
+                                        {pickupPoint.name}
+                                        </div>
+                                        <div className="pickup-point__address">
                                         {pickupPoint.address_1}
-                                    </div>
-                                    <div className="pickup-point__distance">{getDistanceString(pickupPoint.distance)}</div>
+                                        </div>
+                                        <div className="pickup-point__distance">{getDistanceString(pickupPoint.distance)}
+                                        </div>
+                                    </a>
                                 </div>
                             ))}
                         </div>
-                        <div>
-                            <button className="pickup-point__select-btn" data-pickup-point-id={1} onClick={selectThisPickupPoint}>Select this pickup point</button>
-                        </div>
+                        
                     </div>
+                </div>
+                <div className="modal__footer">
+                    <button className="pickup-point__select-btn" data-pickup-point-id={1} onClick={selectThisPickupPoint}>Select this pickup point</button>
                 </div>
             </div>
             <div style={{ display: 'none' }} className="marker-popup" ref={markerPopupTemplate}>

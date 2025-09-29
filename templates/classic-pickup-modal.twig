@@ -3,23 +3,26 @@
         <div class="modal__load-mask hidden" id="pickup-points-spinner">
             <div class="wc-block-components-spinner is-active"></div>
         </div>
-
-        <button type="button" class="modal__close" id="close-pickup-map-modal">
-            <span class="modal__close-icon"/>x<span>
-        </button>
-        <div class="modal__body">
-            <div class="floating-button-container" title="Search in this area">
+        <div className="modal__header">
+            <h2 className="modal__title"> {{ __("Pick-up point") }}</h2>
+             <div class="floating-button-container" title="Search in this area">
                 <button>
                     {{ __('Search in this area') }}
                 </button>
             </div>
+            <button type="button" class="modal__close" id="close-pickup-map-modal">
+                <span class="modal__close-icon dashicons dashicons-no-alt"></span>
+            </button>
+        </div>
+        <div class="modal__body">
+           
             <div class="map-container" id="pickup-points-map"></div>
             <div class="modal__side">
                 <div id="pickup-points-list"></div>
-                <div>
-                    <button type="button" class="pickup-point__select-btn" id="select-pickup-point">{{ __('Select this pickup point') }}</button>
-                </div>
             </div>
+        </div>
+        <div class="modal__footer">
+            <button type="button" class="pickup-point__select-btn" id="select-pickup-point">{{ __('Select this pickup point') }}</button>
         </div>
     </div>
     <div style="display: none;" class="marker-popup" id="marker-popup-template">

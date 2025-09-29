@@ -75,16 +75,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const div = document.createElement('div');
                 div.className = 'pickup-point';
+                div.dataset.pickup = JSON.stringify(p);
+                
                 div.innerHTML = `
                     <div class="pickup-point__title">
                         <a href="#" data-pickup='${JSON.stringify(p)}'>${p.name}</a>
                     </div>
-                    <div class="pickup-point__address">${p.addLine1}</div>
-                    <div class="pickup-point__distance">${p.distance}m</div>
+                    <div class="pickup-point__distance">${p.distance} ${p.distanceUnitOfMeasurement.toLowerCase()}</div>
                 `;
-                div.querySelector('a').addEventListener('click', e => {
+                div.addEventListener('click', e => {
                     e.preventDefault();
                     currentPickupPoint = p;
+
+                    document.querySelectorAll('#pickup-points-list .pickup-point').forEach(el => {
+                    el.classList.remove('selected');
+                    });
+
+                    div.classList.add('selected');
+
                     const marker = window.leafletMap.getMarkers().find(m => m.options.id === p.id);
                     if (marker) {
                         marker.openPopup();
