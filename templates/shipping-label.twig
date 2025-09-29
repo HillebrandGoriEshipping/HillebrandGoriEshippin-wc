@@ -1,9 +1,9 @@
 {% if metaData.firstDoorDelivery %}
-    <h5>{{ __('Door Delivery') }}</h5>
+    <h5 class="hges-shipping-method-title">{{ __('Door Delivery') }}</h5>
 {% elseif metaData.firstPickupDelivery %}
-   <h5>{{ __('Pickup Delivery') }}</h5>
+   <h5 class="hges-shipping-method-title">{{ __('Pick-up points') }}</h5>
 {% elseif metaData.firstOthersDelivery %}
-   <h5>{{ __('Other Shipping Method') }}</h5>
+   <h5 class="hges-shipping-method-title">{{ __('Other Shipping Method') }}</h5>
 {% endif %}
 <div class="hges-shipping-method" id="shipping-rate-{{ metaData.checksum }}" data-checksum="{{ metaData.checksum }}">
     <div class="hges-shipping-method-left">
@@ -21,22 +21,26 @@
                     {{ __('Estimated delivery: ') }} {{ metaData.deliveryDate }}
                 </div>
                 {% if metaData.deliveryMode is same as "pickup" %}
-                    <div id="pickup-point-button" class="pickup-point-button" onclick="openModal(event)">
-                        <span >{{ __('Choose your pickup point') }}</span>
+                    <div class="hges-shipping-price">
+                        {{ cost|raw }}
                     </div>
                 {% endif %}
             {% endif %}
         </div>
+    </div>
     {% if metaData.deliveryMode is same as "pickup" %}
         <div id="selected-pickup-point" class="selected-pickup-point hidden">
-            <strong>{{ __('Selected pickup point:') }}</strong>
+            <div id="pickup-point-button" class="pickup-point-button" onclick="openModal(event)">
+                <span >{{ __('Choose your pickup point') }}</span>
+            </div>
+            <p>{{ __('Selected pickup point:') }}</p>
             <span id="selected-pickup-point-name"></span><span id="selected-pickup-point-address"></span>
         </div>
     {% endif %}
-    </div>
-
-
+    {% if metaData.deliveryMode is same as "pickup" %}
+    {% else %}
     <div class="hges-shipping-price">
         {{ cost|raw }}
     </div>
+    {% endif %}
 </div>
