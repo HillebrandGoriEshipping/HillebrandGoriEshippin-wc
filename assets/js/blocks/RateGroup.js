@@ -82,25 +82,32 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
                 </p>
                 
                 <div className="rate-date-box">
-                  <p>{__("Estimated delivery: ", "hges")}</p>
                   <p className="rate-estimated-date">
-                    {dayjs(rate.deliveryDate).format("LL")}
+                    {__("Estimated delivery: ", "hges")} {dayjs(rate.deliveryDate).format("LL")}
                   </p>
+                  {!rate.isPickup || currentContext === 'woocommerce/cart' ? '' : (
+                    <p className="rate-price-pickup">
+                      {rate.currency_prefix}
+                      {Number(rate.price / 100).toFixed(2)}
+                      {rate.currency_suffix}
+                    </p>
+                  )}
                 </div>
-
-                {!rate.isPickup || !rate.selected || currentContext === 'woocommerce/cart' ? '': (
-                  <div className="pickup-point-button">
-                    <button onClick={openSelectPickupPointModal}>{__(`Choose your pickup point`)}</button>
-                  </div>
-                )}   
               </div>
-            </div>
-            <div className="rate-right">
+              </div>
+              <div className="rate-right">
+              {!rate.isPickup || !rate.selected || currentContext === 'woocommerce/cart' ? '': (
+                <div className="pickup-point-button-block">
+                  <button onClick={openSelectPickupPointModal}>{__(`Choose your pickup point`)}</button>
+                </div>
+              )}   
+              {rate.isPickup || currentContext === 'woocommerce/cart' ? '' : (
               <p className="rate-price">
                 {rate.currency_prefix}
                 {Number(rate.price / 100).toFixed(2)}
                 {rate.currency_suffix}
               </p>
+            )}
             </div>
           </div>
         </label>
