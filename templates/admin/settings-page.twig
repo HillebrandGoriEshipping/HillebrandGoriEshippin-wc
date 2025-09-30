@@ -2,56 +2,45 @@
 <div id="HGES-connect">
     <h3>{{ __( 'Please fill the information below in order to be able to use the plugin')|escape }}</h3>
     <form method="post" action="?action=hges_save_api_key" id="apikey-settings-form">
-        <h2>{{ __( 'Key settings') }}</h2>
-        <table class="form-table states">
-            <tr valign="top">
-                <td scope="row" class="titledesc">
-                    <label for="order_shipped">{{ __( 'Insert your Hillebrand Gori eShipping API token')|escape }}</label>
-                </td>
-                <td>
-                    <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
-                     {% include('form-error-message.twig') with {'error': errors.HGES_ACCESS_KEY} %}
-                    <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
-                </td>
-            </tr>
-        </table>
-        <p id="alert-api-text">
-            {{ __( 'Please validate the API access before saving the modifications')|escape }}
-        </p>
-        {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
-        {{ function('wp_nonce_field', 'save_hges_api_key', 'settings_nonce')|raw }}
+        <div class="key-settings">
+            <h2>{{ __( 'Key settings') }}</h2>
+            <label for="order_shipped">{{ __( 'Insert your Hillebrand Gori eShipping API token')|escape }}</label>
+            <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
+                {% include('form-error-message.twig') with {'error': errors.HGES_ACCESS_KEY} %}
+            <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
+            <p id="alert-api-text">
+                {{ __( 'Please validate the API access before saving the modifications')|escape }}
+            </p>
+            {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
+            {{ function('wp_nonce_field', 'save_hges_api_key', 'settings_nonce')|raw }}
+        </div>
     </form>
 </div>
 {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %}
 <div id="HGES-address">
-    <h2>{{ __( 'Address settings')|escape }}</h2>
-    <p>{{ __( 'Select the address used to calculate shipping charges')|escape }}</p>
-    <form method="post" action="?action=hges_save_favorite_address" id="address-settings-form">
-        <table class="form-table states">
-            <tr valign="top">
-                <td scope="row" class="titledesc">
-                    <label for="favorite_address">{{ __( 'Favorite address')|escape }}</label>
-                </td>
-                <td>
-                    <select name="{{ hgesOptionName('HGES_FAVORITE_ADDRESS_ID') }}" id="favorite_address">
-                        {% if allAddresses is not empty %}
-                            <option value="" disabled selected>{{ __('Select your address')|escape }}</option>
-                            {% for address in allAddresses %}
-                                <option value="{{ address.id }}" {{ optionSelected(hgesOptionName('HGES_FAVORITE_ADDRESS_ID'), address.id, '') }}>
-                                    {{ address.addressName }} - {{ address.company }} - {{ address.contact }}
-                                </option>
-                            {% endfor %}
-                        {% else %}
-                            <option value="" disabled>{{ __('No addresses available')|escape }}</option>
-                        {% endif %}
-                    </select>
-                    {% include('form-error-message.twig') with {'error': errors.HGES_FAVORITE_ADDRESS_ID} %}
-                </td>
-            </tr>
-        </table>
+    <div class="address-settings">
+        <h2>{{ __( 'Address settings')|escape }}</h2>
+        <p>{{ __( 'Select the address used to calculate shipping charges')|escape }}</p>
+        <form method="post" action="?action=hges_save_favorite_address" id="address-settings-form">
+            <label for="favorite_address">{{ __( 'Favorite address')|escape }}</label>
+            <select name="{{ hgesOptionName('HGES_FAVORITE_ADDRESS_ID') }}" id="favorite_address">
+                {% if allAddresses is not empty %}
+                    <option value="" disabled selected>{{ __('Select your address')|escape }}</option>
+                    {% for address in allAddresses %}
+                        <option value="{{ address.id }}" {{ optionSelected(hgesOptionName('HGES_FAVORITE_ADDRESS_ID'), address.id, '') }}>
+                            {{ address.addressName }} - {{ address.company }} - {{ address.contact }}
+                        </option>
+                    {% endfor %}
+                {% else %}
+                    <option value="" disabled>{{ __('No addresses available')|escape }}</option>
+                {% endif %}
+            </select>
+            {% include('form-error-message.twig') with {'error': errors.HGES_FAVORITE_ADDRESS_ID} %}
+
         {{ function('submit_button', 'Save', 'primary', 'submitaddress')|raw }}
         {{ function('wp_nonce_field', 'save_favorite_address', 'settings_nonce')|raw }}
-    </form>
+        </form>
+    </div>
 </div>
 {% endif %}
 {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and favoriteAddress is not null %}

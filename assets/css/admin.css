@@ -1,5 +1,18 @@
-#HGES-settings h2 {
-  margin-bottom: 10px;
+#wpcontent {
+  font-family: 'MierA-Demi';
+  background-color: #FFF;
+}
+
+#wpbody-content h1{
+  margin-bottom: 0;
+}
+
+#wpbody-content h2{
+  margin-bottom: 0;
+}
+
+#wpbody-content h3{
+  margin-top: 0.5rem;
 }
 
 #HGES-settings p.submit {
@@ -10,16 +23,6 @@
 #HGES-settings li {
   list-style-type: square;
   margin-left: 30px;
-}
-
-.form-table th,
-.form-table td {
-  border: #555 solid 1px;
-  padding: 1rem;
-}
-
-table {
-  max-width: 80%;
 }
 
 .tooltip {
