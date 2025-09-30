@@ -123,6 +123,20 @@ input[type="radio"]:checked + label .hges-shipping-method .pickup-point-button {
   padding-top: 2rem;
 }
 
+.shipping-rate-list__admin {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  padding-top: 2rem;
+}
+
+.shipping-rate-list__admin .hges-shipping-method {
+  flex: 1 1 calc(50% - 1rem);
+  max-width: calc(45% - 1rem);
+}
+
 .hges-shipping-delivery {
   font-size: 0.9rem;
   margin-bottom: 0.5rem;

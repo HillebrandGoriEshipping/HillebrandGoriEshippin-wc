@@ -66,6 +66,13 @@
     height: 80%;
 }
 
+.modal .modal__body__admin {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    overflow-y: auto;
+    height: 80%;
+}
 
 .modal .modal__side {
     width: 35%;

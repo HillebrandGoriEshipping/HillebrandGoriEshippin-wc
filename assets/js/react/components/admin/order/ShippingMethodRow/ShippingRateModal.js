@@ -34,19 +34,21 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
     return (
         <div id="hges-shipping-rate-modal" className={`modal ${!isOpen ? "hidden" : ""}`}>
             <div className="modal__content">
-                <span className="modal__close" onClick={onClose}>&times;</span>
+                <button className="modal__close" onClick={onClose}>
+                    <span className="dashicons dashicons-no-alt"></span>
+                </button>
                 <div className="modal__header">
                     <h2 className="modal__title">
-                        {__('Choose your shipping option')}
+                        {__('Shipping option')}
                     </h2>
                 </div>
-                <div className="modal__body">
+                <div className="modal__body__admin">
                     <LoadingMask
                         isLoading={loading}
                         screenReaderLabel={__("Loading shipping rates", "hges")}
                         showSpinner={true}
                     >
-                    <div className="shipping-rate-list">
+                    <div className="shipping-rate-list__admin">
                         {rates && rates.length > 0 ? (
                             rates.map((rate) => (
                                 <ShippingRateItem
