@@ -4,10 +4,12 @@
     <form method="post" action="?action=hges_save_api_key" id="apikey-settings-form">
         <div class="key-settings">
             <h2>{{ __( 'Key settings') }}</h2>
-            <label for="order_shipped">{{ __( 'Insert your Hillebrand Gori eShipping API token')|escape }}</label>
-            <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
+            <label for="api-input">{{ __( 'Insert your Hillebrand Gori eShipping API token')|escape }}</label>
+            <div class="key-input-container">
+                <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
                 {% include('form-error-message.twig') with {'error': errors.HGES_ACCESS_KEY} %}
-            <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
+                <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
+            </div>
             <p id="alert-api-text">
                 {{ __( 'Please validate the API access before saving the modifications')|escape }}
             </p>
@@ -22,19 +24,21 @@
         <h2>{{ __( 'Address settings')|escape }}</h2>
         <p>{{ __( 'Select the address used to calculate shipping charges')|escape }}</p>
         <form method="post" action="?action=hges_save_favorite_address" id="address-settings-form">
-            <label for="favorite_address">{{ __( 'Favorite address')|escape }}</label>
-            <select name="{{ hgesOptionName('HGES_FAVORITE_ADDRESS_ID') }}" id="favorite_address">
-                {% if allAddresses is not empty %}
-                    <option value="" disabled selected>{{ __('Select your address')|escape }}</option>
-                    {% for address in allAddresses %}
-                        <option value="{{ address.id }}" {{ optionSelected(hgesOptionName('HGES_FAVORITE_ADDRESS_ID'), address.id, '') }}>
-                            {{ address.addressName }} - {{ address.company }} - {{ address.contact }}
-                        </option>
-                    {% endfor %}
-                {% else %}
-                    <option value="" disabled>{{ __('No addresses available')|escape }}</option>
-                {% endif %}
-            </select>
+            <div class="address-input-container">
+                <label for="favorite_address">{{ __( 'Favorite address')|escape }}</label>
+                <select name="{{ hgesOptionName('HGES_FAVORITE_ADDRESS_ID') }}" id="favorite_address">
+                    {% if allAddresses is not empty %}
+                        <option value="" disabled selected>{{ __('Select your address')|escape }}</option>
+                        {% for address in allAddresses %}
+                            <option value="{{ address.id }}" {{ optionSelected(hgesOptionName('HGES_FAVORITE_ADDRESS_ID'), address.id, '') }}>
+                                {{ address.addressName }} - {{ address.company }} - {{ address.contact }}
+                            </option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="" disabled>{{ __('No addresses available')|escape }}</option>
+                    {% endif %}
+                </select>
+            </div>
             {% include('form-error-message.twig') with {'error': errors.HGES_FAVORITE_ADDRESS_ID} %}
 
         {{ function('submit_button', 'Save', 'primary', 'submitaddress')|raw }}
@@ -48,50 +52,38 @@
     <h2>{{ __( 'Hillebrand Gori eShipping shipping settings')|escape }}</h2>
     <h3>{{ __( 'Address used to calculate shipping charges')|escape }}</h3>
     <p>{{ __( 'Contact our support if you need to edit those informations')|escape }}</p>
-    <table class="form-table states" id="address-table">
-        <tr valign="top">
-            <th scope="row">{{ __( 'Address')|escape }}</th>
-            <td>
-                <label for="Adresse">{{ favoriteAddress.label }}</label>
-            </td>
-        </tr>
-        <tr valign="top">
-            <th scope="row">{{ __( 'Company')|escape }}</th>
-            <td>
-                <label for="Adresse">{{ favoriteAddress.company }}</label>
-            </td>
-        </tr>
-        <tr valign="top">
-            <th scope="row">{{ __( 'Contact')|escape }}</th>
-            <td>
-                <label for="Adresse">{{ favoriteAddress.contact }}</label>
-            </td>
-        </tr>
-        <tr valign="top">
-            <th scope="row">{{ __( 'Phone')|escape }}</th>
-            <td>
-                <label for="Adresse">{{ favoriteAddress.telephone }}</label>
-            </td>
-        </tr>
-        <tr valign="top">
-            <th scope="row">{{ __( 'Address')|escape }}</th>
-            <td>
-                <label for="Adresse">{{ favoriteAddress.address }}</label>
-                {% if favoriteAddress.addressComplement != '' %}
-                    <label for="Adresse">{{ favoriteAddress.addressComplement }}</label>
-                {% endif %}
-                {% if favoriteAddress.addressComplement2 != '' %}
-                    <label for="Adresse">{{ favoriteAddress.addressComplement2 }}</label>
-                {% endif %}
-            </td>
-        </tr>
-        <tr valign="top">
-            <th scope="row">{{ __( 'City')|escape }}</th>
-            <td>
-                <label for="Adresse">{{ favoriteAddress.city }}</label>
-            </td>
-        </tr>
-    </table>
+    <div class="address-container" id="address-container">
+        <div class="address-item">
+            <div class="address-label">{{ __( 'Address')|escape }}</div>
+            <div class="address-value bordered">{{ favoriteAddress.label }}</div>
+        </div>
+        <div class="address-item">
+            <div class="address-label">{{ __( 'Company')|escape }}</div>
+            <div class="address-value bordered bordered">{{ favoriteAddress.company }}</div>
+        </div>
+        <div class="address-item">
+            <div class="address-label">{{ __( 'Contact')|escape }}</div>
+            <div class="address-value bordered">{{ favoriteAddress.contact }}</div>
+        </div>
+        <div class="address-item">
+            <div class="address-label">{{ __( 'Phone')|escape }}</div>
+            <div class="address-value bordered">{{ favoriteAddress.telephone }}</div>
+        </div>
+        <div class="address-item">
+            <div class="address-label">{{ __( 'Address')|escape }}</div>
+            <div class="address-value bordered">{{ favoriteAddress.address }}</div>
+            {% if favoriteAddress.addressComplement != '' %}
+                <div class="address-value bordered">{{ favoriteAddress.addressComplement }}</div>
+            {% endif %}
+            {% if favoriteAddress.addressComplement2 != '' %}
+                <div class="address-value bordered">{{ favoriteAddress.addressComplement2 }}</div>
+            {% endif %}
+        </div>
+        <div class="address-item">
+            <div class="address-label">{{ __( 'City')|escape }}</div>
+            <div class="address-value bordered">{{ favoriteAddress.city }}</div>
+        </div>
+    </div>
 </div>
 
 <h2>{{ __( 'Configuration')|escape }}</h2>
