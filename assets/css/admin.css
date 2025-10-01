@@ -4,8 +4,18 @@
   padding-right: 20px;
 }
 
+#wpcontent input[type="checkbox"] {
+  transform: scale(1.1);
+  background-color: #F5F6F7;
+  border-color: #D0D5DA;
+}
+
 #wpbody-content h1{
   margin-bottom: 0;
+}
+
+h2 {
+  font-size: 1.2rem;
 }
 
 #wpbody-content h3{
@@ -23,6 +33,7 @@ label {
 .key-settings, .address-settings {
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid #000;
 }
 
 .key-input-container {
@@ -61,7 +72,7 @@ label {
   min-width: 60%;
 }
 
-#submitkey, #submitaddress {
+#submitkey, #submitaddress, #configuration_form #submit_button {
   background-color: #000;
   border: 1px solid #000;
   color: #FFF;
@@ -69,7 +80,7 @@ label {
   border-radius: 5px;
 }
 
-#submitkey:hover, #submitaddress:hover {
+#submitkey:hover, #submitaddress:hover, #configuration_form #submit_button:hover {
   background-color: #3e454f;
 }
 
@@ -91,8 +102,7 @@ label {
 }
 
 .address-item .address-label {
-  max-width: 30%;
-  min-width: 10%;
+  min-width: 20%;
   padding: 0.5rem 0;
 }
 
@@ -102,6 +112,87 @@ label {
   padding: 0.5rem 1rem;
 }
 
+.packaging-section {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.section-label {
+  font-size: 1rem;
+  min-width: 20%;
+}
+
+.packaging-options, .working-days-options, .carrier-preference-options {
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  width: 65%;
+}
+
+.packaging-options fieldset {
+  display: flex;
+  flex-direction: row;
+  gap: 4rem;
+}
+
+.packaging-options fieldset h4 {
+  margin: 0.2rem 0;
+}
+
+.packaging-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.min-nbr-bottles-section, .preparation-time-section, .delivery-preference-section, .duties-tax-section, .vat-number-section, .oss-section, .eori-number-section, .fda-number-section, .insurance-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.min-nbr-bottles-input, .preparation-time-input, .delivery-preference-input, .duties-tax-input, .vat-number-input, .oss-input, .eori-number-input, .fda-number-input, .insurance-input {
+  padding: 0.5rem 1rem;
+  width: 65%;
+}
+
+.min-nbr-bottles-input input, .preparation-time-input input, .delivery-preference-input select, .duties-tax-input select, .vat-number-input input, .eori-number-input input, .fda-number-input input, .insurance-input select, .oss-input select {
+  border: 1px solid #E0E8ED;
+}
+
+.delivery-preference-input select, .duties-tax-input select, .oss-input select, .insurance-input select {
+  min-width: 25%;
+}
+
+.working-days-section, .carrier-preference-section, .minhour-cutoff-section {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.working-days-options fieldset div, .carrier-preference-options fieldset div {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.minhour-cutoff-options {
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  width: 65%;
+}
+
+.minhour-cutoff-options div:first-child {
+  margin-bottom: 0.5rem;
+}
+
+.minhour-cutoff-options input {
+  border: 1px solid #E0E8ED;  
+}
 
 .bordered {
   border: 2px solid #E0E8ED;
@@ -110,13 +201,12 @@ label {
 
 p.submit {
   padding-top: 0;
-  border-bottom: 2px solid #000;
 }
 
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 2px dotted #000;
+  border-bottom: 1px solid #000;
 }
 
 .tooltip .tooltiptext {

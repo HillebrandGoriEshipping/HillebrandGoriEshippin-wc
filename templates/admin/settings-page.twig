@@ -49,8 +49,7 @@
 {% endif %}
 {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and favoriteAddress is not null %}
 <div id="HGES-settings">
-    <h2>{{ __( 'Hillebrand Gori eShipping shipping settings')|escape }}</h2>
-    <h3>{{ __( 'Address used to calculate shipping charges')|escape }}</h3>
+    <h2>{{ __( 'Calculate shipping charges')|escape }}</h2>
     <p>{{ __( 'Contact our support if you need to edit those informations')|escape }}</p>
     <div class="address-container" id="address-container">
         <div class="address-item">
@@ -90,39 +89,40 @@
 <form method="post" action="" id="configuration_form">
     {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group2')|raw }}
     {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group2')|raw }}
-    <table class="form-table states">
-
+    <div class="general-settings-container">
         <!-- PACKAGING AVAILABLE -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Packaging available')|escape }}</th>
-            <td>
-            <fieldset id="packaging_available" name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}">
-            {% for packagingOptionGroupKey in existingPackagingOptions|keys %}
-                <h4>{{ __(packagingOptionGroupKey)|escape }}</h4>
-                <ul>
-                    {% for packagingOption in existingPackagingOptions[packagingOptionGroupKey] %}
-                    {% set packagingOptionJson = packagingOption|json_encode() %}
-                    <li>
-                        <input 
-                            type="checkbox" 
-                            id="packaging-option-{{ packagingOption.id }}" 
-                            name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}[]" 
-                            value="{{ packagingOptionJson }}" 
-                            {{ checkboxChecked(hgesOptionName('HGES_PACKAGING_AVAILABLE'), packagingOptionJson) }}
-                        >
-                        <label for="packaging-option-{{ packagingOption.id }}">{{ packagingOption.itemNumber }} {{ __('items') }} ({{ packagingOption.width }}x{{ packagingOption.length }}x{{ packagingOption.height }})</label> 
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% endfor %}
-            {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_AVAILABLE} %}
-            </fieldset>   
-            </td>
-        </tr>
+        <div class="packaging-section">
+            <div class="section-label">{{ __( 'Packaging available')|escape }}</div>
+            <div class="packaging-options bordered">
+                <fieldset id="packaging_available" name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}">
+                {% for packagingOptionGroupKey in existingPackagingOptions|keys %}
+                    <div class="packaging-group">
+                        <h4>{{ __(packagingOptionGroupKey)|escape }}</h4>
+                        <ul>
+                            {% for packagingOption in existingPackagingOptions[packagingOptionGroupKey] %}
+                            {% set packagingOptionJson = packagingOption|json_encode() %}
+                            <li>
+                                <input 
+                                    type="checkbox" 
+                                    id="packaging-option-{{ packagingOption.id }}" 
+                                    name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}[]" 
+                                    value="{{ packagingOptionJson }}" 
+                                    {{ checkboxChecked(hgesOptionName('HGES_PACKAGING_AVAILABLE'), packagingOptionJson) }}
+                                >
+                                <label for="packaging-option-{{ packagingOption.id }}">{{ packagingOption.itemNumber }} {{ __('items') }} ({{ packagingOption.width }}x{{ packagingOption.length }}x{{ packagingOption.height }})</label> 
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+                {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_AVAILABLE} %}
+                </fieldset>   
+            </div>
+        </div>
         <!-- MINIMUM NUMBER OF BOTTLES -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Minimum number of bottles')|escape }}</th>
-            <td>
+        <div class="min-nbr-bottles-section">
+            <div class="section-label">{{ __( 'Minimum number of bottles')|escape }}</div>
+            <div class="min-nbr-bottles-input bordered">
                 <input 
                     type="number" 
                     min="1" 
@@ -133,23 +133,23 @@
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ __( 'Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page')|escape }}</span>
                 </div>
-            </td>
-        </tr>
+            </div>
+        </div>
         <!-- PREPARATION TIME -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Preparation time')|escape }}</th>
-            <td>
+        <div class="preparation-time-section">
+            <div class="section-label">{{ __( 'Preparation time')|escape }}</div>
+            <div class="preparation-time-input bordered">
                 <input type="number" min="1" name="{{ hgesOptionName('HGES_PREP_TIME') }}" value="{{ options.HGES_PREP_TIME|default('') }}">
                 {% include('form-error-message.twig') with {'error': errors.HGES_PREP_TIME} %}
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ __( 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup')|escape }}</span>
                 </div>
-            </td>
-        </tr>
+            </div>
+        </div>
         <!-- WORKING DAYS -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Working days')|escape }}</th>
-            <td>
+        <div class="working-days-section">
+            <div class="section-label">{{ __( 'Working days')|escape }}</div>
+            <div class="working-days-options bordered">
                 <fieldset id="working_days" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}">
                     <div>
                         <input type="checkbox" id="monday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="1" {{ workingDayChecked('1') }}>
@@ -184,12 +184,12 @@
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ __( 'Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.')|escape }}</span>
                 </div>
-            </td>
-        </tr>
+            </div>
+        </div>
         <!-- CARRIER PREFERENCE -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Carrier preference')|escape }}</th>
-            <td>
+        <div class="carrier-preference-section">
+            <div class="section-label">{{ __( 'Carrier preference')|escape }}</div>
+            <div class="carrier-preference-options bordered">
                 <fieldset id="transport_pref" name="transport_pref">
                     <div>
                         <input type="checkbox" id="fedex" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="fedex" {{ carrierChecked('fedex') }}>
@@ -213,12 +213,12 @@
                     </div>
                 </fieldset>
                 {% include('form-error-message.twig') with {'error': errors.HGES_PREF_TRANSP} %}
-            </td>
-        </tr>
+            </div>
+        </div>
         <!-- MINHOUR & CUTOFF -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Min hour & Cutoff')|escape }}</th>
-            <td>
+        <div class="minhour-cutoff-section">
+            <div class="section-label">{{ __( 'Min hour & Cutoff')|escape }}</div>
+            <div class="minhour-cutoff-options bordered">
                 <div>
                     <label class="time-field-label" for="minhour">{{ __( 'Min hour')|escape }}:</label>
                     <input id="minhour" type="time" name="{{ hgesOptionName('HGES_MINHOUR') }}" value="{{ options.HGES_MINHOUR|default('') }}">
@@ -236,12 +236,12 @@
                         <span class="tooltiptext">{{ __( 'Set the maximum hour when the carrier can pick the parcels')|escape }}</span>
                     </div>
                 </div>
-            </td>
-        </tr>
+            </div>
+        </div>
         <!-- DELIVERY PREFERENCE -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Delivery preference') }} </th>
-            <td>
+        <div class="delivery-preference-section">
+            <div class="section-label">{{ __( 'Delivery preference') }} </div>
+            <div class="delivery-preference-input bordered">
                 <select id="form_trans" name="{{ hgesOptionName('HGES_PREF_DEL') }}" class="form-control">
                     <option value="both" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'both', 'both') }}>
                         {{ __( 'At home / Pickup point')|escape }}
@@ -249,12 +249,12 @@
                     <option value="home" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'home', 'both') }}>{{ __( 'At home')|escape }}</option>
                     <option value="pickup_point" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'), 'pickup_point', 'both') }}>{{ __( 'Pickup point')|escape }}</option>
                 </select>
-            </td>
-        </tr>
+            </div>
+        </div>
         <!-- DUTIES & TAX -->
-        <tr valign="top">
-            <th scope="row">{{ __( 'Duties and taxes at destination') }} </th>
-            <td>
+        <div class="duties-tax-section">
+            <div class="section-label">{{ __( 'Duties and taxes at destination') }} </div>
+            <div class="duties-tax-input bordered">
                 <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control">
                     {% if options.HGES_TAX_RIGHTS %}  
                         <option value="" disabled {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), '', '' ) }}>{{ __('Select your option')|escape }}</option>
@@ -269,16 +269,16 @@
                 <div class="tooltip">?
                     <span class="tooltiptext">{{ __( 'Displays the duties and taxes estimation on the checkout page if you choose the "At the recipient\'s expense" option (domestic international shipments)')|escape }}</span>
                 </div>
-            </td>
-        </tr>
-    </table>
+            </div>
+        </div>
+    </div>
 
     <h2>{{ __( 'Numbers & Registrations')|escape }}</h2>
-        <table class="form-table states">
+        <div class="numbers-registrations-section">
             <!-- VAT NUMBER -->
-            <tr valign="top">
-                <th scope="row">{{ __( 'VAT number')|escape }} </th>
-                <td>
+            <div class="vat-number-section">
+                <div class="section-label">{{ __( 'VAT number')|escape }} </div>
+                <div class="vat-number-input bordered">
                     <input 
                         type="text" 
                         name="{{ hgesOptionName('HGES_VAT_NUMBER') }}" 
@@ -290,13 +290,13 @@
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ __( 'Enter your VAT number (required)')|escape }}</span>
                     </div>
-                </td>
-            </tr>
+                </div>
+            </div>
 
             <!-- OSS -->
-            <tr valign="top">
-                <th scope="row">{{ __( 'OSS:') }}</th>
-                <td>
+            <div class="oss-section">
+                <div class="section-label">{{ __( 'OSS:') }}</div>
+                <div class="oss-input bordered">
                     <select name="{{ hgesOptionName('HGES_VAT_OSS') }}">
                         <option value="no" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
                         <option value="yes" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
@@ -304,13 +304,13 @@
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ __( 'Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.') }}</span>
                     </div>
-                </td>
-            </tr>
+                </div>
+            </div>
 
             <!-- EORI NUMBER -->
-            <tr valign="top">
-                <th scope="row">{{ __( 'EORI number') }} </th>
-                <td>
+            <div class="eori-number-section">
+                <div class="section-label">{{ __( 'EORI number') }} </div>
+                <div class="eori-number-input bordered">
                     <input 
                         type="text" 
                         name="{{ hgesOptionName('HGES_EORI_NUMBER') }}" 
@@ -321,12 +321,12 @@
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ __( 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.') }}</span>
                     </div>
-                </td>
-            </tr>
+                </div>
+            </div>
             <!-- FDA NUMBER -->
-            <tr valign="top">
-                <th scope="row">{{ __( 'FDA number') }} </th>
-                <td>
+            <div class="fda-number-section">
+                <div class="section-label">{{ __( 'FDA number') }} </div>
+                <div class="fda-number-input bordered">
                     <input 
                         type="text" 
                         name="{{ hgesOptionName('HGES_FDA_NUMBER') }}" 
@@ -337,25 +337,23 @@
                     <div class="tooltip">?
                         <span class="tooltiptext">{{ __( 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.') }}</span>
                     </div>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
         <!-- INSURANCE -->
         <h2>{{ __( 'Insurance') }}</h2>
-        <table class="form-table states" role="presentation">
-            <tr valign="top">
-                <th scope="row">{{ __( 'Activate insurance:') }}</th>
-                <td>
-                    <select name="{{ hgesOptionName('HGES_INSURANCE') }}">
-                        <option value="no" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
-                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
-                    </select>
-                    <div class="tooltip">?
-                        <span class="tooltiptext">{{ __( 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)') }}</span>
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <div class="insurance-section">
+            <div class="section-label">{{ __( 'Activate insurance') }}</div>
+            <div class="insurance-input bordered">
+                <select name="{{ hgesOptionName('HGES_INSURANCE') }}">
+                    <option value="no" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                    <option value="yes" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
+                </select>
+                <div class="tooltip">?
+                    <span class="tooltiptext">{{ __( 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)') }}</span>
+                </div>
+            </div>
+        </div>
         <div class="submit-error-message" >
         </div>
 
