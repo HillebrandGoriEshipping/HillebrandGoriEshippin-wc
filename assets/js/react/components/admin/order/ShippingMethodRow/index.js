@@ -121,7 +121,11 @@ const ShippingMethodRow = ({
                 <div className="shipping-method-row-inner">
                     <div className="package-details">
                         {!shippingRate ? '' : (
-                            <Packaging products={products} packaging={packaging} onPackagingUpdated={onPackagingUpdated} />
+                            <Packaging 
+                                products={products} 
+                                packaging={packaging} onPackagingUpdated={onPackagingUpdated}
+                                hasShipment={hasShipment} 
+                            />
                         )}
                         
                     </div>
@@ -142,21 +146,17 @@ const ShippingMethodRow = ({
                                 type="button"
                                 id="hges-change-shipping-rate-button"
                                 data-item-id={itemId}
-                            onClick={openShippingRateModal}
+                                onClick={openShippingRateModal}
                             >
                             {__('Change shipping option')}
                             </button>
                         )}
                     </div>
-
-
                     <ShippingRateModal
                         isOpen={isRateSelectionModalOpen}
                         onClose={closeShippingRateModal}
                         validateShippingRate={onShippingRateValidated}
                     />
-
-
                 </div>
                 {hasShipment ? (
                     <div className="shipment-validated-message">

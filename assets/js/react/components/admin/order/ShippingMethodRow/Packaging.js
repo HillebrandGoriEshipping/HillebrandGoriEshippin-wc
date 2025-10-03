@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import PackagingModal from './PackagingModal';
 const __ = wp.i18n.__;
 
-const Packaging = ({ packaging, products, onPackagingUpdated }) => {
+const Packaging = ({ packaging, products, onPackagingUpdated, hasShipment }) => {
 
     const [currentPackaging, setCurrentPackaging] = useState(packaging || []);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,9 +28,11 @@ const Packaging = ({ packaging, products, onPackagingUpdated }) => {
             <div className="packaging-details">
                 <p>{currentPackaging.map(pkg => `${pkg.itemNumber}x${pkg.containerType} [${pkg.width}x${pkg.height}x${pkg.length}]`).join(', ')}</p>
             </div>
+            {!hasShipment && (
             <div className="packaging-change-button-container">
-                <a href="#" className="hges-button edit-order-button" onClick={openPackagingModal}>Change Packaging and select a new shipping option</a>
+                <a href="#" className="hges-button edit-order-button" onClick={openPackagingModal}>{__('Change Packaging and select a new shipping option')}</a>
             </div>
+            )}
             <PackagingModal
                 isOpen={isModalOpen}
                 onClose={closePackagingModal}
