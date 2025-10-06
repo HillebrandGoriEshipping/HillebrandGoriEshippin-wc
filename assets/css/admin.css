@@ -1,33 +1,38 @@
-#wpcontent {
+#wpbody-content #HGES-settings-page {
   font-family: 'MierA-Demi';
+  padding: 10px 20px 0 20px;
   background-color: #FFF;
-  padding-right: 20px;
+  margin-left: -20px;
 }
 
-#wpcontent input[type="checkbox"] {
+#HGES-settings-page input[type="checkbox"] {
   transform: scale(1.1);
   background-color: #F5F6F7;
   border-color: #D0D5DA;
 }
 
-#wpbody-content h1{
+#HGES-settings-page h1{
   margin-bottom: 0;
 }
 
-h2 {
+#HGES-settings-page h2 {
   font-size: 1.2rem;
 }
 
-#wpbody-content h3{
+#HGES-settings-page h3{
   margin-top: 0.5rem;
 }
 
-label {
+#HGES-settings-page label {
   color: #323840;
 }
 
-#alert-api-text {
+#HGES-settings-page #alert-api-text {
   margin-bottom: 0;
+}
+
+.body {
+  background-color: #FFF;
 }
 
 .key-settings, .address-settings {

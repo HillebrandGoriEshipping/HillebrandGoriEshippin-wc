@@ -1,363 +1,365 @@
-<h1>{{ title }}</h1>
-<div id="HGES-connect">
-    <h3>{{ __( 'Please fill the information below in order to be able to use the plugin')|escape }}</h3>
-    <form method="post" action="?action=hges_save_api_key" id="apikey-settings-form">
-        <div class="key-settings">
-            <h2>{{ __( 'Key settings') }}</h2>
-            <label for="api-input">{{ __( 'Insert your Hillebrand Gori eShipping API token')|escape }}</label>
-            <div class="key-input-container">
-                <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
-                {% include('form-error-message.twig') with {'error': errors.HGES_ACCESS_KEY} %}
-                <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
+<div id="HGES-settings-page">
+    <h1>{{ title }}</h1>
+    <div id="HGES-connect">
+        <h3>{{ __( 'Please fill the information below in order to be able to use the plugin')|escape }}</h3>
+        <form method="post" action="?action=hges_save_api_key" id="apikey-settings-form">
+            <div class="key-settings">
+                <h2>{{ __( 'Key settings') }}</h2>
+                <label for="api-input">{{ __( 'Insert your Hillebrand Gori eShipping API token')|escape }}</label>
+                <div class="key-input-container">
+                    <input type="text" name="{{ hgesOptionName('HGES_ACCESS_KEY') }}" id="api-input" class="validable-field {{ options.access_key_validate == '1' ? 'valid' : 'invalid' }}" value="{{ options.HGES_ACCESS_KEY|default('') }}">
+                    {% include('form-error-message.twig') with {'error': errors.HGES_ACCESS_KEY} %}
+                    <button type="button" class="button" id="validate-api">{{ __( 'Test my access token')|escape }}</button>
+                </div>
+                <p id="alert-api-text">
+                    {{ __( 'Please validate the API access before saving the modifications')|escape }}
+                </p>
+                {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
+                {{ function('wp_nonce_field', 'save_hges_api_key', 'settings_nonce')|raw }}
             </div>
-            <p id="alert-api-text">
-                {{ __( 'Please validate the API access before saving the modifications')|escape }}
-            </p>
-            {{ function('submit_button', 'Save', 'primary', 'submitkey')|raw }}
-            {{ function('wp_nonce_field', 'save_hges_api_key', 'settings_nonce')|raw }}
-        </div>
-    </form>
-</div>
-{% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %}
-<div id="HGES-address">
-    <div class="address-settings">
-        <h2>{{ __( 'Address settings')|escape }}</h2>
-        <p>{{ __( 'Select the address used to calculate shipping charges')|escape }}</p>
-        <form method="post" action="?action=hges_save_favorite_address" id="address-settings-form">
-            <div class="address-input-container">
-                <label for="favorite_address">{{ __( 'Favorite address')|escape }}</label>
-                <select name="{{ hgesOptionName('HGES_FAVORITE_ADDRESS_ID') }}" id="favorite_address">
-                    {% if allAddresses is not empty %}
-                        <option value="" disabled selected>{{ __('Select your address')|escape }}</option>
-                        {% for address in allAddresses %}
-                            <option value="{{ address.id }}" {{ optionSelected(hgesOptionName('HGES_FAVORITE_ADDRESS_ID'), address.id, '') }}>
-                                {{ address.addressName }} - {{ address.company }} - {{ address.contact }}
-                            </option>
-                        {% endfor %}
-                    {% else %}
-                        <option value="" disabled>{{ __('No addresses available')|escape }}</option>
-                    {% endif %}
-                </select>
-            </div>
-            {% include('form-error-message.twig') with {'error': errors.HGES_FAVORITE_ADDRESS_ID} %}
-
-        {{ function('submit_button', 'Save', 'primary', 'submitaddress')|raw }}
-        {{ function('wp_nonce_field', 'save_favorite_address', 'settings_nonce')|raw }}
         </form>
     </div>
-</div>
-{% endif %}
-{% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and favoriteAddress is not null %}
-<div id="HGES-settings">
-    <h2>{{ __( 'Calculate shipping charges')|escape }}</h2>
-    <p>{{ __( 'Contact our support if you need to edit those informations')|escape }}</p>
-    <div class="address-container" id="address-container">
-        <div class="address-item">
-            <div class="address-label">{{ __( 'Address')|escape }}</div>
-            <div class="address-value bordered">{{ favoriteAddress.label }}</div>
-        </div>
-        <div class="address-item">
-            <div class="address-label">{{ __( 'Company')|escape }}</div>
-            <div class="address-value bordered bordered">{{ favoriteAddress.company }}</div>
-        </div>
-        <div class="address-item">
-            <div class="address-label">{{ __( 'Contact')|escape }}</div>
-            <div class="address-value bordered">{{ favoriteAddress.contact }}</div>
-        </div>
-        <div class="address-item">
-            <div class="address-label">{{ __( 'Phone')|escape }}</div>
-            <div class="address-value bordered">{{ favoriteAddress.telephone }}</div>
-        </div>
-        <div class="address-item">
-            <div class="address-label">{{ __( 'Address')|escape }}</div>
-            <div class="address-value bordered">{{ favoriteAddress.address }}</div>
-            {% if favoriteAddress.addressComplement != '' %}
-                <div class="address-value bordered">{{ favoriteAddress.addressComplement }}</div>
-            {% endif %}
-            {% if favoriteAddress.addressComplement2 != '' %}
-                <div class="address-value bordered">{{ favoriteAddress.addressComplement2 }}</div>
-            {% endif %}
-        </div>
-        <div class="address-item">
-            <div class="address-label">{{ __( 'City')|escape }}</div>
-            <div class="address-value bordered">{{ favoriteAddress.city }}</div>
-        </div>
-    </div>
-</div>
-
-<h2>{{ __( 'Configuration')|escape }}</h2>
-<form method="post" action="" id="configuration_form">
-    {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group2')|raw }}
-    {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group2')|raw }}
-    <div class="general-settings-container">
-        <!-- PACKAGING AVAILABLE -->
-        <div class="packaging-section">
-            <div class="section-label">{{ __( 'Packaging available')|escape }}</div>
-            <div class="packaging-options bordered">
-                <fieldset id="packaging_available" name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}">
-                {% for packagingOptionGroupKey in existingPackagingOptions|keys %}
-                    <div class="packaging-group">
-                        <h4>{{ __(packagingOptionGroupKey)|escape }}</h4>
-                        <ul>
-                            {% for packagingOption in existingPackagingOptions[packagingOptionGroupKey] %}
-                            {% set packagingOptionJson = packagingOption|json_encode() %}
-                            <li>
-                                <input 
-                                    type="checkbox" 
-                                    id="packaging-option-{{ packagingOption.id }}" 
-                                    name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}[]" 
-                                    value="{{ packagingOptionJson }}" 
-                                    {{ checkboxChecked(hgesOptionName('HGES_PACKAGING_AVAILABLE'), packagingOptionJson) }}
-                                >
-                                <label for="packaging-option-{{ packagingOption.id }}">{{ packagingOption.itemNumber }} {{ __('items') }} ({{ packagingOption.width }}x{{ packagingOption.length }}x{{ packagingOption.height }})</label> 
-                            </li>
+    {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' %}
+    <div id="HGES-address">
+        <div class="address-settings">
+            <h2>{{ __( 'Address settings')|escape }}</h2>
+            <p>{{ __( 'Select the address used to calculate shipping charges')|escape }}</p>
+            <form method="post" action="?action=hges_save_favorite_address" id="address-settings-form">
+                <div class="address-input-container">
+                    <label for="favorite_address">{{ __( 'Favorite address')|escape }}</label>
+                    <select name="{{ hgesOptionName('HGES_FAVORITE_ADDRESS_ID') }}" id="favorite_address">
+                        {% if allAddresses is not empty %}
+                            <option value="" disabled selected>{{ __('Select your address')|escape }}</option>
+                            {% for address in allAddresses %}
+                                <option value="{{ address.id }}" {{ optionSelected(hgesOptionName('HGES_FAVORITE_ADDRESS_ID'), address.id, '') }}>
+                                    {{ address.addressName }} - {{ address.company }} - {{ address.contact }}
+                                </option>
                             {% endfor %}
-                        </ul>
-                    </div>
-                {% endfor %}
-                {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_AVAILABLE} %}
-                </fieldset>   
-            </div>
-        </div>
-        <!-- MINIMUM NUMBER OF BOTTLES -->
-        <div class="min-nbr-bottles-section">
-            <div class="section-label">{{ __( 'Minimum number of bottles')|escape }}</div>
-            <div class="min-nbr-bottles-input bordered">
-                <input 
-                    type="number" 
-                    min="1" 
-                    name="{{ hgesOptionName('HGES_NBR_MIN') }}" 
-                    value="{{ options.HGES_NBR_MIN|default('') }}"
-                >
-                {% include('form-error-message.twig') with {'error': errors.HGES_NBR_MIN} %}
-                <div class="tooltip">?
-                    <span class="tooltiptext">{{ __( 'Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page')|escape }}</span>
+                        {% else %}
+                            <option value="" disabled>{{ __('No addresses available')|escape }}</option>
+                        {% endif %}
+                    </select>
                 </div>
-            </div>
-        </div>
-        <!-- PREPARATION TIME -->
-        <div class="preparation-time-section">
-            <div class="section-label">{{ __( 'Preparation time')|escape }}</div>
-            <div class="preparation-time-input bordered">
-                <input type="number" min="1" name="{{ hgesOptionName('HGES_PREP_TIME') }}" value="{{ options.HGES_PREP_TIME|default('') }}">
-                {% include('form-error-message.twig') with {'error': errors.HGES_PREP_TIME} %}
-                <div class="tooltip">?
-                    <span class="tooltiptext">{{ __( 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup')|escape }}</span>
-                </div>
-            </div>
-        </div>
-        <!-- WORKING DAYS -->
-        <div class="working-days-section">
-            <div class="section-label">{{ __( 'Working days')|escape }}</div>
-            <div class="working-days-options bordered">
-                <fieldset id="working_days" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}">
-                    <div>
-                        <input type="checkbox" id="monday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="1" {{ workingDayChecked('1') }}>
-                        <label for="monday">{{ __( 'Monday') }}</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="tuesday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="2" {{ workingDayChecked('2') }}>
-                        <label for="tuesday">{{ __( 'Tuesday') }}</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="wednesday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="3" {{ workingDayChecked('3') }}>
-                        <label for="wednesday">{{ __( 'Wednesday') }}</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="thursday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="4" {{ workingDayChecked('4') }}>
-                        <label for="thursday">{{ __( 'Thursday') }}</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="friday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="5" {{ workingDayChecked('5') }}>
-                        <label for="friday">{{ __( 'Friday') }}</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="saturday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="6" {{ workingDayChecked('6') }}>
-                        <label for="saturday">{{ __( 'Saturday') }}</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="sunday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="0" {{ workingDayChecked('0') }}>
-                        <label for="sunday">{{ __( 'Sunday') }}</label>
-                    </div>
-                </fieldset>
-                 {% include('form-error-message.twig') with {'error': errors.HGES_WORKING_DAYS} %}
-                <div class="tooltip">?
-                    <span class="tooltiptext">{{ __( 'Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.')|escape }}</span>
-                </div>
-            </div>
-        </div>
-        <!-- CARRIER PREFERENCE -->
-        <div class="carrier-preference-section">
-            <div class="section-label">{{ __( 'Carrier preference')|escape }}</div>
-            <div class="carrier-preference-options bordered">
-                <fieldset id="transport_pref" name="transport_pref">
-                    <div>
-                        <input type="checkbox" id="fedex" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="fedex" {{ carrierChecked('fedex') }}>
-                        <label for="fedex">FEDEX</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="ups" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="ups" {{ carrierChecked('ups') }}>
-                        <label for="ups">UPS</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="dhl_express" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="dhl_express" {{ carrierChecked('dhl_express') }}>
-                        <label for="dhl_express">DHL</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="tnt" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="tnt" {{ carrierChecked('tnt') }}>
-                        <label for="tnt">TNT</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="chronopost" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="chronopost" {{ carrierChecked('chronopost') }}>
-                        <label for="chronopost">CHRONOPOST</label>
-                    </div>
-                </fieldset>
-                {% include('form-error-message.twig') with {'error': errors.HGES_PREF_TRANSP} %}
-            </div>
-        </div>
-        <!-- MINHOUR & CUTOFF -->
-        <div class="minhour-cutoff-section">
-            <div class="section-label">{{ __( 'Min hour & Cutoff')|escape }}</div>
-            <div class="minhour-cutoff-options bordered">
-                <div>
-                    <label class="time-field-label" for="minhour">{{ __( 'Min hour')|escape }}:</label>
-                    <input id="minhour" type="time" name="{{ hgesOptionName('HGES_MINHOUR') }}" value="{{ options.HGES_MINHOUR|default('') }}">
+                {% include('form-error-message.twig') with {'error': errors.HGES_FAVORITE_ADDRESS_ID} %}
 
-                    {% include('form-error-message.twig') with {'error': errors.HGES_MINHOUR} %}
-                    <div class="tooltip">?
-                        <span class="tooltiptext">{{ __( 'Set the minimum hour when the carrier can pick the parcels')|escape }}</span>
-                    </div>
-                </div>
-                <div>
-                    <label class="time-field-label" for="cutoff">{{ __( 'Cutoff')|escape }}:</label>
-                    <input id="cutoff" type="time" name="{{ hgesOptionName('HGES_CUTOFF') }}" value="{{ options.HGES_CUTOFF|default('') }}">
-                    {% include('form-error-message.twig') with {'error': errors.HGES_CUTOFF} %}
-                    <div class="tooltip">?
-                        <span class="tooltiptext">{{ __( 'Set the maximum hour when the carrier can pick the parcels')|escape }}</span>
-                    </div>
-                </div>
-            </div>
+            {{ function('submit_button', 'Save', 'primary', 'submitaddress')|raw }}
+            {{ function('wp_nonce_field', 'save_favorite_address', 'settings_nonce')|raw }}
+            </form>
         </div>
-        <!-- DELIVERY PREFERENCE -->
-        <div class="delivery-preference-section">
-            <div class="section-label">{{ __( 'Delivery preference') }} </div>
-            <div class="delivery-preference-input bordered">
-                <select id="form_trans" name="{{ hgesOptionName('HGES_PREF_DEL') }}" class="form-control">
-                    <option value="both" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'both', 'both') }}>
-                        {{ __( 'At home / Pickup point')|escape }}
-                    </option>
-                    <option value="home" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'home', 'both') }}>{{ __( 'At home')|escape }}</option>
-                    <option value="pickup_point" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'), 'pickup_point', 'both') }}>{{ __( 'Pickup point')|escape }}</option>
-                </select>
+    </div>
+    {% endif %}
+    {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and favoriteAddress is not null %}
+    <div id="HGES-settings">
+        <h2>{{ __( 'Calculate shipping charges')|escape }}</h2>
+        <p>{{ __( 'Contact our support if you need to edit those informations')|escape }}</p>
+        <div class="address-container" id="address-container">
+            <div class="address-item">
+                <div class="address-label">{{ __( 'Address')|escape }}</div>
+                <div class="address-value bordered">{{ favoriteAddress.label }}</div>
             </div>
-        </div>
-        <!-- DUTIES & TAX -->
-        <div class="duties-tax-section">
-            <div class="section-label">{{ __( 'Duties and taxes at destination') }} </div>
-            <div class="duties-tax-input bordered">
-                <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control">
-                    {% if options.HGES_TAX_RIGHTS %}  
-                        <option value="" disabled {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), '', '' ) }}>{{ __('Select your option')|escape }}</option>
-                        <option value="DDP" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'DDP', '' ) }}> {{ __("At the sender's expense")|escape }}</option>
-                        <option value="DAP" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'DAP', '' ) }}>{{ __("At the recipient's expense")|escape }}</option>
-                    {% else %}
-                        <option value="" disabled>{{ __('Select your option')|escape }}</option>
-                        <option value="DDP">{{ __("At the sender's expense")|escape }}</option>
-                        <option value="DAP">{{ __("At the recipient's expense")|escape }}</option>
-                    {% endif %}
-                </select>
-                <div class="tooltip">?
-                    <span class="tooltiptext">{{ __( 'Displays the duties and taxes estimation on the checkout page if you choose the "At the recipient\'s expense" option (domestic international shipments)')|escape }}</span>
-                </div>
+            <div class="address-item">
+                <div class="address-label">{{ __( 'Company')|escape }}</div>
+                <div class="address-value bordered bordered">{{ favoriteAddress.company }}</div>
+            </div>
+            <div class="address-item">
+                <div class="address-label">{{ __( 'Contact')|escape }}</div>
+                <div class="address-value bordered">{{ favoriteAddress.contact }}</div>
+            </div>
+            <div class="address-item">
+                <div class="address-label">{{ __( 'Phone')|escape }}</div>
+                <div class="address-value bordered">{{ favoriteAddress.telephone }}</div>
+            </div>
+            <div class="address-item">
+                <div class="address-label">{{ __( 'Address')|escape }}</div>
+                <div class="address-value bordered">{{ favoriteAddress.address }}</div>
+                {% if favoriteAddress.addressComplement != '' %}
+                    <div class="address-value bordered">{{ favoriteAddress.addressComplement }}</div>
+                {% endif %}
+                {% if favoriteAddress.addressComplement2 != '' %}
+                    <div class="address-value bordered">{{ favoriteAddress.addressComplement2 }}</div>
+                {% endif %}
+            </div>
+            <div class="address-item">
+                <div class="address-label">{{ __( 'City')|escape }}</div>
+                <div class="address-value bordered">{{ favoriteAddress.city }}</div>
             </div>
         </div>
     </div>
 
-    <h2>{{ __( 'Numbers & Registrations')|escape }}</h2>
-        <div class="numbers-registrations-section">
-            <!-- VAT NUMBER -->
-            <div class="vat-number-section">
-                <div class="section-label">{{ __( 'VAT number')|escape }} </div>
-                <div class="vat-number-input bordered">
+    <h2>{{ __( 'Configuration')|escape }}</h2>
+    <form method="post" action="" id="configuration_form">
+        {{ function('settings_fields', 'HillebrandGoriEshipping-settings-group2')|raw }}
+        {{ function('do_settings_sections', 'HillebrandGoriEshipping-settings-group2')|raw }}
+        <div class="general-settings-container">
+            <!-- PACKAGING AVAILABLE -->
+            <div class="packaging-section">
+                <div class="section-label">{{ __( 'Packaging available')|escape }}</div>
+                <div class="packaging-options bordered">
+                    <fieldset id="packaging_available" name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}">
+                    {% for packagingOptionGroupKey in existingPackagingOptions|keys %}
+                        <div class="packaging-group">
+                            <h4>{{ __(packagingOptionGroupKey)|escape }}</h4>
+                            <ul>
+                                {% for packagingOption in existingPackagingOptions[packagingOptionGroupKey] %}
+                                {% set packagingOptionJson = packagingOption|json_encode() %}
+                                <li>
+                                    <input 
+                                        type="checkbox" 
+                                        id="packaging-option-{{ packagingOption.id }}" 
+                                        name="{{ hgesOptionName('HGES_PACKAGING_AVAILABLE') }}[]" 
+                                        value="{{ packagingOptionJson }}" 
+                                        {{ checkboxChecked(hgesOptionName('HGES_PACKAGING_AVAILABLE'), packagingOptionJson) }}
+                                    >
+                                    <label for="packaging-option-{{ packagingOption.id }}">{{ packagingOption.itemNumber }} {{ __('items') }} ({{ packagingOption.width }}x{{ packagingOption.length }}x{{ packagingOption.height }})</label> 
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                    {% include('form-error-message.twig') with {'error': errors.HGES_PACKAGING_AVAILABLE} %}
+                    </fieldset>   
+                </div>
+            </div>
+            <!-- MINIMUM NUMBER OF BOTTLES -->
+            <div class="min-nbr-bottles-section">
+                <div class="section-label">{{ __( 'Minimum number of bottles')|escape }}</div>
+                <div class="min-nbr-bottles-input bordered">
                     <input 
-                        type="text" 
-                        name="{{ hgesOptionName('HGES_VAT_NUMBER') }}" 
-                        id="vat-number" 
-                        value="{{ options.HGES_VAT_NUMBER|default('') }}"
+                        type="number" 
+                        min="1" 
+                        name="{{ hgesOptionName('HGES_NBR_MIN') }}" 
+                        value="{{ options.HGES_NBR_MIN|default('') }}"
                     >
-
-                    {% include('form-error-message.twig') with {'error': errors.HGES_VAT_NUMBER} %}
+                    {% include('form-error-message.twig') with {'error': errors.HGES_NBR_MIN} %}
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ __( 'Enter your VAT number (required)')|escape }}</span>
+                        <span class="tooltiptext">{{ __( 'Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page')|escape }}</span>
                     </div>
                 </div>
             </div>
+            <!-- PREPARATION TIME -->
+            <div class="preparation-time-section">
+                <div class="section-label">{{ __( 'Preparation time')|escape }}</div>
+                <div class="preparation-time-input bordered">
+                    <input type="number" min="1" name="{{ hgesOptionName('HGES_PREP_TIME') }}" value="{{ options.HGES_PREP_TIME|default('') }}">
+                    {% include('form-error-message.twig') with {'error': errors.HGES_PREP_TIME} %}
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ __( 'Set the minimum number of days needed to prepare the parcels and make them ready for pickup')|escape }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- WORKING DAYS -->
+            <div class="working-days-section">
+                <div class="section-label">{{ __( 'Working days')|escape }}</div>
+                <div class="working-days-options bordered">
+                    <fieldset id="working_days" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}">
+                        <div>
+                            <input type="checkbox" id="monday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="1" {{ workingDayChecked('1') }}>
+                            <label for="monday">{{ __( 'Monday') }}</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="tuesday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="2" {{ workingDayChecked('2') }}>
+                            <label for="tuesday">{{ __( 'Tuesday') }}</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="wednesday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="3" {{ workingDayChecked('3') }}>
+                            <label for="wednesday">{{ __( 'Wednesday') }}</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="thursday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="4" {{ workingDayChecked('4') }}>
+                            <label for="thursday">{{ __( 'Thursday') }}</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="friday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="5" {{ workingDayChecked('5') }}>
+                            <label for="friday">{{ __( 'Friday') }}</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="saturday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="6" {{ workingDayChecked('6') }}>
+                            <label for="saturday">{{ __( 'Saturday') }}</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="sunday" name="{{ hgesOptionName('HGES_WORKING_DAYS') }}[]" value="0" {{ workingDayChecked('0') }}>
+                            <label for="sunday">{{ __( 'Sunday') }}</label>
+                        </div>
+                    </fieldset>
+                    {% include('form-error-message.twig') with {'error': errors.HGES_WORKING_DAYS} %}
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ __( 'Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.')|escape }}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- CARRIER PREFERENCE -->
+            <div class="carrier-preference-section">
+                <div class="section-label">{{ __( 'Carrier preference')|escape }}</div>
+                <div class="carrier-preference-options bordered">
+                    <fieldset id="transport_pref" name="transport_pref">
+                        <div>
+                            <input type="checkbox" id="fedex" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="fedex" {{ carrierChecked('fedex') }}>
+                            <label for="fedex">FEDEX</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="ups" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="ups" {{ carrierChecked('ups') }}>
+                            <label for="ups">UPS</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="dhl_express" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="dhl_express" {{ carrierChecked('dhl_express') }}>
+                            <label for="dhl_express">DHL</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="tnt" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="tnt" {{ carrierChecked('tnt') }}>
+                            <label for="tnt">TNT</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="chronopost" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="chronopost" {{ carrierChecked('chronopost') }}>
+                            <label for="chronopost">CHRONOPOST</label>
+                        </div>
+                    </fieldset>
+                    {% include('form-error-message.twig') with {'error': errors.HGES_PREF_TRANSP} %}
+                </div>
+            </div>
+            <!-- MINHOUR & CUTOFF -->
+            <div class="minhour-cutoff-section">
+                <div class="section-label">{{ __( 'Min hour & Cutoff')|escape }}</div>
+                <div class="minhour-cutoff-options bordered">
+                    <div>
+                        <label class="time-field-label" for="minhour">{{ __( 'Min hour')|escape }}:</label>
+                        <input id="minhour" type="time" name="{{ hgesOptionName('HGES_MINHOUR') }}" value="{{ options.HGES_MINHOUR|default('') }}">
 
-            <!-- OSS -->
-            <div class="oss-section">
-                <div class="section-label">{{ __( 'OSS:') }}</div>
-                <div class="oss-input bordered">
-                    <select name="{{ hgesOptionName('HGES_VAT_OSS') }}">
-                        <option value="no" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
-                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
+                        {% include('form-error-message.twig') with {'error': errors.HGES_MINHOUR} %}
+                        <div class="tooltip">?
+                            <span class="tooltiptext">{{ __( 'Set the minimum hour when the carrier can pick the parcels')|escape }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="time-field-label" for="cutoff">{{ __( 'Cutoff')|escape }}:</label>
+                        <input id="cutoff" type="time" name="{{ hgesOptionName('HGES_CUTOFF') }}" value="{{ options.HGES_CUTOFF|default('') }}">
+                        {% include('form-error-message.twig') with {'error': errors.HGES_CUTOFF} %}
+                        <div class="tooltip">?
+                            <span class="tooltiptext">{{ __( 'Set the maximum hour when the carrier can pick the parcels')|escape }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- DELIVERY PREFERENCE -->
+            <div class="delivery-preference-section">
+                <div class="section-label">{{ __( 'Delivery preference') }} </div>
+                <div class="delivery-preference-input bordered">
+                    <select id="form_trans" name="{{ hgesOptionName('HGES_PREF_DEL') }}" class="form-control">
+                        <option value="both" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'both', 'both') }}>
+                            {{ __( 'At home / Pickup point')|escape }}
+                        </option>
+                        <option value="home" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'),'home', 'both') }}>{{ __( 'At home')|escape }}</option>
+                        <option value="pickup_point" {{ optionSelected(hgesOptionName('HGES_PREF_DEL'), 'pickup_point', 'both') }}>{{ __( 'Pickup point')|escape }}</option>
+                    </select>
+                </div>
+            </div>
+            <!-- DUTIES & TAX -->
+            <div class="duties-tax-section">
+                <div class="section-label">{{ __( 'Duties and taxes at destination') }} </div>
+                <div class="duties-tax-input bordered">
+                    <select id="form_trans" name="{{ hgesOptionName('HGES_TAX_RIGHTS') }}" class="form-control">
+                        {% if options.HGES_TAX_RIGHTS %}  
+                            <option value="" disabled {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), '', '' ) }}>{{ __('Select your option')|escape }}</option>
+                            <option value="DDP" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'DDP', '' ) }}> {{ __("At the sender's expense")|escape }}</option>
+                            <option value="DAP" {{ optionSelected(hgesOptionName('HGES_TAX_RIGHTS'), 'DAP', '' ) }}>{{ __("At the recipient's expense")|escape }}</option>
+                        {% else %}
+                            <option value="" disabled>{{ __('Select your option')|escape }}</option>
+                            <option value="DDP">{{ __("At the sender's expense")|escape }}</option>
+                            <option value="DAP">{{ __("At the recipient's expense")|escape }}</option>
+                        {% endif %}
                     </select>
                     <div class="tooltip">?
-                        <span class="tooltiptext">{{ __( 'Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.') }}</span>
+                        <span class="tooltiptext">{{ __( 'Displays the duties and taxes estimation on the checkout page if you choose the "At the recipient\'s expense" option (domestic international shipments)')|escape }}</span>
                     </div>
                 </div>
             </div>
-
-            <!-- EORI NUMBER -->
-            <div class="eori-number-section">
-                <div class="section-label">{{ __( 'EORI number') }} </div>
-                <div class="eori-number-input bordered">
-                    <input 
-                        type="text" 
-                        name="{{ hgesOptionName('HGES_EORI_NUMBER') }}" 
-                        id="eori-number" 
-                        value="{{ options.HGES_EORI_NUMBER|default('') }}"
-                    >
-                    {% include('form-error-message.twig') with {'error': errors.HGES_EORI_NUMBER} %}
-                    <div class="tooltip">?
-                        <span class="tooltiptext">{{ __( 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.') }}</span>
-                    </div>
-                </div>
-            </div>
-            <!-- FDA NUMBER -->
-            <div class="fda-number-section">
-                <div class="section-label">{{ __( 'FDA number') }} </div>
-                <div class="fda-number-input bordered">
-                    <input 
-                        type="text" 
-                        name="{{ hgesOptionName('HGES_FDA_NUMBER') }}" 
-                        id="fda-number" 
-                        value="{{ options.HGES_FDA_NUMBER|default('') }}"
-                    >
-                    {% include('form-error-message.twig') with {'error': errors.HGES_FDA_NUMBER} %}
-                    <div class="tooltip">?
-                        <span class="tooltiptext">{{ __( 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.') }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- INSURANCE -->
-        <h2>{{ __( 'Insurance') }}</h2>
-        <div class="insurance-section">
-            <div class="section-label">{{ __( 'Activate insurance') }}</div>
-            <div class="insurance-input bordered">
-                <select name="{{ hgesOptionName('HGES_INSURANCE') }}">
-                    <option value="no" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
-                    <option value="yes" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
-                </select>
-                <div class="tooltip">?
-                    <span class="tooltiptext">{{ __( 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)') }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="submit-error-message" >
         </div>
 
-    {{ function('submit_button', '', 'primary', 'submit_button') }}
-    {{ function('wp_nonce_field', 'save_settings', 'settings_nonce' )|raw }}
-</form>
-{% endif %}
+        <h2>{{ __( 'Numbers & Registrations')|escape }}</h2>
+            <div class="numbers-registrations-section">
+                <!-- VAT NUMBER -->
+                <div class="vat-number-section">
+                    <div class="section-label">{{ __( 'VAT number')|escape }} </div>
+                    <div class="vat-number-input bordered">
+                        <input 
+                            type="text" 
+                            name="{{ hgesOptionName('HGES_VAT_NUMBER') }}" 
+                            id="vat-number" 
+                            value="{{ options.HGES_VAT_NUMBER|default('') }}"
+                        >
+
+                        {% include('form-error-message.twig') with {'error': errors.HGES_VAT_NUMBER} %}
+                        <div class="tooltip">?
+                            <span class="tooltiptext">{{ __( 'Enter your VAT number (required)')|escape }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OSS -->
+                <div class="oss-section">
+                    <div class="section-label">{{ __( 'OSS') }}</div>
+                    <div class="oss-input bordered">
+                        <select name="{{ hgesOptionName('HGES_VAT_OSS') }}">
+                            <option value="no" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                            <option value="yes" {{ optionSelected(hgesOptionName('HGES_VAT_OSS'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
+                        </select>
+                        <div class="tooltip">?
+                            <span class="tooltiptext">{{ __( 'Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.') }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EORI NUMBER -->
+                <div class="eori-number-section">
+                    <div class="section-label">{{ __( 'EORI number') }} </div>
+                    <div class="eori-number-input bordered">
+                        <input 
+                            type="text" 
+                            name="{{ hgesOptionName('HGES_EORI_NUMBER') }}" 
+                            id="eori-number" 
+                            value="{{ options.HGES_EORI_NUMBER|default('') }}"
+                        >
+                        {% include('form-error-message.twig') with {'error': errors.HGES_EORI_NUMBER} %}
+                        <div class="tooltip">?
+                            <span class="tooltiptext">{{ __( 'Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- FDA NUMBER -->
+                <div class="fda-number-section">
+                    <div class="section-label">{{ __( 'FDA number') }} </div>
+                    <div class="fda-number-input bordered">
+                        <input 
+                            type="text" 
+                            name="{{ hgesOptionName('HGES_FDA_NUMBER') }}" 
+                            id="fda-number" 
+                            value="{{ options.HGES_FDA_NUMBER|default('') }}"
+                        >
+                        {% include('form-error-message.twig') with {'error': errors.HGES_FDA_NUMBER} %}
+                        <div class="tooltip">?
+                            <span class="tooltiptext">{{ __( 'Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- INSURANCE -->
+            <h2>{{ __( 'Insurance') }}</h2>
+            <div class="insurance-section">
+                <div class="section-label">{{ __( 'Activate insurance') }}</div>
+                <div class="insurance-input bordered">
+                    <select name="{{ hgesOptionName('HGES_INSURANCE') }}">
+                        <option value="no" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'no', 'no' ) }}>{{ __( 'No') }}</option>
+                        <option value="yes" {{ optionSelected(hgesOptionName('HGES_INSURANCE'), 'yes', 'no' ) }}>{{ __( 'Yes') }}</option>
+                    </select>
+                    <div class="tooltip">?
+                        <span class="tooltiptext">{{ __( 'If you choose "Yes", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)') }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-error-message" >
+            </div>
+
+        {{ function('submit_button', '', 'primary', 'submit_button') }}
+        {{ function('wp_nonce_field', 'save_settings', 'settings_nonce' )|raw }}
+    </form>
+    {% endif %}
+</div>
