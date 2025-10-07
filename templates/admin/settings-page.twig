@@ -50,7 +50,7 @@
     {% endif %}
     {% if options.HGES_ACCESS_KEY and options.access_key_validate == '1' and favoriteAddress is not null %}
     <div id="HGES-settings">
-        <h2>{{ __( 'Calculate shipping charges')|escape }}</h2>
+        <h2>{{ __( 'Calculate shipping charges', 'hges')|escape }}</h2>
         <p>{{ __( 'Contact our support if you need to edit those informations')|escape }}</p>
         <div class="address-container" id="address-container">
             <div class="address-item">

@@ -45,7 +45,7 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                 <div className="modal__body__admin">
                     <LoadingMask
                         isLoading={loading}
-                        screenReaderLabel={__("Loading shipping rates", "hges")}
+                        screenReaderLabel={__("Loading shipping rates")}
                         showSpinner={true}
                     >
                     <div className="shipping-rate-list__admin">
@@ -59,7 +59,7 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                                 />
                             ))
                         ) : loading ? '' : (
-                            <p>{__('No shipping rates available.', 'hges')}</p>
+                            <p>{__('No shipping rates available.')}</p>
                         )}
 
                     </div>

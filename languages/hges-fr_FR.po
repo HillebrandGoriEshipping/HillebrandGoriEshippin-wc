@@ -1,0 +1,505 @@
+# Copyright (C) 2025 Hillebrand Gori eSHipping
+# This file is distributed under the GPLv3.
+msgid ""
+msgstr ""
+"Project-Id-Version: Hillebrand Gori eShipping 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/"
+"HillebrandGoriEshipping\n"
+"POT-Creation-Date: 2025-10-07T10:08:57+00:00\n"
+"PO-Revision-Date: 2025-10-07 12:20+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.7\n"
+"X-Domain: HillebrandGorieShipping\n"
+
+#. Plugin Name of the plugin
+msgid "Hillebrand Gori eShipping"
+msgstr "Hillebrand Gori eShipping"
+
+#. Description of the plugin
+msgid "Hillebrand Gori eShipping plugin for WooCommerce"
+msgstr "Plugin Hillebrand Gori eShipping pour WooCommerce"
+
+#. Author of the plugin
+msgid "Hillebrand Gori eSHipping"
+msgstr "Hillebrand Gori eShipping"
+
+#. Author URI of the plugin
+msgid "https://eshipping.hillebrandgori.com"
+msgstr "https://eshipping.hillebrandgori.com"
+
+#: tmp-twig/classic-pickup-modal.php:7
+msgid "Pick-up point"
+msgstr "Point relais"
+
+#: tmp-twig/classic-pickup-modal.php:10
+msgid "Search in this area"
+msgstr "Chercher dans cette zone"
+
+#: tmp-twig/classic-pickup-modal.php:25
+msgid "Select this pickup point"
+msgstr "Choisir ce point relais"
+
+#: tmp-twig/confirm-shipping-address-custom-fields.php:2
+msgid "Business order"
+msgstr "Commande d’entreprise"
+
+#: tmp-twig/confirm-shipping-address-custom-fields.php:4
+msgid "Company name"
+msgstr "Nom de la société"
+
+#: tmp-twig/confirm-shipping-address-custom-fields.php:6
+msgid "Excise number"
+msgstr "Numéro d'accise"
+
+#: tmp-twig/confirm-shipping-address-pickuppoint.php:1
+msgid "Retrait"
+msgstr ""
+
+#: tmp-twig/product-metas.php:3
+msgid "Number of bottle"
+msgstr "Nombre de bouteilles"
+
+#: tmp-twig/product-metas.php:13
+msgid "Quantity of bottle per product"
+msgstr "Nombre de bouteilles par produit"
+
+#: tmp-twig/product-metas.php:17
+msgid "Type"
+msgstr "Type"
+
+#: tmp-twig/product-metas.php:19
+msgid "Select a type"
+msgstr "Sélectionnez le type"
+
+#: tmp-twig/product-metas.php:20
+msgid "Still wine"
+msgstr "Vin tranquille"
+
+#: tmp-twig/product-metas.php:21
+msgid "Sparkling wine"
+msgstr "Vin effervescent"
+
+#: tmp-twig/product-metas.php:22
+msgid "Spirit"
+msgstr "Spiritueux"
+
+#: tmp-twig/product-metas.php:23
+msgid "Non Alcoholic"
+msgstr "Non alcoolisé"
+
+#: tmp-twig/product-metas.php:28
+msgid "Color"
+msgstr "Couleur"
+
+#: tmp-twig/product-metas.php:30
+msgid "Select a color"
+msgstr "Sélectionnez la couleur"
+
+#: tmp-twig/product-metas.php:31
+msgid "Red"
+msgstr "Rouge"
+
+#: tmp-twig/product-metas.php:32
+msgid "White"
+msgstr "Blanc"
+
+#: tmp-twig/product-metas.php:33
+msgid "Rosé"
+msgstr ""
+
+#: tmp-twig/product-metas.php:34
+msgid "Spirits"
+msgstr "Spiritueux"
+
+#: tmp-twig/product-metas.php:35
+msgid "Beer"
+msgstr "Bière"
+
+#: tmp-twig/product-metas.php:40
+msgid "Capacity"
+msgstr "Capacité"
+
+#: tmp-twig/product-metas.php:42
+msgid "Standard (750 mL)"
+msgstr ""
+
+#: tmp-twig/product-metas.php:43
+msgid "Magnum (1500 mL)"
+msgstr ""
+
+#: tmp-twig/product-metas.php:44
+msgid "Other"
+msgstr "Autre"
+
+#: tmp-twig/product-metas.php:49
+msgid "Custom Capacity"
+msgstr "Capacité personnalisé"
+
+#: tmp-twig/product-metas.php:59
+msgid "Capacity of a single product (in mL)"
+msgstr "Capacité d’un seul produit (en mL)"
+
+#: tmp-twig/product-metas.php:63
+msgid "Alcohol percentage"
+msgstr "Degré d’alcool"
+
+#: tmp-twig/product-metas.php:76
+msgid "Vintage Year"
+msgstr "Millésime"
+
+#: tmp-twig/product-metas.php:90
+msgid "Producing country"
+msgstr "Pays producteur"
+
+#: tmp-twig/product-metas.php:101 tmp-twig/product-metas.php:106
+msgid "Appellation"
+msgstr "Appellation"
+
+#: tmp-twig/product-metas.php:111
+msgid "HS Code"
+msgstr ""
+
+#: tmp-twig/settings-page.php:4
+msgid "Please fill the information below in order to be able to use the plugin"
+msgstr ""
+"Veuillez remplir les informations ci-dessous afin de pouvoir utiliser le "
+"plugin"
+
+#: tmp-twig/settings-page.php:7
+msgid "Key settings"
+msgstr "Paramètres de la clé API"
+
+#: tmp-twig/settings-page.php:8
+msgid "Insert your Hillebrand Gori eShipping API token"
+msgstr "Entrez votre clé API Hillebrand Gori eShipping"
+
+#: tmp-twig/settings-page.php:12
+msgid "Test my access token"
+msgstr "Tester mon accès"
+
+#: tmp-twig/settings-page.php:15
+msgid "Please validate the API access before saving the modifications"
+msgstr "Veuillez valider l’accès à l’API avant d’enregistrer les modifications"
+
+#: tmp-twig/settings-page.php:25
+msgid "Address settings"
+msgstr "Paramètres de l’adresse"
+
+#: tmp-twig/settings-page.php:26
+msgid "Select the address used to calculate shipping charges"
+msgstr "Selectionnez l’adresse utilisée pour calculer les frais d’expédition"
+
+#: tmp-twig/settings-page.php:29
+msgid "Favorite address"
+msgstr "Adresse favorite"
+
+#: tmp-twig/settings-page.php:32
+msgid "Select your address"
+msgstr "Sélectionnez votre adresse"
+
+#: tmp-twig/settings-page.php:39
+msgid "No addresses available"
+msgstr "Aucune adresse disponible"
+
+#: tmp-twig/settings-page.php:53
+msgid "Calculate shipping charges"
+msgstr "Calculez les frais d’expédition"
+
+#: tmp-twig/settings-page.php:54
+msgid "Contact our support if you need to edit those informations"
+msgstr ""
+"Contactez notre support si vous avez besoin de modifier ces informations"
+
+#: tmp-twig/settings-page.php:57 tmp-twig/settings-page.php:73
+msgid "Address"
+msgstr "Adresse"
+
+#: tmp-twig/settings-page.php:61
+msgid "Company"
+msgstr "Société"
+
+#: tmp-twig/settings-page.php:65
+msgid "Contact"
+msgstr "Contact"
+
+#: tmp-twig/settings-page.php:69
+msgid "Phone"
+msgstr "Téléphone"
+
+#: tmp-twig/settings-page.php:83
+msgid "City"
+msgstr "Ville"
+
+#: tmp-twig/settings-page.php:89
+msgid "Configuration"
+msgstr "Configuration"
+
+#: tmp-twig/settings-page.php:96
+msgid "Packaging available"
+msgstr "Paquets disponibles"
+
+#: tmp-twig/settings-page.php:113
+msgid "items"
+msgstr ""
+
+#: tmp-twig/settings-page.php:125
+msgid "Minimum number of bottles"
+msgstr "Nombre minimum de bouteilles"
+
+#: tmp-twig/settings-page.php:135
+msgid ""
+"Set the minimum number of bottles needed to activate the Hillebrand Gori "
+"eShipping shipping option on the checkout page"
+msgstr ""
+"Définissez le nombre minimum de bouteilles requis pour activer l’option "
+"d’expédition de VignoblExport sur la page de paiement"
+
+#: tmp-twig/settings-page.php:141
+msgid "Preparation time"
+msgstr "Temps de préparation"
+
+#: tmp-twig/settings-page.php:146
+msgid ""
+"Set the minimum number of days needed to prepare the parcels and make them "
+"ready for pickup"
+msgstr ""
+"Définissez le nombre minimum de jours requis pour la préparation de vos "
+"colis et la mise a disposition pour enlèvement"
+
+#: tmp-twig/settings-page.php:152
+msgid "Working days"
+msgstr "Jours ouvrés"
+
+#: tmp-twig/settings-page.php:157
+msgid "Monday"
+msgstr "Lundi"
+
+#: tmp-twig/settings-page.php:161
+msgid "Tuesday"
+msgstr "Mardi"
+
+#: tmp-twig/settings-page.php:165
+msgid "Wednesday"
+msgstr "Mercredi"
+
+#: tmp-twig/settings-page.php:169
+msgid "Thursday"
+msgstr "Jeudi"
+
+#: tmp-twig/settings-page.php:173
+msgid "Friday"
+msgstr "Vendredi"
+
+#: tmp-twig/settings-page.php:177
+msgid "Saturday"
+msgstr "Samedi"
+
+#: tmp-twig/settings-page.php:181
+msgid "Sunday"
+msgstr "Dimanche"
+
+#: tmp-twig/settings-page.php:186
+msgid ""
+"Select the working days of your company. The selected days will be used to "
+"calculate the preparation time and the delivery time."
+msgstr ""
+"Sélectionnez les jours d’ouverture de votre commerce. Les jours choisis "
+"seront utilisés pour calculer le temps de préparation et la date de "
+"livraison."
+
+#: tmp-twig/settings-page.php:192
+msgid "Carrier preference"
+msgstr "Préférences des transporteurs"
+
+#: tmp-twig/settings-page.php:221
+msgid "Min hour & Cutoff"
+msgstr "Ouverture & Fermeture"
+
+#: tmp-twig/settings-page.php:224
+msgid "Min hour"
+msgstr "Ouverture"
+
+#: tmp-twig/settings-page.php:229
+msgid "Set the minimum hour when the carrier can pick the parcels"
+msgstr ""
+"Définissez l’heure minimum à laquelle le transporteur peut récupérer le "
+"colis."
+
+#: tmp-twig/settings-page.php:233
+msgid "Cutoff"
+msgstr "Fermeture"
+
+#: tmp-twig/settings-page.php:237
+msgid "Set the maximum hour when the carrier can pick the parcels"
+msgstr ""
+"Définissez l’heure maximale à laquelle le transporteur peut récupérer le "
+"colis"
+
+#: tmp-twig/settings-page.php:244
+msgid "Delivery preference"
+msgstr "Préférences de livraison"
+
+#: tmp-twig/settings-page.php:248
+msgid "At home / Pickup point"
+msgstr "À domicile / Point relais"
+
+#: tmp-twig/settings-page.php:250
+msgid "At home"
+msgstr "À domicile"
+
+#: tmp-twig/settings-page.php:251
+msgid "Pickup point"
+msgstr "Point relais"
+
+#: tmp-twig/settings-page.php:257
+msgid "Duties and taxes at destination"
+msgstr "Droits de douanes et taxes à destination"
+
+#: tmp-twig/settings-page.php:261 tmp-twig/settings-page.php:265
+msgid "Select your option"
+msgstr "Sélectionnez votre option"
+
+#: tmp-twig/settings-page.php:262 tmp-twig/settings-page.php:266
+msgid "At the sender's expense"
+msgstr "À la charge de l’expéditeur"
+
+#: tmp-twig/settings-page.php:263 tmp-twig/settings-page.php:267
+msgid "At the recipient's expense"
+msgstr "À la charge du destinataire"
+
+#: tmp-twig/settings-page.php:271
+msgid ""
+"Displays the duties and taxes estimation on the checkout page if you choose "
+"the \"At the recipient's expense\" option (domestic international shipments)"
+msgstr ""
+"Affiche l’estimation des droits et taxes sur la page de paiement si vous "
+"choisissez l’option «À la charge du destinataire» (expéditions "
+"internationales à domicile)"
+
+#: tmp-twig/settings-page.php:277
+msgid "Numbers & Registrations"
+msgstr "Numéros & Enregistrements"
+
+#: tmp-twig/settings-page.php:281
+msgid "VAT number"
+msgstr "Numéro de TVA"
+
+#: tmp-twig/settings-page.php:292
+msgid "Enter your VAT number (required)"
+msgstr "Renseignez votre numéro de TVA (requis)"
+
+#: tmp-twig/settings-page.php:299
+msgid "OSS"
+msgstr "OSS"
+
+#: tmp-twig/settings-page.php:302 tmp-twig/settings-page.php:350
+msgid "No"
+msgstr "Non"
+
+#: tmp-twig/settings-page.php:303 tmp-twig/settings-page.php:351
+msgid "Yes"
+msgstr "Oui"
+
+#: tmp-twig/settings-page.php:306
+msgid ""
+"Select yes if you are registered on the European One Stop Shop, a portal "
+"used to register purchases for European consumers and pay the VAT of the "
+"destination country. If you exceed 10,000 EUR in online sales, you are "
+"required to register on this portal, otherwise you invoice the private "
+"individual with VAT as if he had come to buy the goods at your premises. For "
+"more information, ask your accountant."
+msgstr ""
+"Sélectionnez « oui » si vous êtes bien enregistré au One Stop Shop européen, "
+"un portail utilisé pour enregistrer les achats des consommateurs européens "
+"et payer la TVA du pays de destination. Si vous dépassez 10 000 euros de "
+"ventes en ligne, vous êtes tenu de vous enregistrer sur ce portail, sinon "
+"vous facturez au particulier la TVA comme s’il était venu acheter la "
+"marchandise dans vos locaux. Pour plus d’informations, demandez à votre "
+"comptable."
+
+#: tmp-twig/settings-page.php:313
+msgid "EORI number"
+msgstr "Numéro EORI"
+
+#: tmp-twig/settings-page.php:323
+msgid ""
+"Number needed to send to non-EU countries. It often corresponds to the "
+"country code followed by the VAT number. To request this code, you need to "
+"apply to your local customs agency."
+msgstr ""
+"Numéro nécessaire pour les envois vers les pays non membres de l’UE. Il "
+"correspond souvent au code du pays suivi du numéro de TVA. Pour obtenir ce "
+"code, vous devez vous adresser à votre agence douanière locale."
+
+#: tmp-twig/settings-page.php:329
+msgid "FDA number"
+msgstr "Numéro FDA"
+
+#: tmp-twig/settings-page.php:339
+msgid ""
+"Number issued by the US Food and Drugs Adminstration and used to identify "
+"any company, domestic or foreign, shipping human/animal foodstuffs to the "
+"US. This number is required to ship these types of goods to the USA. For "
+"assistance on how to obtain the number, please contact us."
+msgstr ""
+"Numéro délivré par la FDA (Food ans Drugs Administration), l’administration "
+"américaine des denrées alimentaires et des médicaments. Il permet "
+"d’identifier toute entreprise, nationale ou étrangère, qui expédie des "
+"denrées alimentaires pour l’homme ou l’animal aux États-Unis. Ce numéro est "
+"nécessaire pour expédier ces types de marchandises aux États-Unis. Pour "
+"obtenir de l’aide sur la manière d’obtenir le numéro, veuillez nous "
+"contacter."
+
+#: tmp-twig/settings-page.php:345
+msgid "Insurance"
+msgstr "Assurance"
+
+#: tmp-twig/settings-page.php:347
+msgid "Activate insurance"
+msgstr "Activer l’assurance"
+
+#: tmp-twig/settings-page.php:354
+msgid ""
+"If you choose \"Yes\", all shipments will be insured with a minimum amount "
+"of 5 € (may vary depending on the total price of the products)"
+msgstr ""
+"Si vous choisissez « Oui », tout les envois seront assurés avec un montant "
+"minimum supplémentaire de 5€ (varie en fonction du montant total HT de la\n"
+"commande)"
+
+#: tmp-twig/shipping-label.php:2
+msgid "Door Delivery"
+msgstr "À domicile"
+
+#: tmp-twig/shipping-label.php:4
+msgid "Pick-up points"
+msgstr "Point relais"
+
+#: tmp-twig/shipping-label.php:6
+msgid "Other Shipping Method"
+msgstr "Autre méthode d’expédition"
+
+#: tmp-twig/shipping-label.php:21
+msgid "Estimated delivery: "
+msgstr "Date de livraison estimée : "
+
+#: tmp-twig/shipping-label.php:34
+msgid "Choose your pickup point"
+msgstr "Choisir un point relais"
+
+#: tmp-twig/shipping-label.php:36
+msgid "Selected pickup point:"
+msgstr "Point relais :"
+
+#: tmp-twig/variable-product-meta.php:3
+msgid "Quantity"
+msgstr "Quantité"
+
+#: tmp-twig/variable-product-meta.php:14
+msgid "Quantity of bottle per variation of the product"
+msgstr "Nombre de bouteilles par variation du produit"

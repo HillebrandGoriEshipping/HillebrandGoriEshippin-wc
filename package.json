@@ -12,7 +12,10 @@
     "ui-mode-classic": "node ./scripts/switchui.js classic",
     "ui-mode-blocks": "node ./scripts/switchui.js blocks",
     "playwright-run": "npx playwright test --config=playwright.config.js",
-    "playwright-open": "npx playwright test --config=playwright.config.js --ui"
+    "playwright-open": "npx playwright test --config=playwright.config.js --ui",
+    "make-pot": "php -d memory_limit=512M $(which wp) i18n make-pot . languages/hges.pot --include=src,js --exclude=node_modules,vendor,build,dist",
+    "make-pot-twig": "mkdir -p tmp-twig && find templates -name '*.twig' -exec sh -c 'cat \"$1\" | sed \"s/{{\\s*/<?php /g; s/\\s*}}/; ?>/g\" > tmp-twig/$(basename \"$1\" .twig).php' _ {} \\; && xgettext --from-code=UTF-8 --language=PHP --keyword=__ --output=languages/twig-temp.pot tmp-twig/*.php && msgcat --use-first languages/hges.pot languages/twig-temp.pot -o languages/hges.pot && rm -rf tmp-twig languages/twig-temp.pot",
+    "make-pot-js": "find assets -name '*.js' -exec cat {} + | xgettext --from-code=UTF-8 --language=JavaScript --keyword=__ --keyword=_n:1,2 --keyword=_x:1,2c --output=languages/js-temp.pot - && msgcat --use-first languages/hges.pot languages/js-temp.pot -o languages/hges.pot && rm languages/js-temp.pot"
   },
   "author": "",
   "license": "ISC",
