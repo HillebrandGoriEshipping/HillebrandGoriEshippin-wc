@@ -236,13 +236,7 @@ class Order
             throw new \Exception("Order item or shipping rate not found.");
         }
 
-
-        $item->set_props([
-            "name" => $rate->getServiceName(),
-            "total_tax" => "0",
-            "taxes" => ["total" => []],
-            "tax_status" => "taxable",
-        ]);
+        $item->set_name($rate->getServiceName());
 
         $metaData = [
             "checksum" => $newShippingRateChecksum,
@@ -255,13 +249,12 @@ class Order
         }
 
         foreach ($metaData as $key => $value) {
-            $item->get_data_store()->set_prop($key, $value);
+            $item->update_meta_data($key, $value); 
         }
 
-        $item->get_data_store()->update($item);
-        $item->apply_changes($item);
         $item->save();
-
+        $order->save();
+        
         return $rate;
     }
 
