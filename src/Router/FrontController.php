@@ -135,19 +135,18 @@ class FrontController
                 );
             } catch (\Exception $e) {
                 $response['error'] = 'Unable to update shipping method: ' . esc_html($e->getMessage());
-                self::renderJson($response, 400);
-                return;
+                $response['statusCode'] = 500;
             }
 
             $response['success'] = true;
             $response['shippingRate'] = $rate->toArray();
+            $response['statusCode'] = 200;
         } else {
             $response['error'] = 'Unable to update shipping method, orderId and orderShippingItemId are expected in the query params and shippingRateChecksum json object is expected in the json body.';
-
-            self::renderJson($response, 400);
-            return;
+            $response['statusCode'] = 400;
         }
-        self::renderJson($response);
+
+        self::renderJson($response, $response['statusCode']);
     }
 
     public static function getPackagingPossibilities($data): void
