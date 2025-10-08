@@ -71,7 +71,7 @@ class Styles
 
         wp_enqueue_style(
             'hges-fonts',
-            HGES_PLUGIN_URL . 'assets/fonts/fonts.css',
+            HGES_PLUGIN_URL . 'assets/css/fonts.css',
             [],
             null
         );
