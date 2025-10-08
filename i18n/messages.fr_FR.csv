@@ -152,3 +152,5 @@
 "The selected shipping option is not available anymore !";"L'option d'expédition sélectionnée n'est plus disponible !"
 "Attachments are missing for this order. Please ensure all required documents are uploaded before proceeding.";"Les pièces jointes sont manquantes pour cette commande. Veuillez vous assurer que tous les documents requis sont téléchargés avant de continuer."
 "Can't find packaging for product of type {packagingType}. Please contact the administrator.";"Impossible de trouver un emballage pour le produit de type {packagingType}. Veuillez contacter l'administrateur."
+"bottle";"bouteille"
+"Bottle Settings";"Configuration bouteille"

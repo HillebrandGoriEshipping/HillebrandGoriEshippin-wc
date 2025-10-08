@@ -148,3 +148,5 @@
 "The selected shipping option is not available anymore !";"The selected shipping option is not available anymore !"
 "Attachments are missing for this order. Please ensure all required documents are uploaded before proceeding.";"Attachments are missing for this order. Please ensure all required documents are uploaded before proceeding."
 "Can't find packaging for product of type {packagingType}. Please contact the administrator.";"Can't find packaging for product of type {packagingType}. Please contact the administrator."
+"bottle";"bottle"
+"Bottle Settings";"Bottle Settings"
