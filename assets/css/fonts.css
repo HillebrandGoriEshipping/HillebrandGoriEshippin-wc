@@ -1,6 +1,6 @@
 @font-face {
     font-family: "MierA-Demi";
-    src: url("../fonts/MierA-Demi.otf") format("otf");
+    src: url("../fonts/MierA-Demi.otf") format("opentype");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: "MierA-Light";
-    src: url("../fonts/MierA-Light.otf") format("otf");
+    src: url("../fonts/MierA-Light.otf") format("opentype");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
