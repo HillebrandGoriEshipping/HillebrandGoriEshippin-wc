@@ -14,10 +14,6 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-if (!defined('WP_DEBUG')) {
-    define('WP_DEBUG', false);
-}
-
 require __DIR__ . '/vendor/autoload.php';
 
 use HGeS\App;
