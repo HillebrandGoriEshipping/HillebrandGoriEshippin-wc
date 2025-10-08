@@ -16,24 +16,24 @@ export default ({ rate, onSelect, isSelected }) => {
         return (
             <div
                 id={`shipping-rate-${checksum}`}
-                onClick={() => onSelect(checksum)}
-                className={clsx("hges-shipping-method", { selected: isSelected })}
+                onClick={() => onSelect(checksum) }
+                className={clsx("hges-shipping-method", { selected: isSelected }) }
             >
                 <div className="hges-shipping-method-left">
                     {carrier != null && (
                         <div className="hges-shipping-logo">
                             <img src={logoUrl} alt="Hillebrand Gori Eshipping" />
                         </div>
-                    )}
+                    ) }
                     <div className="hges-shipping-info">
                         <div className="hges-shipping-label">
                             {label}
                         </div>
                         {meta_data.deliveryDate && (
                             <div className="hges-shipping-delivery">
-                                Estimated delivery: {meta_data.deliveryDate}
+                                { translate('Estimated delivery:') } {meta_data.deliveryDate}
                             </div>
-                        )}
+                        ) }
                         {meta_data.deliveryDate && meta_data.deliveryMode === "pickup" && (
                             <div
                                 id="pickup-point-button"
@@ -45,7 +45,7 @@ export default ({ rate, onSelect, isSelected }) => {
                             >
                                 <span>Choose your pickup point</span>
                             </div>
-                        )}
+                        ) }
                     </div>
                     {meta_data.deliveryMode === "pickup" && (
                         <div id="selected-pickup-point" className="selected-pickup-point hidden">
@@ -53,7 +53,7 @@ export default ({ rate, onSelect, isSelected }) => {
                             <span id="selected-pickup-point-name"></span>
                             <span id="selected-pickup-point-address"></span>
                         </div>
-                    )}
+                    ) }
                 </div>
                 <div className="hges-shipping-price">
                     {cost}

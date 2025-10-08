@@ -1,4 +1,4 @@
-const { __ } = window.wp.i18n;
+const { translate } = window.hges.i18n;
 
 import RateGroup from "./RateGroup";
 import Accordion from "./Accordion";
@@ -14,24 +14,24 @@ const ShippingRatesContainer = ({
   return (
     <div className="shipping-rates">
       <Accordion
-        title={__("Pickup points", "hges")}
-        defaultOpen={!!pickupRates.find((r) => r.selected)}
+        title={ translate("Pickup points") }
+        defaultOpen={!!pickupRates.find((r) => r.selected) }
         display={pickupRates.length > 0}
         displayHeader={doorDeliveryRates.length > 0 || otherRates.length > 0}
       >
         <RateGroup rates={pickupRates} setLoading={setLoading} currentContext={currentContext}/>
       </Accordion>
       <Accordion
-        title={__("Door Delivery", "hges")}
-        defaultOpen={!!doorDeliveryRates.find((r) => r.selected)}
+        title={ translate("Door Delivery") }
+        defaultOpen={!!doorDeliveryRates.find((r) => r.selected) }
         display={doorDeliveryRates.length > 0}
         displayHeader={pickupRates.length > 0 || otherRates.length > 0}
       >
         <RateGroup rates={doorDeliveryRates} setLoading={setLoading} currentContext={currentContext}/>
       </Accordion>
       <Accordion
-        title={__("Other shipping method", "hges")}
-        defaultOpen={!!otherRates.find((r) => r.selected)}
+        title={ translate("Other shipping method") }
+        defaultOpen={!!otherRates.find((r) => r.selected) }
         display={otherRates.length > 0}
         displayHeader={doorDeliveryRates.length > 0 || pickupRates.length > 0}
       >
@@ -40,7 +40,7 @@ const ShippingRatesContainer = ({
 
       { pickupRates.length > 0 && (
         <PickupPointsMap />
-      )}
+      ) }
     </div>
   );
 };

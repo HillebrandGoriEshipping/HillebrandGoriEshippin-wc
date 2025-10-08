@@ -1,6 +1,6 @@
 import apiClient from "./apiClient.js";
 import utils from "./utils.js";
-const { __ } = window.wp.i18n;
+const { translate } = window.hges.i18n;
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // If the API key is empty, show an error message & change input css class
     if (result) {
       utils.showAdminNotice(
-        __(hges.messages.apiKeyValidation.apiKeySuccess),
+        translate(hges.messages.apiKeyValidation.apiKeySuccess),
         document.querySelector("#api-input").parentElement,
         "success"
       );
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       // If the API key is invalid, show an error message & change input css class
       utils.showAdminNotice(
-        __(hges.messages.apiKeyValidation.apiKeyError),
+        translate(hges.messages.apiKeyValidation.apiKeyError),
         document.querySelector("#api-input").parentElement,
         "error"
       );

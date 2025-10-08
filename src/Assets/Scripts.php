@@ -7,6 +7,7 @@ use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
 use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\Messages;
+use HGeS\Utils\Translator;
 
 class Scripts
 {
@@ -36,7 +37,7 @@ class Scripts
         wp_enqueue_script(
             'hges-shipping-rates-fill',
             HGES_PLUGIN_URL . 'dist/shippingRatesFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-components', 'wp-hooks', 'wc-blocks-checkout'],
+            ['hges-i18n', 'wp-plugins', 'wp-element', 'wp-components', 'wp-hooks', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
         );
@@ -44,7 +45,7 @@ class Scripts
         wp_enqueue_script(
             'hges-order-recap-fill',
             HGES_PLUGIN_URL . 'dist/orderRecapFill.js',
-            ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wp-components', 'wc-blocks-checkout'],
+            ['hges-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wp-components', 'wc-blocks-checkout'],
             null,
             ['in_footer' => true]
         );
@@ -55,11 +56,6 @@ class Scripts
             [],
             null,
             ['in_footer' => true]
-        );
-
-        wp_enqueue_script(
-            'hges-global-object-injection',
-            HGES_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
         wp_enqueue_script(
@@ -101,6 +97,7 @@ class Scripts
             null,
             true
         );
+
         self::globalObjectInjection();
     }
 
@@ -123,7 +120,7 @@ class Scripts
         wp_enqueue_script(
             'hges-react-spawn-component',
             HGES_PLUGIN_URL . 'assets/js/react/spawnComponent.js',
-            ['wp-element', 'wp-i18n'],
+            ['wp-element', 'hges-i18n'],
             null,
             ['in_footer' => true]
         );
@@ -148,7 +145,7 @@ class Scripts
             wp_enqueue_script_module(
                 'hges-product-metas',
                 HGES_PLUGIN_URL . 'assets/js/productMetas.js',
-                ['wp-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
+                ['hges-i18n', 'wp-plugins', 'wp-element', 'wp-hooks', 'wc-blocks-checkout'],
                 false,
                 ['in_footer' => true]
             );
@@ -157,14 +154,9 @@ class Scripts
         wp_enqueue_script(
             'hges-components',
             HGES_PLUGIN_URL . 'dist/components.js',
-            ['wp-element',  'wc-blocks-checkout'],
+            ['wp-element',  'wc-blocks-checkout', 'hges-i18n'],
             null,
             true
-        );
-
-        wp_enqueue_script(
-            'hges-global-object-injection',
-            HGES_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
         );
 
         self::globalObjectInjection(true);
@@ -178,6 +170,16 @@ class Scripts
      */
     public static function globalObjectInjection(bool $admin = false): void
     {
+        wp_enqueue_script(
+            'hges-global-object-injection',
+            HGES_PLUGIN_URL . 'assets/js/globalObjectInjection.js'
+        );
+
+        wp_enqueue_script(
+            'hges-i18n',
+            HGES_PLUGIN_URL . 'assets/js/i18n.js',
+            ['hges-global-object-injection']
+        );
 
         $frontendJsGlobalObject = [
             'assetsUrl' => HGES_PLUGIN_URL . 'assets/',
@@ -190,6 +192,9 @@ class Scripts
             ],
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'apiUrl' => ApiClient::getApiUrl(),
+            'i18n' => [
+                'messages' => Translator::getTranslations()
+            ]
         ];
 
         if ($admin) {

@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 div.innerHTML = `
                     <div class="pickup-point__title">
-                        <a href="#" data-pickup='${JSON.stringify(p)}'>${p.name}</a>
+                        <a href="#" data-pickup='${JSON.stringify(p) }'>${p.name}</a>
                     </div>
-                    <div class="pickup-point__distance">${p.distance} ${p.distanceUnitOfMeasurement.toLowerCase()}</div>
+                    <div class="pickup-point__distance">${p.distance} ${p.distanceUnitOfMeasurement.toLowerCase() }</div>
                 `;
                 div.addEventListener('click', e => {
                     e.preventDefault();

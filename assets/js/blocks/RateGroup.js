@@ -1,4 +1,4 @@
-const { __ } = window.wp.i18n;
+const { translate } = window.hges.i18n;
 const { select } = window.wp.data;
 
 // Date format localization
@@ -52,8 +52,8 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
   return (
     <div>
       {rates.map((rate) => (
-        <label rate={rate.checksum} htmlFor={getRadioButtonId(rate)} key={rate.key}>
-          <div className={"rate-content" + (rate.selected ? " selected" : "")}>
+        <label rate={rate.checksum} htmlFor={getRadioButtonId(rate) } key={rate.key}>
+          <div className={"rate-content" + (rate.selected ? " selected" : "") }>
             <div className="rate-left">
               {hasLogo ? (
                 <div className="rate-logo">
@@ -65,7 +65,7 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
                 </div>
               ) : (
                 ""
-              )}
+              ) }
               <div className="rate-info">
                 <p className="rate-name">
                   {hasLogo ? (
@@ -76,42 +76,42 @@ const RateGroup = ({ rates, currentContext, hasLogo = true }) => {
                     />
                   ) : (
                     ""
-                  )}
+                  ) }
                   <span>{rate.name}</span>
                             
                 </p>
                 
                 <div className="rate-date-box">
                   <p className="rate-estimated-date">
-                    {__("Estimated delivery: ", "hges")} {dayjs(rate.deliveryDate).format("LL")}
+                    { translate("Estimated delivery:") } {dayjs(rate.deliveryDate).format("LL") }
                   </p>
                   {!rate.isPickup || currentContext === 'woocommerce/cart' ? '' : (
                     <p className="rate-price-pickup">
                       {rate.currency_prefix}
-                      {Number(rate.price / 100).toFixed(2)}
+                      {Number(rate.price / 100).toFixed(2) }
                       {rate.currency_suffix}
                     </p>
-                  )}
+                  ) }
                 </div>
               </div>
               </div>
               <div className="rate-right">
               {!rate.isPickup || !rate.selected || currentContext === 'woocommerce/cart' ? '': (
                 <div className="pickup-point-button-block">
-                  <button onClick={openSelectPickupPointModal}>{__(`Choose your pickup point`)}</button>
+                  <button onClick={openSelectPickupPointModal}>{ translate(`Choose your pickup point`) }</button>
                 </div>
-              )}   
+              ) }   
               {rate.isPickup || currentContext === 'woocommerce/cart' ? '' : (
               <p className="rate-price">
                 {rate.currency_prefix}
-                {Number(rate.price / 100).toFixed(2)}
+                {Number(rate.price / 100).toFixed(2) }
                 {rate.currency_suffix}
               </p>
-            )}
+            ) }
             </div>
           </div>
         </label>
-      ))}
+      )) }
     </div>
   );
 };

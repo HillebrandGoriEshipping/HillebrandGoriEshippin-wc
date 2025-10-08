@@ -39,13 +39,13 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                 </button>
                 <div className="modal__header">
                     <h2 className="modal__title">
-                        {__('Shipping option')}
+                        { translate('Shipping option') }
                     </h2>
                 </div>
                 <div className="modal__body__admin">
                     <LoadingMask
                         isLoading={loading}
-                        screenReaderLabel={__("Loading shipping rates")}
+                        screenReaderLabel={ translate("Loading shipping rates") }
                         showSpinner={true}
                     >
                     <div className="shipping-rate-list__admin">
@@ -59,8 +59,8 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                                 />
                             ))
                         ) : loading ? '' : (
-                            <p>{__('No shipping rates available.')}</p>
-                        )}
+                            <p>{ translate('No shipping rates available.') }</p>
+                        ) }
 
                     </div>
                     </LoadingMask>
@@ -69,15 +69,15 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
                     <button
                         type="button"
                         id="hges-update-shipping-rate-modal-button"
-                        onClick={() => validateShippingRate(selectedRateChecksum)}
+                        onClick={() => validateShippingRate(selectedRateChecksum) }
                     >
-                        {__('Update')}
+                        { translate('Update') }
                     </button>
                     <div className="warning">
                         <p>
-                            {__(
+                            { translate(
                                 'Updating the shipping method will reload the page. Ensure that all your modification have been saved before performing this action !'
-                            )}
+                            ) }
                         </p>
                     </div>
                 </div>

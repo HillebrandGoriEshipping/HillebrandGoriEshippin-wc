@@ -1,4 +1,4 @@
-const { __ } = wp.i18n;
+const { translate } = window.hges.i18n;
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import FilePondPluginFileMetadata from 'filepond-plugin-file-metadata';
@@ -79,7 +79,7 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
 
     return (
         <div>
-            <h3>{__('Required attachments')}</h3>
+            <h3>{ translate('Required attachments') }</h3>
             <div>
                 <p>
                     {attachments.length}/{requiredAttachments.length}
@@ -94,7 +94,7 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
                             {attachment.label}
                             <FilePond name="fileUpload" allowMultiple={false} server={serverConfig} fileMetadataObject={{ fileType: attachment.type, label: attachment.label }} onprocessfile={onProcessFile} credits={false} />
                         </li>
-                    ))}
+                    )) }
                     {remainingAttachments.map((remainingAttachment) => (
                         <li key={remainingAttachment.type}>
                             <span
@@ -105,7 +105,7 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
                             <FilePond name="fileUpload" allowMultiple={false} server={serverConfig} fileMetadataObject={{ fileType: remainingAttachment.type, label: remainingAttachment.label }} onprocessfile={onProcessFile} credits={false} />
 
                         </li>
-                    ))}
+                    )) }
                 </ul>
             </div>
         </div>

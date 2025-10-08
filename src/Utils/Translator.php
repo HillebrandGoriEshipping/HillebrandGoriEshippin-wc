@@ -86,4 +86,15 @@ class Translator
 
         return $translation;
     }
+
+    /**
+     * Returns all loaded translations as an associative array.
+     * 
+     * @return array An associative array of translation key-value pairs.
+     */
+    public static function getTranslations(): array
+    {
+        self::loadTranslations();
+        return self::$translations;
+    }
 }

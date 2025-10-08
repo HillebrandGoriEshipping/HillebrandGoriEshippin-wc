@@ -1,6 +1,6 @@
 import apiClient from "./apiClient.js";
 import utils from "./utils.js";
-const { __ } = window.wp.i18n;
+const { translate } = window.hges.i18n;
 
 const productMetaModule = {
   alcoholPercentageField: null,
@@ -127,7 +127,7 @@ const productMetaModule = {
 
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
-        defaultOption.textContent = __("Select an appellation");
+        defaultOption.textContent = translate("Select an appellation");
         this.appellationSelect.appendChild(defaultOption);
 
         appellations.forEach((appellation) => {
@@ -207,7 +207,7 @@ const productMetaModule = {
 
       if (hsCode) {
         utils.showAdminNotice(
-          __(hges.messages.productMeta.settingsSuccess),
+          translate(hges.messages.productMeta.settingsSuccess),
           this.errorContainer,
           "success"
         );
@@ -215,7 +215,7 @@ const productMetaModule = {
         this.appellationField.value = selectedAppellation;
       } else {
         utils.showAdminNotice(
-          __(hges.messages.productMeta.settingsError),
+          translate(hges.messages.productMeta.settingsError),
           this.errorContainer,
           "error"
         );
@@ -253,7 +253,7 @@ const productMetaModule = {
       if (!enabled) {
         this.publishButton.disabled = true;
         this.publishButton.classList.add("button-disabled");
-        this.showCustomPublishError(__(hges.messages.productMeta.preventPublish));
+        this.showCustomPublishError(translate(hges.messages.productMeta.preventPublish));
       } else {
         this.publishButton.disabled = false;
         this.publishButton.classList.remove("button-disabled");

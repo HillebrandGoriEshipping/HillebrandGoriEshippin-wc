@@ -16,16 +16,16 @@ const ShippingRowBody = ({
                 {typeof priceDelta !== "undefined" && (
                     <div className="shipping-rate-price-delta">
                         <span className="marker-red dashicons dashicons-warning"></span>
-                        {__('Price change:')} {priceDelta > 0 ? "+" : ""}
+                        { translate('Price change:') } {priceDelta > 0 ? "+" : ""}
                         {priceDelta}
                     </div>
-                )}
+                ) }
             </div>
             <div className="shipping-rate-estimated-delivery">
-                {__('Estimated delivery date :')} {shippingRate.deliveryDate}
+                { translate('Estimated delivery date :') } {shippingRate.deliveryDate}
             </div>
             <div className="shipping-rate-pickup-date">
-                {__('Pickup date :')} {shippingRate.pickupDate}
+                { translate('Pickup date :') } {shippingRate.pickupDate}
             </div>
             
             {requiredAttachments.length > 0 && (
@@ -34,7 +34,7 @@ const ShippingRowBody = ({
                     requiredAttachments={requiredAttachments}
                     remainingAttachments={remainingAttachments}
                 />
-            )}
+            ) }
 
         </div>
     );
