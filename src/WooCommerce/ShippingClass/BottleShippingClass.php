@@ -2,7 +2,7 @@
 
 namespace HGeS\WooCommerce\ShippingClass;
 
-use HGeS\Utils\Enums\GlobalEnum;
+use HGeS\Utils\Translator;
 
 /**
  * Class BottleShippingClass
@@ -39,7 +39,7 @@ class BottleShippingClass
         if (empty($existing)) {
             wp_insert_term($class_name, 'product_shipping_class', [
                 'slug' => $slug,
-                'description' => __('Hillebrand Gori eShipping\'s shipping class for bottled products.', GlobalEnum::TRANSLATION_DOMAIN),
+                'description' => Translator::translate('Hillebrand Gori eShipping\'s shipping class for bottled products.'),
             ]);
         }
     }

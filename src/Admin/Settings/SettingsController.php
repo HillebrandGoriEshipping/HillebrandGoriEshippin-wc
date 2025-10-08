@@ -4,9 +4,9 @@ namespace HGeS\Admin\Settings;
 
 use HGeS\Form\SettingsFormData;
 use HGeS\Utils\ApiClient;
-use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Enums\OptionEnum;
 use HGeS\Utils\FormSessionMessages;
+use HGeS\Utils\Translator;
 use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Address;
 
@@ -45,7 +45,7 @@ class SettingsController
         }
         
         echo Twig::getTwig()->render('admin/settings-page.twig', [
-            'title' => __(esc_html(self::SETTING_PAGE_TITLE), GlobalEnum::TRANSLATION_DOMAIN),
+            'title' => Translator::translate(esc_html(self::SETTING_PAGE_TITLE)),
             'options' => $options,
             'favoriteAddress' => $favoriteAddress,
             'allAddresses' => $allAddresses,

@@ -17,7 +17,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
     const [packages, setPackages] = useState(currentPackaging || []);
     const initialProductsNumberByType = Object.keys(products).reduce((acc, key) => {
         const product = products[key];
-        const type = product.meta_data.find(item => item.key === 'packaging')?.value || 'bottle';
+        let type = product.meta_data.find(item => item.key === 'packaging')?.value || 'bottle';
         if (!acc[type]) {
             acc[type] = 0;
         }
@@ -113,7 +113,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                     <h4>{ translate('Products to dispatch') }</h4>
                     <div className="products-to-dispatch">
                         {Object.entries(productsNumberByType).map(([type, quantity], index) => (
-                            <span key={type}>{quantity} x <strong>{type}</strong>{index < Object.entries(productsNumberByType).length - 1 ? ', ' : ''}</span>
+                            <span key={type}>{quantity} x <strong>{ translate(type) }</strong>{index < Object.entries(productsNumberByType).length - 1 ? ', ' : ''}</span>
                         )) }
                     </div>
                 </div>
