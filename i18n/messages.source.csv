@@ -1,150 +1,150 @@
-Hillebrand Gori eShipping plugin for WooCommerce
-Pick-up point
-Search in this area
-Select this pickup point
-Business order
-Company name
-Excise number
-Retrait
-Number of bottle
-Quantity of bottle per product
-Type
-Select a type
-Still wine
-Sparkling wine
-Spirit
-Non Alcoholic
-Color
-Select a color
-Red
-White
-Rosé
-Spirits
-Beer
-Capacity
-Other
-Custom Capacity
-Capacity of a single product (in mL)
-Alcohol percentage
-Vintage Year
-Producing country
-Appellation
-HS Code
-Please fill the information below in order to be able to use the plugin
-Key settings
-Insert your Hillebrand Gori eShipping API token
-Test my access token
-Please validate the API access before saving the modifications
-Address settings
-Select the address used to calculate shipping charges
-Favorite address
-Select your address
-No addresses available
-Calculate shipping charges
-Contact our support if you need to edit those informations
-Address
-Company
-Contact
-Phone
-City
-Configuration
-Packaging available
-items
-Minimum number of bottles
-Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page
-Preparation time
-Set the minimum number of days needed to prepare the parcels and make them ready for pickup
-Working days
-Monday
-Tuesday
-Wednesday
-Thursday
-Friday
-Saturday
-Sunday
-Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.
-Carrier preference
-Min hour & Cutoff
-Min hour
-Set the minimum hour when the carrier can pick the parcels
-Cutoff
-Set the maximum hour when the carrier can pick the parcels
-Delivery preference
-At home / Pickup point
-At home
-Pickup point
-Duties and taxes at destination
-Select your option
-At the sender's expense
-At the recipient's expense
-"Displays the duties and taxes estimation on the checkout page if you choose the ""At the recipient's expense"" option (domestic international shipments)"
-Numbers & Registrations
-VAT number
-Enter your VAT number (required)
-OSS
-No
-Yes
-Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.
-EORI number
-Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.
-FDA number
-Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.
-Insurance
-Activate insurance
-"If you choose ""Yes"", all shipments will be insured with a minimum amount of 5 € (may vary depending on the total price of the products)"
-Door Delivery
-Pick-up points
-Other Shipping Method
-Estimated delivery:
-Choose your pickup point
-Selected pickup point:
-Quantity
-Quantity of bottle per variation of the product
-Loading shipping rates
-Choose another pickup point
-Pickup points
-Other shipping method
-Loading…
-Select an appellation
-Price change:
-Estimated delivery date :
-Pickup date :
-An error occurred while validating the shipment.
-Validating shipment...
-Shipping details
-Select a shipping solution
-Change shipping option
-Shipment has been validated for this order.
-Download the shipping label here
-Validate shipment
-Shipping option
-No shipping rates available.
-Update
-Updating the shipping method will reload the page. Ensure that all your modification have been saved before performing this action !
-Selected
-Package details
-bottles
-Change Packaging and select a new shipping option
-Required attachments
-Products to dispatch
-Packages
-Add
-Next
-API Key is invalid! Please try again
-API Key is valid! You can now use the plugin
-The product settings are incorrect
-The product settings are correct
-Impossible to publish this product. Please correct or fill the missing fields
-You need to provide valid product settings before publishing or updating.
-This field cannot be empty
-VAT number is invalid! Please check the format.
-EORI number is invalid! Please check the format.
-FDA number format must be 11 digits.
-You must have at least one carrier configured.
-You must have at least one working day configured.
-This field must be an integer
-You must select at least one packaging option.
-There are errors in the form. Please correct them before submitting.
-The selected shipping option is not available anymore !
-Attachments are missing for this order. Please ensure all required documents are uploaded before proceeding.
-Can't find packaging for product of type {packagingType}. Please contact the administrator.
+"Hillebrand Gori eShipping plugin for WooCommerce";"Hillebrand Gori eShipping plugin for WooCommerce"
+"Pick-up point";"Pick-up point"
+"Search in this area";"Search in this area"
+"Select this pickup point";"Select this pickup point"
+"Business order";"Business order"
+"Company name";"Company name"
+"Excise number";"Excise number"
+"Pick-up";"Pick-up"
+"Number of bottle";"Number of bottle"
+"Quantity of bottle per product";"Quantity of bottle per product"
+"Type";"Type"
+"Select a type";"Select a type"
+"Still wine";"Still wine"
+"Sparkling wine";"Sparkling wine"
+"Spirit";"Spirit"
+"Non Alcoholic";"Non Alcoholic"
+"Color";"Color"
+"Select a color";"Select a color"
+"Red";"Red"
+"White";"White"
+"Ros√©";"Ros√©"
+"Spirits";"Spirits"
+"Beer";"Beer"
+"Capacity";"Capacity"
+"Other";"Other"
+"Custom Capacity";"Custom Capacity"
+"Capacity of a single product (in mL)";"Capacity of a single product (in mL)"
+"Alcohol percentage";"Alcohol percentage"
+"Vintage Year";"Vintage Year"
+"Producing country";"Producing country"
+"Designation";"Designation"
+"HS Code";"HS Code"
+"Please fill the information below in order to be able to use the plugin";"Please fill the information below in order to be able to use the plugin"
+"Key settings";"Key settings"
+"Insert your Hillebrand Gori eShipping API token";"Insert your Hillebrand Gori eShipping API token"
+"Test my access token";"Test my access token"
+"Please validate the API access before saving the modifications";"Please validate the API access before saving the modifications"
+"Address settings";"Address settings"
+"Select the address used to calculate shipping charges";"Select the address used to calculate shipping charges"
+"Favorite address";"Favorite address"
+"Select your address";"Select your address"
+"No addresses available";"No addresses available"
+"Calculate shipping charges";"Calculate shipping charges"
+"Contact our support if you need to edit those informations";"Contact our support if you need to edit those informations"
+"Address";"Address"
+"Company";"Company"
+"Contact";"Contact"
+"Phone";"Phone"
+"City";"City"
+"Configuration";"Configuration"
+"Packaging available";"Packaging available"
+"items";"items"
+"Minimum number of bottles";"Minimum number of bottles"
+"Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page";"Set the minimum number of bottles needed to activate the Hillebrand Gori eShipping shipping option on the checkout page"
+"Preparation time";"Preparation time"
+"Set the minimum number of days needed to prepare the parcels and make them ready for pickup";"Set the minimum number of days needed to prepare the parcels and make them ready for pickup"
+"Working days";"Working days"
+"Monday";"Monday"
+"Tuesday";"Tuesday"
+"Wednesday";"Wednesday"
+"Thursday";"Thursday"
+"Friday";"Friday"
+"Saturday";"Saturday"
+"Sunday";"Sunday"
+"Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time.";"Select the working days of your company. The selected days will be used to calculate the preparation time and the delivery time."
+"Carrier preference";"Carrier preference"
+"Min hour & Cutoff";"Min hour & Cutoff"
+"Min hour";"Min hour"
+"Set the minimum hour when the carrier can pick the parcels";"Set the minimum hour when the carrier can pick the parcels"
+"Cutoff";"Cutoff"
+"Set the maximum hour when the carrier can pick the parcels";"Set the maximum hour when the carrier can pick the parcels"
+"Delivery preference";"Delivery preference"
+"At home / Pickup point";"At home / Pickup point"
+"At home";"At home"
+"Pickup point";"Pickup point"
+"Duties and taxes at destination";"Duties and taxes at destination"
+"Select your option";"Select your option"
+"At the sender's expense";"At the sender's expense"
+"At the recipient's expense";"At the recipient's expense"
+"Displays the duties and taxes estimation on the checkout page if you choose the ""At the recipient's expense"" option (domestic international shipments)";"Displays the duties and taxes estimation on the checkout page if you choose the ""At the recipient's expense"" option (domestic international shipments)"
+"Numbers & Registrations";"Numbers & Registrations"
+"VAT number";"VAT number"
+"Enter your VAT number (required)";"Enter your VAT number (required)"
+"OSS";"OSS"
+"No";"No"
+"Yes";"Yes"
+"Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant.";"Select yes if you are registered on the European One Stop Shop, a portal used to register purchases for European consumers and pay the VAT of the destination country. If you exceed 10,000 EUR in online sales, you are required to register on this portal, otherwise you invoice the private individual with VAT as if he had come to buy the goods at your premises. For more information, ask your accountant."
+"EORI number";"EORI number"
+"Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency.";"Number needed to send to non-EU countries. It often corresponds to the country code followed by the VAT number. To request this code, you need to apply to your local customs agency."
+"FDA number";"FDA number"
+"Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us.";"Number issued by the US Food and Drugs Adminstration and used to identify any company, domestic or foreign, shipping human/animal foodstuffs to the US. This number is required to ship these types of goods to the USA. For assistance on how to obtain the number, please contact us."
+"Insurance";"Insurance"
+"Activate insurance";"Activate insurance"
+"If you choose ""Yes"", all shipments will be insured with a minimum amount of 5 ÔøΩ (may vary depending on the total price of the products)";"If you choose ""Yes"", all shipments will be insured with a minimum amount of 5 ÔøΩ (may vary depending on the total price of the products)"
+"Door Delivery";"Door Delivery"
+"Pick-up points";"Pick-up points"
+"Other Shipping Method";"Other Shipping Method"
+"Estimated delivery:";"Estimated delivery:"
+"Choose your pickup point";"Choose your pickup point"
+"Selected pickup point:";"Selected pickup point:"
+"Quantity";"Quantity"
+"Quantity of bottle per variation of the product";"Quantity of bottle per variation of the product"
+"Loading shipping rates";"Loading shipping rates"
+"Choose another pickup point";"Choose another pickup point"
+"Pickup points";"Pickup points"
+"Other shipping method";"Other shipping method"
+"Loading‚Ä¶";"Loading‚Ä¶"
+"Select a designation";"Select a designation"
+"Price change:";"Price change:"
+"Estimated delivery date :";"Estimated delivery date :"
+"Pickup date :";"Pickup date :"
+"An error occurred while validating the shipment.";"An error occurred while validating the shipment."
+"Validating shipment...";"Validating shipment..."
+"Shipping details";"Shipping details"
+"Select a shipping solution";"Select a shipping solution"
+"Change shipping option";"Change shipping option"
+"Shipment has been validated for this order.";"Shipment has been validated for this order."
+"Download the shipping label here";"Download the shipping label here"
+"Validate shipment";"Validate shipment"
+"Shipping option";"Shipping option"
+"No shipping rates available.";"No shipping rates available."
+"Update";"Update"
+"Updating the shipping method will reload the page. Ensure that all your modification have been saved before performing this action !";"Updating the shipping method will reload the page. Ensure that all your modification have been saved before performing this action !"
+"Selected";"Selected"
+"Package details";"Package details"
+"bottles";"bottles"
+"Change Packaging and select a new shipping option";"Change Packaging and select a new shipping option"
+"Required attachments";"Required attachments"
+"Products to dispatch";"Products to dispatch"
+"Packages";"Packages"
+"Add";"Add"
+"Next";"Next"
+"API Key is invalid! Please try again";"API Key is invalid! Please try again"
+"API Key is valid! You can now use the plugin";"API Key is valid! You can now use the plugin"
+"The product settings are incorrect";"The product settings are incorrect"
+"The product settings are correct";"The product settings are correct"
+"Impossible to publish this product. Please correct or fill the missing fields";"Impossible to publish this product. Please correct or fill the missing fields"
+"You need to provide valid product settings before publishing or updating.";"You need to provide valid product settings before publishing or updating."
+"This field cannot be empty";"This field cannot be empty"
+"VAT number is invalid! Please check the format.";"VAT number is invalid! Please check the format."
+"EORI number is invalid! Please check the format.";"EORI number is invalid! Please check the format."
+"FDA number format must be 11 digits.";"FDA number format must be 11 digits."
+"You must have at least one carrier configured.";"You must have at least one carrier configured."
+"You must have at least one working day configured.";"You must have at least one working day configured."
+"This field must be an integer";"This field must be an integer"
+"You must select at least one packaging option.";"You must select at least one packaging option."
+"There are errors in the form. Please correct them before submitting.";"There are errors in the form. Please correct them before submitting."
+"The selected shipping option is not available anymore !";"The selected shipping option is not available anymore !"
+"Attachments are missing for this order. Please ensure all required documents are uploaded before proceeding.";"Attachments are missing for this order. Please ensure all required documents are uploaded before proceeding."
+"Can't find packaging for product of type {packagingType}. Please contact the administrator.";"Can't find packaging for product of type {packagingType}. Please contact the administrator."

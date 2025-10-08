@@ -34,8 +34,8 @@ class Twig
         }));
 
         // Custom translation function
-        self::$twig->addFunction(new \Twig\TwigFunction('__', function ($text, $domain = GlobalEnum::TRANSLATION_DOMAIN) {
-            return __($text, $domain);
+        self::$twig->addFunction(new \Twig\TwigFunction('translate', function ($text, $vars = []) {
+            return Translator::translate($text, $vars);
         }));
 
         self::$twig->addFunction(new \Twig\TwigFunction('carrierChecked', function ($carrierName) {
