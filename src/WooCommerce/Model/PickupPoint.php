@@ -9,10 +9,10 @@ class PickupPoint {
     public static function getPickupPoints(string $street, string $zipCode, string $city, string $country): ?array
     {
         $urlParams = [
-            'street' => htmlspecialchars(strip_tags($street)),
-            'zipCode' => htmlspecialchars(strip_tags($zipCode)),
-            'city' => htmlspecialchars(strip_tags($city)),
-            'country' => htmlspecialchars(strip_tags($country)),
+            'street' => htmlspecialchars(wp_strip_all_tags($street)),
+            'zipCode' => htmlspecialchars(wp_strip_all_tags($zipCode)),
+            'city' => htmlspecialchars(wp_strip_all_tags($city)),
+            'country' => htmlspecialchars(wp_strip_all_tags($country)),
         ];
 
         $pickupPointsRequest = ApiClient::get(
