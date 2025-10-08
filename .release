@@ -1,6 +1,7 @@
 assets
 dist
 docs
+i18n
 node_modules
 src
 templates
