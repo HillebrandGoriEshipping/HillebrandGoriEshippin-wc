@@ -69,7 +69,7 @@ const ShippingMethodRow = ({
             window.location.reload();
         }
       } catch (error) {
-        setShipmentError(__("An error occurred while validating the shipment."));
+        setShipmentError(translate("An error occurred while validating the shipment."));
       } finally {
         setIsLoadingShipment(false);
       }
@@ -112,7 +112,7 @@ const ShippingMethodRow = ({
             <div className="shipping-method-row">
                 <LoadingMask
                     isLoading={isLoadingShipment}
-                    screenReaderLabel={__("Validating shipment...", "hges")}
+                    screenReaderLabel={ translate("Validating shipment...") }
                     showSpinner={true}
                 >
                 <div className={`error-message ${stillAvailable ? "hidden" : ""}`}>
@@ -126,20 +126,20 @@ const ShippingMethodRow = ({
                                 packaging={packaging} onPackagingUpdated={onPackagingUpdated}
                                 hasShipment={hasShipment} 
                             />
-                        )}
+                        ) }
                         
                     </div>
                     <div className="shipping-details">
-                    <h3>{__('Shipping details')}</h3> 
+                    <h3>{ translate('Shipping details') }</h3> 
                         {!shippingRate ?
-                            <p>{ __('Select a shipping solution') }</p> 
+                            <p>{ translate('Select a shipping solution') }</p> 
                         : (
                             <ShippingRowBody
                                 shippingRate={shippingRate}
                                 attachments={attachments}
                                 remainingAttachments={remainingAttachments}
                             />
-                        )}
+                        ) }
                         {hasShipment ? '' : (
                             <button
                                 className='hges-button edit-order-button'
@@ -148,9 +148,9 @@ const ShippingMethodRow = ({
                                 data-item-id={itemId}
                                 onClick={openShippingRateModal}
                             >
-                            {__('Change shipping option')}
+                            { translate('Change shipping option') }
                             </button>
-                        )}
+                        ) }
                     </div>
                     <ShippingRateModal
                         isOpen={isRateSelectionModalOpen}
@@ -160,9 +160,9 @@ const ShippingMethodRow = ({
                 </div>
                 {hasShipment ? (
                     <div className="shipment-validated-message">
-                        {__('Shipment has been validated for this order.')}
+                        { translate('Shipment has been validated for this order.') }
                         <a href={shippingLabelLink} target="_blank" rel="noopener noreferrer">
-                            {__('Download the shipping label here')}
+                            { translate('Download the shipping label here') }
                         </a>.
                     </div>
                 ) : (
@@ -172,14 +172,14 @@ const ShippingMethodRow = ({
                         id="hges-validate-shipment-button"
                         onClick={onValidateShipment}
                     >
-                        {__('Validate shipment')}
+                        { translate('Validate shipment') }
                     </button>
-                )}
+                ) }
                 {shipmentError && (
                     <div className="shipment-error">
                         {shipmentError}
                     </div>
-                )}
+                ) }
                 </LoadingMask>
             </div>
         );

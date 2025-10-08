@@ -115,7 +115,7 @@ window.hges.validator = {
                 const numberTypes = ['integer', 'float', 'double', 'number'];
                 if (value && numberTypes.includes(convertedType) && !this.numberConstraint(value)) {
                     const message = constraint.message.replace('{{ type }}', convertedType);
-                    error.message = __(message) || __(`This field must be of type ${convertedType}.`);
+                    error.message = translate(message) || translate(`This field must be of type ${convertedType}.`);
                     return error;
                 }
                 break;

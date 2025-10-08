@@ -46,11 +46,6 @@ class App
      */
     public function run(): void
     {
-        register_activation_hook(
-            HGES_PLUGIN_DIR . '/HillebrandGoriEshipping.php',
-            [LifeCycle::class, 'onPluginActivation']
-        );
-
         $this->router->init();
 
         if (is_admin()) {

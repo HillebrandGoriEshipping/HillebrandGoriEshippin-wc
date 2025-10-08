@@ -4,11 +4,10 @@ namespace HGeS\Admin\Order;
 
 use HGeS\Rate;
 use HGeS\Utils\Messages;
-use HGeS\Utils\Packaging;
 use HGeS\Utils\RateHelper;
+use HGeS\Utils\Translator;
 use HGeS\Utils\Twig;
 use HGeS\WooCommerce\Model\Order;
-use HGeS\WooCommerce\Model\ShippingMethod;
 
 /**
  * Handles the display of the shipping method row in the WooCommerce order admin page
@@ -92,7 +91,7 @@ class ShippingMethodRow {
         $templateData = [
             'componentData' => [
                 'initialSelectedRate' => $initialSelectedRate ? $initialSelectedRate->toArray() : null,
-                'errorMessage' => Messages::getMessage('orderAdmin.shippingRateNotAvailable'),
+                'errorMessage' => Translator::translate(Messages::getMessage('orderAdmin.shippingRateNotAvailable')),
                 'stillAvailable' => $shippingMethodStillAvailable,
                 'shippingRate' => !empty($shippingRate) ? $shippingRate->toArray() : null,
                 'attachments' => $attachments ?? [],

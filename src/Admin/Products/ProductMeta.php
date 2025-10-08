@@ -5,8 +5,8 @@ namespace HGeS\Admin\Products;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Twig;
 use HGeS\Utils\Enums\ProductMetaEnum;
-use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\HSCodeHelper;
+use HGeS\Utils\Translator;
 use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
 use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 
@@ -48,7 +48,7 @@ class ProductMeta
     public static function customTab(array $tabs): array
     {
         $tabs['HGeS_product_tab'] = [
-            'label'    => __('Bottle Settings', GlobalEnum::TRANSLATION_DOMAIN),
+            'label'    => Translator::translate('Bottle Settings'),
             'target'   => 'HGeS_product_tab_options',
             'priority' => 21,
             'class'    => ['show_if_bottle-simple', 'show_if_bottle-variable'],

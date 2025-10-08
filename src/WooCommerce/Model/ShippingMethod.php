@@ -3,7 +3,7 @@
 namespace HGeS\WooCommerce\Model;
 
 use HGeS\Rate;
-use HGeS\Utils\Enums\GlobalEnum;
+use HGeS\Utils\Translator;
 
 class ShippingMethod extends \WC_Shipping_Method
 {
@@ -31,7 +31,7 @@ class ShippingMethod extends \WC_Shipping_Method
         $this->id = self::METHOD_ID;
         $this->instance_id = $instance_id;
         $this->method_title = self::METHOD_TITLE;
-        $this->method_description = __(self::METHOD_DESCRIPTION, GlobalEnum::TRANSLATION_DOMAIN);
+        $this->method_description = Translator::translate(self::METHOD_DESCRIPTION);
         $this->enabled = self::ENABLED;
         $this->title = self::METHOD_TITLE;
         $this->supports = self::SUPPORTS;

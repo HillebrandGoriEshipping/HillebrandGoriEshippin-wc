@@ -2,9 +2,9 @@
 
 namespace HGeS\WooCommerce\Model;
 
-use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
 use HGeS\Utils\Messages;
+use HGeS\Utils\Translator;
 
 class Product
 {
@@ -34,10 +34,10 @@ class Product
         }
 
         $requiredFields = [
-            ProductMetaEnum::HS_CODE => __('Valid appellation', GlobalEnum::TRANSLATION_DOMAIN),
-            ProductMetaEnum::CAPACITY => __('Capacity', GlobalEnum::TRANSLATION_DOMAIN),
-            ProductMetaEnum::ALCOHOL_PERCENTAGE => __('Alcohol Percentage', GlobalEnum::TRANSLATION_DOMAIN),
-            ProductMetaEnum::COLOR => __('Color', GlobalEnum::TRANSLATION_DOMAIN),
+            ProductMetaEnum::HS_CODE => Translator::translate('Valid appellation'),
+            ProductMetaEnum::CAPACITY => Translator::translate('Capacity'),
+            ProductMetaEnum::ALCOHOL_PERCENTAGE => Translator::translate('Alcohol Percentage'),
+            ProductMetaEnum::COLOR => Translator::translate('Color'),
         ];
 
         $missing = [];

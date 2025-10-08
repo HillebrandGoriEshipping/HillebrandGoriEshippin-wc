@@ -4,8 +4,8 @@ namespace HGeS\Router;
 
 use HGeS\Rate;
 use HGeS\Utils\ApiClient;
-use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Packaging;
+use HGeS\Utils\Translator;
 use HGeS\WooCommerce\Model\Order;
 
 class FrontController
@@ -278,12 +278,12 @@ class FrontController
                 $order->save_meta_data();
             }
 
-            $order->add_order_note(__('Shipment created with ID ', GlobalEnum::TRANSLATION_DOMAIN) . $shipment['id']);
+            $order->add_order_note(Translator::translate('Shipment created with ID ') . $shipment['id']);
             $order->save();
 
             self::renderJson([
                 'success' => true,
-                'message' => "Shipment for order #$orderId validated",
+                'message' => Translator::translate("Shipment for order #{orderId} validated", ['orderId' => $orderId]),
                 'shipment' => $shipment
             ]);
         } catch (\Exception $e) {

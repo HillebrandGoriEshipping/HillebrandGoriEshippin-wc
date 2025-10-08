@@ -2,9 +2,9 @@
 
 namespace HGeS\WooCommerce;
 
-use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Twig;
 use Automattic\WooCommerce\Admin\Overrides\Order;
+use HGeS\Utils\Translator;
 
 /**
  * Class ShippingAddressFields
@@ -155,7 +155,7 @@ class ShippingAddressFields
         $translated = $options;
         foreach ($options as $optionKey => $optionValue) {
             if (in_array($optionKey, self::TRANSLATABLE_FIELDS)) {
-                $translated[$optionKey] = __($optionValue, GlobalEnum::TRANSLATION_DOMAIN);
+                $translated[$optionKey] = Translator::translate($optionValue);
             }
         }
         return $translated;
@@ -171,19 +171,19 @@ class ShippingAddressFields
     {
         $isCompanyCheckbox = [
             'type' => 'checkbox',
-            'label' => __(self::IS_COMPANY_CHECKBOX_OPTIONS['label'], GlobalEnum::TRANSLATION_DOMAIN),
+            'label' => Translator::translate(self::IS_COMPANY_CHECKBOX_OPTIONS['label']),
             'class' => ['form-row-wide'],
             'required' => false,
         ];
         $companyNameField = [
             'type' => 'text',
-            'label' => __(self::COMPANY_NAME_FIELD_OPTIONS['label'], GlobalEnum::TRANSLATION_DOMAIN),
+            'label' => Translator::translate(self::COMPANY_NAME_FIELD_OPTIONS['label']),
             'class' => ['form-row-wide'],
             'required' => false,
         ];
         $exciseNumberField = [
             'type' => 'text',
-            'label' => __(self::EXCISE_NUMBER_FIELD_OPTIONS['label'], GlobalEnum::TRANSLATION_DOMAIN),
+            'label' => Translator::translate(self::EXCISE_NUMBER_FIELD_OPTIONS['label']),
             'class' => ['form-row-wide'],
             'required' => false,
         ];
@@ -276,7 +276,7 @@ class ShippingAddressFields
     public static function getRenderedCompanyBlock(Order $order): string
     {
         $data = [
-            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? __('Yes', GlobalEnum::TRANSLATION_DOMAIN) : __('No', GlobalEnum::TRANSLATION_DOMAIN),
+            'isCompany' => $order->get_meta(self::SHIPPING_IS_COMPANY_METANAME, true) ? Translator::translate('Yes') : Translator::translate('No'),
             'companyName' => $order->get_meta(self::SHIPPING_COMPANY_NAME_METANAME, true),
             'exciseNumber' => $order->get_meta(self::SHIPPING_EXCISE_NUMBER_METANAME, true),
         ];

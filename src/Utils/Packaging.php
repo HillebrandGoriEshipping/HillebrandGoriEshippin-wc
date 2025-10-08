@@ -3,9 +3,7 @@
 namespace HGeS\Utils;
 
 use HGeS\Dto\PackageDto;
-use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\Utils\Enums\ProductMetaEnum;
-use HGeS\WooCommerce\Model\Order;
 
 class Packaging
 {
@@ -80,8 +78,7 @@ class Packaging
             
             if ($packagingAvailable[$packagingType] === []) {
                 wc_add_notice(
-                    __(Messages::getMessage('frontOffice.packagingNotAvailable', ['packagingType' => $packagingType]), 
-                    GlobalEnum::TRANSLATION_DOMAIN), 'error'
+                    Translator::translate(Messages::getMessage('frontOffice.packagingNotAvailable', ['packagingType' => $packagingType])), 'error'
                 );
                 continue;
             }

@@ -176,7 +176,7 @@ const PickupPointsMap = () => {
             <div className="modal__content">
                 <div className={`modal__load-mask ${isLoading ? '' : 'hidden'}`}><Spinner /></div>
                 <div className="modal__header">
-                    <h2 className="modal__title">{ __("Pick-up point") }</h2>
+                    <h2 className="modal__title">{ translate("Pick-up point") }</h2>
                     <button className="modal__close" onClick={closeModal}>
                         <span className="dashicons dashicons-no-alt"></span>
                     </button>
@@ -184,7 +184,7 @@ const PickupPointsMap = () => {
                 <div className="modal__body">
                     <div className="floating-button-container" title="Search in this area">
                         <button onClick={onSearchForThisArea}>
-                           { __("Search in this area") }
+                           { translate("Search in this area") }
                         </button>
                     </div>
                     <div ref={mapContainerRef} className="map-container" id="pickup-points-map"></div>
@@ -196,7 +196,7 @@ const PickupPointsMap = () => {
                                     <a
                                         href="#"
                                         onClick={onItemClick}
-                                        data-pickup-point={JSON.stringify(pickupPoint)}
+                                        data-pickup-point={JSON.stringify(pickupPoint) }
                                     >
                                         <div className="pickup-point__title">
                                         {pickupPoint.name}
@@ -204,11 +204,11 @@ const PickupPointsMap = () => {
                                         <div className="pickup-point__address">
                                         {pickupPoint.address_1}
                                         </div>
-                                        <div className="pickup-point__distance">{getDistanceString(pickupPoint.distance)}
+                                        <div className="pickup-point__distance">{getDistanceString(pickupPoint.distance) }
                                         </div>
                                     </a>
                                 </div>
-                            ))}
+                            )) }
                         </div>
                         
                     </div>

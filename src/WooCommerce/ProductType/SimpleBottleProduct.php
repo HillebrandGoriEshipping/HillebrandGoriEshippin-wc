@@ -2,7 +2,7 @@
 
 namespace HGeS\WooCommerce\ProductType;
 
-use HGeS\Utils\Enums\GlobalEnum;
+use HGeS\Utils\Translator;
 
 class SimpleBottleProduct extends \WC_Product_Simple
 {
@@ -42,7 +42,7 @@ class SimpleBottleProduct extends \WC_Product_Simple
      */
     public static function addToSelect(array $types): array
     {
-        $types[self::PRODUCT_TYPE] = __(self::PRODUCT_TYPE_LABEL, GlobalEnum::TRANSLATION_DOMAIN);
+        $types[self::PRODUCT_TYPE] = Translator::translate(self::PRODUCT_TYPE_LABEL);
         return $types;
     }
 

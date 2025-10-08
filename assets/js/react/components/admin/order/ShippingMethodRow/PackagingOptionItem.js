@@ -1,4 +1,4 @@
-const { __ } = wp.i18n;
+const { translate } = window.hges.i18n;
 
 const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect, onRemove }) => {
     const onSelectChange = (e) => {
@@ -8,11 +8,11 @@ const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect, onRemove
     return (
         <div className="packaging-option-item">
             <h4>Package {packageItem.index}</h4>
-            <div className="remove-button" onClick={() => onRemove(packageItem)}>
+            <div className="remove-button" onClick={() => onRemove(packageItem) }>
                 <span className="dashicons dashicons-no-alt"></span>
             </div>
             <div className="package-select">
-                <label>{__('Type')}</label>
+                <label>{ translate('Type') }</label>
                 <select
                     value={packageItem.id}
                     onChange={onSelectChange}
@@ -21,11 +21,11 @@ const PackagingOptionItem = ({ packageItem, packagingOptions, onSelect, onRemove
                         <option key={option.id} value={option.id}>
                             {option.itemNumber} x {option.containerType}
                         </option>
-                    ))}
+                    )) }
                 </select>
             </div>
             <div className="package-modal-details">
-                <p>{__('Selected')}: </p>
+                <p>{ translate('Selected') }: </p>
                 <p>{packageItem.width} x {packageItem.height} x {packageItem.length} cm</p>
             </div>
         </div>

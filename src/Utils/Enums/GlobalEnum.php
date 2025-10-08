@@ -7,9 +7,10 @@ namespace HGeS\Utils\Enums;
  *
  * This class is used to define the global enums for the plugin.
  */
-class GlobalEnum implements EnumInterface {
+class GlobalEnum implements EnumInterface
+{
 
-    const TRANSLATION_DOMAIN = 'HillebrandGorieShipping';
+    const TRANSLATION_DOMAIN = 'hges';
 
     public static function getList(): array
     {

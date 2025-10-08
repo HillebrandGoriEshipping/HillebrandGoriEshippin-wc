@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelect } from "@wordpress/data";
 const { select } = window.wp.data;
-const { __ } = window.wp.i18n;
+const { translate } = window.hges.i18n;
 
 import LoadingMask from "../blocks/LoadingMask";
 import ShippingRatesContainer from "../blocks/ShippingRatesContainer";
@@ -101,7 +101,7 @@ const HgesShippingRates = (data) => {
   return (
     <LoadingMask
       isLoading={loading}
-      screenReaderLabel={__("Loading shipping rates", "hges")}
+      screenReaderLabel={ translate("Loading shipping rates") }
       showSpinner={true}
     >
       <ShippingRatesContainer

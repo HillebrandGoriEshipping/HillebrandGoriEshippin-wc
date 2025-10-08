@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "@wordpress/element";
-import { __ } from "@wordpress/i18n";
+const { translate } = window.hges.i18n;
 
 const SelectedPickupPoint = () => {
 
@@ -46,10 +46,10 @@ const SelectedPickupPoint = () => {
                     <p>{ selectedPickupPoint.addLine1 }</p>
                     <p>{ selectedPickupPoint.zipCode } { selectedPickupPoint.city }</p>
                     <div className="button-container">
-                        <button className="button">{__('Choose another pickup point')}</button>
+                        <button className="button">{ translate('Choose another pickup point') }</button>
                     </div>
                 </div>
-            )}
+            ) }
         </div>
     )
 }

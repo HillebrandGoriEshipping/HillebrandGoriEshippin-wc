@@ -1,6 +1,6 @@
 <div id="HGeS_product_tab_options" class="panel woocommerce_options_panel">
     <p class="form-field">
-        <label for="{{ hgesProductMeta('NUMBER_OF_BOTTLE') }}">{{ __('Number of bottle') }}</label>
+        <label for="{{ hgesProductMeta('NUMBER_OF_BOTTLE') }}">{{ translate('Number of bottle') }}</label>
         <input
             type="number"
             class="short"
@@ -10,43 +10,43 @@
             min="1"
             step="1"
         />
-        <span class="description">{{ __('Quantity of bottle per product') }}</span>
+        <span class="description">{{ translate('Quantity of bottle per product') }}</span>
     </p>
 
     <p class="form-field">
-        <label for="{{ hgesProductMeta('TYPE') }}">{{ __('Type') }}</label>
+        <label for="{{ hgesProductMeta('TYPE') }}">{{ translate('Type') }}</label>
         <select id="{{ hgesProductMeta('TYPE') }}" name="{{ hgesProductMeta('TYPE') }}" class="short">
-            <option value="" >{{ __('Select a type') }}</option>
-            <option value="still" {{ productMeta[hgesProductMeta('TYPE')] == 'still' ? 'selected' : '' }}>{{ __('Still wine') }}</option>
-            <option value="sparkling" {{ productMeta[hgesProductMeta('TYPE')] == 'sparkling' ? 'selected' : '' }}>{{ __('Sparkling wine') }}</option>
-            <option value="spirit" {{ productMeta[hgesProductMeta('TYPE')] == 'spirit' ? 'selected' : '' }}>{{ __('Spirit') }}</option>
-            <option value="nonAlcoholic" {{ productMeta[hgesProductMeta('TYPE')] == 'nonAlcoholic' ? 'selected' : '' }}>{{ __('Non Alcoholic') }}</option>
+            <option value="" >{{ translate('Select a type') }}</option>
+            <option value="still" {{ productMeta[hgesProductMeta('TYPE')] == 'still' ? 'selected' : '' }}>{{ translate('Still wine') }}</option>
+            <option value="sparkling" {{ productMeta[hgesProductMeta('TYPE')] == 'sparkling' ? 'selected' : '' }}>{{ translate('Sparkling wine') }}</option>
+            <option value="spirit" {{ productMeta[hgesProductMeta('TYPE')] == 'spirit' ? 'selected' : '' }}>{{ translate('Spirit') }}</option>
+            <option value="nonAlcoholic" {{ productMeta[hgesProductMeta('TYPE')] == 'nonAlcoholic' ? 'selected' : '' }}>{{ translate('Non Alcoholic') }}</option>
         </select>
     </p>
 
     <p class="form-field wine-form-field">
-        <label for="{{ hgesProductMeta('COLOR') }}">{{ __('Color') }}</label>
+        <label for="{{ hgesProductMeta('COLOR') }}">{{ translate('Color') }}</label>
         <select id="{{ hgesProductMeta('COLOR') }}" name="{{ hgesProductMeta('COLOR') }}" class="short">
-            <option value="" >{{ __('Select a color') }}</option>
-            <option value="red" {{ productMeta[hgesProductMeta('COLOR')] == 'red' ? 'selected' : '' }}>{{ __('Red') }}</option>
-            <option value="white" {{ productMeta[hgesProductMeta('COLOR')] == 'white' ? 'selected' : '' }}>{{ __('White') }}</option>
-            <option value="rose" {{ productMeta[hgesProductMeta('COLOR')] == 'rose' ? 'selected' : '' }}>{{ __('Rosé') }}</option>
-            <option value="spirits" {{ productMeta[hgesProductMeta('COLOR')] == 'spirits' ? 'selected' : '' }}>{{ __('Spirits') }}</option>
-            <option value="beer" {{ productMeta[hgesProductMeta('COLOR')] == 'beer' ? 'selected' : '' }}>{{ __('Beer') }}</option>
+            <option value="" >{{ translate('Select a color') }}</option>
+            <option value="red" {{ productMeta[hgesProductMeta('COLOR')] == 'red' ? 'selected' : '' }}>{{ translate('Red') }}</option>
+            <option value="white" {{ productMeta[hgesProductMeta('COLOR')] == 'white' ? 'selected' : '' }}>{{ translate('White') }}</option>
+            <option value="rose" {{ productMeta[hgesProductMeta('COLOR')] == 'rose' ? 'selected' : '' }}>{{ translate('Rosé') }}</option>
+            <option value="spirits" {{ productMeta[hgesProductMeta('COLOR')] == 'spirits' ? 'selected' : '' }}>{{ translate('Spirits') }}</option>
+            <option value="beer" {{ productMeta[hgesProductMeta('COLOR')] == 'beer' ? 'selected' : '' }}>{{ translate('Beer') }}</option>
         </select>
     </p>
 
     <p class="form-field">
-        <label for="{{ hgesProductMeta('CAPACITY_TYPE') }}">{{ __('Capacity') }}</label>
+        <label for="{{ hgesProductMeta('CAPACITY_TYPE') }}">{{ translate('Capacity') }}</label>
         <select id="{{ hgesProductMeta('CAPACITY_TYPE') }}" name="{{ hgesProductMeta('CAPACITY_TYPE') }}" class="short">
-            <option value="bottle" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'bottle' ? 'selected' : '' }}>{{ __('Standard (750 mL)') }}</option>
-            <option value="magnum" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'magnum' ? 'selected' : '' }}>{{ __('Magnum (1500 mL)') }}</option>
-            <option value="other" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'other' ? 'selected' : '' }}>{{ __('Other') }}</option>
+            <option value="bottle" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'bottle' ? 'selected' : '' }}>{{ translate('Standard (750 mL)') }}</option>
+            <option value="magnum" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'magnum' ? 'selected' : '' }}>{{ translate('Magnum (1500 mL)') }}</option>
+            <option value="other" {{ productMeta[hgesProductMeta('CAPACITY_TYPE')] == 'other' ? 'selected' : '' }}>{{ translate('Other') }}</option>
         </select>
     </p>
 
     <p id="custom-capacity-wrapper" class="form-field" style="display: none;">
-        <label for="{{ hgesProductMeta('CAPACITY') }}">{{ __('Custom Capacity') }}</label>
+        <label for="{{ hgesProductMeta('CAPACITY') }}">{{ translate('Custom Capacity') }}</label>
         <input
             type="number"
             class="short"
@@ -56,11 +56,11 @@
             min="50"
             step="5"
         />
-    <span class="description">{{ __('Capacity of a single product (in mL)') }}</span>
+    <span class="description">{{ translate('Capacity of a single product (in mL)') }}</span>
     </p>
     
     <p class="form-field wine-form-field">
-        <label for="{{ hgesProductMeta('ALCOHOL_PERCENTAGE') }}">{{ __('Alcohol percentage') }}</label>
+        <label for="{{ hgesProductMeta('ALCOHOL_PERCENTAGE') }}">{{ translate('Alcohol percentage') }}</label>
         <input
             type="number"
             class="short"
@@ -73,7 +73,7 @@
     </p>
 
     <p class="form-field wine-form-field">
-        <label for="{{ hgesProductMeta('VINTAGE_YEAR') }}">{{ __('Vintage Year') }}</label>
+        <label for="{{ hgesProductMeta('VINTAGE_YEAR') }}">{{ translate('Vintage Year') }}</label>
         <input
             type="number"
             class="short"
@@ -87,7 +87,7 @@
     </p>
 
     <p class="form-field wine-form-field">
-        <label for="{{ hgesProductMeta('PRODUCING_COUNTRY') }}">{{ __('Producing country') }}</label>
+        <label for="{{ hgesProductMeta('PRODUCING_COUNTRY') }}">{{ translate('Producing country') }}</label>
         <select id="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" name="{{ hgesProductMeta('PRODUCING_COUNTRY') }}" class="short">
             {% for code, country in producingCountries %}
                 <option value="{{ code }}" {{ code == productMeta[hgesProductMeta('PRODUCING_COUNTRY')] ? 'selected' : '' }}>
@@ -98,17 +98,17 @@
     </p>
 
     <p class="form-field wine-form-field">
-        <label for="appellation-select-field">{{ __('Appellation') }}</label>
+        <label for="appellation-select-field">{{ translate('Appellation') }}</label>
         <select id="appellation-select-field" data-saved-value="{{ productMeta[hgesProductMeta('APPELLATION')] }}" class="short"></select>
     </p>
 
     <p class="form-field">
-        <label for="appellation-select-field">{{ __('Appellation') }}</label>
+        <label for="appellation-select-field">{{ translate('Appellation') }}</label>
         <textarea name="{{ hgesProductMeta('APPELLATION') }}" id="{{ hgesProductMeta('APPELLATION') }}" />{{ productMeta[hgesProductMeta('APPELLATION')] }}</textarea>
     </p>
 
     <p class="form-field">
-        <label for="appellation-select-field">{{ __('HS Code') }}</label>
+        <label for="appellation-select-field">{{ translate('HS Code') }}</label>
         <input type="text" name="{{ hgesProductMeta('HS_CODE') }}" id="{{ hgesProductMeta('HS_CODE') }}" value="{{ productMeta[hgesProductMeta('HS_CODE')] }}" class="short"/>
     </p>
 

@@ -9,6 +9,7 @@
  * Requires PHP: 8.3
  * License: GPLv3
  * Text Domain: hges
+ * Domain Path: /languages
  */
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
@@ -24,4 +25,3 @@ define('HGES_PLUGIN_CONFIG_PATH', HGES_PLUGIN_DIR . '/assets/js/config/config.js
 define('HGES_MESSAGES_JSON_PATH', HGES_PLUGIN_DIR . '/assets/js/config/messages.json');
 $hgesApp = new App();
 $hgesApp->run();
-

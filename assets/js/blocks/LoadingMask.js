@@ -1,4 +1,4 @@
-const { __ } = window.wp.i18n;
+const { translate } = window.hges.i18n;
 import clsx from "clsx";
 const { Spinner } = window.wc.blocksComponents;
 
@@ -13,22 +13,22 @@ const LoadingMask = ({
     <div
       className={clsx(className, {
         "wc-block-components-loading-mask": isLoading,
-      })}
+      }) }
     >
       {isLoading && showSpinner && <Spinner />}
       <div
         className={clsx({
           "wc-block-components-loading-mask__children": isLoading,
-        })}
+        }) }
         aria-hidden={isLoading}
       >
         {children}
       </div>
       {isLoading && (
         <span className="screen-reader-text">
-          {screenReaderLabel || __("Loading…", "woocommerce")}
+          {screenReaderLabel || translate("Loading…") }
         </span>
-      )}
+      ) }
     </div>
   );
 };
