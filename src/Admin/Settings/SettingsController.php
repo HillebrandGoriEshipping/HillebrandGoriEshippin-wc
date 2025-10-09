@@ -38,12 +38,17 @@ class SettingsController
             $allAddresses = [];
         }
 
-        $packagingOptions = ApiClient::get('/v2/packages')['data'];
+        try {
+            $packagingOptions = ApiClient::get('/v2/packages')['data'];
+        } catch (\Throwable $e) {
+            $packagingOptions = [];
+        }
+
         $existingPackagingOptions = [];
         foreach ($packagingOptions as $packagingOption) {
             $existingPackagingOptions[$packagingOption['containerType']][] = $packagingOption;
         }
-        
+
         echo Twig::getTwig()->render('admin/settings-page.twig', [
             'title' => Translator::translate(esc_html(self::SETTING_PAGE_TITLE)),
             'options' => $options,
@@ -98,7 +103,7 @@ class SettingsController
 
         $favoriteAddressId = sanitize_text_field(wp_unslash($_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID]));
         $favoriteAddress = Address::singleFromApi($favoriteAddressId);
-        
+
         if (empty($favoriteAddress)) {
             FormSessionMessages::setMessages('error', [OptionEnum::HGES_FAVORITE_ADDRESS_ID => "Invalid address ID. Please select a valid address."]);
             wp_redirect(admin_url(self::SETTING_PAGE_URL));
