@@ -42,7 +42,6 @@ class Translator
 
         $baseDir = HGES_PLUGIN_DIR . '/i18n/';
         $langFile = $baseDir . 'messages.' . $locale . '.csv';
-        error_log($langFile);
 
         $keys = [];
         $translations = [];
