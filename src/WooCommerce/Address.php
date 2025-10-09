@@ -41,6 +41,11 @@ class Address
      */
     public static function singleFromApi(int $id): array
     {
+        $accessKey = get_option(OptionEnum::HGES_ACCESS_KEY);
+        if (empty($accessKey)) {
+            return [];
+        }
+
         try {
             $address = ApiClient::get('/v2/addresses/' . $id);
 
