@@ -103,6 +103,15 @@ class SettingsController
 
         $favoriteAddressId = sanitize_text_field(wp_unslash($_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID]));
         $favoriteAddress = Address::singleFromApi($favoriteAddressId);
+        $accessKey = get_option(OptionEnum::HGES_ACCESS_KEY);
+
+        if (empty($accessKey)) {
+            FormSessionMessages::setMessages('error', [
+                OptionEnum::HGES_FAVORITE_ADDRESS_ID => "Please connect to the API first (missing access key)."
+            ]);
+            wp_redirect(admin_url(self::SETTING_PAGE_URL));
+            return;
+        }
 
         if (empty($favoriteAddress)) {
             FormSessionMessages::setMessages('error', [OptionEnum::HGES_FAVORITE_ADDRESS_ID => "Invalid address ID. Please select a valid address."]);
