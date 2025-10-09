@@ -32,6 +32,8 @@ class Translator
      */
     public static function loadTranslations(?string $locale = null): void
     {
+        global $wp_filesystem;
+
         if (!$locale) {
             $locale = get_locale();
         }
@@ -46,12 +48,34 @@ class Translator
         $keys = [];
         $translations = [];
         if (file_exists($langFile)) {
-            if (($handle = fopen($langFile, 'r')) !== false) {
-                while (($row = fgetcsv($handle, 0, ';')) !== false) {
-                    $keys[] = $row[0];
-                    $translations[$row[0]] = $row[1];
+
+            // Initialise le système de fichiers si besoin
+            if (empty($wp_filesystem)) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+                \WP_Filesystem();
+            }
+
+            if ($wp_filesystem->exists($langFile)) {
+                $content = $wp_filesystem->get_contents($langFile);
+
+                if ($content !== false) {
+                    $lines = explode("\n", $content);
+                    $keys = [];
+                    $translations = [];
+
+                    foreach ($lines as $line) {
+                        if (trim($line) === '') {
+                            continue;
+                        }
+                        
+                        $row = str_getcsv($line, ';');
+
+                        if (count($row) >= 2) {
+                            $keys[] = $row[0];
+                            $translations[$row[0]] = $row[1];
+                        }
+                    }
                 }
-                fclose($handle);
             }
         }
 
