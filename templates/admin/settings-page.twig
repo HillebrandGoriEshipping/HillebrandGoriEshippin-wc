@@ -208,10 +208,6 @@
                             <input type="checkbox" id="tnt" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="tnt" {{ carrierChecked('tnt') }}>
                             <label for="tnt">TNT</label>
                         </div>
-                        <div>
-                            <input type="checkbox" id="chronopost" name="{{ hgesOptionName('HGES_PREF_TRANSP') }}[]" value="chronopost" {{ carrierChecked('chronopost') }}>
-                            <label for="chronopost">CHRONOPOST</label>
-                        </div>
                     </fieldset>
                     {% include('form-error-message.twig') with {'error': errors.HGES_PREF_TRANSP} %}
                 </div>
