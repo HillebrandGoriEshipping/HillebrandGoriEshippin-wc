@@ -74,22 +74,6 @@ class Scripts
             ['in_footer' => true]
         );
 
-        wp_enqueue_script(
-            'dayjs-lib',
-            HGES_PLUGIN_URL . 'node_modules/dayjs/dayjs.min.js',
-            [],
-            null,
-            true
-        );
-
-        wp_enqueue_script_module(
-            'hges-dayjs-init',
-            HGES_PLUGIN_URL . '/js/dayJsInit.js',
-            ['dayjs-lib'],
-            null,
-            ['strategy' => 'defer', 'type' => 'module']
-        );
-
         wp_enqueue_script_module(
             'hges-classic-pickup-map-handler',
             HGES_PLUGIN_URL . 'assets/js/classicPickupMap.js',
