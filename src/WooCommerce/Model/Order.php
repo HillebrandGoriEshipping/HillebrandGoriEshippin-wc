@@ -435,9 +435,7 @@ class Order
         }
 
         try {
-            error_log('Payload envoyé : ' . json_encode($params, JSON_PRETTY_PRINT));
             $response = ApiClient::post('/v2/shipments', $params);
-            error_log('Réponse API : ' . json_encode($response, JSON_PRETTY_PRINT));
 
             if (isset($response['data']['shipment']) && is_array($response['data']['shipment'])) {
                 error_log('Shipment created with ID: ' . $response['data']['shipment']['id']);
@@ -485,7 +483,7 @@ class Order
             ];
         }
 
-        echo json_encode($response);
+        echo wp_json_encode($response);
         exit;
     }
 
@@ -505,7 +503,7 @@ class Order
             return [];
         }
 
-        echo json_encode($attachments);
+        echo wp_json_encode($attachments);
         exit;
     }
 
