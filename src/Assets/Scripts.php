@@ -186,7 +186,7 @@ class Scripts
             $frontendJsGlobalObject['validatorConstraints'] = FrontendValidator::getAll();
         }
 
-        $jsonObject = json_encode($frontendJsGlobalObject);
+        $jsonObject = wp_json_encode($frontendJsGlobalObject);
         $javascriptString =  "window.hges = $jsonObject;";
 
         wp_add_inline_script(
