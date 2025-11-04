@@ -16,3 +16,4 @@ Ship wine, spirits and any bottled products throught Hillebrand Gori.
 - This plugin works with WooCommerce. It allows the users to select Hillebrand Gori eShipping shipping options in their orders.
 
 Please visit https://eshipping.hillebrandgori.com to learn more.
+Sources available at https://github.com/HillebrandGoriEshipping/HillebrandGoriEshippin-wc
