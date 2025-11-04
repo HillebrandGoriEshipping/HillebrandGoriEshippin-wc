@@ -8,8 +8,6 @@
  * Requires Plugins: woocommerce
  * Requires PHP: 8.3
  * License: GPLv3
- * Text Domain: hges
- * Domain Path: /languages
  */
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
