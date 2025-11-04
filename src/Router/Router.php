@@ -115,6 +115,11 @@ class Router
      */
     public function router(): void
     {
+        // Only proceed if in admin area
+        if (!is_admin() || !current_user_can('manage_options')) {
+            return;
+        }
+        
         if (
             isset($_GET['page'])
             && $_GET['page'] === 'hillebrand-gori-eshipping'

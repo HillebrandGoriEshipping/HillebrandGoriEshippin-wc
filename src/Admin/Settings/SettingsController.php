@@ -61,7 +61,7 @@ class SettingsController
 
     public static function saveApiKey(): void
     {
-        if (wp_verify_nonce(wp_unslash($_POST['settings_nonce']), 'save_hges_api_key') !== 1) {
+        if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['settings_nonce'])), 'save_hges_api_key') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
 
@@ -97,7 +97,7 @@ class SettingsController
      */
     public static function saveFavoriteAddress(): void
     {
-        if (wp_verify_nonce(wp_unslash($_POST['settings_nonce']), 'save_favorite_address') !== 1) {
+        if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['settings_nonce'])), 'save_favorite_address') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
 
@@ -132,7 +132,7 @@ class SettingsController
      */
     public static function saveSettings(): void
     {
-        if (wp_verify_nonce(wp_unslash($_POST['settings_nonce']), 'save_settings') !== 1) {
+        if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['settings_nonce'])), 'save_settings') !== 1) {
             throw new \Exception('Nonce verification failed');
         }
 

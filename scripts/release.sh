@@ -21,6 +21,8 @@ if [ -f "$ZIP_FILE" ]; then
   rm "$ZIP_FILE"
 fi
 
+npm run build
+
 rm -rf vendor node_modules
 npm install --omit=dev
 composer install --no-dev --optimize-autoloader
