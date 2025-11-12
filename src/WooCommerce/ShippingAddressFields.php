@@ -251,6 +251,7 @@ class ShippingAddressFields
     public static function renderOrderConfirmationAddress(string $address, array $rawAddress = null, ?Order $order = null): void
     {
         $address = self::getRenderedOrderConfirmationAddress($address, null, $order);
+        // already escaped since rendered by Twig
         echo $address;
     }
 
