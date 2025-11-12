@@ -180,8 +180,8 @@ class Order
             $pickupPoint
         );
 
-        $string_keys = ['id', 'name', 'addLine1', 'city', 'zipCode', 'country', 'distanceUnitOfMeasurement'];
-        foreach ($string_keys as $key) {
+        $pickupKeys = ['id', 'name', 'addLine1', 'city', 'zipCode', 'country', 'distanceUnitOfMeasurement'];
+        foreach ($pickupKeys as $key) {
             if (!is_string($pickupPoint[$key])) {
                 return;
             }
