@@ -1,5 +1,5 @@
 === Hillebrand Gori eShipping for WooCommerce ===
-Contributors: Hillebrand Gori eShipping
+Contributors: hillebrandgori
 Tags: online store, ecommerce, shipping, wine, spirits
 Requires at least: 6.8
 Tested up to: 6.8
