@@ -24,18 +24,19 @@ class VariableBottleProduct extends \WC_Product_Variable
      */
     public static function add_to_cart_handler_variable()
     {
-        if (! isset($_REQUEST['product_id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $request = wp_unslash($_REQUEST);
+        if (! isset($request['product_id'])) {
             return false;
         }
-        $product_id = $_REQUEST['product_id'];
-        $variation_id = empty($_REQUEST['variation_id']) ? '' : absint(wp_unslash($_REQUEST['variation_id']));  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $quantity     = empty($_REQUEST['quantity']) ? 1 : wc_stock_amount(wp_unslash($_REQUEST['quantity']));  // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $variations   = array();
+        $product_id = absint($request['product_id']);
+        $variation_id = empty($request['variation_id']) ? '' : absint($request['variation_id']);
+        $quantity = empty($request['quantity']) ? 1 : wc_stock_amount($request['quantity']); 
+        $variations = array();
 
         $product = wc_get_product($product_id);
 
-        foreach ($_REQUEST as $key => $value) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-            if ('attribute_' !== substr($key, 0, 10)) {
+        foreach ($request as $key => $value) {
+            if (substr($key, 0, 10) !== 'attribute_') {
                 continue;
             }
 
