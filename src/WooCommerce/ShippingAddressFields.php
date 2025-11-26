@@ -251,8 +251,8 @@ class ShippingAddressFields
     public static function renderOrderConfirmationAddress(string $address, array $rawAddress = null, ?Order $order = null): void
     {
         $address = self::getRenderedOrderConfirmationAddress($address, null, $order);
-        // already escaped since rendered by Twig
-        echo $address;
+        
+        echo wp_kses($address, ['dl','dd','dt']);
     }
 
     public static function getRenderedOrderConfirmationAddress(string $address, array $rawAddress = null, ?Order $order = null): string
@@ -271,7 +271,7 @@ class ShippingAddressFields
             return;
         }
         $companyBlock = self::getRenderedCompanyBlock($order);
-        echo $companyBlock;
+        echo wp_kses($companyBlock, ['dl','dd','dt']);
     }
 
     public static function getRenderedCompanyBlock(Order $order): string

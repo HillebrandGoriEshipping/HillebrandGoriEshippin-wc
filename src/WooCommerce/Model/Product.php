@@ -82,7 +82,7 @@ class Product
             $fieldsList = !empty($fields) ? implode(', ', $fields) : 'certains champs requis';
 
             echo '<div class="notice notice-error is-dismissible">';
-            echo '<p>' . Messages::getMessage('productMeta.missingMetaFields') . ': <strong>' . esc_html($fieldsList) . '</strong>.</p>';
+            echo '<p>' . esc_html(Messages::getMessage('productMeta.missingMetaFields')) . ': <strong>' . esc_html($fieldsList) . '</strong>.</p>';
             echo '</div>';
         }
     }

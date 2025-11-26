@@ -72,7 +72,7 @@ class ApiClient
             } else {
                 $message = $content;
             }
-            throw new HttpException('Error: ' . esc_html($message), $response->getStatusCode());
+            throw new HttpException('Error: ' . esc_html($message), (int) $response->getStatusCode());
         }
 
         return [

@@ -49,7 +49,7 @@ class SettingsController
             $existingPackagingOptions[$packagingOption['containerType']][] = $packagingOption;
         }
 
-        echo Twig::getTwig()->render('admin/settings-page.twig', [
+        Twig::getTwig()->display('admin/settings-page.twig', [
             'title' => Translator::translate(esc_html(self::SETTING_PAGE_TITLE)),
             'options' => $options,
             'favoriteAddress' => $favoriteAddress,
