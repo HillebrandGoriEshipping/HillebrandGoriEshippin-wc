@@ -101,7 +101,7 @@ class SettingsController
             throw new \Exception('Nonce verification failed');
         }
 
-        $favoriteAddressId = sanitize_text_field(wp_unslash($_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID]));
+        $favoriteAddressId = (int) $_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID];
         $favoriteAddress = Address::singleFromApi($favoriteAddressId);
         $accessKey = get_option(OptionEnum::HGES_ACCESS_KEY);
 
