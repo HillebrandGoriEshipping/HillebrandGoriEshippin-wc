@@ -163,6 +163,7 @@ class Router
 
         $postData = [];
         if (in_array($currentRoute->getHttpMethod(), ['POST', 'PATCH', 'PUT'])) {
+            wp_check_ajax_referer(GlobalEnum::NONCE_ACTION, 'nonce');
             $postData = json_decode(file_get_contents('php://input'), true);
         }
 

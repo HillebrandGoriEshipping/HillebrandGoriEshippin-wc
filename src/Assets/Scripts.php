@@ -3,6 +3,7 @@
 namespace HGeS\Assets;
 
 use HGeS\Utils\ApiClient;
+use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\WooCommerce\ProductType\SimpleBottleProduct;
 use HGeS\WooCommerce\ProductType\VariableBottleProduct;
 use HGeS\Utils\Enums\OptionEnum;
@@ -178,7 +179,8 @@ class Scripts
             'apiUrl' => ApiClient::getApiUrl(),
             'i18n' => [
                 'messages' => Translator::getTranslations()
-            ]
+            ],
+            'nonce' => wp_create_nonce(GlobalEnum::NONCE_ACTION),
         ];
 
         if ($admin) {

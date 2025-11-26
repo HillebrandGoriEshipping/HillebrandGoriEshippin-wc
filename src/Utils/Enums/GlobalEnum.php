@@ -11,6 +11,7 @@ class GlobalEnum implements EnumInterface
 {
 
     const TRANSLATION_DOMAIN = 'hges';
+    const NONCE_ACTION = 'hges-frontend-nonce';
 
     public static function getList(): array
     {

@@ -138,6 +138,7 @@ const PickupPointsMap = () => {
             window.hges.ajaxUrl,
             {
                 action: 'hges_set_current_pickup_point',
+                nonce: window.hges.nonce,
                 orderId
             },
             {
