@@ -35,6 +35,7 @@ const ShippingMethodRow = ({
                 action: 'hges_set_order_shipping_rate',
                 orderId: new URLSearchParams(window.location.search).get('id'),
                 orderShippingItemId: itemId,
+                nonce: window.hges.nonce,
             }, 
             {
                 shippingRateChecksum: selectedShippingRateChecksum
@@ -59,6 +60,7 @@ const ShippingMethodRow = ({
             {
                 action: 'hges_create_shipment',
                 orderId: new URLSearchParams(window.location.search).get('id'),
+                nonce: window.hges.nonce,
             }
         );
 
@@ -94,6 +96,7 @@ const ShippingMethodRow = ({
                 {
                     action: 'hges_check_if_has_shipment',
                     orderId: orderId,
+                    nonce: window.hges.nonce,
                 }
             );
 

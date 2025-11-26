@@ -66,6 +66,7 @@ const Attachments = ({ attachments, requiredAttachments, remainingAttachments })
                 window.hges.ajaxUrl, 
                 {
                     action: 'hges_update_order_attachments',
+                    nonce: window.hges.nonce,
                 },
                 {
                     orderId: new URLSearchParams(window.location.search).get('id'),

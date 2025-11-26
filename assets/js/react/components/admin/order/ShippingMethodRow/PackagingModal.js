@@ -64,6 +64,7 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
                 window.hges.ajaxUrl,
                 {
                     action: 'hges_set_packaging_for_order',
+                    nonce: window.hges.nonce,
                 },
                 {
                     orderId: new URLSearchParams(window.location.search).get('id'),
