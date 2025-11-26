@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.hges.ajaxUrl,
                 {
                     action: 'hges_get_pickup_points',
+                    nonce: window.hges.nonce,
                     ...payload
                 }
             );

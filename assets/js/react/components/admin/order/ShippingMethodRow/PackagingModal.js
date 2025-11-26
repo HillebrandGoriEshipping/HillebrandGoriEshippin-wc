@@ -32,7 +32,10 @@ const PackagingModal = ({ currentPackaging, products, onChange, isOpen, onClose 
             try {
                 const response = await apiClient.get(
                     window.hges.ajaxUrl,
-                    { action: 'hges_get_packaging_options' }
+                    { 
+                        action: 'hges_get_packaging_options',
+                        nonce: window.hges.nonce,
+                    }
                 );
                 setPackagingOptions(response.packagings);
             } catch (error) {

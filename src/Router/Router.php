@@ -159,12 +159,13 @@ class Router
         ) {
             self::errorNotFound();
         }
+        
+        \check_ajax_referer(GlobalEnum::NONCE_ACTION, GlobalEnum::NONCE_KEY);
 
         $currentRoute = $this->ajaxRoutes[$_GET['action']];
 
         $postData = [];
         if (in_array($currentRoute->getHttpMethod(), ['POST', 'PATCH', 'PUT'])) {
-            \check_ajax_referer(GlobalEnum::NONCE_ACTION, GlobalEnum::NONCE_KEY);
             $postData = json_decode(file_get_contents('php://input'), true);
         }
 
