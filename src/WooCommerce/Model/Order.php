@@ -459,7 +459,6 @@ class Order
      */
     public static function updateAttachments(array $data): void
     {
-        $data = json_decode(file_get_contents('php://input'), true);
         $orderId = isset($data['orderId']) ? intval($data['orderId']) : 0;
         $attachments = isset($data['attachments']) ? $data['attachments'] : null;
         $order = wc_get_order($orderId);
