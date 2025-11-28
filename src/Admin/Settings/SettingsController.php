@@ -155,4 +155,17 @@ class SettingsController
 
         wp_redirect(admin_url(self::SETTING_PAGE_URL));
     }
+
+    public static function switchApiEnvironment(): void
+    {
+        if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['settings_nonce'])), 'switch_api_environment') !== 1) {
+            throw new \Exception('Nonce verification failed');
+        }
+
+        $isProd = get_option(OptionEnum::HGES_API_ENV_PROD);
+        $isProd = !$isProd;
+        update_option(OptionEnum::HGES_API_ENV_PROD, $isProd);
+
+        wp_redirect(admin_url(self::SETTING_PAGE_URL));
+    }
 }

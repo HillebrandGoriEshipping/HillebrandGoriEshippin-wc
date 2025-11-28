@@ -2,6 +2,26 @@
     <h1>{{ title }}</h1>
     <div id="HGES-connect">
         <h3>{{ translate( 'Please fill the information below in order to be able to use the plugin')|escape }}</h3>
+        <form method="post" action="?action=switch_api_env" id="env-settings-form">
+            <div class="highlighted-info {% if options.HGES_API_ENV_PROD == '1' %}production{% endif %}">
+                {% if options.HGES_API_ENV_PROD == '1' %}
+                <div><h3>{{ translate('You are currently using the production API environment')|escape }}</h3></div>
+                {% else %}
+                <div><h3>{{ translate('You are currently using the development API environment')|escape }}</h3></div>
+                {% endif %}
+            </div>
+
+            <div>
+                <button class="button button-primary" type="submit">
+                {% if options.HGES_API_ENV_PROD == '1' %}
+                    <span>{{ translate( 'Switch to the development API')|escape }}</span>
+                {% else %}
+                    <span>{{ translate( 'Switch to the production API')|escape }}</span>
+                {% endif %}
+                </button>
+            </div>
+            {{ function('wp_nonce_field', 'switch_api_environment', 'settings_nonce')|raw }}
+        </form>
         <form method="post" action="?action=hges_save_api_key" id="apikey-settings-form">
             <div class="key-settings">
                 <h2>{{ translate( 'Key settings') }}</h2>

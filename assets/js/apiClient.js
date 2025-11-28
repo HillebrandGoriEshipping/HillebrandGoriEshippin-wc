@@ -8,7 +8,7 @@ export default {
       return config.proxyApiUrl;
     }
 
-    return config.apiUrl;
+    return window.hges.apiUrl;
   },
   async get(url, urlParams, headers, isProxy) {
     url = this.appendUrlParams(url, urlParams, isProxy);

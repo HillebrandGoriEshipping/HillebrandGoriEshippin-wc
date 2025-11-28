@@ -147,6 +147,15 @@ class Router
             SettingsController::saveFavoriteAddress();
             exit;
         }
+
+        if (
+            isset($_GET['action'])
+            && $_GET['action'] === 'switch_api_env'
+            &&  $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            SettingsController::switchApiEnvironment();
+            exit;
+        }
     }
 
     public function ajaxRouter(): void

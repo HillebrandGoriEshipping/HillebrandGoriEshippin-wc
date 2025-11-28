@@ -14,6 +14,7 @@ class OptionEnum implements EnumInterface
 {
     const HGES_ACCESS_KEY = "HGES_ACCESS_KEY";
     const ACCESS_KEY_VALIDATE = "access_key_validate";
+    const HGES_API_ENV_PROD = "HGES_API_ENV_PROD";
     const HGES_PREF_TRANSP = "HGES_PREF_TRANSP";
     const HGES_TAX_RIGHTS = "HGES_TAX_RIGHTS";
     const HGES_VAT_NUMBER = "HGES_VAT_NUMBER";
@@ -58,6 +59,7 @@ class OptionEnum implements EnumInterface
             self::HGES_CUTOFF,
             self::HGES_WORKING_DAYS,
             self::HGES_PACKAGING_AVAILABLE,
+            self::HGES_API_ENV_PROD,
         ];
     }
 
@@ -110,6 +112,9 @@ class OptionEnum implements EnumInterface
                 new NotBlank(message: Messages::getMessage('settings.packagingAvailableError')),
                 new Count(min: 1, minMessage: Messages::getMessage('settings.packagingAvailableError')),
             ],
+            self::HGES_API_ENV_PROD => [
+                new Type('bool', message: Messages::getMessage('settings.apiEnvTypeError')),
+            ],
         ];
 
         return $constraints[$option] ?? null;
@@ -134,6 +139,7 @@ class OptionEnum implements EnumInterface
             self::HGES_CUTOFF => 'string',
             self::HGES_WORKING_DAYS => 'array',
             self::HGES_PACKAGING_AVAILABLE => 'array',
+            self::HGES_API_ENV_PROD => 'bool',
         ];
 
         return $sanitizationTypes[$option] ?? null;
