@@ -1,4 +1,5 @@
 {
-  "apiUrl": "https://eu-eshipping-extranet-ifte.azurewebsites.net/api",
+  "devApiUrl": "https://test.eshipping.hillebrandgori.app/api",
+  "prodApiUrl": "https://eshipping.hillebrandgori.app/api",
   "proxyApiUrl": "/wp-json/hges/v1"
 }

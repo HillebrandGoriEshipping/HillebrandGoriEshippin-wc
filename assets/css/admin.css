@@ -53,6 +53,24 @@
   min-width: 400px;
 }
 
+#env-settings-form {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.highlighted-info {
+  background-color: #fff3e0;
+  border: 1px solid #ff9800;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.highlighted-info.production {
+  background-color: #e7f3fe;
+  border: 1px solid #2196F3;
+}
+
 #validate-api {
   background-color: #FFF;
   border: 1px solid #000;

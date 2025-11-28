@@ -150,3 +150,7 @@
 "Can't find packaging for product of type {packagingType}. Please contact the administrator.";"Can't find packaging for product of type {packagingType}. Please contact the administrator."
 "bottle";"bottle"
 "Bottle Settings";"Bottle Settings"
+"You are currently using the development API environment";"You are currently using the development API environment"
+"You are currently using the production API environment";"You are currently using the production API environment"
+"Switch to the development API";"Switch to the development API"
+"Switch to the production API";"Switch to the production API"

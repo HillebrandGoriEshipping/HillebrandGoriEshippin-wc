@@ -103,7 +103,7 @@ class ShippingMethodRow {
             ],
         ];
 
-        echo Twig::getTwig()->render('admin/order/shipping-method-row.twig', $templateData);
+        Twig::getTwig()->display('admin/order/shipping-method-row.twig', $templateData);
     }
 
     /**

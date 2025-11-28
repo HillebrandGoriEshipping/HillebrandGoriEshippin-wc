@@ -18,9 +18,18 @@ class ApiClient
     {
         $configRaw = file_get_contents(HGES_PLUGIN_CONFIG_PATH);
         $config = json_decode($configRaw, true);
-        if (isset($config['apiUrl'])) {
-            return $config['apiUrl'];
+
+        $isProdEnv = get_option(OptionEnum::HGES_API_ENV_PROD);
+
+        if (!$isProdEnv && isset($config['devApiUrl'])) {
+            return $config['devApiUrl'];
         }
+
+        if ($isProdEnv && isset($config['prodApiUrl'])) {
+            return $config['prodApiUrl'];
+        }
+        
+        throw new \Exception('API URL is not configured properly.');
     }
 
     /**
@@ -72,7 +81,7 @@ class ApiClient
             } else {
                 $message = $content;
             }
-            throw new HttpException('Error: ' . esc_html($message), $response->getStatusCode());
+            throw new HttpException('Error: ' . esc_html($message), (int) $response->getStatusCode());
         }
 
         return [

@@ -124,7 +124,7 @@ class ClassicUiRender
     public static function renderClassicPickupModal(): void
     {
         $twig = Twig::getTwig();
-        echo $twig->render('classic-pickup-modal.twig');
+        $twig->display('classic-pickup-modal.twig');
     }
 
     /**

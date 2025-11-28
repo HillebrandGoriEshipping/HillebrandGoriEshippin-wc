@@ -80,6 +80,7 @@ const PickupPointsMap = () => {
                 window.hges.ajaxUrl,
                 {
                     action: 'hges_get_pickup_points',
+                    nonce: window.hges.nonce,
                     checksum: currentRate.checksum,
                     latitude: currentCenter?.lat ?? '',
                     longitude: currentCenter?.lng ?? ''
@@ -138,6 +139,7 @@ const PickupPointsMap = () => {
             window.hges.ajaxUrl,
             {
                 action: 'hges_set_current_pickup_point',
+                nonce: window.hges.nonce,
                 orderId
             },
             {

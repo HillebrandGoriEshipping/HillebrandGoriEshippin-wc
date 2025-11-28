@@ -13,8 +13,17 @@ const ShippingRateModal = ({ isOpen, onClose, validateShippingRate }) => {
 
     const loadShippingRates = async () => {
         setLoading(true);
+        
         const currentUrlParams = new URLSearchParams(window.location.search);
-        const response = await apiClient.get(window.hges.ajaxUrl, { orderId: currentUrlParams.get('id'), action: 'hges_get_shipping_rates_for_order' });
+        const response = await apiClient.get(
+            window.hges.ajaxUrl, 
+            { 
+                orderId: currentUrlParams.get('id'), 
+                action: 'hges_get_shipping_rates_for_order',
+                nonce: window.hges.nonce,
+            }
+        );
+
         setRates(response.shippingRates);
         setLoading(false);
     };

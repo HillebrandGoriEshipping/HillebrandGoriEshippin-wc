@@ -73,12 +73,10 @@ class ProductMeta
 
         $producingCountries = self::getProducingCountries();
 
-        $html = $twig->render('product-metas.twig', [
+        $twig->display('product-metas.twig', [
             'productMeta' => $productMeta,
             'producingCountries' => $producingCountries,
         ]);
-
-        echo $html;
     }
 
     /**
@@ -98,7 +96,7 @@ class ProductMeta
             $twig = Twig::getTwig();
             $value = get_post_meta($variation->ID, '_variation_quantity', true);
 
-            echo $twig->render('variable-product-meta.twig', [
+            $twig->display('variable-product-meta.twig', [
                 'value' => $value,
                 'index' => $loop_index,
             ]);
@@ -200,7 +198,7 @@ class ProductMeta
         $isWine = HSCodeHelper::isWine($data['productHsCode']);
         $data['isWine'] = $isWine;
 
-        echo $twig->render('admin/product/product-meta-shipping.twig', $data);
+        $twig->display('admin/product/product-meta-shipping.twig', $data);
     }
 
     public static function getProducingCountries(): array

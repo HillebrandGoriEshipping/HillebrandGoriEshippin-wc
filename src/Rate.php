@@ -192,6 +192,7 @@ class Rate
                 'designation' => 'Okay',
                 'quantity' => $itemQuantity * $item['quantity'],
                 'currency' => get_woocommerce_currency(),
+                'manufacturingCountry' => get_post_meta($productId, ProductMetaEnum::PRODUCING_COUNTRY, true),
             ];
 
             if (get_post_meta($productId, ProductMetaEnum::TYPE, true) === ProductMetaEnum::STILL || get_post_meta($productId, ProductMetaEnum::TYPE, true) === ProductMetaEnum::SPARKLING) {

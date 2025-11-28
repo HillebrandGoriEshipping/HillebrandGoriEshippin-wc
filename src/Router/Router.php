@@ -3,6 +3,7 @@
 namespace HGeS\Router;
 
 use HGeS\Admin\Settings\SettingsController;
+use HGeS\Utils\Enums\GlobalEnum;
 use HGeS\WooCommerce\Model\Order;
 
 /**
@@ -146,6 +147,15 @@ class Router
             SettingsController::saveFavoriteAddress();
             exit;
         }
+
+        if (
+            isset($_GET['action'])
+            && $_GET['action'] === 'switch_api_env'
+            &&  $_SERVER['REQUEST_METHOD'] === 'POST'
+        ) {
+            SettingsController::switchApiEnvironment();
+            exit;
+        }
     }
 
     public function ajaxRouter(): void
@@ -158,6 +168,8 @@ class Router
         ) {
             self::errorNotFound();
         }
+        
+        \check_ajax_referer(GlobalEnum::NONCE_ACTION, GlobalEnum::NONCE_KEY);
 
         $currentRoute = $this->ajaxRoutes[$_GET['action']];
 

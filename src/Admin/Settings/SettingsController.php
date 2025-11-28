@@ -49,7 +49,7 @@ class SettingsController
             $existingPackagingOptions[$packagingOption['containerType']][] = $packagingOption;
         }
 
-        echo Twig::getTwig()->render('admin/settings-page.twig', [
+        Twig::getTwig()->display('admin/settings-page.twig', [
             'title' => Translator::translate(esc_html(self::SETTING_PAGE_TITLE)),
             'options' => $options,
             'favoriteAddress' => $favoriteAddress,
@@ -101,7 +101,7 @@ class SettingsController
             throw new \Exception('Nonce verification failed');
         }
 
-        $favoriteAddressId = sanitize_text_field(wp_unslash($_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID]));
+        $favoriteAddressId = (int) $_POST[OptionEnum::HGES_FAVORITE_ADDRESS_ID];
         $favoriteAddress = Address::singleFromApi($favoriteAddressId);
         $accessKey = get_option(OptionEnum::HGES_ACCESS_KEY);
 
@@ -152,6 +152,19 @@ class SettingsController
             }
             update_option($optionName, $settingsFormData->$optionName);
         }
+
+        wp_redirect(admin_url(self::SETTING_PAGE_URL));
+    }
+
+    public static function switchApiEnvironment(): void
+    {
+        if (wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['settings_nonce'])), 'switch_api_environment') !== 1) {
+            throw new \Exception('Nonce verification failed');
+        }
+
+        $isProd = get_option(OptionEnum::HGES_API_ENV_PROD);
+        $isProd = !$isProd;
+        update_option(OptionEnum::HGES_API_ENV_PROD, $isProd);
 
         wp_redirect(admin_url(self::SETTING_PAGE_URL));
     }
