@@ -11,6 +11,7 @@ class FormSessionMessages
 {
 
     const SESSION_KEY = 'hges_form_messages';
+    const TYPES = ['error', 'success', 'info', 'warning'];
 
     /**
      * add a single message to the session
@@ -54,6 +55,10 @@ class FormSessionMessages
     {
         if (!session_id()) {
             session_start();
+        }
+
+        if ($type !== null && !in_array($type, self::TYPES)) {
+            return [];
         }
 
         if ($type !== null) {

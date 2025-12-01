@@ -160,6 +160,13 @@ class Router
 
     public function ajaxRouter(): void
     {
+        $actions = array_keys($this->ajaxRoutes);
+        $action = $_GET['action'] ?? '';
+
+        if (!in_array($action, $actions, true)) {
+            self::errorNotFound();
+        }
+
         if (
             !isset($_GET['action'])
             || !isset($this->ajaxRoutes[$_GET['action']])
