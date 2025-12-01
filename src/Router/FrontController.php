@@ -6,6 +6,8 @@ use HGeS\Rate;
 use HGeS\Utils\ApiClient;
 use HGeS\Utils\Packaging;
 use HGeS\Utils\Translator;
+use HGeS\Validation\PickupPointValidator;
+use HGeS\Validation\RateChecksumValidator;
 use HGeS\WooCommerce\Model\Order;
 
 class FrontController
@@ -19,19 +21,19 @@ class FrontController
     public static function getPickupPoints($data): void
     {
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(wp_strip_all_tags($param));
+            return wp_strip_all_tags($param);
         }, $_GET);
 
-        $checksum = $urlParams['checksum'] ?? null;
+        $checksum = RateChecksumValidator::validate($urlParams['checksum'] ?? null);
         $latitude = $urlParams['latitude'] ?? null;
         $longitude = $urlParams['longitude'] ?? null;
 
-        if (empty($checksum)) {
+        if ((!empty($latitude) && !is_numeric($latitude)) || (!empty($longitude) && !is_numeric($longitude))) {
             self::renderJson([
-                'error' => 'Missing checksum parameter',
+                'error' => 'Invalid latitude or longitude parameter',
             ], 400);
             return;
-        }
+        }       
 
         $postBody = [
             'checksum' => $checksum
@@ -71,10 +73,13 @@ class FrontController
         $response = [];
         $bodyParams = $data;
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(wp_strip_all_tags($param));
+            return wp_strip_all_tags($param);
         }, $_GET);
-        if (!empty($bodyParams['pickupPoint']) && !empty($urlParams['orderId'])) {
-            Order::setPickupPoint($urlParams['orderId'], $bodyParams['pickupPoint']);
+
+        $pickupPointData = PickupPointValidator::validate($bodyParams['pickupPoint'] ?? []);
+
+        if (!empty($pickupPointData) && !empty($urlParams['orderId'])) {
+            Order::setPickupPoint($urlParams['orderId'], $pickupPointData);
             $response['success'] = true;
         } else {
             $response['error'] = 'Unable to update pickup point, orderId is expected in the query params and pickupPoint json object is expected in the json body.';
@@ -122,16 +127,22 @@ class FrontController
         $response = [];
         $bodyParams = $data;
         $urlParams = array_map(function ($param) {
-            return htmlspecialchars(wp_strip_all_tags($param));
+            return wp_strip_all_tags($param);
         }, $_GET);
 
-        if (!empty($bodyParams['shippingRateChecksum']) && !empty($urlParams['orderId']) && !empty($urlParams['orderShippingItemId'])) {
+        $checksum = RateChecksumValidator::validate($bodyParams['shippingRateChecksum'] ?? null);
+        $orderId = (int) $urlParams['orderId'] ?? null;
+        $orderShippingItemId = (int) $urlParams['orderShippingItemId'] ?? null;
+
+
+        
+        if (!empty($checksum) && !empty($orderId) && !empty($orderShippingItemId)) {
 
             try {
                 $rate = Order::updateSelectedShippingRate(
-                    intval($urlParams['orderId']),
-                    intval($urlParams['orderShippingItemId']),
-                    $bodyParams['shippingRateChecksum']
+                    $orderId,
+                    $orderShippingItemId,
+                    $checksum
                 );
             } catch (\Exception $e) {
                 $response['error'] = 'Unable to update shipping method: ' . esc_html($e->getMessage());
@@ -153,12 +164,9 @@ class FrontController
     {
         self::checkUserCanEditOrders();
         $response = [];
-        $urlParams = array_map(function ($param) {
-            return htmlspecialchars(wp_strip_all_tags($param));
-        }, $_GET);
-
-        if (!empty($urlParams['orderId'])) {
-            $order = wc_get_order($urlParams['orderId'] ?? 0);
+        $orderId = (int) $_GET['orderId'] ?? null;
+        if (!empty($orderId)) {
+            $order = wc_get_order($orderId);
             if (!$order) {
                 Router::errorNotFound();
                 return;
@@ -184,7 +192,6 @@ class FrontController
 
     public static function renderJson(array $data, int $httpStatus = 200): void
     {
-
         http_response_code($httpStatus);
         header('Content-Type: application/json');
         echo wp_json_encode($data);

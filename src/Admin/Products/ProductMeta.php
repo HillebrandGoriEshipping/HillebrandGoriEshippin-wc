@@ -132,11 +132,12 @@ class ProductMeta
      */
     public static function saveVariableProductField(int $variation_id, int $i): void
     {
-        if (isset($_POST['_variation_quantity'][$i])) {
+        $variationQuantity = (int) $_POST['_variation_quantity'][$i] ?? null;
+        if ($variationQuantity) {
             update_post_meta(
                 $variation_id,
                 '_variation_quantity',
-                wp_unslash($_POST['_variation_quantity'][$i])
+                wp_unslash($variationQuantity)
             );
         }
     }
