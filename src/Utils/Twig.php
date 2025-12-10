@@ -87,11 +87,11 @@ class Twig
         }));
 
         self::$twig->addFunction(new \Twig\TwigFunction('hgesOptionName', function ($optionName) {
-            return OptionEnum::{$optionName};
+            return constant(OptionEnum::class . '::' . $optionName);
         }));
 
         self::$twig->addFunction(new \Twig\TwigFunction('hgesProductMeta', function ($metaName) {
-            return ProductMetaEnum::{$metaName};
+            return constant(ProductMetaEnum::class . '::' . $metaName);
         }));
 
         self::$twig->addFunction(new \Twig\TwigFunction('spawnComponent', function ($componentName, $props) {
