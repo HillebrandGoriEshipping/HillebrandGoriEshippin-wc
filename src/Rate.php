@@ -187,9 +187,9 @@ class Rate
             $details[] = [
                 'capacity' => get_post_meta($productId, ProductMetaEnum::CAPACITY, true),
                 'alcoholDegree' => get_post_meta($productId, ProductMetaEnum::ALCOHOL_PERCENTAGE, true),
-                'unitValue' => $unitPriceExTax,
+                'unitPriceExcludingTax' => $unitPriceExTax,
                 'hsCode' => get_post_meta($productId, ProductMetaEnum::HS_CODE, true),
-                'designation' => 'Okay',
+                'designation' => get_post_meta($productId, ProductMetaEnum::DESIGNATION, true),
                 'quantity' => $itemQuantity * $item['quantity'],
                 'currency' => get_woocommerce_currency(),
                 'manufacturingCountry' => get_post_meta($productId, ProductMetaEnum::PRODUCING_COUNTRY, true),
@@ -222,6 +222,7 @@ class Rate
     {
         try {
             $urlParams = self::prepareUrlParams($package);
+
             if (!$urlParams) {
                 return ['error' => 'No package sizes available for the given contents.'];
             }

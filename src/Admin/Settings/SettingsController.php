@@ -163,7 +163,9 @@ class SettingsController
         }
 
         $isProd = get_option(OptionEnum::HGES_API_ENV_PROD);
+
         $isProd = !$isProd;
+
         update_option(OptionEnum::HGES_API_ENV_PROD, $isProd);
 
         wp_redirect(admin_url(self::SETTING_PAGE_URL));

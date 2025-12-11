@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Ship wine, spirits and any bottled products throught Hillebrand Gori.
+Ship wines, beers and spirits or any beverages through Hillebrand Gori.
 
 == Description ==
 

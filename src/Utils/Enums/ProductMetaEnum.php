@@ -12,7 +12,7 @@ class ProductMetaEnum implements EnumInterface
     const ALCOHOL_PERCENTAGE = "_alcohol_percentage";
     const VINTAGE_YEAR = "_vintage";
     const PRODUCING_COUNTRY = "_producing_country";
-    const APPELLATION = "_appellation";
+    const DESIGNATION = "_designation";
     const HS_CODE = "_hs_code";
 
     const STILL = "still";
@@ -36,7 +36,7 @@ class ProductMetaEnum implements EnumInterface
             self::ALCOHOL_PERCENTAGE,
             self::VINTAGE_YEAR,
             self::PRODUCING_COUNTRY,
-            self::APPELLATION,
+            self::DESIGNATION,
             self::HS_CODE,
         ];
     }

@@ -112,9 +112,6 @@ class OptionEnum implements EnumInterface
                 new NotBlank(message: Messages::getMessage('settings.packagingAvailableError')),
                 new Count(min: 1, minMessage: Messages::getMessage('settings.packagingAvailableError')),
             ],
-            self::HGES_API_ENV_PROD => [
-                new Type('bool', message: Messages::getMessage('settings.apiEnvTypeError')),
-            ],
         ];
 
         return $constraints[$option] ?? null;

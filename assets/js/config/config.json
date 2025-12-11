@@ -1,5 +1,5 @@
 {
-  "devApiUrl": "https://test.eshipping.hillebrandgori.app/api",
+  "devApiUrl": "http://extranet/api",
   "prodApiUrl": "https://eshipping.hillebrandgori.app/api",
   "proxyApiUrl": "/wp-json/hges/v1"
 }

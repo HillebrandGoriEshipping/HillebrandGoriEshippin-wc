@@ -69,6 +69,7 @@ class ShippingMethod extends \WC_Shipping_Method
     {
         try {
            $rates = Rate::getShippingRates($package);
+
            foreach ($rates as $rate) {
                $this->add_rate($rate);
            }
