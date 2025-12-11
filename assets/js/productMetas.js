@@ -21,8 +21,8 @@ const productMetaModule = {
   errorContainer: null,
   init() {
     this.countrySelect = document.querySelector("#_producing_country");
-    this.appellationSelect = document.querySelector("#appellation-select-field");
-    this.appellationField = document.querySelector("#_appellation");
+    this.appellationSelect = document.querySelector("#designation-select-field");
+    this.appellationField = document.querySelector("#_designation");
     this.capacityField = document.querySelector("#_capacity");
     this.alcoholPercentageField = document.querySelector("#_alcohol_percentage");
     this.colorField = document.querySelector("#_color");

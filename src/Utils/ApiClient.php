@@ -120,7 +120,7 @@ class ApiClient
 
         $client = HttpClient::create();
         $url = self::getApiUrl() . $route;
-
+dd($url);
         $response = $client->request(
             'POST',
             $url,

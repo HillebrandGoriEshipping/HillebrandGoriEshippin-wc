@@ -194,7 +194,7 @@ class ProductMeta
         $twig = Twig::getTwig();
         $data = [
             'productHsCode' => get_post_meta(get_the_ID(), ProductMetaEnum::HS_CODE, true),
-            'productAppellation' => get_post_meta(get_the_ID(), ProductMetaEnum::APPELLATION, true),
+            'productDesignation' => get_post_meta(get_the_ID(), ProductMetaEnum::DESIGNATION, true),
         ];
         $isWine = HSCodeHelper::isWine($data['productHsCode']);
         $data['isWine'] = $isWine;

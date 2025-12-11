@@ -37,8 +37,8 @@ test.describe('Admin Product Meta spec', () => {
     await expect(page.locator('#_producing_country')).toBeVisible();
     await page.selectOption('#_producing_country', 'France');
 
-    await page.selectOption('#appellation-select-field', 'Chablis');
-    await expect(page.locator('#_appellation')).toHaveValue('Chablis');
+    await page.selectOption('#designation-select-field', 'Chablis');
+    await expect(page.locator('#_designation')).toHaveValue('Chablis');
 
     await expect(page.locator('#error-container')).toBeVisible();
     await expect(page.locator('#error-container')).toContainText(messages.productMeta.settingsSuccess);
@@ -80,7 +80,7 @@ test.describe('Admin Product Meta spec', () => {
     await expect(page.locator('#_producing_country')).toBeVisible();
     await page.selectOption('#_producing_country', 'France');
 
-    await page.selectOption('#appellation-select-field', 'Hydromel');
+    await page.selectOption('#designation-select-field', 'Hydromel');
 
     await expect(page.locator('#error-container')).toBeVisible();
     await expect(page.locator('#error-container')).toContainText(messages.productMeta.settingsError);
